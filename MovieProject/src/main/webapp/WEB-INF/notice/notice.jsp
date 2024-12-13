@@ -76,6 +76,7 @@
 <body>
 
 <jsp:include page="/WEB-INF/header1.jsp" />
+
 <div class="container">
     <!-- 공지사항 헤더 -->
     <div class="board-header">
