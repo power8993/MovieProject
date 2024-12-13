@@ -96,6 +96,7 @@ replay_pid*
 ##### commit 제외파일 #####
 .gitignore
 /MovieProject/src/main/webapp/WEB-INF/Command.Properties
+*.Properties
 *.sql
 /MovieProject/src/main/webapp/WEB-INF/lib
 /MovieProject/src/main/webapp/WEB-INF/sql
