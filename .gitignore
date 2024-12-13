@@ -93,4 +93,12 @@ local.properties
 hs_err_pid*
 replay_pid*
 
+##### commit 제외파일 #####
+.gitignore
+/MovieProject/src/main/webapp/WEB-INF/Command.Properties
+*.sql
+
+
+
+
 # End of https://www.toptal.com/developers/gitignore/api/java,eclipse
