@@ -58,14 +58,14 @@ window.onscroll = function () {
     <div id="header">
         <div id="logo" class="mb-4">logo</div>
         <div id="web_name" class="mb-4">사이트명</div>
-	        <div>
-	        	<a href="<%= ctxPath %>/admin/admin.up" >관리자</a>
-				<a href="<%= ctxPath %>/mypage/mypage.up" >마이페이지</a>
-	        </div>
+           <div>
+              <a href="<%= ctxPath %>/admin/admin.up" >관리자</a>
+            <a href="<%= ctxPath %>/mypage/mypage.up" >마이페이지</a>
+           </div>
         <ul class="mb-4">
             <li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/login/login.up" >로그인</a></li>
-			<li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/member/memberRegister.up" >회원가입</a></li>
-			<li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.up" >공지사항</a></li>
+         <li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/member/memberRegister.up" >회원가입</a></li>
+         <li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.up" >공지사항</a></li>
         </ul>
     </div>
 </div>
@@ -75,9 +75,9 @@ window.onscroll = function () {
     <div id="nav_mediatop">
         <ul class="nav-list">
             <li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieList.up">영화</a></li>
-			<li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieTime.up">상영시간표</a></li>
-			<li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieDetail.up">영화상세보기</a></li>
-			<li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/reservation/reservation.up">영화예약</a></li>
+         <li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieTime.up">상영시간표</a></li>
+         <li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieDetail.up">영화상세보기</a></li>
+         <li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/reservation/reservation.up">영화예약</a></li>
         </ul>
     </div>
 </div>
