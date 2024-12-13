@@ -61,7 +61,7 @@ local.properties
 
 # Uncomment this line if you wish to ignore the project description file.
 # Typically, this file would be tracked if it contains build/dependency configurations:
-#.project
+.project
 
 ### Eclipse Patch ###
 # Spring Boot Tooling
@@ -96,8 +96,12 @@ replay_pid*
 ##### commit 제외파일 #####
 .gitignore
 /MovieProject/src/main/webapp/WEB-INF/Command.Properties
+*.Properties
 *.sql
 /MovieProject/src/main/webapp/WEB-INF/lib
 /MovieProject/src/main/webapp/WEB-INF/sql
+.classpath
 
 # End of https://www.toptal.com/developers/gitignore/api/java,eclipse
+# MAC OS Systemfile #
+.DS_Store
