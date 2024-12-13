@@ -99,5 +99,8 @@ replay_pid*
 *.sql
 /MovieProject/src/main/webapp/WEB-INF/lib
 /MovieProject/src/main/webapp/WEB-INF/sql
+.classpath
 
 # End of https://www.toptal.com/developers/gitignore/api/java,eclipse
+# MAC OS Systemfile #
+.DS_Store
