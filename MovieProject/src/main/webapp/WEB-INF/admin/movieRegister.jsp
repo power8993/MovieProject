@@ -39,19 +39,19 @@
 				<div>
 					<div class="myrow">
 					  <div class="col-75">
-					    <div class="container">
+					    <div class="mycontainer2">
 					      <form action="/action_page.php">
 					
 					        <div class="myrow">
 					          <div class="col-50">
 					            <h3>Billing Address</h3>
-					            <label for="fname"><i class="fa fa-user"></i> Full Name</label>
+					            <label for="fname"><i class="fa"></i> Full Name</label>
 					            <input type="text" id="fname" name="firstname" placeholder="John M. Doe">
-					            <label for="email"><i class="fa fa-envelope"></i> Email</label>
+					            <label for="email"><i class="fa"></i> Email</label>
 					            <input type="text" id="email" name="email" placeholder="john@example.com">
-					            <label for="adr"><i class="fa fa-address-card-o"></i> Address</label>
+					            <label for="adr"><i class="fa"></i> Address</label>
 					            <input type="text" id="adr" name="address" placeholder="542 W. 15th Street">
-					            <label for="city"><i class="fa fa-institution"></i> City</label>
+					            <label for="city"><i class="fa"></i> City</label>
 					            <input type="text" id="city" name="city" placeholder="New York">
 					
 					            <div class="myrow">
