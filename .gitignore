@@ -97,8 +97,7 @@ replay_pid*
 .gitignore
 /MovieProject/src/main/webapp/WEB-INF/Command.Properties
 *.sql
-
-
-
+/MovieProject/src/main/webapp/WEB-INF/lib
+/MovieProject/src/main/webapp/WEB-INF/sql
 
 # End of https://www.toptal.com/developers/gitignore/api/java,eclipse
