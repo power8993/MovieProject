@@ -1,0 +1,97 @@
+@charset "UTF-8";
+
+/* 전체 창 */
+div.my_container {
+	border: solid 1px gray;
+	width: 90%;
+    max-width: 980px;
+    min-width: 980px;
+    margin: 0 auto;
+    padding: 0px;
+	
+}
+
+/* 마이페이지 사이드바 & 매안 창 */
+div.my_container > div.my_content{
+	border: solid 1px blue;
+	height: 700px; 
+	margin-top: 40px;
+}
+
+/* 마이페이지 나의 프로필장 */
+div.my_container > div.myprofile{
+	border: solid 1px black;  
+    height: 250px;
+    background-color: #ccc5b9;
+}
+
+/* 마이페이지 사이드바 */
+div.my_container > div.my_content > div.my_hside{
+	border: solid 1px black;  
+	float: left;
+	width: 20%; 
+    height: 100%; 
+    padding: 20px; 
+    box-sizing: border-box; 
+}
+
+div.my_container > div.my_content > div.my_hside ul {
+    list-style: none; 
+    padding: 0;
+    margin: 0;
+}
+
+div.my_container > div.my_content > div.my_hside ul li {
+    margin-bottom: 10px; 
+}
+
+/* 상위 메뉴 스타일 */
+div.my_container > div.my_content > div.my_hside ul li > a {
+    text-decoration: none;
+    color: #333;
+    font-size: 15px; 
+    font-weight: bold; 
+    display: block; 
+    padding: 10px;
+    border-radius: 3px; 
+    transition: all 0.3s ease; 
+}
+
+/* 활성화 상태 (MyPage HOME 기본 활성화) */
+div.my_container > div.my_content > div.my_hside ul li > a.active,
+div.my_container > div.my_content > div.my_hside ul li > a:focus {
+    background-color: #eb5e28; 
+    color: #fff; 
+    padding-left: 17px; 
+}
+
+/* 클릭/활성화 전 상태 호버 효과 */
+div.my_container > div.my_content > div.my_hside ul li > a:hover,
+div.my_container > div.my_content > div.my_hside ul li ul li a:hover  {
+    background-color: #eb5e28; 
+    padding-left: 12px; 
+    color: #fff; 
+}
+
+/* 하위 메뉴 스타일 */
+div.my_container > div.my_content > div.my_hside ul li ul {
+    margin-top: 5px; 
+    padding-left: 6px; 
+}
+
+div.my_container > div.my_content > div.my_hside ul li ul li {
+    margin-bottom: 5px;
+}
+
+div.my_container > div.my_content > div.my_hside ul li ul li a {
+    text-decoration: none; 
+    color: #555; 
+    display: block; 
+    padding: 5px 0; 
+    padding-left: 10px;
+    transition: all 0.3s ease;
+}
+
+div.my_container > div.my_content > div.my_hside ul li ul li > a {
+	font-size: 13px; 
+}
