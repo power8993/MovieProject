@@ -109,7 +109,7 @@
                 </tr>
             </c:if>
         </tbody>
-    </table>
+    </table>	
 
     <!-- 페이지네이션 (가상의 예시) -->
     <ul class="pagination" style="justify-content: center; margin-top: 20px;">
