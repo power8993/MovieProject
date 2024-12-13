@@ -9,7 +9,7 @@
 %>
 
 <%-- 직접 만든 CSS --%>
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/index/index.css" />
+
 
 <jsp:include page="header1.jsp" />
 
