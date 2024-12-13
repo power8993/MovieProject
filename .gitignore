@@ -102,9 +102,5 @@ replay_pid*
 .classpath
 
 # End of https://www.toptal.com/developers/gitignore/api/java,eclipse
-<<<<<<< HEAD
 # MAC OS Systemfile #
 .DS_Store
-=======
-/MovieProject/
->>>>>>> refs/heads/wonjae
