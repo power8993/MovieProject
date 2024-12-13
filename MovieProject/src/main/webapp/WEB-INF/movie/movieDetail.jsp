@@ -139,10 +139,9 @@
                 <div><strong>장르:</strong> <%= ctxPath %></div>
                 <div><strong>감독:</strong> <%= ctxPath %></div>
                 <div><strong>배우:</strong> <%= ctxPath %></div>
-            </div>
-            <div class="movie-info">
+                <div><strong>상영시간:</strong> <%= ctxPath %></div>
                 <div><strong>개봉일:</strong> <%= ctxPath %></div>
-            </div>
+            </div>            
             <!-- 예매하기 버튼 -->
             <button class="reservation-btn" onclick="">
                 예매하기
@@ -151,11 +150,9 @@
     </div>
 
     <div class="synopsis">
-        <strong>줄거리:</strong>
+        <strong>줄거리</strong>
         <p><%= ctxPath%></p>
     </div>
-
-    
 
     <!-- 후기 작성 -->
     <div class="review-section">       
