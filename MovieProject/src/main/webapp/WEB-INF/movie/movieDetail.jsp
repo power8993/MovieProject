@@ -181,66 +181,6 @@
 
 <jsp:include page="/WEB-INF/footer1.jsp" />
 
-<script>
-    let selectedRating = 0; // 선택된 별점 값
-
-    // 별점 선택
-    const stars = document.querySelectorAll('.rating-stars span');
-    stars.forEach(star => {
-        star.addEventListener('click', () => {
-            selectedRating = star.getAttribute('data-value'); // 선택한 별점 값 저장
-            stars.forEach(s => s.classList.remove('selected'));
-            for (let i = 0; i < selectedRating; i++) {
-                stars[i].classList.add('selected');
-            }
-        });
-    });
-
-    // 후기 제출
-    function submitReview() {
-        const reviewText = document.getElementById('reviewText').value;
-        if (reviewText.trim() === '') {
-            alert('후기를 작성해주세요.');
-            return;
-        }
-        if (selectedRating === 0) {
-            alert('별점을 선택해주세요.');
-            return;
-        }
-
-        const reviewsList = document.getElementById('reviewsList');
-        const newReview = document.createElement('li');
-        newReview.classList.add('review-item');
-
-        // 예시로 임의의 작성자와 시간을 추가
-        const author = document.createElement('div');
-        author.classList.add('author');
-        author.textContent = "작성자: 사용자";
-        
-        const timestamp = document.createElement('div');
-        timestamp.classList.add('timestamp');
-        timestamp.textContent = "2024-12-12 10:30"; // 시간 예시
-
-        const content = document.createElement('div');
-        content.classList.add('content');
-        content.textContent = reviewText;
-
-        // 별점 표시
-        const rating = document.createElement('div');
-        rating.classList.add('rating');
-        rating.textContent = `별점: ${selectedRating} 점`;
-
-        newReview.appendChild(author);
-        newReview.appendChild(timestamp);
-        newReview.appendChild(content);
-        newReview.appendChild(rating);
-
-        reviewsList.appendChild(newReview);
-        document.getElementById('reviewText').value = ''; // 후기 입력란 비우기
-        selectedRating = 0; // 별점 초기화
-        stars.forEach(s => s.classList.remove('selected')); // 별점 초기화
-    }
-</script>
 
 </body>
 </html>
