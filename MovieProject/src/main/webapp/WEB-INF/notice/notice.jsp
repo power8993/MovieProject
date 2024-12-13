@@ -1,11 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+
 <%
     String ctxPath = request.getContextPath();
 %>
 
-    
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,8 +17,11 @@
         margin: 20px;
     }
     .container {
-        width: 80%;
+        width: 60%; /* 컨테이너 너비를 60%로 설정 */
         margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
     }
     .board-header {
         display: flex;
@@ -81,7 +83,7 @@
     </div>
 
     <!-- 공지사항 테이블 -->
-    <table class="table table-bordered">
+    <table class="board-table">
         <thead>
             <tr>
                 <th>번호</th>
