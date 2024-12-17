@@ -30,10 +30,6 @@ public class MemberRegister extends AbstractController {
 	        String hp1 = request.getParameter("hp1");
 	        String hp2 = request.getParameter("hp2");
 	        String hp3 = request.getParameter("hp3");
-	        String postcode = request.getParameter("postcode");
-	        String address = request.getParameter("address");
-	        String detailaddress = request.getParameter("detailaddress");
-	        String extraaddress = request.getParameter("extraaddress");
 	        String gender = request.getParameter("gender");
 	        String birthday = request.getParameter("birthday");
 	        
@@ -45,10 +41,6 @@ public class MemberRegister extends AbstractController {
 	        member.setName(name);
 	        member.setEmail(email);
 	        member.setMobile(mobile);
-	        member.setPostcode(postcode);
-	        member.setAddress(address);
-	        member.setDetailaddress(detailaddress);
-	        member.setExtraaddress(extraaddress);
 	        member.setGender(gender);
 	        member.setBirthday(birthday);
 
@@ -96,7 +88,7 @@ public class MemberRegister extends AbstractController {
 	        	
 	        } catch (SQLException e) {
 	        	e.printStackTrace();
-	        	String message = "회원가입 실패ㅜㅜ";
+	        	String message = "회원가입 실패";
 	        	String loc = "javascript:history.back()"; // 자바스크립트를 이용한 이전페이지로 이동하는 것.
 	        	
 	        	request.setAttribute("message", message);
