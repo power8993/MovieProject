@@ -15,4 +15,15 @@ public interface NoticeDAO {
 	
 	// 공지 글작성해주는 함수
 	int insertNotice(NoticeDTO notice) throws SQLException;
+	
+	// 공지 수정해주는 함수
+	int editNotice(NoticeDTO ndto) throws SQLException;
+
+
+
+
+
+	
+	
+	
 }

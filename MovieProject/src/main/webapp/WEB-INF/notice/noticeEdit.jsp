@@ -113,13 +113,13 @@
     </div>
 
     <!-- 공지사항 수정 폼 -->
-    <form action="<%= ctxPath %>/notice/noticeDetail.up" method="post">
+    <form action="<%= ctxPath %>/notice/noticeEdit.up" method="post">
         <!-- notice_id는 hidden 필드로 전송되어 수정될 공지사항을 식별 -->
-        <input type="hidden" name="seq_notice_no" value="seq_notice_no" />
+        <input type="hidden" name="seq_notice_no" value="${requestScope.seq_notice_no}" />
 
         <div class="form-group">
             <label for="notice_subject">공지사항 제목</label>
-            <input type="text" id="notice_subject" name="notice_subject" value="notice_subject" placeholder="공지사항 제목을 입력하세요" required />
+            <input type="text" id="notice_subject" name="notice_subject" placeholder="공지사항 제목을 입력하세요" required />
         </div>
 
         <div class="form-group">

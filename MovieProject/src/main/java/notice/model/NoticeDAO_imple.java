@@ -140,6 +140,27 @@ public class NoticeDAO_imple implements NoticeDAO {
 	    return result;
 	}
 
+	@Override
+	public int editNotice(NoticeDTO ndto) throws SQLException {
+		int result = 0;
+	    try {
+	        conn = ds.getConnection();
+
+	        // SEQ_NOTICE_NO는 자동으로 생성되므로 삽입하지 않음
+	        String sql = " update TBL_NOTICE set notice_subject = ? , notice_content = ? , notice_update_date = sysdate where SEQ_NOTICE_NO = ? ";
+
+	        pstmt = conn.prepareStatement(sql);
+	        
+	        pstmt.setString(1, ndto.getNotice_subject());
+	        pstmt.setString(2, ndto.getNotice_content());
+	        pstmt.setInt(3, ndto.getSeq_notice_no());
+
+	        result = pstmt.executeUpdate(); // 성공 시 1, 실패 시 0 반환
+	    } finally {
+	        close();
+	    }
+	    return result;
+	}
 	
 }
 

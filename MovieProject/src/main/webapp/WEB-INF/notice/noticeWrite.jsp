@@ -71,12 +71,12 @@
     <form action="<%= ctxPath %>/notice/noticeWrite.up" method="post">
         <div class="form-group">
             <label for="notice_subject">공지사항 제목</label>
-            <input type="text" id="notice_subject" name="notice_subject" required placeholder="공지사항 제목을 입력하세요" />
+            <input type="text" id="notice_subject" name="notice_subject" placeholder="공지사항 제목을 입력하세요" />
         </div>
 
         <div class="form-group">
             <label for="notice_content">공지사항 내용</label>
-            <textarea id="notice_content" name="notice_content" required placeholder="공지사항 내용을 입력하세요"></textarea>
+            <textarea id="notice_content" name="notice_content" placeholder="공지사항 내용을 입력하세요"></textarea>
         </div>
 
         <div class="form-group" style="text-align: center;">
