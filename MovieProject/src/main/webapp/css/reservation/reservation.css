@@ -1,18 +1,15 @@
 @charset "UTF-8";
 
-h5 {
-	/* border: solid 1px gray; */
-	/* background-color: black; */
-	color: black;
-	text-align: center;
-	/* padding-top: 10% 0 !important; */
-	padding-top: 2%;
-	/* height: 200px; */
+div.container > div.row > div {
+	padding: 0;
+	border-left: solid 2px ivory;
+	border-right: solid 2px ivory;
 }
 
-div.row > div {
+div.container > div.row > div > h5 {
+	background-color: black;
+	color: gray;
+	font-weight: bold;
+	border: solid 1px blue;
 	margin: 0;
-	padding: 0;
-	border-left: solid 1px gray;
-	border-right: solid 1px gray;
 }

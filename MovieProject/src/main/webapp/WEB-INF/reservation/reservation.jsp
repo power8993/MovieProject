@@ -14,46 +14,28 @@
 
 <div class="container">
 	
-	<div style="display: flex;">
-		<div style="border:solid 1px blue; width:45%; margin: 0 auto;">
-			<h5 class="title">영화</h5>
+	<div class="row text-center">
+		
+		<div class="col-md-5">
+			<h5>영화</h5>
+			<ul>
+				<li>하얼빈</li>
+				<li>무파사</li>
+				<li>소방관</li>
+				<li>대가족</li>
+				<li>인터스텔라</li>
+				<li>위키드</li>
+			</ul>
 		</div>
-		<div style="border:solid 1px orange; width:10%; margin: 0 auto;">
-			<h5 class="title">영화</h5>
+		<div class="col-md-2">
+			<h5>날짜</h5>
 		</div>
-		<div style="border:solid 1px green; width:45%; margin: 0 auto;">
-			<h5 class="title">영화</h5>
+		<div class="col-md-5">
+			<h5>시간</h5>
 		</div>
-	
+		
 	</div>
 
-	<%--<div class="row">
-		  <div class="col-md-4">
-		      <h5 class="title">영화</h5>
-		      <div>
-		      	
-		      </div>
-		  </div>
-		  <div class="col-md-4">
-		      <h5 class="title">영화</h5>
-		      <div>
-		      	
-		      
-		     </div>
-		  </div>
-		  <div class="col-md-4">
-		      <h5 class="title">영화</h5>
-		      <div>
-		      	
-		      
-		      </div>
-		  </div>
-
-		  
-	</div>
- --%>
- 
- 
 </div>
 
 <jsp:include page="../footer1.jsp" />
