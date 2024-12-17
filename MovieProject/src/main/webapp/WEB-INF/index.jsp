@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+ 
 
 <%
    String ctxPath = request.getContextPath();
@@ -9,7 +9,6 @@
 %>
 
 <%-- 직접 만든 CSS --%>
-
 
 <jsp:include page="header1.jsp" />
 
@@ -188,7 +187,7 @@
             <%-- 공지사항 시작 --%>
             <div id="notis">
                <div id="left">
-                  <h3>공지사항</h4>
+                  <h3>공지사항</h3>
                </div>
                <div id="right"></div>
                
@@ -196,9 +195,6 @@
             <%-- 공지사항 끝 --%>
             
          </div><%-- end of content --%>
-		</div>   
-     </div>
-        
         
 
 <jsp:include page="footer1.jsp" /> 
