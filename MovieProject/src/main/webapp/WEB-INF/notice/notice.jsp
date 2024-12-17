@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" 
+    pageEncoding="UTF-8"%>	
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
     String ctxPath = request.getContextPath();
 %>
@@ -14,36 +14,53 @@
 <style>
     body {
         font-family: Arial, sans-serif;
-        margin: 20px;
+        background-color: #fffcf2; /* 부드러운 아이보리 배경색 */
+        margin: 0;
+        padding: 0;
     }
     .container {
-        width: 60%; /* 컨테이너 너비를 60%로 설정 */
-        margin: 0 auto;
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 8px;
+        width: 70%; /* 컨테이너 너비를 70%로 설정 */
+        margin: 50px auto;
+        background-color: #fff; /* 테이블 및 내용 배경 흰색 */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     .board-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
+        color: #403d39; /* 딥한 브라운 색 */
     }
     .board-header h3 {
         margin: 0;
-        font-size: 24px;
+        font-size: 28px;
+    }
+    .board-header a {
+        font-size: 18px;
+        color: #eb5e28; /* 오렌지색 버튼 링크 */
+        text-decoration: none;
+    }
+    .board-header a:hover {
+        text-decoration: underline;
     }
     .board-table {
         width: 100%;
         border-collapse: collapse;
+        margin-bottom: 30px;
     }
     .board-table th, .board-table td {
-        padding: 10px;
+        padding: 12px;
         text-align: center;
         border: 1px solid #ddd;
     }
     .board-table th {
-        background-color: #f4f4f4;
+        background-color: #ccc5b9; /* 밝은 베이지 색 */
+        color: #252422; /* 어두운 회색 텍스트 */
+    }
+    .board-table td {
+        background-color: #f9f9f9; /* 연한 회색 배경 */
     }
     .board-table td a {
         text-decoration: none;
@@ -51,11 +68,13 @@
     }
     .board-table td a:hover {
         text-decoration: underline;
+        color: #0056b3;
     }
     .pagination {
         list-style-type: none;
         padding: 0;
         text-align: center;
+        margin-top: 20px;
     }
     .pagination li {
         display: inline;
@@ -63,23 +82,45 @@
     }
     .pagination a {
         text-decoration: none;
-        padding: 8px 12px;
-        background-color: #007bff;
+        padding: 10px 15px;
+        background-color: #eb5e28; /* 오렌지색 배경 */
         color: white;
         border-radius: 5px;
     }
     .pagination a:hover {
-        background-color: #0056b3;
+        background-color: #d75f1e; /* 어두운 오렌지색 */
+    }
+    .btn-create {
+        padding: 12px 25px;
+        background-color: #28a745; /* 초록색 버튼 */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .btn-create:hover {
+        background-color: #218838; /* 어두운 초록색 */
     }
 </style>
 </head>
 <body>
 
 <jsp:include page="/WEB-INF/header1.jsp" />
+
 <div class="container">
     <!-- 공지사항 헤더 -->
     <div class="board-header">
         <h3>공지사항</h3>        
+    </div>
+
+    <!-- 공지 작성 버튼 -->
+    <div style="text-align: center; margin-bottom: 20px;">
+        <a href="<%= ctxPath %>/notice/noticeWrite.up">
+            <button class="btn-create">
+                공지작성
+            </button>
+        </a>
     </div>
 
     <!-- 공지사항 테이블 -->
@@ -93,17 +134,15 @@
             </tr>
         </thead>
         <tbody>
-            <c:if test="${not empty requestScope.noticeList}">
-                <c:forEach var="notice" items="${requestScope.noticeList}">
-                    <tr>
-                        <td>${notice.noticeId}</td>
-                        <td><a href="<%= ctxPath %>/notice/detail/${notice.noticeId}">${notice.title}</a></td>
-                        <td>${notice.Date}</td>
-                        <td>${notice.status}</td>
-                    </tr>
-                </c:forEach>
-            </c:if>
-            <c:if test="${empty requestScope.noticeList}">
+            <c:forEach var="notice" items="${requestScope.NoticeList}">
+                <tr>
+                    <td>${notice.seq_notice_no}</td> <!-- 공지사항 번호 -->
+                    <td><a href="<%= ctxPath %>/notice/noticeDetail.up?seq=${notice.seq_notice_no}">${notice.notice_subject}</a></td>
+                    <td>${notice.notice_wtite_date}</td>
+                    <td>${notice.views}</td> <!-- 조회수 -->
+                </tr>
+            </c:forEach>
+            <c:if test="${empty requestScope.NoticeList}">
                 <tr>
                     <td colspan="4" style="text-align: center;">공지사항이 없습니다.</td>
                 </tr>
@@ -111,8 +150,8 @@
         </tbody>
     </table>
 
-    <!-- 페이지네이션 (가상의 예시) -->
-    <ul class="pagination" style="justify-content: center; margin-top: 20px;">
+    <!-- 페이지네이션 -->
+    <ul class="pagination" style="justify-content: center;">
         <li><a href="#">◀</a></li>
         <li><a href="#">1</a></li>
         <li><a href="#">2</a></li>
@@ -120,6 +159,8 @@
         <li><a href="#">▶</a></li>
     </ul>
 </div>
+
 <jsp:include page="/WEB-INF/footer1.jsp" />
+
 </body>
 </html>
