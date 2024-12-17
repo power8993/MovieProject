@@ -17,13 +17,45 @@ div.my_container > div.my_main{
 	height: 700px; 
 	margin-top: 35px;
 }
-
+/*////////////////////////////////////////////////////////////////////////////////////////////////*/
 /* 마이페이지 나의 프로필장 */
 div.my_container > div.myprofile{
 	/* border: solid 1px black;   */
-    height: 250px;
+	height: 250px;
+	padding:35px;
     background-color: #ccc5b9;
 }
+
+div.profile-container {
+    display: flex;
+    align-items: center; 
+    gap: 35px; 
+}
+
+div.profile-container > i.fa-circle-user {
+    font-size: 150px; 
+    padding: 20px;
+}
+
+div.profile-info h2 {
+    margin: 0 0 10px 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #252422;
+    border-bottom: solid 2px black; 
+}
+
+div.profile-info p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+div.profile-info strong {
+    font-weight: bold;
+    color: #000;
+}
+
 /*////////////////////////////////////////////////////////////////////////////////////////////////*/
 /* 마이페이지 사이드바 */
 div.my_container > div.my_main > div.my_hside{
@@ -98,7 +130,7 @@ div.my_container > div.my_main > div.my_hside ul li ul li > a {
 /*////////////////////////////////////////////////////////////////////////////////////////////////*/
 /* 메인 콘텐츠 영역 */
 div.mypage_main_content {
-  	/* border: solid 1px black;  */
+  	 border: solid 1px black; 
 	float: right;
 	width: 75%; 
     height: 100%; 
