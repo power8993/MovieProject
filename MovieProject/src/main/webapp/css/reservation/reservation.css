@@ -1,11 +1,13 @@
 @charset "UTF-8";
 
 h5 {
-	background-color: black;
-	color: white;
+	/* border: solid 1px gray; */
+	/* background-color: black; */
+	color: black;
 	text-align: center;
-	padding: 10% 0;
-	height: 500px;
+	/* padding-top: 10% 0 !important; */
+	padding-top: 2%;
+	/* height: 200px; */
 }
 
 div.row > div {
