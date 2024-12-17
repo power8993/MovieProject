@@ -19,7 +19,9 @@ div.myheader {
 
 div.mybody {
 	border: solid 1px blue;
-	height: 700px; 
+	/* min-height: 100%; */
+	display: flex;
+  	flex-wrap: wrap;
 	
 	margin-top: 50px;
 }
@@ -28,7 +30,7 @@ section#mysidebar {
 	border: solid 1px purple;
 	width: 155px;
 	height: 390px;
-	float: left;
+	/* float: left; */
 	
 	margin-right: 15px;
 }
@@ -36,7 +38,7 @@ section#mysidebar {
 section#mycontent {
 	border: solid 1px pink;
 	width: 82%;
-	float: right;
+	/* float: right; */
 }
 
 section#mysidebar ul,
