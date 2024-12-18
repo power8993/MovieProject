@@ -108,7 +108,7 @@
 
 <jsp:include page="/WEB-INF/header1.jsp" />
 
-<div class="container">
+<div class="container" style="background-color:#fffcf2;">
     <!-- 공지사항 헤더 -->
     <div class="board-header">
         <h3>공지사항</h3>        

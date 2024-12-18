@@ -179,7 +179,7 @@
         <a href="<%= ctxPath %>/notice/notice.up" class="back-btn">목록으로 돌아가기</a>
 
         <!-- 수정 버튼 (수정 페이지로 이동) -->
-        <a href="<%= ctxPath %>/notice/noticeEdit.up?seq=${requestScope.notice.seq_notice_no}" class="edit-btn">수정</a>
+        <a href="<%= ctxPath %>/notice/noticeEdit.up?seq=${notice.seq_notice_no}" class="edit-btn">수정</a>
 
         <!-- 삭제 버튼 (삭제 확인 후 삭제 처리) -->
         <form action="<%= ctxPath %>/notice/notice.up" method="POST" style="display: inline;">
