@@ -62,11 +62,14 @@
 					<ul>
 						<li>
 							<div>
-								<span id="first-year" class="year"><%= year_current %></span>
-								<span id="last-year" class="month"><%= month_current %></span>
+								<span class="year"><%= year_current %></span>
+								<span class="month"><%= month_current %></span>
 							</div>
 						</li>
-						<li><%= dayname[currentDate.get(Calendar.DAY_OF_WEEK)-1] %> <%= currentDate.get(Calendar.DATE) %> </li>
+						<li class="day">
+							<span class="dayweek"><%= dayname[currentDate.get(Calendar.DAY_OF_WEEK)-1]%>&nbsp;&nbsp;</span>
+							<span class="date"><%= currentDate.get(Calendar.DATE) %></span>
+						</li>
 						<% 
 							for(int i=0; i<20; i++) {
 								currentDate.add(Calendar.DATE, 1); %>
@@ -78,8 +81,8 @@
 										
 										<li>
 											<div>
-												<span id="first-year" class="year"><%= year_current %></span>
-												<span id="last-year" class="month"><%= month_current %></span>
+												<span class="year"><%= year_current %></span>
+												<span class="month"><%= month_current %></span>
 											</div>
 										</li>
 										
@@ -87,9 +90,12 @@
 									}
 								%>
 								
-								<li><%= dayname[currentDate.get(Calendar.DAY_OF_WEEK)-1] %> <%= currentDate.get(Calendar.DATE) %> </li>
+								<li class="day">
+									<span class="dayweek"><%= dayname[currentDate.get(Calendar.DAY_OF_WEEK)-1] %>&nbsp;&nbsp;</span>
+									<span class="date"><%= currentDate.get(Calendar.DATE) %></span>
+								</li>
 								<%
-							}
+							} // end of for---------------------------------------
 						
 						%>
 					</ul>

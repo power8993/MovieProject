@@ -40,7 +40,6 @@
 }
 
 .movie-list {
-	margin-top: 15px;
 	font-size: 13pt;
 }
 
@@ -51,9 +50,33 @@
 
 li {
 	list-style-type: none;
+	margin-top: 12px;
 }
 
-.year,
-.month {
+.year {
+	margin-top: 20px;
 	display: block;
+	font-size: 12pt;
+	line-height: 10pt;
+	font-weight: bold;
 }
+.month {
+	margin-bottom: 20px;
+	display: block;
+	font-size: 30pt;
+	line-height: 28pt;
+	font-weight: bold;
+}
+
+div.date {
+	text-align: center;
+}
+
+span.date {
+	font-weight: bold;
+}
+
+.date ul {
+	padding: 0;
+}
+
