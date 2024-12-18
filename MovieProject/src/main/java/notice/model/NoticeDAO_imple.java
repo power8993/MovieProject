@@ -63,9 +63,9 @@ public class NoticeDAO_imple implements NoticeDAO {
 	    try {
 	        conn = ds.getConnection();
 	        
-	        String sql = "SELECT seq_notice_no, notice_subject, notice_write_date, views "
-	                   + "FROM TBL_NOTICE "
-	                   + "ORDER BY seq_notice_no";
+	        String sql = " SELECT seq_notice_no, notice_subject, notice_write_date, views "
+	                   + " FROM TBL_NOTICE "
+	                   + " ORDER BY seq_notice_no ";
 	        
 	        pstmt = conn.prepareStatement(sql);
 	        
@@ -95,9 +95,9 @@ public class NoticeDAO_imple implements NoticeDAO {
 	        conn = ds.getConnection();
 	        
 	        // 공지사항 번호(seq_notice_no)를 기준으로 상세 정보를 조회
-	        String sql = "SELECT seq_notice_no, notice_subject, notice_content, notice_write_date, views "
-	                   + "FROM TBL_NOTICE "
-	                   + "WHERE seq_notice_no = ?";
+	        String sql = " SELECT seq_notice_no, notice_subject, notice_content, notice_write_date, views "
+	                   + " FROM TBL_NOTICE "
+	                   + " WHERE seq_notice_no = ? ";
 	        
 	        pstmt = conn.prepareStatement(sql);
 	        pstmt.setInt(1, seq_notice_no); // seq_notice_no 파라미터 설정
@@ -125,8 +125,8 @@ public class NoticeDAO_imple implements NoticeDAO {
 	        conn = ds.getConnection();
 
 	        // SEQ_NOTICE_NO는 자동으로 생성되므로 삽입하지 않음
-	        String sql = "INSERT INTO TBL_NOTICE (SEQ_NOTICE_NO, notice_subject, notice_content, notice_write_date, views) "
-	                   + "VALUES (SEQ_NOTICE_NO.nextval, ?, ?, SYSDATE, 0)";
+	        String sql = " INSERT INTO TBL_NOTICE (SEQ_NOTICE_NO, notice_subject, notice_content, notice_write_date, views) "
+	                   + " VALUES (SEQ_NOTICE_NO.nextval, ?, ?, SYSDATE, 0) ";
 
 	        pstmt = conn.prepareStatement(sql);
 	        
@@ -161,6 +161,31 @@ public class NoticeDAO_imple implements NoticeDAO {
 	    }
 	    return result;
 	}
+
+	// 공지 삭제해주는 함수
+	@Override
+	public int deleteNotice(int seq_notice_no) throws SQLException {
+
+		int result = 0;
+
+		try {
+			String sql = " delete from tbl_notice where seq_notice_no = ? ";
+
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, seq_notice_no);
+			result = pstmt.executeUpdate();
+
+		} finally {
+			close();
+		}
+		return result;
+	}
+    
+	
+
+	
 	
 }
 

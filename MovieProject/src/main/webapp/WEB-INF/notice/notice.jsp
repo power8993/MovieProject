@@ -5,6 +5,7 @@
     String ctxPath = request.getContextPath();
 %>
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,10 +22,7 @@
     .container {
         width: 70%; /* 컨테이너 너비를 70%로 설정 */
         margin: 50px auto;
-        background-color: #fff; /* 테이블 및 내용 배경 흰색 */
         padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     .board-header {
         display: flex;
@@ -83,43 +81,38 @@
     .pagination a {
         text-decoration: none;
         padding: 10px 15px;
-        background-color: #eb5e28; /* 오렌지색 배경 */
+        background-color: #252422; 
         color: white;
         border-radius: 5px;
     }
     .pagination a:hover {
-        background-color: #d75f1e; /* 어두운 오렌지색 */
+        background-color: #eb5e28;
     }
     .btn-create {
-        padding: 12px 25px;
-        background-color: #28a745; /* 초록색 버튼 */
+        padding: 6px 17px;
+        background-color: #252422;
         color: white;
         border: none;
         border-radius: 5px;
-        font-size: 16px;
+        font-size: 17px;
         cursor: pointer;
     }
     .btn-create:hover {
-        background-color: #218838; /* 어두운 초록색 */
+        background-color: #eb5e28; 
     }
 </style>
 </head>
 <body>
-
+<script src="https://kit.fontawesome.com/0c69fdf2c0.js" crossorigin="anonymous"></script>
 <jsp:include page="/WEB-INF/header1.jsp" />
 
-<div class="container" style="background-color:#fffcf2;">
-    <!-- 공지사항 헤더 -->
-    <div class="board-header">
-        <h3>공지사항</h3>        
-    </div>
+<div class="container" style="background-color:#fffcf2; margin-top: 20px;">
 
     <!-- 공지 작성 버튼 -->
-    <div style="text-align: center; margin-bottom: 20px;">
+    <div style="display: flex; margin-bottom: 10px; justify-content: space-between;">
+    	<h3><i class="fa-solid fa-list" style="color: #252422;"> 공지사항</i></h3>
         <a href="<%= ctxPath %>/notice/noticeWrite.up">
-            <button class="btn-create">
-                공지작성
-            </button>
+            <button class="btn-create"><i class="fa-solid fa-pen"> 공지작성</i></button>
         </a>
     </div>
 

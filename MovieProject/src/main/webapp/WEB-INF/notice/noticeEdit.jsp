@@ -128,7 +128,7 @@
         </div>
 
         <div class="form-group">
-            <button type="submit" class="submit-btn">수정하기</button>
+            <button type="submit" class="submit-btn" onclick="return confirm('정말 수정하시겠습니까?');">수정하기</button>
         </div>
     </form>
 </div>

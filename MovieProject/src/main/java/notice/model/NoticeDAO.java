@@ -18,8 +18,9 @@ public interface NoticeDAO {
 	
 	// 공지 수정해주는 함수
 	int editNotice(NoticeDTO ndto) throws SQLException;
-
-
+	
+	// 공지 삭제해주는 함수
+	int deleteNotice(int seq_notice_no) throws SQLException;
 
 
 
