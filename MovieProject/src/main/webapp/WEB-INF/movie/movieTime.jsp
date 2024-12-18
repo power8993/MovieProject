@@ -87,7 +87,7 @@
    
 
     <!-- Bootstrap 4.6.2 JS -->
-    <script src="bootstrap-4.6.2-dist/js/bootstrap.bundle.min.js"></script>
+  
     <script>
         let startDay = 0;
         const daysToShow = 8;
@@ -106,7 +106,7 @@
                 let dateDiv = document.createElement('div');
                 dateDiv.className = 'date btn btn-outline-secondary';
                 dateDiv.onclick = function() { alert(date.toISOString().split('T')[0] + " 선택됨"); };
-                dateDiv.innerHTML = (date.getMonth() + 1) + '월 ' + date.getDate();
+                dateDiv.innerHTML = (date.getMonth() + 1) + '월 ' + (date.getDate());
                 dateContainer.appendChild(dateDiv);
             }
 

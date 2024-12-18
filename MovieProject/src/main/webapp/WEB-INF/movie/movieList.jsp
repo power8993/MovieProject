@@ -3,6 +3,14 @@
 <%
     String ctxPath = request.getContextPath();   
 %>    
+
+<% 
+    String[] movie_title = {"1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1"};
+    String[] ratings = {"1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1"};
+    String[] start_date = {"1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1"};
+    String[] images = {"1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1"};
+   
+%>
  
     
 <!DOCTYPE html>
@@ -48,17 +56,11 @@
     <!-- Movie Cards -->
     <div class="container mt-4">
      <div>    
-    <!-- 메뉴 항목들 -->    
-    <h1>무비 차트</h1> 
+   
     <ul style="display: flex; gap: 20px; padding: 0; margin-top: 20px; justify-content: flex-end; list-style-type: none;">    
         <li><a class="nav-link h5" href="#">상영중인영화</a></li>
         <li><a class="nav-link h5" href="#">상영예정작</a></li>
-    </ul>
-    
-   </div>
- <hr>
- 
- <select name="searchType">
+        <select name="searchType">
          <option value="">장르검색</option>
          <option value="name">액션</option>
          <option value="userid">코미디</option>
@@ -76,37 +78,47 @@
   	  <button type="button" class="round gray">
   	  	<span>검색</span>
   	  </button>
+        
+    </ul>
+    
+   </div>
+ <hr>
  
-       <div class="row">
-            <% 
-                String[] movieNames = {"a", "a", "a", "a", "a", "a", "a", "a","a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a"};
-                String[] ratings = {"24.2%", "18.0%", "18.0%", "18.0%", "18.0%", "18.0%", "18.0%", "18.0%", "18.0%","24.2%", "18.0%", "18.0%", "18.0%", "18.0%", "18.0%", "18.0%", "18.0%", "18.0%", "18.0%", "18.0%", "18.0%", "18.0%", "18.0%"};
-                String[] thumbs = {"2024.12.24", "2024.12.18", "2024.12.18", "2024.12.18", "2024.12.18", "2024.12.18", "2024.12.18", "2024.12.18", "2024.12.18","2024.12.24", "2024.12.18", "2024.12.18", "2024.12.18", "2024.12.18", "2024.12.18", "2024.12.18", "2024.12.18", "2024.12.18", "2024.12.18", "2024.12.18", "2024.12.18", "2024.12.18", "2024.12.18"};
-                String[] images = {"poster1.jpg", "poster2.jpg", "poster2.jpg", "poster2.jpg", "poster2.jpg", "poster2.jpg", "poster2.jpg", "poster2.jpg", "poster2.jpg","poster1.jpg", "poster2.jpg", "poster2.jpg", "poster2.jpg", "poster2.jpg", "poster2.jpg", "poster2.jpg", "poster2.jpg", "poster2.jpg", "poster2.jpg", "poster2.jpg", "poster2.jpg", "poster2.jpg", "poster2.jpg"};
-                
-                for (int i = 0; i < movieNames.length; i++) { 
-            %>
+
+<!-- 영화 목록  -->
+  
+        <div class="row">
+          <% for(int i = 0; i < movie_title.length; i++) { %>
             <div class="col-md-4 mb-4 <%= i >= 15 ? "movie-hidden hidden" : "" %>">
                 <div class="movie-card position-relative">
                     <div class="rank">No.<%= i + 1 %></div>
-                    <img src="<%= images[i] %>" alt="<%= movieNames[i] %>" class="img-fluid">
-                    <div class="movie-title"><%= movieNames[i] %></div>
-                    <div class="rating">예매율 <%= ratings[i] %> | <span>&#128077; <%= thumbs[i] %></span></div>
+                    <img src="<%= images[i] %>" alt="<%= movie_title[i] %>" class="img-fluid">
+                    <div class="movie-title"><%= movie_title[i] %></div>
+                    <div class="rating">예매율 <%= ratings[i] %> </div>
+                    <div class="start_date"><span><%= start_date[i] %></span>개봉</div>
                     <button class="reservation-btn mt-2">예매하기</button>
                 </div>
             </div>
             <% } %>
-        </div>
+            
+            
+            
+            
+            
+        </div> 
         
-        <!-- Show More Button -->
-        <div class="text-center mb-4">
-            <button id="showMoreBtn" class="btn btn-outline-secondary" onclick="showMore()">
-                더 보기 <span class="ml-2">&#43;</span>
-            </button>
-        </div>
-    </div>
-
-  
+       
+        
+                
+        <!-- 더보기버튼 (영화가 15개 이상일시에)-->
+        <%if(movie_title.length > 15){%>
+	        <div class="text-center mb-4">
+	            <button id="showMoreBtn" class="btn btn-outline-secondary" onclick="showMore()">
+	                더 보기 <span class="ml-2">&#43;</span>
+	            </button>
+	        </div>
+		 <%}%>
+	  </div>
 
 <jsp:include page="/WEB-INF/footer1.jsp" />
 </body>
