@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+
+
+
+div.my_h2 {
+	text-align: center;
+}
+
+div.my_h2 h2 {
+	font-weight: bold;
+	font-size: 28px;
+}
+
+div.my_h2 p {
+	font-size: 18px;
+}

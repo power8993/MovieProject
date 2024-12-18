@@ -19,7 +19,7 @@ div.my_container > div.my_main{
 }
 /*////////////////////////////////////////////////////////////////////////////////////////////////*/
 /* 마이페이지 나의 프로필장 */
-div.my_container > div.myprofile{
+body > div.my_container > div.myprofile{
 	/* border: solid 1px black;   */
 	height: 250px;
 	padding:35px;
@@ -58,7 +58,7 @@ div.profile-info strong {
 
 /*////////////////////////////////////////////////////////////////////////////////////////////////*/
 /* 마이페이지 사이드바 */
-div.my_container > div.my_main > div.my_hside{
+body > div.my_container > div.my_main > div.my_hside{
 	/* border: solid 1px black; */
 	float: left;
 	width: 25%; 
@@ -129,20 +129,20 @@ div.my_container > div.my_main > div.my_hside ul li ul li > a {
 }
 /*////////////////////////////////////////////////////////////////////////////////////////////////*/
 /* 메인 콘텐츠 영역 */
-div.mypage_main_content {
-  	 /* border: solid 1px black;  */
+body > div.my_container > div.my_main > div.mypage_main_content {
+  	border: solid 1px black; 
 	float: right;
 	width: 75%; 
     height: 100%; 
     padding: 10px; 
 }
 /* 메인 콘텐츠 박스 */
-div.mypage_box_css{
+body > div.my_container > div.my_main > div.mypage_main_content > div.mypage_box_css{
 	margin-bottom: 30px;
 }
 
 /* 섹션 제목 */
-div.mypage_box_css > h3 {
+body > div.my_container > div.my_main > div.mypage_main_content > div.mypage_box_css > h3 {
     border-bottom: 2px solid #ddd;
     padding-bottom: 5px;
     margin-bottom: 20px;
@@ -151,7 +151,7 @@ div.mypage_box_css > h3 {
 }
 
 /* 제목 링크 스타일 */
-div.mypage_box_css > h3 > a.my_section_title {
+body > div.my_container > div.my_main > div.mypage_main_content > div.mypage_box_css > h3 > a.my_section_title {
     display: inline-block; 
     font-size: 18px;
     font-weight: bold;
@@ -161,13 +161,13 @@ div.mypage_box_css > h3 > a.my_section_title {
     transition: border-color 0.3s ease, color 0.3s ease; 
 }
 
-div.mypage_box_css > h3 > a.my_section_title:hover {
+body > div.my_container > div.my_main > div.mypage_main_content > div.mypage_box_css > h3 > a.my_section_title:hover {
     color: #ccc5b9;
     text-decoration: none;
 }
 
 /* 박스 스타일 */
-div.mypage_box_css > div.my_box_list {
+body > div.my_container > div.my_main > div.mypage_main_content > div.mypage_box_css > div.my_box_list {
     background-color: white;
     padding: 15px;
     margin-bottom: 15px;
@@ -177,26 +177,26 @@ div.mypage_box_css > div.my_box_list {
 
 
 /* 리스트 스타일 */
-div.mypage_box_css > div.my_box_list ul {
+body > div.my_container > div.my_main > div.mypage_main_content > div.mypage_box_css > div.my_box_list ul {
     list-style: none;
     padding: 0;
 }
 
-div.mypage_box_css > div.my_box_list li {
+body > div.my_container > div.my_main > div.mypage_main_content > div.mypage_box_css > div.my_box_list li {
     margin: 5px 0;
     font-size: 14px;
     color: #333;
 }
 
 /* 예매 아이템 스타일 */
-div.reservation-item {
+body > div.my_container > div.my_main > div.mypage_main_content > div.reservation-item {
     display: flex;
     gap: 10px;
     border-bottom: 1px solid #eee; 
     padding: 10px 0;
 }
 
-div.poster {
+body > div.my_container > div.my_main > div.mypage_main_content >div.poster {
     width: 60px;
     height: 80px;
     background-color: #ccc; 
@@ -208,7 +208,7 @@ div.poster {
 }
 
 
-div.details p {
+body > div.my_container > div.my_main > div.mypage_main_content > div.details p {
     margin: 5px 0;
     color: #555;
     font-size: 14px;
