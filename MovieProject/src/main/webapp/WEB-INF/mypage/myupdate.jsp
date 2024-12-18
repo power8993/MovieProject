@@ -77,12 +77,12 @@ String ctxPath = request.getContextPath();
 			<form name="my_update_Frm">
 				<h3>회원정보를 수정하시려면 비밀번호를 입력하셔야 합니다.</h3>
 				<p>회원님의 개인정보 보호를 위한 절차이오니, 로그인시 사용하는 비밀번호를 입력해주세요.</p>
-				<ul style="list-style-type: none;">
+				<ul>
 					<li><input type="text" name="pwd" size="25" autocomplete="off" /></li>
 				</ul>
 
 				<div class="mybutton">
-					<button type="button" class="btn">취소</button>
+					<button type="button" onclick="javascript:history.back();"  class="btn" >취소</button>
 					<button type="button" class="btn">찾기</button>
 				</div>
 
