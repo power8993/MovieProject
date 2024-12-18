@@ -1,15 +1,59 @@
 @charset "UTF-8";
 
-div.container > div.row > div {
-	padding: 0;
-	border-left: solid 2px ivory;
-	border-right: solid 2px ivory;
+.steps {
+	height: 600px;
 }
 
-div.container > div.row > div > h5 {
+.section {
+	position: relative;
+	float: left;
+	max-height: 600px;
+	min-height: 600px;
+	border-left: solid 1px gray;
+	border-right: solid 1px gray;
+}
+
+.col-body {
+	max-height: 520px;
+	min-height: 520px;
+	overflow: auto;
+}
+
+.movie {
+	width: 400px;
+}
+
+.date {
+	width: 178px;
+}
+
+.time {
+	width: 400px;
+}
+
+.title {
 	background-color: black;
-	color: gray;
-	font-weight: bold;
-	border: solid 1px blue;
-	margin: 0;
+	color: white;
+	text-align: center;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.movie-list {
+	margin-top: 15px;
+	font-size: 13pt;
+}
+
+.movie-grade {
+	display: inline-block;
+	width: 100px;
+}
+
+li {
+	list-style-type: none;
+}
+
+.year,
+.month {
+	display: block;
 }
