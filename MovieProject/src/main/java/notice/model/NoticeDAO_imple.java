@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -57,18 +58,27 @@ public class NoticeDAO_imple implements NoticeDAO {
     
 	// 공지사항글 전체 조회 함수
 	@Override
-	public List<NoticeDTO> selectNotice() throws SQLException {
+	public List<NoticeDTO> selectNotice(Map<String, String> paraMap) throws SQLException {
 	    List<NoticeDTO> NoticeList = new ArrayList<>();
 	    
 	    try {
 	        conn = ds.getConnection();
 	        
-	        String sql = " SELECT seq_notice_no, notice_subject, notice_write_date, views "
-	                   + " FROM TBL_NOTICE "
-	                   + " ORDER BY seq_notice_no ";
+	        String sql = " SELECT RNO, seq_notice_no, notice_subject, notice_write_date, views "
+	        		+ " FROM  (SELECT rownum AS RNO, seq_notice_no, notice_subject, notice_write_date, views "
+	        		+ "             FROM (select seq_notice_no, notice_subject, notice_write_date, views "
+	        		+ "			from TBL_NOTICE "
+	        		+ "			order by seq_notice_no desc) V ) T "
+	        		+ "WHERE T.RNO BETWEEN ? AND ? ";
 	        
 	        pstmt = conn.prepareStatement(sql);
 	        
+	        int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
+	        
+			pstmt.setInt(1, (currentShowPageNo * sizePerPage) - (sizePerPage -1));
+			pstmt.setInt(2, (currentShowPageNo * sizePerPage));
+			
 	        rs = pstmt.executeQuery();
 	        
 	        while(rs.next()) {
@@ -181,6 +191,58 @@ public class NoticeDAO_imple implements NoticeDAO {
 			close();
 		}
 		return result;
+	}
+
+	@Override
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+		
+		int totalPage = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select ceil(count(*)/?) "
+					   + " from tbl_notice ";
+					   										
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage")));
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalPage = rs.getInt(1); // 몇번째 컬럼인지 알려줘야한다 지금은 ceil(count(*)/?)여기이다.
+			
+		} finally {
+			close();
+		}		
+		return totalPage;
+	}
+
+	@Override
+	public int getTotalNoticeCount(Map<String, String> paraMap) throws SQLException {
+		int totalNoticeCount = 0;
+
+		try {
+			conn = ds.getConnection();
+
+			String sql = " select count(*) " 
+			           + " from tbl_notice ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+
+			rs.next();
+
+			totalNoticeCount = rs.getInt(1); // 몇번째 컬럼인지 알려줘야한다 지금은 ceil(count(*)/?)여기이다.
+
+		} finally {
+			close();
+		}
+
+		return totalNoticeCount;
 	}
     
 	

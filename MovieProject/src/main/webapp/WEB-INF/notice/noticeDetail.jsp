@@ -184,7 +184,7 @@
         <a href="<%= ctxPath %>/notice/notice.up" class="back-btn"><i class="fa-solid fa-house style=" > 목록으로 돌아가기</i></a>
 
         <!-- 수정 버튼 (수정 페이지로 이동) -->
-        <a href="<%= ctxPath %>/notice/noticeEdit.up?seq=${notice.seq_notice_no}" class="edit-btn"><i class="fa-solid fa-pen-to-square"> 수정</i></a>
+        <a href="<%= ctxPath %>/notice/noticeEdit.up?seq=${notice.seq_notice_no}&subject=${notice.notice_subject}&notice_content=${notice.notice_content}" class="edit-btn"><i class="fa-solid fa-pen-to-square"> 수정</i></a>
 
         <form action="<%= ctxPath %>/notice/noticeDelete.up" method="POST" style="display: inline; text-align: right;">
 	    	<!-- seq_notice_no 값을 실제 공지사항 번호로 전달 -->

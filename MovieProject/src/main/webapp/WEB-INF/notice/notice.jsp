@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
     pageEncoding="UTF-8"%>	
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
     String ctxPath = request.getContextPath();
 %>
@@ -127,9 +128,12 @@
             </tr>
         </thead>
         <tbody>
-            <c:forEach var="notice" items="${requestScope.NoticeList}">
+            <c:forEach var="notice" items="${requestScope.NoticeList}" varStatus="status">
                 <tr>
-                    <td>${notice.seq_notice_no}</td> <!-- 공지사항 번호 -->
+                    <fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
+                    <fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" /> 
+                    <%-- fmt:parseNumber 은 문자열을 숫자형식으로 형변환 시키는 것이다. --%>
+          			<td>${(requestScope.totalNoticeCount) - (currentShowPageNo - 1) * sizePerPage - (status.index)}</td>
                     <td><a href="<%= ctxPath %>/notice/noticeDetail.up?seq=${notice.seq_notice_no}">${notice.notice_subject}</a></td>
                     <td>${notice.notice_wtite_date}</td>
                     <td>${notice.views}</td> <!-- 조회수 -->
@@ -143,14 +147,11 @@
         </tbody>
     </table>
 
-    <!-- 페이지네이션 -->
-    <ul class="pagination" style="justify-content: center;">
-        <li><a href="#">◀</a></li>
-        <li><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">▶</a></li>
-    </ul>
+    <div id="pageBar">
+       <nav>
+          <ul class="pagination">${requestScope.pageBar}</ul>
+       </nav>
+   </div>
 </div>
 
 <jsp:include page="/WEB-INF/footer1.jsp" />

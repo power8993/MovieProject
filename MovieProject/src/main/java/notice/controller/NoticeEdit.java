@@ -20,6 +20,13 @@ public class NoticeEdit extends AbstractController {
 		    if("GET".equals(method)) {
 		    	String seq_notice_no = request.getParameter("seq");
 		    	request.setAttribute("seq_notice_no", seq_notice_no);
+		    	
+		    	String notice_subject = request.getParameter("subject");
+		    	request.setAttribute("notice_subject", notice_subject);
+		    	
+		    	String notice_content = request.getParameter("notice_content");
+		    	request.setAttribute("notice_content", notice_content);
+		    	
 	            super.setRedirect(false);
 		        super.setViewPage("/WEB-INF/notice/noticeEdit.jsp");
 		    }
