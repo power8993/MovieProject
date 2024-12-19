@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
 <%
     String ctxPath = request.getContextPath();   
 %>    
@@ -60,28 +60,25 @@
     <div class="container">
         <!-- Sample Movie Data -->
         <div class="movie-section">
-            <div class="movie-title">소방관 | 드라마 | 106분</div>
-            <div>
-                <button class="showtime available">22:30<span class="seat-info"> (잔여석 123석)</span></button>
-                <button class="showtime">23:50<span class="seat-info"> (마감)</span></button>
-            </div>
-        </div>
-       <hr>
-        <div class="movie-section">
-            <div class="movie-title">대가족 | 코미디 | 107분</div>
-            <div>
-                <button class="showtime available">22:00<span class="seat-info"> (잔여석 98석)</span></button>
-                <button class="showtime available">24:10<span class="seat-info"> (잔여석 55석)</span></button>
-            </div>
-        </div>
-       <hr>
-        <div class="movie-section">
-            <div class="movie-title">위키드 | 뮤지컬 | 160분</div>
-            <div>
-                <button class="showtime available">23:40<span class="seat-info"> (잔여석 75석)</span></button>
-            </div>
-        </div>
-         
+       
+           <c:forEach var="movie" items="${movies}" varStatus="status">
+                        <div class="col-md-4 mb-4 ${status.index >= 15 ? 'movie-hidden hidden' : ''}" >
+                            <div class="movie-card position-relative" >
+                                <div class="rank">No. ${status.index + 1}</div>
+                                <div class="poster"onclick="<%= ctxPath%>/movie/movieDetail.up">
+                                    <img src="${movie.poster_file}" alt="${movie.movie_title}">
+                                </div>
+                                                              
+                                <div class="movie-details">
+                                <div class="movie-title" onclick="<%= ctxPath%>/movie/movieDetail.up">${movie.movie_title}</div>                                     
+                                    <p>좋아요 수: ${movie.like_count}</p>                             
+                                    <p>개봉일: ${movie.start_date}</p>   
+                                    <button>예매하러가기</button>                                
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
+           </div>     
     </div>
 
    
@@ -127,6 +124,8 @@
                 renderDates();
             }
         }
+        
+        
 
         window.onload = renderDates;
     </script>
