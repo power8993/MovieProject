@@ -25,6 +25,7 @@ public class NoticeEdit extends AbstractController {
 		    	request.setAttribute("notice_subject", notice_subject);
 		    	
 		    	String notice_content = request.getParameter("notice_content");
+		    	notice_content = notice_content.replace("<br>", "\r\n");
 		    	request.setAttribute("notice_content", notice_content);
 		    	
 	            super.setRedirect(false);
@@ -34,6 +35,7 @@ public class NoticeEdit extends AbstractController {
 		    	String seq_notice_no = request.getParameter("seq_notice_no");
 		        String notice_subject = request.getParameter("notice_subject");
 		        String notice_content = request.getParameter("notice_content");
+		        notice_content=notice_content.replace("\r\n","<br>").replace("\n", "<br>");
 
 		        NoticeDTO ndto = new NoticeDTO();
 		        ndto.setSeq_notice_no(Integer.parseInt(seq_notice_no));

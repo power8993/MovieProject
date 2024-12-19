@@ -65,11 +65,11 @@ public class NoticeDAO_imple implements NoticeDAO {
 	        conn = ds.getConnection();
 	        
 	        String sql = " SELECT RNO, seq_notice_no, notice_subject, notice_write_date, views "
-	        		+ " FROM  (SELECT rownum AS RNO, seq_notice_no, notice_subject, notice_write_date, views "
-	        		+ "             FROM (select seq_notice_no, notice_subject, notice_write_date, views "
-	        		+ "			from TBL_NOTICE "
-	        		+ "			order by seq_notice_no desc) V ) T "
-	        		+ "WHERE T.RNO BETWEEN ? AND ? ";
+	        		   + " FROM  (SELECT rownum AS RNO, seq_notice_no, notice_subject, notice_write_date, views "
+	        		   + "             FROM (select seq_notice_no, notice_subject, notice_write_date, views "
+	        		   + "			from TBL_NOTICE "
+	        		   + "			order by seq_notice_no desc) V ) T "
+	        		   + "WHERE T.RNO BETWEEN ? AND ? ";
 	        
 	        pstmt = conn.prepareStatement(sql);
 	        
@@ -149,7 +149,8 @@ public class NoticeDAO_imple implements NoticeDAO {
 	    }
 	    return result;
 	}
-
+	
+	// 공지사항 수정하기
 	@Override
 	public int editNotice(NoticeDTO ndto) throws SQLException {
 		int result = 0;

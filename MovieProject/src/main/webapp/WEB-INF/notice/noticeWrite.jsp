@@ -76,7 +76,7 @@
 
         <div class="form-group">
             <label for="notice_content">공지사항 내용</label>
-            <textarea id="notice_content" name="notice_content" placeholder="공지사항 내용을 입력하세요" ></textarea>
+            <textarea id="notice_content" name="notice_content" placeholder="공지사항 내용을 입력하세요"></textarea>
         </div>
 
         <div class="form-group" style="text-align: center;">
