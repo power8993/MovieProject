@@ -11,6 +11,8 @@
 <%@ page import="java.util.*"%>
 <%@ page import="java.text.SimpleDateFormat"%>
 
+<jsp:include page="../header1.jsp" />
+
 <%
 	Calendar currentDate = Calendar.getInstance();
 	
@@ -22,9 +24,30 @@
 	
 %>
 
+<script type="text/javascript">
+	
+$(document).ready(function(){
+	
+	$("tr.movie-list").click(e => {
+		$("tr.movie-list").css({'background-color':'','color':''});
+        $(e.target).parent().css({'background-color':'black','color':'white'});
+        $("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
+	});
+	
+	$("li#day").find("span").click(e => {
+		$("li#day").css({'background-color':'','color':''});
+        $(e.target).parent().css({'background-color':'black','color':'white'});
+	});
+	
+	
+	
+}); // end of $(document).ready(function() {});;--------------------------------------------
+
+</script>
+
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/reservation/reservation.css" />
 
-<jsp:include page="../header1.jsp" />
+
 
 <div class="container">
 	
@@ -40,11 +63,16 @@
 
 				<div class="col-body">
 					<c:if test="${not empty requestScope.movieList}">
-						<ul>
-		      				<c:forEach var="movievo" items="${requestScope.movieList}" varStatus="status">
-								<li class="movie-list"><label class="movie-grade">${movievo.movie_grade}</label>${movievo.movie_title}</li>
-		      				</c:forEach>
-		     			</ul>
+						<table id="movie-list">
+							<tbody>
+			      				<c:forEach var="movievo" items="${requestScope.movieList}" varStatus="status">
+									<tr class="movie-list">
+										<td class="movie-grade">${movievo.movie_grade}</td>
+										<td class="movie-title">${movievo.movie_title}</td>
+									</tr>
+			      				</c:forEach>
+		      				</tbody>
+		     			</table>
 					</c:if>
 		    		<c:if test="${empty requestScope.movieList }">
 		      			<p>상영중인 영화가없습니다.</p>
@@ -66,7 +94,7 @@
 								<span class="month"><%= month_current %></span>
 							</div>
 						</li>
-						<li class="day">
+						<li class="day" id="day">
 							<span class="dayweek"><%= dayname[currentDate.get(Calendar.DAY_OF_WEEK)-1]%>&nbsp;&nbsp;</span>
 							<span class="date"><%= currentDate.get(Calendar.DATE) %></span>
 						</li>
@@ -90,7 +118,7 @@
 									}
 								%>
 								
-								<li class="day">
+								<li class="day" id="day">
 									<span class="dayweek"><%= dayname[currentDate.get(Calendar.DAY_OF_WEEK)-1] %>&nbsp;&nbsp;</span>
 									<span class="date"><%= currentDate.get(Calendar.DATE) %></span>
 								</li>
@@ -117,7 +145,13 @@
 		
 		<%-- -------------------------------------------------------------------- --%>
 		
-		
+		<div id="ticket-info-container" class="ticket-info-container">
+			<div id="ticket-info" class="container ticket-info" style="align-content: center;">
+				<div id="movie-choice" class="movie-choice">영화선택</div>
+				<div>극장선택</div>
+				<div>> 좌석선택 > 결제</div>
+			</div>
+		</div>
 		
 	</div>
 

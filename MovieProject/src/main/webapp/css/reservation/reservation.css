@@ -1,10 +1,10 @@
 @charset "UTF-8";
 
-.steps {
+div.steps {
 	height: 600px;
 }
 
-.section {
+div.section {
 	position: relative;
 	float: left;
 	max-height: 600px;
@@ -13,25 +13,25 @@
 	border-right: solid 1px gray;
 }
 
-.col-body {
+div.col-body {
 	max-height: 520px;
 	min-height: 520px;
 	overflow: auto;
 }
 
-.movie {
+div.movie {
 	width: 400px;
 }
 
-.date {
+div.date {
 	width: 178px;
 }
 
-.time {
+div.time {
 	width: 400px;
 }
 
-.title {
+h3.title {
 	background-color: black;
 	color: white;
 	text-align: center;
@@ -39,18 +39,33 @@
 	padding-bottom: 10px;
 }
 
-.movie-list {
-	font-size: 13pt;
+table#movie-list {
+	margin-left: 20px;
 }
 
-.movie-grade {
+tr.movie-list {
+	font-size: 13pt;
+	line-height: 40px;
+}
+
+td.movie-grade {
 	display: inline-block;
 	width: 100px;
 }
 
+td.movie-title {
+	min-width: 250px;
+}
+
 li {
+	width: 80%;
 	list-style-type: none;
-	margin-top: 12px;
+}
+
+li.day > span {
+	display: inline-block;
+	height: 40px;
+	width: 40px;
 }
 
 .year {
@@ -78,5 +93,27 @@ span.date {
 
 .date ul {
 	padding: 0;
+}
+
+.ticket-info-container {
+	width: 100vw;
+	position: relative;
+	left: calc(-50vw + 50%);
+	min-height: 100px;
+	max-height: 100px;
+	background-color: black;
+}
+
+.ticket-info {
+	color: white;
+	min-height: 100px;
+	max-height: 100px;
+}
+
+div.ticket-info > div {
+	width: 30%;
+	display: inline-block;
+	font-size: 20pt;
+	text-align: center;
 }
 
