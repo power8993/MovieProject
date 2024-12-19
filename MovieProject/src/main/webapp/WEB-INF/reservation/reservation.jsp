@@ -37,6 +37,7 @@ $(document).ready(function(){
 	$("li#day").find("span").click(e => {
 		$("li#day").css({'background-color':'','color':''});
         $(e.target).parent().css({'background-color':'black','color':'white'});
+        $("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
 	});
 	
 	
@@ -94,8 +95,8 @@ $(document).ready(function(){
 								<span class="month"><%= month_current %></span>
 							</div>
 						</li>
-						<li class="day" id="day">
-							<span class="dayweek"><%= dayname[currentDate.get(Calendar.DAY_OF_WEEK)-1]%>&nbsp;&nbsp;</span>
+						<li class="day" id="day" data-index="0">
+							<span class="dayweek" name="dd"><%= dayname[currentDate.get(Calendar.DAY_OF_WEEK)-1]%>&nbsp;&nbsp;</span>
 							<span class="date"><%= currentDate.get(Calendar.DATE) %></span>
 						</li>
 						<% 
@@ -148,7 +149,7 @@ $(document).ready(function(){
 		<div id="ticket-info-container" class="ticket-info-container">
 			<div id="ticket-info" class="container ticket-info" style="align-content: center;">
 				<div id="movie-choice" class="movie-choice">영화선택</div>
-				<div>극장선택</div>
+				<div id="theater-choice">극장선택</div>
 				<div>> 좌석선택 > 결제</div>
 			</div>
 		</div>
