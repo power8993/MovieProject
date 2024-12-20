@@ -63,7 +63,7 @@ function goidfind() {
 		/////////////////============ ajax ============///////////////////////
 	
     $.ajax({
-        url: "idFind.up", // 서버의 컨트롤러 매핑 주소
+        url: "idFind.mp", // 서버의 컨트롤러 매핑 주소
         data: {
             "name": $("input[name='name']").val(),
             "email": $("input[name='email']").val()
@@ -121,8 +121,8 @@ function goidfind() {
 			
 			<div style="width: 350px; margin: 0 auto;">
 		    <div id="buttonContainer">
-					<button type="button" class="loginjspBtn" id="findIdBtn" onclick="location.href='<%=request.getContextPath()%>/login/login.up'">로그인</button>
-				<form action="<%=request.getContextPath()%>/login/idpwFind.up" method="get">
+					<button type="button" class="loginjspBtn" id="findIdBtn" onclick="location.href='<%=request.getContextPath()%>/login/login.mp'">로그인</button>
+				<form action="<%=request.getContextPath()%>/login/idpwFind.mp" method="get">
 					<button type="submit" class="loginjspBtn" id="findPwBtn" name="action" value="findPw">비밀번호 찾기</button>
 				</form>
 		    </div>

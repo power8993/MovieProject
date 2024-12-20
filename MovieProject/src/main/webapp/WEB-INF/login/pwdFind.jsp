@@ -77,11 +77,11 @@ $(document).ready(function(){
                // 암호가 정규표현식에 맞는 경우
                
                <%-- const frm = document.pwdUpdateEndFrm;
-               frm.action = "<%= ctxPath%>/login/pwdUpdateEnd.up";
+               frm.action = "<%= ctxPath%>/login/pwdUpdateEnd.mp";
                frm.method = "post";
                frm.submit(); --%>
                $.ajax({
-            	    url: "pwdUpdateEnd.up", // 서버의 컨트롤러 매핑 주소
+            	    url: "pwdUpdateEnd.mp", // 서버의 컨트롤러 매핑 주소
             	    data: {
             	        "pwd": $("input:password[name='pwd']").val().trim(),
             	        "userid": $("input:hidden[name='userid']").val().trim()
@@ -165,7 +165,7 @@ $(document).ready(function(){
 		frm.userCertificationCode.value = input_confirmCode;
 		frm.userid.value = $("input:text[name='userid']").val().trim();
 		
-		frm.action = "<%= ctxPath%>/login/verifyCertification.up";
+		frm.action = "<%= ctxPath%>/login/verifyCertification.mp";
 		frm.method = "POST";
 		frm.submit(); --%>
 		
@@ -173,7 +173,7 @@ $(document).ready(function(){
 		
 /////////////////============ ajax ============///////////////////////
  $.ajax({
-     url: "verifyCertification.up", // 서버의 컨트롤러 매핑 주소
+     url: "verifyCertification.mp", // 서버의 컨트롤러 매핑 주소
      data: {
          "userCertificationCode": $("input:text[name='input_confirmCode']").val().trim(),
          "userid":$("input:text[name='userid']").val().trim()
@@ -264,7 +264,7 @@ function goFind() {
      }    
         <%-- 
      const frm = document.pwdFindFrm;
-     frm.action = "<%=ctxPath%>/login/pwdFind.up";
+     frm.action = "<%=ctxPath%>/login/pwdFind.mp";
      frm.method = "post";
      frm.submit();
      
@@ -275,7 +275,7 @@ function goFind() {
      
 /////////////////============ ajax ============///////////////////////
      $.ajax({
-         url: "pwdFind.up", // 서버의 컨트롤러 매핑 주소
+         url: "pwdFind.mp", // 서버의 컨트롤러 매핑 주소
          data: {
              "userid": $("input[name='userid']").val(),
              "email": $("input[name='email']").val()
@@ -354,8 +354,8 @@ function goFind() {
 	
 	<div style="width: 350px; margin: 0 auto;">
 		    <div id="buttonContainer">
-					<button type="button" class="loginjspBtn" id="loginBtn" onclick="location.href='<%=request.getContextPath()%>/login/login.up'">로그인</button>
-				<form action="<%=request.getContextPath()%>/login/idpwFind.up" method="get">
+					<button type="button" class="loginjspBtn" id="loginBtn" onclick="location.href='<%=request.getContextPath()%>/login/login.mp'">로그인</button>
+				<form action="<%=request.getContextPath()%>/login/idpwFind.mp" method="get">
 					<button type="submit" class="loginjspBtn" id="findPwBtn" name="action" value="findId">아이디 찾기</button>
 				</form>
 		    </div>

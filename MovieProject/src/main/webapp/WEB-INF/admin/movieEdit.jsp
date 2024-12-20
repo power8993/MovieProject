@@ -28,7 +28,7 @@ $(document).ready(function(){
 
 	<div class="movie_register_container">
 	    <h2>등록된 영화 수정하기</h2>
-		  <form name="movie_register" method="post" action="<%= ctxPath%>/admin/movieRegister.up">
+		  <form name="movie_register" method="post" action="<%= ctxPath%>/admin/movieRegister.mp">
 		    <table class="table" id="tbl_movie_register">
 		      <tbody>
 		        <!-- 첫 번째 줄: 영화 제목 -->

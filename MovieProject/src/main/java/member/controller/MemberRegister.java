@@ -54,7 +54,7 @@ public class MemberRegister extends AbstractController {
 	        	
 	        	if(n == 1) {
 	        		message = "회원가입 성공^^";
-	        		loc = request.getContextPath()+"/index.up"; // 시작페이지로 이동한다.
+	        		loc = request.getContextPath()+"/index.mp"; // 시작페이지로 이동한다.
 	        		
 	        	}
 	        } catch (SQLException e) {

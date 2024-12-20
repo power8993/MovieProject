@@ -19,10 +19,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet (
-	description = "사용자가 웹에서 *.up 을 했을 경우 이 서블릿이 응답을 해주도록 한다.",
-	urlPatterns = {"*.up"},
+	description = "사용자가 웹에서 *.mp 을 했을 경우 이 서블릿이 응답을 해주도록 한다.",
+	urlPatterns = {"*.mp"},
 	initParams = { 
-		@WebInitParam(name = "propertyConfig", value = "C:\\git\\MovieProject\\MovieProject\\src\\main\\webapp\\WEB-INF\\Command.Properties", description = "*.up 에 대한 클래스의 매핑파일") 
+		@WebInitParam(name = "propertyConfig", value = "C:\\git\\MovieProject\\MovieProject\\src\\main\\webapp\\WEB-INF\\Command.Properties", description = "*.mp 에 대한 클래스의 매핑파일") 
 	}
 )
 public class FrontController extends HttpServlet {

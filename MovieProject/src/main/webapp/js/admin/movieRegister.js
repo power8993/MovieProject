@@ -388,7 +388,7 @@ function searchMovies(e) {
     // AJAX(기존 등록된 영화 조회)
     if (movie_title != "") {
         $.ajax({
-            url: 'movieRegisterSearch.up',  
+            url: 'movieRegisterSearch.mp',  
             type: 'get',
             data: { "movie_title" : movie_title },  
 			async: true,

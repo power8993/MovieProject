@@ -136,7 +136,7 @@
                 <c:if test="${movies != null && not empty movies}">
                     <c:forEach var="movie" items="${movies}" varStatus="status">
                         <div class="col-md-4 mb-4 ${status.index >= 15 ? 'movie-hidden hidden' : ''}" >
-                            <div class="movie-card position-relative" onclick="<%= ctxPath%>/movie/movieDetail.up">
+                            <div class="movie-card position-relative" onclick="<%= ctxPath%>/movie/movieDetail.mp">
                                 <div class="rank">No. ${status.index + 1}</div>
                                 <div class="poster">
                                     <img src="${movie.poster_file}" alt="${movie.movie_title}">

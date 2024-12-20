@@ -365,8 +365,8 @@ $(document).ready(function(){
 	/*	
 		// === 첫번째 방법 === //
 		$.ajax({
-			url : "idDuplicateCheck.up",
-			data : {"userid": $("input#userid").val()}, // data 속성은 http://localhost:9090/MyMVC/member/idDuplicateCheck.up 로 전송해야할 데이터를 말한다.
+			url : "idDuplicateCheck.mp",
+			data : {"userid": $("input#userid").val()}, // data 속성은 http://localhost:9090/MyMVC/member/idDuplicateCheck.mp 로 전송해야할 데이터를 말한다.
 			type : "post",	// type 을 생략하면 type : "GET" 이다.
 			async : true,	// async:true 가 비동기 방식을 말한다. async 을 생략하면 기본값이 비동기 방식인 async:true 이다.
 							// async:false 가 동기 방식이다. 지도를 할때는 반드시 동기방식인 async:false 을 사용해야만 지도가 올바르게 나온다.
@@ -374,7 +374,7 @@ $(document).ready(function(){
 				// console.log(text);
 				// {"isExists":false}
 				// {"isExists":true}
-				// text 는 idDuplicateCheck.up 을 통해 가져온 결과물인 "{"isExists":true}" 또는 "{"isExists":false}" 로 되어지는 string 타입의 결과물이다.
+				// text 는 idDuplicateCheck.mp 을 통해 가져온 결과물인 "{"isExists":true}" 또는 "{"isExists":false}" 로 되어지는 string 타입의 결과물이다.
 				
 				// console.log("~~~ txt 의 데이터타입 : ", typeof text);
 				// ~~~ txt 의 데이터타입 : string
@@ -412,21 +412,21 @@ $(document).ready(function(){
 		
 		// === 두번째 방법 === //
 		$.ajax({
-			url : "idDuplicateCheck.up", // js 파일이므로 상대경로를 사용할 수 없다.
-			data : {"userid": $("input#userid").val()}, // data 속성은 http://localhost:9090/MyMVC/member/idDuplicateCheck.up 로 전송해야할 데이터를 말한다.
+			url : "idDuplicateCheck.mp", // js 파일이므로 상대경로를 사용할 수 없다.
+			data : {"userid": $("input#userid").val()}, // data 속성은 http://localhost:9090/MyMVC/member/idDuplicateCheck.mp 로 전송해야할 데이터를 말한다.
 			type : "post",	// type 을 생략하면 type : "GET" 이다.
 	//		async : true,	// async:true 가 비동기 방식을 말한다. async 을 생략하면 기본값이 비동기 방식인 async:true 이다.
 							// async:false 가 동기 방식이다. 지도를 할때는 반드시 동기방식인 async:false 을 사용해야만 지도가 올바르게 나온다.
 							
-			dataType : "json",	// Javascript Standard Object Notation.  dataType은 /MyMVC/member/idDuplicateCheck.up 로 부터 실행되어진 결과물을 받아오는 데이터타입을 말한다. 
-								// 만약에 dataType:"xml" 으로 해주면 /MyMVC/member/idDuplicateCheck.up 로 부터 받아오는 결과물은 xml 형식이어야 한다. 
-								// 만약에 dataType:"json" 으로 해주면 /MyMVC/member/idDuplicateCheck.up 로 부터 받아오는 결과물은 json 형식이어야 한다.
+			dataType : "json",	// Javascript Standard Object Notation.  dataType은 /MyMVC/member/idDuplicateCheck.mp 로 부터 실행되어진 결과물을 받아오는 데이터타입을 말한다. 
+								// 만약에 dataType:"xml" 으로 해주면 /MyMVC/member/idDuplicateCheck.mp 로 부터 받아오는 결과물은 xml 형식이어야 한다. 
+								// 만약에 dataType:"json" 으로 해주면 /MyMVC/member/idDuplicateCheck.mp 로 부터 받아오는 결과물은 json 형식이어야 한다.
 								
 			success : function(json){
 				console.log(json);
 				// {"isExists":false}
 				// {"isExists":true}
-				// json 은 idDuplicateCheck.up 을 통해 가져온 결과물인 {"isExists":true} 또는 {"isExists":false} 로 되어지는 object 타입의 결과물이다.
+				// json 은 idDuplicateCheck.mp 을 통해 가져온 결과물인 {"isExists":true} 또는 {"isExists":false} 로 되어지는 object 타입의 결과물이다.
 				
 				console.log("~~~ json 의 데이터타입 : ", typeof json);
 				// ~~~ json 의 데이터타입 : object
@@ -464,15 +464,15 @@ $(document).ready(function(){
 		// "이메일중복확인" 을 클릭했는지 클릭 하지 않았는지 여부를 알아오기 위한 용도
 		
 		$.ajax({
-			url: "emailDuplicateCheck.up",
-			data: {"email":$("input#email").val()},  // data 속성은 http://localhost:9090/MyMVC/member/emailDuplicateCheck.up 로 전송해야할 데이터를 말한다.
+			url: "emailDuplicateCheck.mp",
+			data: {"email":$("input#email").val()},  // data 속성은 http://localhost:9090/MyMVC/member/emailDuplicateCheck.mp 로 전송해야할 데이터를 말한다.
 			type: "post",	// type 을 생략하면 type : "get"이다.
 		//	async: true,	// async:true 가 비동기 방식을 말한다. async 을 생략하면 기본값이 비동기 방식인 async:true 이다.
 							// async:false 가 동기 방식이다. 지도를 할때는 반드시 동기방식인 async:false 을 사용해야만 지도가 올바르게 나온다.
 							
-			dataType: "json",	// Javascript Standard Object Notation.  dataType은 /MyMVC/member/idDuplicateCheck.up 로 부터 실행되어진 결과물을 받아오는 데이터타입을 말한다. 
-								// 만약에 dataType:"xml" 으로 해주면 /MyMVC/member/idDuplicateCheck.up 로 부터 받아오는 결과물은 xml 형식이어야 한다. 
-								// 만약에 dataType:"json" 으로 해주면 /MyMVC/member/idDuplicateCheck.up 로 부터 받아오는 결과물은 json 형식이어야 한다.
+			dataType: "json",	// Javascript Standard Object Notation.  dataType은 /MyMVC/member/idDuplicateCheck.mp 로 부터 실행되어진 결과물을 받아오는 데이터타입을 말한다. 
+								// 만약에 dataType:"xml" 으로 해주면 /MyMVC/member/idDuplicateCheck.mp 로 부터 받아오는 결과물은 xml 형식이어야 한다. 
+								// 만약에 dataType:"json" 으로 해주면 /MyMVC/member/idDuplicateCheck.mp 로 부터 받아오는 결과물은 json 형식이어야 한다.
 								
 			success:function(json){
 				if(json.isExists) {
@@ -586,7 +586,7 @@ function goRegister() {
 	
 	
 	const frm = document.registerFrm;
-	frm.aciton = "memberRegister.up";
+	frm.aciton = "memberRegister.mp";
 	frm.method = "post";
 	frm.submit();
 	

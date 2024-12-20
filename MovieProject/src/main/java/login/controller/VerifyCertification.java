@@ -32,10 +32,10 @@ public class VerifyCertification extends AbstractController {
 
 			if(certification_code.equals(userCertificationCode)) {
 				is_True_false = true;
-				loc = request.getContextPath()+"/login/pwdUpdateEnd.up?userid="+userid;
+				loc = request.getContextPath()+"/login/pwdUpdateEnd.mp?userid="+userid;
 			}
 			else {
-				loc = request.getContextPath()+"/login/pwdFind.up";
+				loc = request.getContextPath()+"/login/pwdFind.mp";
 			}
 				
 			//////////////////////////////////////////////////////////////////
