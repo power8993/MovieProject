@@ -1,18 +1,119 @@
 @charset "UTF-8";
 
-h5 {
-	/* border: solid 1px gray; */
-	/* background-color: black; */
-	color: black;
-	text-align: center;
-	/* padding-top: 10% 0 !important; */
-	padding-top: 2%;
-	/* height: 200px; */
+div.steps {
+	height: 600px;
 }
 
-div.row > div {
-	margin: 0;
-	padding: 0;
+div.section {
+	position: relative;
+	float: left;
+	max-height: 600px;
+	min-height: 600px;
 	border-left: solid 1px gray;
 	border-right: solid 1px gray;
 }
+
+div.col-body {
+	max-height: 520px;
+	min-height: 520px;
+	overflow: auto;
+}
+
+div.movie {
+	width: 400px;
+}
+
+div.date {
+	width: 178px;
+}
+
+div.time {
+	width: 400px;
+}
+
+h3.title {
+	background-color: black;
+	color: white;
+	text-align: center;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+table#movie-list {
+	margin-left: 20px;
+}
+
+tr.movie-list {
+	font-size: 13pt;
+	line-height: 40px;
+}
+
+td.movie-grade {
+	display: inline-block;
+	width: 100px;
+}
+
+td.movie-title {
+	min-width: 250px;
+}
+
+li {
+	width: 80%;
+	list-style-type: none;
+}
+
+li.day > span {
+	display: inline-block;
+	height: 40px;
+	width: 40px;
+}
+
+.year {
+	margin-top: 20px;
+	display: block;
+	font-size: 12pt;
+	line-height: 10pt;
+	font-weight: bold;
+}
+.month {
+	margin-bottom: 20px;
+	display: block;
+	font-size: 30pt;
+	line-height: 28pt;
+	font-weight: bold;
+}
+
+div.date {
+	text-align: center;
+}
+
+span.date {
+	font-weight: bold;
+}
+
+.date ul {
+	padding: 0;
+}
+
+.ticket-info-container {
+	width: 100vw;
+	position: relative;
+	left: calc(-50vw + 50%);
+	min-height: 100px;
+	max-height: 100px;
+	background-color: black;
+}
+
+.ticket-info {
+	color: white;
+	min-height: 100px;
+	max-height: 100px;
+}
+
+div.ticket-info > div {
+	width: 30%;
+	display: inline-block;
+	font-size: 20pt;
+	text-align: center;
+}
+
