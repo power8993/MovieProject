@@ -25,8 +25,7 @@ public class NoticeWrite extends AbstractController {
 		    else {
 		        String notice_subject = request.getParameter("notice_subject");
 		        String notice_content = request.getParameter("notice_content");
-		        System.out.println(notice_subject);
-		        System.out.println(notice_content);
+		        notice_content=notice_content.replace("\r\n","<br>");
 		        
 		        NoticeDTO ndto = new NoticeDTO();
 		        ndto.setNotice_subject(notice_subject);
