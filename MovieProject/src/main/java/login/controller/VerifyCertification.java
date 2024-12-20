@@ -1,5 +1,9 @@
 package login.controller;
 
+import java.io.PrintWriter;
+
+import org.json.JSONObject;
+
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,27 +23,40 @@ public class VerifyCertification extends AbstractController {
 			HttpSession session = request.getSession(); // 세션 불러오기
 			String certification_code = (String)session.getAttribute("certification_code");
 			
-			String message = "";
+			boolean is_True_false = false;
 			String loc = "";
-			
+			/*
+			 * System.out.println("세션에 저장된 인증코드: [" + certification_code + "]");
+			 * System.out.println("사용자가 입력한 인증코드: [" + userCertificationCode + "]");
+			 */
+
 			if(certification_code.equals(userCertificationCode)) {
-				message = "인증성공 되었습니다.";
+				is_True_false = true;
 				loc = request.getContextPath()+"/login/pwdUpdateEnd.up?userid="+userid;
 			}
 			else {
-				message = "발급된 인증코드가 아닙니다.\\n인증코드를 다시 발급받으세요!!";
 				loc = request.getContextPath()+"/login/pwdFind.up";
 			}
 				
-			request.setAttribute("message", message);
-			request.setAttribute("loc", loc);
+			//////////////////////////////////////////////////////////////////
 			
-			super.setRedirect(false);
-			super.setViewPage("/WEB-INF/msg.jsp");
+			// JSON 응답 생성
+			JSONObject json = new JSONObject();
+			json.put("is_True_false", is_True_false);
+			json.put("userid", userid);
+			
+			// JSON 응답 설정
+			response.setContentType("application/json; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.print(json.toString());
+			out.flush();
 			
 			// !!!! 중요 !!!! //
 	        // !!!! 세션에 저장된 인증코드 삭제하기 !!!! //
-			session.removeAttribute("certification_code");
+			session.removeAttribute("certification_code"); // ajax와는 상관없음
+			
+			return; // 더 이상 JSP 페이지로 포워딩하지 않음
+			
 			
 			
 		} // end of if("POST".equalsIgnoreCase(method))-----------------------------------------------
