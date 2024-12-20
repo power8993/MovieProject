@@ -1,8 +1,5 @@
 @charset "UTF-8";
 
-
-
-
 div.my_h2 {
 	text-align: center;
 }
@@ -14,4 +11,109 @@ div.my_h2 h2 {
 
 div.my_h2 p {
 	font-size: 18px;
+}
+
+div#mypageEditFrm>form {
+	/* border: solid 1px blue; */
+	height: 500px;
+	margin-top: 35px;
+}
+
+div#mypageEditFrm>form>table#tblMemberEdit>tbody {
+	height: 450px;
+	background-color: white;
+}
+
+div#mypageEditFrm>form>table#tblMemberEdit>tbody>tr>td#tblEditcss {
+	background-color: #ccc5b9;
+	border: solid 1px white;
+	border-top: 1px solid #ccc5b9;
+	width: 24%;
+	text-align: center;
+	font-weight: bold;
+}
+
+div#mypageEditFrm>form>table#tblMemberEdit {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+div#mypageEditFrm>form>table#tblMemberEdit>tbody>tr {
+	border: 1px solid #ccc5b9;
+	border-right: none;
+}
+
+button.mypagepwdcss {
+	background-color: #ffffff;
+	margin-left: 20px;
+	border: 1px solid #403d39;
+	border-radius: 4px;
+	padding: 8px;
+}
+
+input.requiredInfo {
+	float: none;
+}
+
+#tblMemberEdit>thead>tr>td>button.mypageupdelet {
+	float: right;
+	color: #d9534f;
+	background: none;
+	border: none;
+	font-size: 15px;
+	cursor: pointer;
+}
+
+#tblMemberEdit>thead>tr>td>button.mypageupdelet:hover {
+	color: #c9302c;
+}
+
+input.mypageupbtn {
+	padding: 8px 16px;
+	border: 1px solid #403d39;
+	background-color: #ffffff;
+	color: #403d39;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	border-radius: 4px;
+	font-size: 14px;
+}
+
+input.mypageupbtn:hover {
+	background-color: #f4f4f4;
+}
+
+div.mypageupbutton {
+	text-align: center;
+	margin: 25px auto;
+}
+
+button.mypageupbtn {
+	padding: 8px 20px;
+	margin: 5px;
+	border: 1px solid #403d39;
+	background-color: #403d39;
+	color: #fff;
+	font-size: 14px;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+button.mypageupbtn:hover {
+	background-color: #333;
+}
+
+input[type="text"], input[type="email"] {
+	padding: 8px;
+	margin-top: 5px;
+	margin-left: 20px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+input[type="text"]:focus, input[type="email"]:focus {
+	border-color: #eb5e28;
+	outline: none;
 }

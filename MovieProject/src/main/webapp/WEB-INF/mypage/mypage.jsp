@@ -55,9 +55,9 @@ String ctxPath = request.getContextPath();
 					<li><a href="<%=ctxPath%>/mypage/mymovielike.up">기대되는 영화</a></li>
 				</ul></li>
 
-			<li><a href="<%=ctxPath%>/mypage/myupdate.up">회원정보</a>
+			<li><a href="<%=ctxPath%>/mypage/myupcheckPwd.up">회원정보</a>
 				<ul>
-					<li><a href="<%=ctxPath%>/mypage/myupdate.up">회원정보수정</a></li>
+					<li><a href="<%=ctxPath%>/mypage/myupcheckPwd.up">회원정보수정</a></li>
 					<li><a href="<%=ctxPath%>/mypage/mydelete.up">회원탈퇴</a></li>
 				</ul></li>
 		</ul>

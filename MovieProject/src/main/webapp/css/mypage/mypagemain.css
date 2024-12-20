@@ -130,7 +130,7 @@ div.my_container > div.my_main > div.my_hside ul li ul li > a {
 /*////////////////////////////////////////////////////////////////////////////////////////////////*/
 /* 메인 콘텐츠 영역 */
 body > div.my_container > div.my_main > div.mypage_main_content {
-  	border: solid 1px black; 
+  	/* border: solid 1px black;  */
 	float: right;
 	width: 75%; 
     height: 100%; 
