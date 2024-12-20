@@ -1,5 +1,6 @@
 package member.model;
 
+import java.io.Console;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.sql.Connection;
@@ -298,9 +299,9 @@ public class MemberDAO_imple implements MemberDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " select userid "
+			String sql = " select user_id "
 					   + " from tbl_member "
-					   + " where status = 1 and userid = ? and email = ? ";
+					   + " where USER_STATUS = 1 and user_id = ? and email = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, paraMap.get("userid"));
@@ -328,14 +329,17 @@ public class MemberDAO_imple implements MemberDAO {
 		int result = 0;
 		try {
 			conn = ds.getConnection();
-			String sql = " update tbl_member set pwd = ?, lastpwdchangedate = sysdate " 
-					   + " where userid = ? ";
+			String sql = " update tbl_member set pwd = ? " /*, lastpwdchangedate = sysdate 비밀번호 찾기 시 비밀번호를 변경함*/
+					   + " where user_id = ? ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, Sha256.encrypt(paraMap.get("new_pwd")) ); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.
-			pstmt.setString(2, paraMap.get("userid") );  
+			pstmt.setString(2, paraMap.get("userid") ); 
+			
 
 			result = pstmt.executeUpdate();
 	
+		}catch(SQLException e) {
+			e.printStackTrace();
 		} finally {
 			close();
 		}
