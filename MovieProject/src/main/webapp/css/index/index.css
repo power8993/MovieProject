@@ -103,7 +103,8 @@ div#header > ul > li:nth-child(3){
 }
 
 #nav_mediatop {
-    width: 100%; /* 화면 전체 너비 */
+    min-width: 980px; /* 화면 전체 너비 */
+    margin: 0 auto;
     display: flex;
     justify-content: center; /* 내부 컨테이너를 가운데 정렬 */
     background-color: inherit; /* 부모의 배경색 상속 */
@@ -119,6 +120,11 @@ div#header > ul > li:nth-child(3){
     margin: 0;
 }
 
+.nav-list{
+	min-width: 980px;
+	border:solid 1px red;
+}
+
 /* 링크 스타일 초기화 */
 .nav.sticky-nav .nav-link {
     color: black; /* 기본 링크 색상 */
@@ -131,7 +137,42 @@ div#header > ul > li:nth-child(3){
     background-color: #eb5e28;
 }
 
+.btn-outline-success {
+    border-color: #eb5e28;
+    color: #eb5e28;
+}
 
+.btn-outline-success i {
+    color: #eb5e28;
+}
+
+.btn-outline-success:hover {
+    background-color: #eb5e28;
+    color: #fff;
+    border-color: #eb5e28;
+}
+
+.btn-outline-success:hover i {
+    color: #fff;
+}
+
+form #mv_search {
+    background-color: transparent; /* 배경 투명하게 설정 */
+    border: none;                  /* 테두리 제거 */
+    outline: none;                 /* 포커스 시 나타나는 아웃라인 제거 */
+    color: #000;                   /* 텍스트 색상 설정 (필요에 따라 변경) */
+    padding: 5px;                  /* 내부 여백 설정 */
+}
+
+/* 포커스 시 밑줄 효과를 추가하고 싶다면 */
+form #mv_search:focus {
+    border-bottom: 2px solid #eb5e28; /* 포커스 시 밑줄 스타일 */
+    background-color: transparent; /* 배경 투명하게 설정 */
+    border: none;                  /* 테두리 제거 */
+    outline: none;                 /* 포커스 시 나타나는 아웃라인 제거 */
+    color: #000;                   /* 텍스트 색상 설정 (필요에 따라 변경) */
+    padding: 5px;                  /* 내부 여백 설정 */
+}
 /* 헤더 끝 index.jsp 시작  */
 #movie_ct{
    margin-top: 20px;
@@ -243,18 +284,23 @@ div#notis>#right {
   border-top-right-radius: 10px;   /* 왼쪽 위 모서리 둥글게 */
   border-bottom-right-radius: 10px; /* 왼쪽 아래 모서리 둥글게 */
 }
-
-
-
-/* footer  */
-div#footer{
-   width:100%;
-   height: 170px;
-   background-color:#CCC5B9;
+/* 콘텐츠 높이 상관없이 푸터 하단에 두기 
+#wrap {
+    min-height: 100%;
+    position: relative;
+}
+ */
+footer {
+   /*  콘텐츠 높이 상관없이 푸터 하단에 두기
+    position: relative; 
+    transform: translatY(-100%); */
+    width:100%;
+    height: 170px;
+    background-color:#CCC5B9;
 }
 div#footer_info{
-max-width: 980px;
-   mix-width: 980px; /* 최대 너비를 980px로 제한 */
+   max-width: 980px;
+   min-width: 980px; /* 최대 너비를 980px로 제한 */
    margin-right: auto; /* 가운데 정렬 */
    padding: 0px; /* 좌우 여백 */
    box-sizing: border-box; /* padding 포함 계산 */
@@ -262,7 +308,7 @@ max-width: 980px;
    border:solid 1px red;
    margin: 0 auto; /* 가운데 정렬 */
    padding: 0px; /* 좌우 여백 */
-   box-sizing: border-box; /* padding 포함 계산 */
+   box-sizing: border-box;/*  padding 포함 계산 */
    white-space: nowrap; /* 텍스트가 자동으로 줄 바꿈되지 않도록 */
 }
 #footer_info>p{
@@ -270,3 +316,4 @@ padding-left: 25px;
 padding-top: 25px;
 color:#252422;
 }
+

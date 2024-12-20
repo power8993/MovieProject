@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-div.mypage_main_content>form {
+body > div.my_container > div.my_main > div.mypage_main_content > form{
 	border: solid 1px black;
 	background-color: white;
 	margin: 20px;
@@ -8,12 +8,18 @@ div.mypage_main_content>form {
 	padding: 70px 0;
 }
 
-div.mypage_main_content>form h3 {
+body > div.my_container > div.my_main >div.mypage_main_content>form h3 {
 	font-size: 23px;
+	
 }
 
-div.mypage_main_content>form p {
+body > div.my_container > div.my_main >div.mypage_main_content>form p {
 	font-size: 13px;
+}
+
+body > div.my_container > div.my_main > div.mypage_main_content > form > ul{
+	list-style-type: none;
+	padding: 0;
 }
 
 div.my_h2 {
@@ -44,9 +50,4 @@ div.mybutton> button.btn {
 div.mypage_main_content > form > div > button:nth-child(2){
 	background-color: #403d39;
 	color: white;
-}
-
-div.mypage_main_content > form > div > button:nth-child(2):hover{
-	background-color: #fff;
-	color: black;
 }

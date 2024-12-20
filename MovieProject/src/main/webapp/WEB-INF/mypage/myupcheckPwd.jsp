@@ -13,13 +13,32 @@ String ctxPath = request.getContextPath();
 	href="<%=ctxPath%>/css/mypage/mypagemain.css" />
 	<%-- 직접 만든 CSS --%>
 <link rel="stylesheet" type="text/css"
-	href="<%=ctxPath%>/css/mypage/myupdate.css" />
+	href="<%=ctxPath%>/css/mypage/myupcheckPwd.css" />
 	
 <%-- h3 a태그의 이모티콘 --%>
 <script src="https://kit.fontawesome.com/0c69fdf2c0.js"
 	crossorigin="anonymous"></script>
 
 <jsp:include page="../header1.jsp" />
+
+<script type="text/javascript">
+   $(document).ready(function(){
+      $("button.btnsuccess").click(function(){
+    	  const pwd  = $("input:password[name='pwd']").val();
+    	  
+    	  if(pwd == "") {
+  	        alert("비밀번호를 입력하세요!!");
+  	        return; // 종료
+  	        
+  	      const frm = document.my_upcheckPwd_Frm;
+ 	     frm.action = "<%=ctxPath%>/mypage/myupcheckPwd.up";
+ 		 frm.method = "post";
+ 		 frm.submit();
+  	     }
+    	  
+      });
+   });
+</script>
 
 <%-- 전체 창 --%>
 <div class="my_container">
@@ -60,9 +79,9 @@ String ctxPath = request.getContextPath();
 						<li><a href="<%=ctxPath%>/mypage/mymovielike.up">기대되는 영화</a></li>
 					</ul></li>
 
-				<li><a href="<%=ctxPath%>/mypage/myupdate.up">회원정보</a>
+				<li><a href="<%=ctxPath%>/mypage/myupcheckPwd.up">회원정보</a>
 					<ul>
-						<li><a href="<%=ctxPath%>/mypage/myupdate.up" class="active">회원정보수정</a></li>
+						<li><a href="<%=ctxPath%>/mypage/myupcheckPwd.up" class="active">회원정보수정</a></li>
 						<li><a href="<%=ctxPath%>/mypage/mydelete.up">회원탈퇴</a></li>
 					</ul></li>
 			</ul>
@@ -74,16 +93,18 @@ String ctxPath = request.getContextPath();
 				<h2>회원정보 수정</h2>
 				<p>회원님의 소중한 정보를 안전하게 관리하세요.</p>
 			</div>
-			<form name="my_update_Frm">
+			<form name="my_upcheckPwd_Frm">
 				<h3>회원정보를 수정하시려면 비밀번호를 입력하셔야 합니다.</h3>
 				<p>회원님의 개인정보 보호를 위한 절차이오니, 로그인시 사용하는 비밀번호를 입력해주세요.</p>
-				<ul style="list-style-type: none;">
-					<li><input type="text" name="pwd" size="25" autocomplete="off" /></li>
+				<ul>
+					<li><input type="password" name="pwd" size="25" autocomplete="off" /></li>
 				</ul>
+				
+				<input type="hidden" name="userid" value="${requestScope.userid}" />
 
 				<div class="mybutton">
-					<button type="button" class="btn">취소</button>
-					<button type="button" class="btn">찾기</button>
+					<button type="button" onclick="javascript:history.back();"  class="btn" >취소</button>
+					<button type="button" class="btn btnsuccess">찾기</button>
 				</div>
 
 			</form>

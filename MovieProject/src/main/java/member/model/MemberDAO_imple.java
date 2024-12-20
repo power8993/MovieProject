@@ -1,5 +1,6 @@
 package member.model;
 
+import java.io.Console;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.sql.Connection;
@@ -66,8 +67,8 @@ public class MemberDAO_imple implements MemberDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " insert into tbl_member(userid, pwd, name, email, mobile, postcode, address, detailaddress, extraaddress, gender, birthday) "
-					   + " values(?,?,?,?,?,?,?,?,?,?,?) ";
+			String sql = " insert into tbl_member(USER_ID, pwd, name, email, mobile, gender, birthday) "
+					   + " values(?,?,?,?,?,?,?) ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -76,12 +77,8 @@ public class MemberDAO_imple implements MemberDAO {
 			pstmt.setString(3, member.getName());
 			pstmt.setString(4, aes.encrypt(member.getEmail()));		// 이메일을 AES256 알고리즘으로 양방향 암호화 시킨다.
 			pstmt.setString(5, aes.encrypt(member.getMobile()));		// 휴대폰을 AES256 알고리즘으로 양방향 암호화 시킨다.	
-			pstmt.setString(6, member.getPostcode());
-	        pstmt.setString(7, member.getAddress());
-	        pstmt.setString(8, member.getDetailaddress());
-	        pstmt.setString(9, member.getExtraaddress());
-	        pstmt.setString(10, member.getGender());
-	        pstmt.setString(11, member.getBirthday());
+	        pstmt.setString(6, member.getGender());
+	        pstmt.setString(7, member.getBirthday());
 	        
 	        result = pstmt.executeUpdate();
 			
@@ -105,9 +102,9 @@ public class MemberDAO_imple implements MemberDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select userid "
+			String sql = " select USER_ID "
 					   + " from tbl_member "
-					   + " where userid = ? ";
+					   + " where USER_ID = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userid);
@@ -167,8 +164,14 @@ public class MemberDAO_imple implements MemberDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " SELECT userid, name, coin, point, pwdchangegap, "
-					   + "        NVL( lastlogingap, TRUNC( months_between(sysdate, registerday) ) ) AS lastlogingap, idle, email, mobile, postcode, address, detailaddress, extraaddress, gender, birthday "
+			String sql = " SELECT USER_ID, NAME, email, mobile ,IDLE_STATUS "
+					+ " FROM TBL_MEMBER "
+					+ " WHERE USER_STATUS = 1 AND USER_ID = ? and pwd = ? ";
+			
+			
+			/* 기존 코드는 이것인데 일단은 로그인이 되게하려고 밑의 만료기간에 따른 로그인처리는 주석처리함!!!!!!!!!!!!!!!!!!!!!!!!!
+			String sql = " SELECT USER_ID, name, coin, point, pwdchangegap, "
+					   + "        NVL( lastlogingap, TRUNC( months_between(sysdate, registerday) ) ) AS lastlogingap, idle, email, mobile, gender, birthday "
 					   + " FROM "
 					   + " (select userid, name, coin, point, "
 					   + "         trunc( months_between(sysdate, lastpwdchangedate) ) AS pwdchangegap, "
@@ -181,23 +184,20 @@ public class MemberDAO_imple implements MemberDAO {
 					   + " FROM tbl_loginhistory "
 					   + " WHERE fk_userid = ? "
 					   + " ) H " ;
-			
+			*/
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, paraMap.get("userid"));
 			pstmt.setString(2, Sha256.encrypt(paraMap.get("pwd")));
-			pstmt.setString(3, paraMap.get("userid"));
 			
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
 				member = new MemberVO();
 				
-				member.setUserid(rs.getString("userid"));
+				member.setUserid(rs.getString("USER_ID"));
 				member.setName(rs.getString("name"));
-				member.setCoin(rs.getInt("coin"));
-				member.setPoint(rs.getInt("point"));
-				
+				/*
 				if( rs.getInt("lastlogingap") >= 12 ) {
 					// 마지막으로 로그인 한 날짜시간이 현재시각으로 부터 1년이 지났으면 휴면으로 지정
 					member.setIdle(1);
@@ -215,8 +215,10 @@ public class MemberDAO_imple implements MemberDAO {
 					} // end of if(rs.getInt("idle") == 0)-----------------------------
 					
 				} // end of if( rs.getInt("lastlogingap") >= 12 )-----------------------
+				*/
 				
 				// === 휴면이 아닌 회원만 tbl_loginhistory(로그인기록) 테이블에 insert 하기 시작 === //
+				/*
 				if( rs.getInt("lastlogingap") < 12) {
 					sql = " insert into tbl_loginhistory(historyno, fk_userid, clientip) "
 						+ " values(seq_historyno.nextval, ?, ?) ";
@@ -235,13 +237,9 @@ public class MemberDAO_imple implements MemberDAO {
 						member.setRequirePwdChange(true); // 로그인시 암호를 변경해라는 alert 를 띄우도록 할때 사용한다.
 					}
 				}
-				
+				*/
 				member.setEmail( aes.decrypt(rs.getString("email")) );
 	            member.setMobile( aes.decrypt(rs.getString("mobile")) );
-	            member.setPostcode( rs.getString("postcode") );
-	            member.setAddress( rs.getString("address") );
-	            member.setDetailaddress( rs.getString("detailaddress") );
-	            member.setExtraaddress( rs.getString("extraaddress") );
 	            
 			} // end of if(rs.next())------------------------------
 			
@@ -266,9 +264,9 @@ public class MemberDAO_imple implements MemberDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " select userid "
+			String sql = " select user_id,email "
 					   + " from tbl_member "
-					   + " where status = 1 and name = ? and email = ? ";
+					   + " where user_status = 1 and name = ? and email = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, paraMap.get("name"));
@@ -277,7 +275,7 @@ public class MemberDAO_imple implements MemberDAO {
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
-				userid = rs.getString("userid");
+				userid = rs.getString("user_id");
 			}
 			
 		} catch(GeneralSecurityException | UnsupportedEncodingException e) {
@@ -301,9 +299,9 @@ public class MemberDAO_imple implements MemberDAO {
 			
 			conn = ds.getConnection();
 			
-			String sql = " select userid "
+			String sql = " select user_id "
 					   + " from tbl_member "
-					   + " where status = 1 and userid = ? and email = ? ";
+					   + " where USER_STATUS = 1 and user_id = ? and email = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, paraMap.get("userid"));
@@ -331,14 +329,17 @@ public class MemberDAO_imple implements MemberDAO {
 		int result = 0;
 		try {
 			conn = ds.getConnection();
-			String sql = " update tbl_member set pwd = ?, lastpwdchangedate = sysdate " 
-					   + " where userid = ? ";
+			String sql = " update tbl_member set pwd = ? " /*, lastpwdchangedate = sysdate 비밀번호 찾기 시 비밀번호를 변경함*/
+					   + " where user_id = ? ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, Sha256.encrypt(paraMap.get("new_pwd")) ); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.
-			pstmt.setString(2, paraMap.get("userid") );  
+			pstmt.setString(2, paraMap.get("userid") ); 
+			
 
 			result = pstmt.executeUpdate();
 	
+		}catch(SQLException e) {
+			e.printStackTrace();
 		} finally {
 			close();
 		}
