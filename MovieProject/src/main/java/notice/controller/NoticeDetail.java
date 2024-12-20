@@ -11,11 +11,11 @@ public class NoticeDetail extends AbstractController {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         // 공지사항 번호를 파라미터로 받기
-        String seqNoticeNo = request.getParameter("seq");
+        String seq_Notice_no = request.getParameter("seq");
         
         // NoticeDAO_imple 객체를 생성하여 상세 공지사항 조회
         NoticeDAO_imple noticeDAO = new NoticeDAO_imple();
-        NoticeDTO notice = noticeDAO.detailNotice(Integer.parseInt(seqNoticeNo));
+        NoticeDTO notice = noticeDAO.detailNotice(Integer.parseInt(seq_Notice_no));
 
         // 조회한 공지사항 정보를 request에 담기
         request.setAttribute("notice", notice);

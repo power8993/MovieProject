@@ -16,7 +16,7 @@ public class MovieRegister extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		String method = request.getMethod();
-		System.out.println(method);
+
 		if("GET".equalsIgnoreCase(method)) { // [영화등록] 버튼 클릭 후 폼태그 보이기
 			
 			super.setViewPage("/WEB-INF/admin/movieRegister.jsp");
@@ -68,6 +68,7 @@ public class MovieRegister extends AbstractController {
 			
 			try {
 				
+				// **** 영화를 등록해주는 메소드(tbl_movie 테이블에 insert) **** //
 				int n = mvdao.registerMovie(movie);
 				
 				if(n == 1) {
@@ -76,6 +77,15 @@ public class MovieRegister extends AbstractController {
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
+				
+				String message = "영화 등록 실패";
+				String loc = "javascript:history.back()";
+				
+				request.setAttribute("message", message);
+				request.setAttribute("loc", loc);
+				
+				super.setRedirect(false);
+				super.setViewPage("/WEB-INF/error.jsp");
 			}
 		}
 

@@ -68,24 +68,57 @@
     </div>
 
     <!-- 공지사항 작성 폼 -->
-    <form action="<%= ctxPath %>/notice/noticeWrite.up" method="post">
+    <form action="<%= ctxPath %>/notice/noticeWrite.up" method="post" onsubmit="return gosubmit()">
         <div class="form-group">
             <label for="notice_subject">공지사항 제목</label>
-            <input type="text" id="notice_subject" name="notice_subject" required placeholder="공지사항 제목을 입력하세요" />
+            <input type="text" id="notice_subject" name="notice_subject" placeholder="공지사항 제목을 입력하세요"  />
         </div>
 
         <div class="form-group">
             <label for="notice_content">공지사항 내용</label>
-            <textarea id="notice_content" name="notice_content" required placeholder="공지사항 내용을 입력하세요"></textarea>
+            <textarea id="notice_content" name="notice_content" placeholder="공지사항 내용을 입력하세요"></textarea>
         </div>
 
         <div class="form-group" style="text-align: center;">
-            <button type="submit" class="submit-btn">등록하기</button>
+            <button type="submit" class="submit-btn" onclick="return confirm('정말 등록하시겠습니까?');">등록하기</button>
         </div>
     </form>
 </div>
 
-<jsp:include page="/WEB-INF/footer1.jsp" />
+<jsp:include page="/WEB-INF/footer1.jsp"/>
 
 </body>
+
+<script type="text/javascript">
+
+function gosubmit() {
+    var notice_subject = document.getElementById('notice_subject').value.trim();
+    var notice_content = document.getElementById('notice_content').value.trim();
+
+    // 제목과 내용이 공백만으로 이루어졌는지 체크
+    if (notice_subject === "") {
+        alert("제목은 빈 공백만 입력할 수 없습니다.");
+        return false;  // 폼 제출을 막음
+    }
+
+    if (notice_content === "") {
+        alert("내용은 빈 공백만 입력할 수 없습니다.");
+        return false;  // 폼 제출을 막음
+    }
+
+    // 길이 체크: 제목은 50자 이내, 내용은 200자 이내
+    if (notice_subject.length > 50) {
+        alert("제목은 50자 이하로 입력해주세요.");
+        return false;  // 폼 제출을 막음
+    }
+
+    if ($("textarea[id='notice_content']").val().replace(/\r?\n/g, '  ').length > 200) {
+        alert("내용은 200자 이하로 입력해주세요.");
+        return false;  // 폼 제출을 막음
+    }
+
+    return true;  // 모든 검증을 통과하면 폼 제출
+}
+
+</script>
 </html>

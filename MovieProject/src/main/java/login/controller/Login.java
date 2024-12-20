@@ -23,17 +23,15 @@ public class Login extends AbstractController {
 		if(!"POST".equalsIgnoreCase(method)) {
 			// POST 방식으로 넘어온 것이 아니라면
 			
-			String message = "비정상적인 경로로 들어왔습니다.";
-			String loc = "javascript:history.back()";
-			
-			request.setAttribute("message", message);
-			request.setAttribute("loc", loc);
 			
 //			super.setRedirect(false);
-			super.setViewPage("/WEB-INF/msg.jsp");
+			super.setViewPage("/WEB-INF/login/login.jsp");
 			
 			return; // execute(HttpServletRequest request, HttpServletResponse response) 메소드 종료함
 		}
+		
+		
+		
 		
 		// POST 방식으로 넘어온 것이라면
 		String userid = request.getParameter("userid");
@@ -59,6 +57,7 @@ public class Login extends AbstractController {
 		if(loginuser != null) {
 //			System.out.println("~~~~ 확인용 로그인 성공 ^_________________________________^");
 			
+			/* 이 주석 또한 회원가입시 만료기한 처리. tbl_loginhistory(강사님 것)을 생성하는 것이 확정되면 주석을 해제
 			if(loginuser.getIdle() == 1) {
 //				System.out.println("~~~~ 확인용 휴면처리 대상입니다.");
 				String message = "로그인을 한지 1년이 지나서 휴면상태로 되었습니다.\\n휴면을 풀어주는 페이지로 이동합니다!!";
@@ -74,6 +73,8 @@ public class Login extends AbstractController {
 	            return; // 메소드 종료
 	            
 			} // end of if(loginuser.getIdle() == 1)-------------------------------------------------
+			*/
+			
 			
 			// === 휴면대상이 아닌 회원으로 로그인 했을 경우 === //
 //			System.out.println("~~~ 확인용 로그인한 사용자명 : " + loginuser.getName());
@@ -109,7 +110,8 @@ public class Login extends AbstractController {
 			session.setAttribute("loginuser", loginuser);
 			// session(세션)에 로그인 되어진 사용자 정보인 loginuser 를 키이름을 "loginuser" 으로 저장시켜두는 것이다.
 
-			
+			/* 이 주석 또한 회원가입시 만료기한 처리. tbl_loginhistory(강사님 것)을 생성하는 것이 확정되면 주석을 해제
+			 
 			if(loginuser.isRequirePwdChange() ) { // 비밀번호를 변경한지 3개월 이상된 경우
 				String message = "비밀번호를 변경하신지 3개월이 지났습니다.\\n암호를 변경하는 페이지로 이동합니다!!"; 
 				String loc = request.getContextPath()+"/index.up";
@@ -130,7 +132,12 @@ public class Login extends AbstractController {
 				super.setViewPage(request.getContextPath()+"/index.up");
 				
 			}
+			*/
 			
+			//밑 두 줄은 회워가입 완료 시 로그인상태로 유지하기 위해 임시 추가 / tbl_loginhistory(강사님 것)을 생성하면 삭제될 수도있음
+			// 로그인 상태 유지는 ${(sessionScope.loginuser).name} 세션값을 활용함.
+            super.setRedirect(false); 
+            super.setViewPage("/WEB-INF/index.jsp");
 		} // end of if(loginuser != null)-------------------------------------------------------------------
 		else {
 			
