@@ -1,0 +1,6 @@
+@charset "UTF-8";
+
+section#mycontent > * {
+    width: 100%;  /* 기본적으로 부모 너비에 맞추고 */
+    max-width: 100%; /* 자식 요소가 100%를 초과하지 않도록 제한 */
+}

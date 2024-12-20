@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -84,6 +87,159 @@ public class MovieDAO_imple implements MovieDAO {
 		}
 		return result;
 	}// end of public int registerMovie(MovieVO movie) throws SQLException {}-------------------
+
+
+	
+	// 영화를 등록 페이지에서 [등록된 영화 조회]를 통해 검색한 영화들을 보여주는 페이지(select)
+	@Override
+	public List<MovieVO> selectMovieRegister(String movie_title) throws SQLException {
+		
+		List<MovieVO> movieList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select poster_file, movie_title, c.category, movie_grade, to_char(register_date, 'yyyy-mm-dd') as register_date "
+					   + " from tbl_movie m join tbl_category c "
+					   + " on(m.fk_category_code = c.category_code) "
+					   + " where movie_title like ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			String search_title = "%" + movie_title + "%"; 
+			pstmt.setString(1, search_title);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				MovieVO mvvo = new MovieVO();
+				
+				mvvo.setPoster_file(rs.getString("poster_file"));
+				mvvo.setMovie_title(rs.getString("movie_title"));
+				mvvo.setFk_category_code(rs.getString("category"));
+				mvvo.setMovie_grade(rs.getString("movie_grade"));
+				mvvo.setRegister_date(rs.getString("register_date"));
+				
+				movieList.add(mvvo);
+			}// while(rs.next()) {}------------------------------------------
+			
+		}
+		finally {
+			close();
+		}
+		
+		return movieList;
+	}// end of public List<MovieVO> selectMovieRegister(String movie_title) throws SQLException {}--------------------
+
+
+	
+	// 페이징 처리를 안한 모든 영화 목록 보여주기(select)
+	@Override
+	public List<MovieVO> selectMovieList(Map<String, String> paraMap) throws SQLException {
+		
+		List<MovieVO> movieList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select seq_movie_no "
+					   + "      , to_char(register_date, 'yyyy-mm-dd') as register_date "
+					   + "      , c.category "
+					   + "      , poster_file "
+					   + "      , movie_title "
+					   + "      , movie_grade "
+					   + "      , to_char(start_date, 'yyyy-mm-dd') as start_date "
+					   + " from tbl_movie m join tbl_category c "
+					   + " on(m.fk_category_code = c.category_code) "
+					   + " where movie_title like ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			String search_title = "%" + paraMap.get("movie_title") + "%"; 
+			pstmt.setString(1, search_title);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				MovieVO mvvo = new MovieVO();
+				
+				mvvo.setSeq_movie_no(rs.getInt("seq_movie_no"));
+				mvvo.setRegister_date(rs.getString("register_date"));
+				mvvo.setFk_category_code(rs.getString("category"));
+				mvvo.setPoster_file(rs.getString("poster_file"));
+				mvvo.setMovie_title(rs.getString("movie_title"));		
+				mvvo.setMovie_grade(rs.getString("movie_grade"));
+				mvvo.setStart_date(rs.getString("start_date"));
+				
+				movieList.add(mvvo);
+				
+			}// while(rs.next()) {}------------------------------------------
+					
+		} finally {
+			close();
+		}
+		return movieList;
+	}// end of public List<MovieVO> selectMovieList() throws SQLException {}-------------------
+
+
+	
+	// 등록된 영화를 보여주는 페이지에서 영화 클릭 시, 해당 영화 상세 내용 보여주기(select)
+	@Override
+	public MovieVO selectMovieDetail(String seq) throws SQLException {
+		
+		MovieVO mvvo = null;	
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select seq_movie_no "
+					   + "      , c.category "
+					   + "      , movie_title "
+					   + "      , content "
+					   + "      , director "
+					   + "      , actor "
+					   + "      , movie_grade "
+					   + "      , running_time "
+					   + "      , to_char(end_date, 'yyyy-mm-dd') as start_date "
+					   + "      , to_char(end_date, 'yyyy-mm-dd') as end_date "
+					   + "      , poster_file"
+					   + "      , video_url "
+					   + "      , to_char(register_date, 'yyyy-mm-dd') as register_date "
+					   + " from tbl_movie m join tbl_category c "
+					   + " on(m.fk_category_code = c.category_code) "
+					   + " where seq_movie_no = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, seq);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				mvvo = new MovieVO();
+				mvvo.setSeq_movie_no(rs.getInt("seq_movie_no"));
+				mvvo.setFk_category_code(rs.getString("category"));
+				mvvo.setMovie_title(rs.getString("movie_title"));
+				mvvo.setContent(rs.getString("content").replace("\r\n","<br>"));
+				mvvo.setDirector(rs.getString("director"));
+				mvvo.setActor(rs.getString("actor"));
+				mvvo.setMovie_grade(rs.getString("movie_grade"));
+				mvvo.setRunning_time(rs.getString("running_time"));
+				mvvo.setStart_date(rs.getString("start_date"));
+				mvvo.setEnd_date(rs.getString("end_date"));
+				mvvo.setPoster_file(rs.getString("poster_file"));
+				mvvo.setVideo_url(rs.getString("video_url"));
+				mvvo.setRegister_date(rs.getString("register_date"));
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return mvvo;
+	}// end of public MovieVO selectMovieDetail(String seq) throws SQLException {}-------------------
 	
 
 	
