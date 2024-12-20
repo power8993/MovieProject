@@ -1,0 +1,53 @@
+@charset "UTF-8";
+
+body > div.my_container > div.my_main > div.mypage_main_content > form{
+	border: solid 1px black;
+	background-color: white;
+	margin: 20px;
+	text-align: center;
+	padding: 70px 0;
+}
+
+body > div.my_container > div.my_main >div.mypage_main_content>form h3 {
+	font-size: 23px;
+	
+}
+
+body > div.my_container > div.my_main >div.mypage_main_content>form p {
+	font-size: 13px;
+}
+
+body > div.my_container > div.my_main > div.mypage_main_content > form > ul{
+	list-style-type: none;
+	padding: 0;
+}
+
+div.my_h2 {
+	text-align: center;
+}
+
+div.my_h2 h2 {
+	font-weight: bold;
+	font-size: 28px;
+}
+
+div.my_h2 p {
+	font-size: 18px;
+}
+
+div.mybutton {
+	/* border: solid 1px black; */
+}
+
+div.mybutton> button.btn {
+	padding: 6px 60px;
+	border: 1px solid #403d39;
+	background-color: #fff;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+div.mypage_main_content > form > div > button:nth-child(2){
+	background-color: #403d39;
+	color: white;
+}

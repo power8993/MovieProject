@@ -23,6 +23,8 @@ public class Logout extends AbstractController {
 		session.removeAttribute("loginuser");
 		
 		// 두번째 방법 : WAS 메모리 상에서 세션에 저장된 모든 데이터를 삭제하는 것
+		//session.invalidate();
+		
 		super.setRedirect(true);
 		super.setViewPage(request.getContextPath() + "/index.up");
 		

@@ -1,8 +1,9 @@
 
 
 $(document).ready(function() {
+	
 
-	$("input[id='movie_title'").focus(); // 영화제목 입력에 포커스
+	$("input[id='movie_title']").focus(); // 영화제목 입력에 포커스
 
 	// ===== 영화제목 유효성 검사 시작 ===== //
 	$("input[id='movie_title'").blur((e) => {
@@ -95,13 +96,15 @@ $(document).ready(function() {
 	});
 	// ===== 배우 입력 끝 ===== //
 	
+	//char_count
 	
 	
-	
+
+		
 	
 	// ===== 제출 버튼 클릭 시 [필수입력값] 유효성 검사 시작 ===== //
 	// 순서대로 유효성 검사 및 메세지가 띄워지도록 각 항목마다 if(is_empty) 작성
-	$("button[type='submit']").click(function(e) {
+	$("button[id='resister_btn']").click(function(e) {
 		
 		// ---- [감독 / 배우] 이름 추출 시작 ---- // 	
 	    // 감독 이름을 콤마로 구분하여 추출
@@ -145,7 +148,7 @@ $(document).ready(function() {
 			
 			is_empty = true;
 		} 
-		else if($("textarea[id='content']").val().length > 300) {
+		else if($("textarea[id='content']").val().replace(/\r?\n/g, '  ').length > 300) {
 			// 영화줄거리가 300자 초과인 경우
 			content_dom.setCustomValidity("영화 줄거리는 300자 이내만 입력 가능합니다.");
 			content_dom.reportValidity();  // 유효성 검사 메시지 표시
@@ -257,6 +260,9 @@ $(document).ready(function() {
 	});
 	// ===== 제출 버튼 클릭 시 [필수입력값] 유효성 검사 유효성 검사 끝 ===== //
 	
+	
+	
+	
 
 });// end of $(document).ready(function(){})----------------------
 
@@ -268,12 +274,13 @@ $(document).ready(function() {
 // ===== [등록된 영화 조회] 클릭 이벤트 처리 시작 ===== //
 // ----- 기존 영화와 중복되면 안되므로, 검색할 수 있는 팝업창을 띄운다.
 function checkDuplicate() {
+
     // 영화 제목이 입력된 경우에만 모달을 띄운다.
     if ($("input[id='movie_title']").val().trim() != "") {
         
         const container = $("div#movie_check_modal"); // 모달을 넣을 위치
 
-        // 모달 HTML 구조 정의
+        // 모달 HTML 구조
         const modal_popup = `
             <div class="modal fade" id="movie_find" tabindex="-1" aria-labelledby="movie_find" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -307,10 +314,10 @@ function checkDuplicate() {
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>포스터 / 제목</th>
+                                            <th>영화제목</th>
                                             <th>장르</th>
                                             <th>상영등급</th>
-                                            <th>개봉일</th>
+                                            <th>등록일</th>
                                         </tr>
                                     </thead>
                                     <tbody id="movie_table"></tbody>
@@ -342,10 +349,18 @@ function checkDuplicate() {
             $('#movie_find').modal('hide');
         });
 
-        // 검색 버튼 클
-        $('#search_button').on('click', function(e) {
+        // 검색 버튼 클릭
+        $('button#search_button').on('click', function(e) {
             searchMovies(e); // 영화 검색
         });
+		
+		// 엔터 키에 대해서 기본 폼 제출 방지
+		$("input[id='movie_search']").keydown(function(e) {
+	        if (e.keyCode === 13) {  
+	            e.preventDefault(); // 기본 폼 제출 방지
+	            $('button#search_button').click(); // 검색 클릭 이벤트로 전환
+	        }
+	    });
     }
 }// end of $("button[type='submit']").click(function(e) {})------------------------	
 
@@ -354,6 +369,7 @@ function checkDuplicate() {
 // ===== 등록된 영화 조회 팝업의 [검색] 클릭 이벤트 처리 시작 ===== //
 // 영화 검색 (AJAX로 서버에서 영화 데이터를 가져옴)
 function searchMovies(e) {
+	
     // 메인 영화등록 form 제출을 방지
     e.preventDefault();
 
@@ -373,29 +389,31 @@ function searchMovies(e) {
     if (movie_title != "") {
         $.ajax({
             url: 'movieRegisterSearch.up',  
-            type: 'post',
+            type: 'get',
             data: { "movie_title" : movie_title },  
 			async: true,
-            success: function(json) {
-                const searchResultContainer = $('tbody#movie_table'); // 검색 결과를 보여줄 곳
-                searchResultContainer.empty();	// 검색할 때마다 비운다.
+            success: function(jsonObj_ctxPath) {
+                const search_result = $('tbody#movie_table'); // 검색 결과를 보여줄 곳
+                search_result.empty();	// 검색할 때마다 비운다.
+				
+				const movieArray = jsonObj_ctxPath.movie_List;
+				const ctxPath = jsonObj_ctxPath.ctxPath;
 
-                if (response.length > 0) { // 검색된 영화가 있는 경우
+                if (movieArray.length > 0) { // 검색된 영화가 있는 경우
                     
                     $('div#search_result').show();  // 검색 결과 테이블 표시
                     $('div#no_movies_message').hide();  // 검색된 영화가 없다는 메시지 숨기기
-
+					
                     // 검색 결과를 테이블에 추가
-                    response.forEach(movie => {
-                        const movieRow = `
-                            <tr>
-                                <td><img src="${movie.poster}" alt="${movie.title}" style="width:50px; height:auto;"> ${movie.title}</td>
-                                <td>${movie.genre}</td>
-                                <td>${movie.grade}</td>
-                                <td>${movie.release_date}</td>
-                            </tr>
-                        `;
-                        searchResultContainer.append(movieRow);  // 테이블에 영화 데이터 추가
+                    movieArray.forEach(movie => {
+                        const movie_result_list = `
+										<tr>
+						                    <td><img src="${movie.poster_file}" alt="${movie.movie_title}" style="width:50px; height:auto;"> ${movie.movie_title}</td>
+						                    <td>${movie.fk_category_code}</td>
+						                    <td><img src="${ctxPath}/images/admin/movie_grade/${movie.movie_grade}.png" alt="${movie.movie_grade}" style="width:30px; height:auto;"></td>
+						                    <td>${movie.register_date}</td>
+						                </tr>`;
+                        search_result.append(movie_result_list);  // 테이블에 영화 데이터 추가
                     });
                 } else {
                     // 검색된 영화가 없을 때
@@ -406,9 +424,29 @@ function searchMovies(e) {
             error: function() {
                 alert("영화 검색에 실패했습니다. 다시 시도해주세요.");
             }
-        });
+        });// end of $.ajax--------------------
+	
     }
-}
+}// end of function searchMovies(){}-----------------------------------------
 
 
-// end of function searchMovies(){}-----------------------------------------
+function charCount(text, limit) {
+    // 텍스트의 줄바꿈을 포함하여 글자 수 계산
+    var text_value = text.value;
+    
+    // 줄바꿈을 2글자씩으로 처리하기 위해, 줄바꿈 문자 개수만큼 1을 더해줌
+    var char_count = text_value.length + (text_value.match(/\n/g) || []).length;
+
+    // 글자 수가 제한을 초과한 경우
+    if (char_count > limit) {
+        // 초과된 글자 수를 사용자에게 알림
+        document.getElementById("char_count").innerHTML = "글자 수가 " + limit + "자를 초과했습니다. 현재 글자 수: " + char_count;
+
+        // 초과된 글자 수를 넘기지 않도록 텍스트 수정 요구
+        text.setCustomValidity("글자 수가 " + limit + "자를 초과했습니다.");
+    } else {
+        // 글자 수가 제한을 초과하지 않으면 정상적으로 표시
+        document.getElementById("char_count").innerHTML = char_count + " / " + limit;
+        text.setCustomValidity("");  // 유효성 검사 메시지 제거
+    }
+}// end of function charCount(text, length){}---------------------------

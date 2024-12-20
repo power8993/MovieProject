@@ -1,0 +1,75 @@
+@charset "UTF-8";
+
+/* 버튼 컨테이너 스타일 */
+div.my_movie_buttons {
+	/* border:solid 1px black; */
+	display: flex;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+/* 버튼 스타일 */
+div.my_movie_buttons a.button {
+	flex: 1;
+	text-decoration: none;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: #f2f2f2;
+	color: #333;
+	font-size: 16px;
+	font-weight: bold;
+	padding: 15px 0;
+	transition: background-color 0.3s ease;
+	border-right: 1px solid #ddd;
+	box-sizing: border-box;
+}
+
+/* 마지막 버튼의 오른쪽 테두리 제거 */
+div.my_movie_buttons a.button:last-child {
+	border-right: none;
+}
+
+/* 버튼 아이콘 스타일 */
+div.my_movie_buttons a.button i {
+	font-size: 24px;
+	margin-bottom: 8px;
+	color: #666;
+}
+
+/* 버튼 호버 효과 */
+div.my_movie_buttons a.button:hover {
+	background-color: #eb5e28;
+	color: #fff;
+}
+
+div.my_movie_buttons>a.button:hover i {
+	color: #fff;
+}
+
+/* 활성화된 버튼 스타일 */
+div.my_movie_buttons a.button.active {
+	background-color: #eb5e28;
+	color: #fff;
+}
+
+div.my_movie_buttons a.button.active i {
+	color: #fff;
+}
+
+div.my_main_movie {
+/* 	border: solid 1px red; */
+	margin-top: 10px;
+	height: 85%;
+}
+/* 빈데이터 메시지 */
+p.empty {
+	/* border: solid 1px red; */
+	margin: 200px;
+	color: #555;
+	font-size: 25px;
+	text-align: center;
+}
