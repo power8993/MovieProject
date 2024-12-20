@@ -37,7 +37,7 @@ public class NoticeWrite extends AbstractController {
 		            if (n == 1) {
 		                // 정상적으로 등록되었으면 목록 페이지로 리다이렉트
 		                super.setRedirect(true);
-		                super.setViewPage(request.getContextPath() + "/notice/notice.up"); // 경로가 잘못되지 않았는지 확인
+		                super.setViewPage(request.getContextPath() + "/notice/notice.mp"); // 경로가 잘못되지 않았는지 확인
 		                System.out.println("공지사항입력완료");
 		            } else {
 		                super.setRedirect(true);

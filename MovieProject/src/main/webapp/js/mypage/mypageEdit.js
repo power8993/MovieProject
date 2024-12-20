@@ -107,7 +107,7 @@ $(document).ready(function() {
 		b_emailcheck_click = true;
 
 		$.ajax({
-			url: "emailDuplicateCheck2.up",
+			url: "emailDuplicateCheck2.mp",
 			data: {
 				"email": $("input#email").val()
 				, "userid": $("input:hidden[name='userid']").val()

@@ -55,11 +55,11 @@ public class Notice extends AbstractController {
 		// pageNo 는 페이지바에서 보여지는 첫번째 번호이다.
 
 		// === !!! [맨처음][이전] 만들기 === *** //
-		pageBar += "<li class='page-item'><a class='page-link' href='notice.up?sizePerPage=" + sizePerPage
+		pageBar += "<li class='page-item'><a class='page-link' href='notice.mp?sizePerPage=" + sizePerPage
 				+ "&currentShowPageNo=1'>[맨처음]</a></li>";
 
 		if (pageNo != 1) {
-			pageBar += "<li class='page-item'><a class='page-link' href='notice.up?sizePerPage=" + sizePerPage
+			pageBar += "<li class='page-item'><a class='page-link' href='notice.mp?sizePerPage=" + sizePerPage
 					+ "&currentShowPageNo=" + (pageNo - 1) + "'>[이전]</a></li>";
 		}
 
@@ -67,7 +67,7 @@ public class Notice extends AbstractController {
 			if (pageNo == Integer.parseInt(currentShowPageNo)) {
 				pageBar += "<li class='page-item active'><a class='page-link' href='#'>" + pageNo + "</a></li>";
 			} else {
-				pageBar += "<li class='page-item'><a class='page-link' href='notice.up?sizePerPage=" + sizePerPage
+				pageBar += "<li class='page-item'><a class='page-link' href='notice.mp?sizePerPage=" + sizePerPage
 						+ "&currentShowPageNo=" + pageNo + "'>" + pageNo + "</a></li>";
 			}
 
@@ -77,11 +77,11 @@ public class Notice extends AbstractController {
 
 		// *** [다음][마지막] 만들기 *** //
 		if (pageNo <= totalPage) { // 위의 while 문을 빠져나오면 pageNo 는 43으로 빠져나오기 때문에 <= 를 조건식으로 둔다.
-			pageBar += "<li class='page-item'><a class='page-link' href='notice.up?&sizePerPage=" + sizePerPage
+			pageBar += "<li class='page-item'><a class='page-link' href='notice.mp?&sizePerPage=" + sizePerPage
 					+ "&currentShowPageNo=" + pageNo + "'>[다음]</a></li>";
 		}
 
-		pageBar += "<li class='page-item'><a class='page-link' href='notice.up?sizePerPage=" + sizePerPage
+		pageBar += "<li class='page-item'><a class='page-link' href='notice.mp?sizePerPage=" + sizePerPage
 				+ "&currentShowPageNo=" + totalPage + "'>[마지막]</a></li>";
 
 		try {
@@ -110,7 +110,7 @@ public class Notice extends AbstractController {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			super.setRedirect(true);
-			super.setViewPage(request.getContextPath() + "/error.up");
+			super.setViewPage(request.getContextPath() + "/error.mp");
 		}
 	}
 }

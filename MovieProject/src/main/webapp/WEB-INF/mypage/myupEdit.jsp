@@ -50,28 +50,28 @@ String ctxPath = request.getContextPath();
 		<%-- 마이페이지 사이드바 --%>
 		<div class="my_hside">
 			<ul>
-				<li><a href="<%=ctxPath%>/mypage/mypage.up" class="active">MyPage
+				<li><a href="<%=ctxPath%>/mypage/mypage.mp" class="active">MyPage
 						HOME</a></li>
 
-				<li><a href="<%=ctxPath%>/mypage/myreservationlist.up">나의
+				<li><a href="<%=ctxPath%>/mypage/myreservationlist.mp">나의
 						예매내역</a>
 					<ul>
-						<li><a href="<%=ctxPath%>/mypage/myreservationpoint.up">포인트
+						<li><a href="<%=ctxPath%>/mypage/myreservationpoint.mp">포인트
 								적립/사용 내역</a></li>
 					</ul></li>
 
-				<li><a href="<%=ctxPath%>/mypage/mywatchedmovie.up">영화</a>
+				<li><a href="<%=ctxPath%>/mypage/mywatchedmovie.mp">영화</a>
 					<ul>
-						<li><a href="<%=ctxPath%>/mypage/mywatchedmovie.up">내가 본
+						<li><a href="<%=ctxPath%>/mypage/mywatchedmovie.mp">내가 본
 								영화</a></li>
-						<li><a href="<%=ctxPath%>/mypage/myreview.up">내가 쓴 평점</a></li>
-						<li><a href="<%=ctxPath%>/mypage/mymovielike.up">기대되는 영화</a></li>
+						<li><a href="<%=ctxPath%>/mypage/myreview.mp">내가 쓴 평점</a></li>
+						<li><a href="<%=ctxPath%>/mypage/mymovielike.mp">기대되는 영화</a></li>
 					</ul></li>
 
-				<li><a href="<%=ctxPath%>/mypage/myupcheckPwd.up">회원정보</a>
+				<li><a href="<%=ctxPath%>/mypage/myupcheckPwd.mp">회원정보</a>
 					<ul>
-						<li><a href="<%=ctxPath%>/mypage/myupcheckPwd.up">회원정보수정</a></li>
-						<li><a href="<%=ctxPath%>/mypage/mydelete.up">회원탈퇴</a></li>
+						<li><a href="<%=ctxPath%>/mypage/myupcheckPwd.mp">회원정보수정</a></li>
+						<li><a href="<%=ctxPath%>/mypage/mydelete.mp">회원탈퇴</a></li>
 					</ul></li>
 			</ul>
 		</div>

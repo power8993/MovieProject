@@ -41,7 +41,7 @@
 
 	<%-- === 로그인을 하기 위한 폼을 생성 === --%>
 	<div id="form_container">
-		<form name="loginFrm" action="<%=ctx_Path%>/login/login.up" method="post">
+		<form name="loginFrm" action="<%=ctx_Path%>/login/login.mp" method="post">
 	
 			<div id="inputIdPW">
 				<div id="logo">LOGO</div>
@@ -72,11 +72,11 @@
 		
 		<%-------
 		
-		onclick="location.href='<%= ctx_Path %>/WEB-INF/login/idpwFind.up'" 을 하려면 command.Properties에 idpwFind.up을 추가해야함!! 
+		onclick="location.href='<%= ctx_Path %>/WEB-INF/login/idpwFind.mp'" 을 하려면 command.Properties에 idpwFind.mp을 추가해야함!! 
 		할 시에 성훈이형에게 말하기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
-		idpwFind.up에서 String action = request.getParameter("action");로 폼 값을 받고 
-		폼 값을 활용하여 .up에서 idFind인지, pwFind 인지 if문을 활용하여 나누기
+		idpwFind.mp에서 String action = request.getParameter("action");로 폼 값을 받고 
+		폼 값을 활용하여 .mp에서 idFind인지, pwFind 인지 if문을 활용하여 나누기
 		
 		
 		
@@ -86,11 +86,11 @@
 		
 		<div style="width: 350px; margin: 0 auto;">
 		    <div id="buttonContainer">
-				<form action="<%=request.getContextPath()%>/login/idpwFind.up" method="get">
+				<form action="<%=request.getContextPath()%>/login/idpwFind.mp" method="get">
 					<button type="submit" class="loginjspBtn" id="findIdBtn" name="action" value="findId">아이디 찾기</button>
 					<button type="submit" class="loginjspBtn" id="findPwBtn" name="action" value="findPw">비밀번호 찾기</button>
 				</form>
-			<button type="button" class="loginjspBtn" id="signUpBtn" onclick="location.href='<%= ctx_Path %>/member/memberRegister.up'">회원가입</button>
+			<button type="button" class="loginjspBtn" id="signUpBtn" onclick="location.href='<%= ctx_Path %>/member/memberRegister.mp'">회원가입</button>
 		    </div>
 		</div>
 	</div>

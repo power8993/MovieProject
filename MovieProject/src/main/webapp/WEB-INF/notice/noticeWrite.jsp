@@ -68,7 +68,7 @@
     </div>
 
     <!-- 공지사항 작성 폼 -->
-    <form action="<%= ctxPath %>/notice/noticeWrite.up" method="post" onsubmit="return gosubmit()">
+    <form action="<%= ctxPath %>/notice/noticeWrite.mp" method="post" onsubmit="return gosubmit()">
         <div class="form-group">
             <label for="notice_subject">공지사항 제목</label>
             <input type="text" id="notice_subject" name="notice_subject" placeholder="공지사항 제목을 입력하세요"  />

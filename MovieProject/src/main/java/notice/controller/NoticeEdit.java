@@ -49,7 +49,7 @@ public class NoticeEdit extends AbstractController {
 		            if (n == 1) {
 		                // 정상적으로 등록되었으면 목록 페이지로 리다이렉트
 		            	super.setRedirect(true);
-		            	super.setViewPage(request.getContextPath() + "/notice/noticeDetail.up?seq=" + seq_notice_no);
+		            	super.setViewPage(request.getContextPath() + "/notice/noticeDetail.mp?seq=" + seq_notice_no);
 		            } else {
 		            	super.setRedirect(false);
 		                super.setViewPage("/WEB-INF/notice/noticeEdit.jsp"); // 실패 시 작성 페이지로 돌아가게

@@ -17,7 +17,7 @@
 		alert("회원가입에 감사드립니다.^^");
 		
 		const frm = document.loginFrm;
-		frm.action = "<%= ctxPath%>/login/login.up";
+		frm.action = "<%= ctxPath%>/login/login.mp";
 		frm.method = "post";
 		frm.submit();
 		

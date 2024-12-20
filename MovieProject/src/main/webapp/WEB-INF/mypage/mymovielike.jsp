@@ -39,24 +39,24 @@ String ctxPath = request.getContextPath();
 		<%-- 마이페이지 사이드바 --%>
 		<div class="my_hside">
 			<ul>
-				<li><a href="<%= ctxPath %>/mypage/mypage.up" >MyPage HOME</a></li>
+				<li><a href="<%= ctxPath %>/mypage/mypage.mp" >MyPage HOME</a></li>
 
-				<li><a href="<%= ctxPath %>/mypage/myreservationlist.up" >나의 예매내역</a>
+				<li><a href="<%= ctxPath %>/mypage/myreservationlist.mp" >나의 예매내역</a>
 					<ul>
-						<li><a href="<%= ctxPath %>/mypage/myreservationpoint.up">포인트 적립/사용 내역</a></li>
+						<li><a href="<%= ctxPath %>/mypage/myreservationpoint.mp">포인트 적립/사용 내역</a></li>
 					</ul></li>
 
-				<li><a href="<%= ctxPath %>/mypage/mywatchedmovie.up">영화</a>
+				<li><a href="<%= ctxPath %>/mypage/mywatchedmovie.mp">영화</a>
 					<ul>
-						<li><a href="<%= ctxPath %>/mypage/mywatchedmovie.up">내가 본 영화</a></li>
-						<li><a href="<%= ctxPath %>/mypage/myreview.up">내가 쓴 평점</a></li>
-						<li><a href="<%= ctxPath %>/mypage/mymovielike.up" class="active">기대되는 영화</a></li>
+						<li><a href="<%= ctxPath %>/mypage/mywatchedmovie.mp">내가 본 영화</a></li>
+						<li><a href="<%= ctxPath %>/mypage/myreview.mp">내가 쓴 평점</a></li>
+						<li><a href="<%= ctxPath %>/mypage/mymovielike.mp" class="active">기대되는 영화</a></li>
 					</ul></li>
 
-				<li><a href="<%= ctxPath %>/mypage/myupcheckPwd.up">회원정보</a>
+				<li><a href="<%= ctxPath %>/mypage/myupcheckPwd.mp">회원정보</a>
 					<ul>
-						<li><a href="<%= ctxPath %>/mypage/myupcheckPwd.up">회원정보수정</a></li>
-						<li><a href="<%= ctxPath %>/mypage/mydelete.up" >회원탈퇴</a></li>
+						<li><a href="<%= ctxPath %>/mypage/myupcheckPwd.mp">회원정보수정</a></li>
+						<li><a href="<%= ctxPath %>/mypage/mydelete.mp" >회원탈퇴</a></li>
 					</ul></li>
 			</ul>
 		</div>
@@ -65,13 +65,13 @@ String ctxPath = request.getContextPath();
 		<!-- 메인 콘텐츠 -->
 		<div class="mypage_main_content">
 			<div class="my_movie_buttons">
-			<a href="<%=ctxPath%>/mypage/mywatchedmovie.up" class="button">
+			<a href="<%=ctxPath%>/mypage/mywatchedmovie.mp" class="button">
 					<i class="fa-solid fa-feather"></i> 내가 본 영화
 				</a> 
-				<a href="<%=ctxPath%>/mypage/myreview.up" class="button">
+				<a href="<%=ctxPath%>/mypage/myreview.mp" class="button">
 					<i class="fa-solid fa-star"></i> 내가 쓴 평점
 				</a>
-				<a href="<%=ctxPath%>/mypage/mymovielike.up" class="button active"> <i
+				<a href="<%=ctxPath%>/mypage/mymovielike.mp" class="button active"> <i
 					class="fa-solid fa-film"></i> 기대되는 영화
 				</a> 
 			</div>
