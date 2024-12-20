@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <% String ctxPath = request.getContextPath(); %>
 
 <%-- 직접 만든 CSS --%>
@@ -10,11 +12,22 @@
 <jsp:include page="/WEB-INF/admin_header1.jsp" />
 
 <%-- 직접 만든 Javascript --%>
-<script type="text/javascript" src="<%= ctxPath%>/js/admin/movieRegister.js" ></script>
+<script type="text/javascript" src="<%= ctxPath%>/js/admin/movieEdit.js"></script>
+
+<%-- 수정하기에서 줄거리 입력을 위한 Javascript --%>
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	var content = "${requestScope.mvvo.content}";
+	content = content.replace(<br>, "\n");   
+	
+	$("textarea#content").val(content);
+});
+</script>
   
 
 	<div class="movie_register_container">
-	    <h2>영화 등록</h2>
+	    <h2>등록된 영화 수정하기</h2>
 		  <form name="movie_register" method="post" action="<%= ctxPath%>/admin/movieRegister.up">
 		    <table class="table" id="tbl_movie_register">
 		      <tbody>
@@ -24,7 +37,7 @@
 		          	<div class="form-group">
 		              	<label for="movie_title"><span class="star">*&nbsp;</span>영화제목</label>
 		              	<!-- 영화 제목을 입력받는 텍스트 필드 -->
-		           	 	<input type="text" name="movie_title" class="form-control" id="movie_title" placeholder="영화 제목을 입력하세요">
+		           	 	<input type="text" name="movie_title" class="form-control" id="movie_title" value="${requestScope.mvvo.movie_title}" placeholder="영화 제목을 입력하세요">
 		            	<!-- 등록된 영화 조회 버튼 -->
 		            	<button type="button" class="btn btn-primary mt-2" onclick="checkDuplicate()">등록된 영화 조회</button>
 		            	<!-- 영화를 조회할 수 있는 팝업창이 나올 곳 -->
@@ -39,8 +52,8 @@
 		          <td>
 		          	 <!-- 줄거리를 입력받는 텍스트 영역 -->
 		          	<div class="form-group">
-		              <label for="content"><span class="star">*&nbsp;</span>줄거리&nbsp; <span id="char_count" class="form-text text-muted">0 / 300</span></label>
-		              <textarea class="form-control" name="content" id="content" rows="4" onkeyup="charCount(this,300)" placeholder="줄거리를 입력하세요."></textarea>
+		              <label for="content"><span class="star">*&nbsp;</span>줄거리&nbsp;(300자)</label>
+		              <textarea class="form-control" name="content" id="content" rows="4" placeholder="줄거리를 입력하세요."><%=request.getAttribute("content") %></textarea>
 		            </div>
 		          </td>
 		        </tr>
@@ -139,7 +152,7 @@
 		      </tbody>
 		    </table>
 		
-		    <button type="submit" id="resister_btn" class="btn btn-success" value="등록하기">영화등록하기</button>
+		    <button type="submit" id="edit_btn" class="btn btn-success" value="등록하기">영화수정하기</button>
 		    <button type="reset" class="btn btn-danger" value="취소하기" onclick="goMovieReset()">취소하기</button>
 		    
 		  </form>

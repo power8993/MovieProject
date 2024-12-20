@@ -16,7 +16,7 @@ input:disabled {
 
 /* 감독 태그 */
 #director_tags .director_tag {
-  background-color: #c0c0c0; /* 파란색 배경 */
+  background-color: #c0c0c0; 
   color: white;     
   border-radius: 12px;
   padding: 8px 12px;
