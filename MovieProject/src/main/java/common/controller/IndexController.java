@@ -32,7 +32,7 @@ public class IndexController extends AbstractController {
 //			e.printStackTrace();
 			
 //			super.setRedirect(true);
-//			super.setViewPage(request.getContextPath() + "/error.up");
+//			super.setViewPage(request.getContextPath() + "/error.mp");
 //		}
 	}
 

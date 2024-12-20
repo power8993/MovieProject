@@ -59,13 +59,13 @@ window.onscroll = function () {
         <div id="logo" class="mb-4">logo</div>
         <div id="web_name" class="mb-4">사이트명</div>
 	        <div>
-	        	<a href="<%= ctxPath %>/admin/admin.up" >관리자</a>
-				<a href="<%= ctxPath %>/mypage/mypage.up" >마이페이지</a>
+	        	<a href="<%= ctxPath %>/admin/admin.mp" >관리자</a>
+				<a href="<%= ctxPath %>/mypage/mypage.mp" >마이페이지</a>
 	        </div>
         <ul class="mb-4">
-            <li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/login/login.up" >로그인</a></li>
-			<li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/member/memberRegister.up" >회원가입</a></li>
-			<li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.up" >공지사항</a></li>
+            <li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/login/login.mp" >로그인</a></li>
+			<li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/member/memberRegister.mp" >회원가입</a></li>
+			<li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.mp" >공지사항</a></li>
         </ul>
     </div>
 </div>
@@ -74,10 +74,10 @@ window.onscroll = function () {
 <div class="nav sticky-nav">
     <div id="nav_mediatop">
         <ul class="nav-list">
-            <li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieList.up">영화</a></li>
-			<li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieTime.up">상영시간표</a></li>
-			<li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieDetail.up">영화상세보기</a></li>
-			<li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/reservation/reservation.up">영화예약</a></li>
+            <li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieList.mp">영화</a></li>
+			<li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieTime.mp">상영시간표</a></li>
+			<li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieDetail.mp">영화상세보기</a></li>
+			<li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/reservation/reservation.mp">영화예약</a></li>
         </ul>
     </div>
 </div>
@@ -92,8 +92,8 @@ window.onscroll = function () {
 				<div>AdminPage Home</div>
 				<li>영화관리</li>
 					<ul>
-						<li><a href="movieRegister.up">영화 등록</a></li>
-						<li><a href="movieRegisteredList.up">영화 리스트<br>[수정/삭제/상영등록]</a></li>
+						<li><a href="movieRegister.mp">영화 등록</a></li>
+						<li><a href="movieRegisteredList.mp">영화 리스트<br>[수정/삭제/상영등록]</a></li>
 					</ul>
 				<li>공지관리</li>
 					<ul>

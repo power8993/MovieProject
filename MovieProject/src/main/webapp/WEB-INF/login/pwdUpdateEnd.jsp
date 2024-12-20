@@ -60,7 +60,7 @@
              else {
                 // 암호가 정규표현식에 맞는 경우
                 const frm = document.pwdUpdateEndFrm;
-                frm.action = "<%= ctxPath%>/login/pwdUpdateEnd.up";
+                frm.action = "<%= ctxPath%>/login/pwdUpdateEnd.mp";
                 frm.method = "post";
                 frm.submit();
              }

@@ -18,7 +18,7 @@ $(document).ready(function(){
 		movie_title_dom.setCustomValidity("");  // 오류 메시지 제거
 		
 		const frm = document.movie_search_frm;
-		frm.action = "movieRegisteredList.up";	// 현재 페이지 보여준다(생략가능)
+		frm.action = "movieRegisteredList.mp";	// 현재 페이지 보여준다(생략가능)
 		frm.method = "get";	
 		frm.submit();
 
@@ -45,7 +45,7 @@ $(document).ready(function(){
 			
 			// AJAX(클릭한 영화 상세페이지)
 			$.ajax({
-				url: 'movieSelectOneDetail.up',  
+				url: 'movieSelectOneDetail.mp',  
 	            type: 'post',
 	            data: { "seq" : seq },  
 				async: true,
@@ -144,7 +144,7 @@ $(document).ready(function(){
 			const frm = document.seqFrm;
 			//const seq = frm.seq.value;	// 선택한 영화의 seq
 			
-			frm.action = "movieEdit.up";  // 수정할 페이지로 이동
+			frm.action = "movieEdit.mp";  // 수정할 페이지로 이동
 			frm.method = "post";  // POST 방식
 			frm.submit();  // 폼 전송
 		});  // end of $(document).on('click', '#edit_button')

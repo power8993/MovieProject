@@ -113,7 +113,7 @@
     </div>
 
     <!-- 공지사항 수정 폼 -->
-    <form action="<%= ctxPath %>/notice/noticeEdit.up" method="post" onsubmit="return goedit()">
+    <form action="<%= ctxPath %>/notice/noticeEdit.mp" method="post" onsubmit="return goedit()">
         <!-- notice_id는 hidden 필드로 전송되어 수정될 공지사항을 식별 -->
         <input type="hidden" name="seq_notice_no" value="${requestScope.seq_notice_no}" />
 

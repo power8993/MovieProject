@@ -112,7 +112,7 @@
     <!-- 공지 작성 버튼 -->
     <div style="display: flex; margin-bottom: 10px; justify-content: space-between;">
     	<h3><i class="fa-solid fa-list" style="color: #252422;"> 공지사항</i></h3>
-        <a href="<%= ctxPath %>/notice/noticeWrite.up">
+        <a href="<%= ctxPath %>/notice/noticeWrite.mp">
             <button class="btn-create"><i class="fa-solid fa-pen"> 공지작성</i></button>
         </a>
     </div>
@@ -134,7 +134,7 @@
                     <fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" /> 
                     <%-- fmt:parseNumber 은 문자열을 숫자형식으로 형변환 시키는 것이다. --%>
           			<td>${(requestScope.totalNoticeCount) - (currentShowPageNo - 1) * sizePerPage - (status.index)}</td>
-                    <td><a href="<%= ctxPath %>/notice/noticeDetail.up?seq=${notice.seq_notice_no}">${notice.notice_subject}</a></td>
+                    <td><a href="<%= ctxPath %>/notice/noticeDetail.mp?seq=${notice.seq_notice_no}">${notice.notice_subject}</a></td>
                     <td>${notice.notice_wtite_date}</td>
                     <td>${notice.views}</td> <!-- 조회수 -->
                 </tr>

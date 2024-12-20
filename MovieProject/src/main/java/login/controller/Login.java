@@ -61,8 +61,8 @@ public class Login extends AbstractController {
 			if(loginuser.getIdle() == 1) {
 //				System.out.println("~~~~ 확인용 휴면처리 대상입니다.");
 				String message = "로그인을 한지 1년이 지나서 휴면상태로 되었습니다.\\n휴면을 풀어주는 페이지로 이동합니다!!";
-				String loc = request.getContextPath()+"/index.up";
-	            // 원래는 위와같이 index.up 이 아니라 휴면인 계정을 풀어주는 페이지로 URL을 잡아주어야 한다.!!
+				String loc = request.getContextPath()+"/index.mp";
+	            // 원래는 위와같이 index.mp 이 아니라 휴면인 계정을 풀어주는 페이지로 URL을 잡아주어야 한다.!!
 				
 				request.setAttribute("message", message);
 	            request.setAttribute("loc", loc);
@@ -114,8 +114,8 @@ public class Login extends AbstractController {
 			 
 			if(loginuser.isRequirePwdChange() ) { // 비밀번호를 변경한지 3개월 이상된 경우
 				String message = "비밀번호를 변경하신지 3개월이 지났습니다.\\n암호를 변경하는 페이지로 이동합니다!!"; 
-				String loc = request.getContextPath()+"/index.up";
-				// 원래는 위와같이 index.up 이 아니라 암호를 변경하는 페이지로 URL을 잡아주어야 한다.!!
+				String loc = request.getContextPath()+"/index.mp";
+				// 원래는 위와같이 index.mp 이 아니라 암호를 변경하는 페이지로 URL을 잡아주어야 한다.!!
 				
 				request.setAttribute("message", message);
 				request.setAttribute("loc", loc);
@@ -129,7 +129,7 @@ public class Login extends AbstractController {
 				
 				// 페이지 이동을 시킨다.
 				super.setRedirect(true);
-				super.setViewPage(request.getContextPath()+"/index.up");
+				super.setViewPage(request.getContextPath()+"/index.mp");
 				
 			}
 			*/

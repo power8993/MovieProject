@@ -26,7 +26,7 @@ public class Logout extends AbstractController {
 		//session.invalidate();
 		
 		super.setRedirect(true);
-		super.setViewPage(request.getContextPath() + "/index.up");
+		super.setViewPage(request.getContextPath() + "/index.mp");
 		
 	}
 
