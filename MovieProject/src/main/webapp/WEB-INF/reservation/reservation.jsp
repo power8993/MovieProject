@@ -13,29 +13,47 @@
 <jsp:include page="../header1.jsp" />
 
 <div class="container">
-	<div class="row">
-		  <div class="col-md-5">
+	
+	<div style="display: flex;">
+		<div style="border:solid 1px blue; width:45%; margin: 0 auto;">
+			<h5 class="title">영화</h5>
+		</div>
+		<div style="border:solid 1px orange; width:10%; margin: 0 auto;">
+			<h5 class="title">영화</h5>
+		</div>
+		<div style="border:solid 1px green; width:45%; margin: 0 auto;">
+			<h5 class="title">영화</h5>
+		</div>
+	
+	</div>
+
+	<%--<div class="row">
+		  <div class="col-md-4">
 		      <h5 class="title">영화</h5>
 		      <div>
-		      
+		      	
 		      </div>
 		  </div>
-		  <div class="col-md-2">
+		  <div class="col-md-4">
 		      <h5 class="title">영화</h5>
 		      <div>
+		      	
 		      
-		      </div>
+		     </div>
 		  </div>
-		  <div class="col-md-5">
+		  <div class="col-md-4">
 		      <h5 class="title">영화</h5>
 		      <div>
+		      	
 		      
 		      </div>
 		  </div>
 
 		  
 	</div>
-
+ --%>
+ 
+ 
 </div>
 
 <jsp:include page="../footer1.jsp" />
