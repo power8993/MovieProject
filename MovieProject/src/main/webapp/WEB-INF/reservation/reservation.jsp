@@ -22,27 +22,87 @@
 	
 	String[] dayname = {"일", "월", "화", "수", "목", "금", "토"};
 	
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+	
 %>
 
 <script type="text/javascript">
 	
 $(document).ready(function(){
 	
+	$("div#step2").hide();
+	$("button#goMovieChoice").hide();
+	
+	let seq_movie_no = "";
+	let input_date = "";
+	
+	// 예약페이지에서 영화를 선택했을 때
 	$("tr.movie-list").click(e => {
 		$("tr.movie-list").css({'background-color':'','color':''});
-        $(e.target).parent().css({'background-color':'black','color':'white'});
-        $("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
+		$(e.target).parent().css({'background-color':'black','color':'white'});
+		
+		$("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
+		
+		seq_movie_no = $(e.target).parent().find("td#seq_movie_no").text();
+		
+		if($("div#time-choice").text() == "시간선택") {
+			return;
+		}
+		
+		
+		
 	});
 	
+	// 예약페이지에서 날짜를 선택했을 때
 	$("li#day").find("span").click(e => {
 		$("li#day").css({'background-color':'','color':''});
         $(e.target).parent().css({'background-color':'black','color':'white'});
-        $("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
+        $("div#time-choice").html("<div>" + $(e.target).parent().find("span#input_date").text() + "</div>");
+        
+        input_date = $(e.target).parent().find("span#input_date").text();
+        
+        if($("div#movie-choice").text() == "영화선택") {
+        	return;
+        }
+        
+        $("div#screen-info").html("<div>" + input_date + "</div>");
+        
+        $.ajax({
+			url:"${pageContext.request.contextPath}/reservation/getScreenTime.mp",
+			type:"post",
+			data: {
+	             "input_date": input_date,
+	             "seq_movie_no": seq_movie_no
+	        },
+	        success: function(data){
+	        	$(data).each(function(){
+					console.log(this.start_time);
+				});
+			},
+			error: function(){
+				alert("request error!");
+			}
+		});
+        
 	});
-	
-	
+
 	
 }); // end of $(document).ready(function() {});;--------------------------------------------
+
+
+function goSeatChoice() {
+	$("div#step1").hide();
+	$("div#step2").show();
+	$("button#goMovieChoice").show();
+	$("button#goSeatChoice").hide();
+}
+
+function goMovieChoice() {
+	$("div#step1").show();
+	$("div#step2").hide();
+	$("button#goMovieChoice").hide();
+	$("button#goSeatChoice").show();
+}
 
 </script>
 
@@ -54,7 +114,7 @@ $(document).ready(function(){
 	
 	<div id="ticket" class="ticket">
 		
-		<div class="steps">
+		<div id="step1" class="steps">
 			
 			<div class="section movie">
 				
@@ -70,6 +130,7 @@ $(document).ready(function(){
 									<tr class="movie-list">
 										<td class="movie-grade">${movievo.movie_grade}</td>
 										<td class="movie-title">${movievo.movie_title}</td>
+										<td id="seq_movie_no" style="display: none">${movievo.seq_movie_no}</td>
 									</tr>
 			      				</c:forEach>
 		      				</tbody>
@@ -98,6 +159,7 @@ $(document).ready(function(){
 						<li class="day" id="day" data-index="0">
 							<span class="dayweek" name="dd"><%= dayname[currentDate.get(Calendar.DAY_OF_WEEK)-1]%>&nbsp;&nbsp;</span>
 							<span class="date"><%= currentDate.get(Calendar.DATE) %></span>
+							<span id="input_date" style="display: none"><%= sdf.format(currentDate.getTime())%></span>
 						</li>
 						<% 
 							for(int i=0; i<20; i++) {
@@ -122,6 +184,7 @@ $(document).ready(function(){
 								<li class="day" id="day">
 									<span class="dayweek"><%= dayname[currentDate.get(Calendar.DAY_OF_WEEK)-1] %>&nbsp;&nbsp;</span>
 									<span class="date"><%= currentDate.get(Calendar.DATE) %></span>
+									<span id="input_date" style="display: none"><%= sdf.format(currentDate.getTime())%></span>
 								</li>
 								<%
 							} // end of for---------------------------------------
@@ -146,11 +209,43 @@ $(document).ready(function(){
 		
 		<%-- -------------------------------------------------------------------- --%>
 		
+		<div id="step2" class="steps">
+			<div class="col-head">
+				<h3 class="title">인원 / 좌석</h3>
+			</div>
+			<div class="col-body">
+				<div id="person-screen">
+					<div id="numberOfPeople">
+						<div>
+							<label>일반</label>
+							<button>a</button>
+						</div>
+						<div>
+							<label>청소년</label>
+							<button>a</button>
+						</div>
+						<div>
+							<label>어린이</label>
+							<button>a</button>
+						</div>
+					</div>
+					<div id="screen-info">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<%-- -------------------------------------------------------------------- --%>
+		
 		<div id="ticket-info-container" class="ticket-info-container">
 			<div id="ticket-info" class="container ticket-info" style="align-content: center;">
+				<button id="goMovieChoice" onclick="goMovieChoice()">-> 영화선택</button>
 				<div id="movie-choice" class="movie-choice">영화선택</div>
-				<div id="theater-choice">극장선택</div>
-				<div>> 좌석선택 > 결제</div>
+				<div id="time-choice">시간선택</div>
+				<div>> 좌석선택</div>
+				<div>> 결제</div>
+				<button id="goSeatChoice" onclick="goSeatChoice()">-> 좌석선택</button>
 			</div>
 		</div>
 		

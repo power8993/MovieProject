@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -13,6 +14,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import movie.domain.MovieVO;
+import movie.domain.ShowTimeVO_sunghoon;
 
 public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 	
@@ -83,6 +85,50 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		return movieList;
 		
 	} // end of public List<MovieVO> reservationMovieList() throws SQLException----------------------------------
+
+
+	
+	// 영화와 날짜를 선택했을 때 보여줄 상영하는 영화 시간 리스트
+	@Override
+	public List<ShowTimeVO_sunghoon> getScreenTime(Map<String, String> paraMap) throws SQLException {
+		
+		List<ShowTimeVO_sunghoon> showTimeList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select to_char(start_time, 'hh24mi') as start_time, to_char(end_time, 'hh24mi') as end_time, "
+					   + " SEAT_ARR, SEQ_SHOWTIME_NO, FK_SEQ_MOVIE_NO, TOTAL_VIEWER, UNUSED_SEAT "
+					   + " from tbl_showtime "
+					   + " where FK_SEQ_MOVIE_NO = ? and to_char(start_time, 'yyyymmdd') = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("seq_movie_no"));
+			pstmt.setString(2, paraMap.get("input_date"));
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ShowTimeVO_sunghoon showTime = new ShowTimeVO_sunghoon();
+				
+				showTime.setStart_time(rs.getString("start_time"));
+				showTime.setEnd_time(rs.getString("end_time"));
+				showTime.setSeat_arr(rs.getString("SEAT_ARR"));
+				showTime.setSeq_showtime_no(rs.getInt("SEQ_SHOWTIME_NO"));
+				showTime.setFk_seq_movie_no(rs.getInt("FK_SEQ_MOVIE_NO"));
+				showTime.setTotal_viewer(rs.getInt("TOTAL_VIEWER"));
+				showTime.setUnused_seat(rs.getInt("UNUSED_SEAT"));
+				
+				showTimeList.add(showTime);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return showTimeList;
+		
+	} // end of public List<ShowTimeVO_sunghoon> getScreenTime(Map<String, String> paraMap) throws SQLException--------------------
 	
 
 	
