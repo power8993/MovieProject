@@ -85,8 +85,8 @@ $(document).ready(function(){
 					
 					$.each(json, function(index, item){
 						console.log(item.seat_arr);
-						v_html += "<tr class='time_choice'><td class='time_data' onclick='onScreenClick(" + item.start_time + "," + item.seq_showtime_no + "," + item.fk_screen_no + ",'" + item.seat_arr + "')')>" + (item.start_time).substr(0,2) 
-								+ "" + (item.start_time).substr(2,2) + "</td><td>" + item.unused_seat + "석</td></tr>";
+						v_html += "<tr class='time_choice'><td class='time_data' onclick='onScreenClick(" + item.start_time + "," + item.seq_showtime_no + "," + item.fk_screen_no + "," + "'" + item.seat_arr + "'" + ")')>" + (item.start_time).substr(0,2) 
+								+ "" + ({item.start_time).substr(2,2) + "</td><td>" + item.unused_seat + "석</td></tr>";
 						
 					}); // end of $.each(json, function(index, item)--------------------------------------------------
 					
