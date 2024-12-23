@@ -60,7 +60,7 @@
                     <div class="movie-title">${movie.movie_title} | ${movie.running_time}분 | ${movie.start_date} 개봉</div>
                     <div>
                       
-                        <button class="showtime available">${movie.svo.start_time}<span class="seat-info"> ${movie.svo.start_time}</span></button>
+                        <button class="showtime available">${movie.svo.start_time}</button>
                        
                     </div>
                 </div>

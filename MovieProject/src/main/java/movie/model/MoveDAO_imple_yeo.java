@@ -182,7 +182,7 @@ public class MoveDAO_imple_yeo implements MovieDAO_yeo {
             		   + "    movie_title , "
             		   + "    running_time , "
             		   + "    movie_grade , "
-            		   + "    start_date , "
+            		   + "    TO_CHAR(start_date, 'YYYY-MM-DD') AS start_date , "
             		   + "    start_time , "
             		   + "    unused_seat "
             		   + " from "
