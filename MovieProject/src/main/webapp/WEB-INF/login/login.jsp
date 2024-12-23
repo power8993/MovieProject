@@ -18,8 +18,8 @@
       ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
       
       // === 로그인을 하지 않은 상태일 때 
-        //     로컬스토리지(localStorage)에 저장된 key가 'saveid' 인 userid 값을 불러와서 
-        //     input 태그 userid 에 넣어주기 ===
+      //     로컬스토리지(localStorage)에 저장된 key가 'saveid' 인 userid 값을 불러와서 
+      //     input 태그 userid 에 넣어주기 ===
            
         if( ${empty sessionScope.loginuser} ) {  // 로그인이 되어지면 session 정보에 넣어둠   
            

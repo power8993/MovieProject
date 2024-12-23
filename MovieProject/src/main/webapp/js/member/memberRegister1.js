@@ -6,6 +6,68 @@ let b_emailcheck_click = false;
 
 $(document).ready(function(){
 	
+	
+	/* --------------- 생년월일 선택하기 시작 ---------------- */
+	// '출생 연도' 셀렉트 박스 option 목록 동적 생성
+	const birthYearEl = document.querySelector('#birth-year')
+	// option 목록 생성 여부 확인
+	isYearOptionExisted = false;
+	birthYearEl.addEventListener('focus', function () {
+	  // year 목록 생성되지 않았을 때 (최초 클릭 시)
+	  if(!isYearOptionExisted) {
+	    isYearOptionExisted = true
+	    for(var i = 1940; i <= 2025; i++) {
+	      // option element 생성
+	      const YearOption = document.createElement('option')
+	      YearOption.setAttribute('value', i)
+	      YearOption.innerText = i
+	      // birthYearEl의 자식 요소로 추가
+	      this.appendChild(YearOption);
+	    }
+	  }
+	});
+	
+	// '출생 연도' 셀렉트 박스 option 목록 동적 생성
+		const birthmonthEl = document.querySelector('#birth-month')
+		// option 목록 생성 여부 확인
+		ismonthOptionExisted = false;
+		birthmonthEl.addEventListener('focus', function () {
+		  // year 목록 생성되지 않았을 때 (최초 클릭 시)
+		  if(!ismonthOptionExisted) {
+		    ismonthOptionExisted = true
+		    for(var i = 1; i <= 12; i++) {
+		      // option element 생성
+		      const YearOption = document.createElement('option')
+		      YearOption.setAttribute('value', i)
+		      YearOption.innerText = i
+		      // birthYearEl의 자식 요소로 추가
+		      this.appendChild(YearOption);
+		    }
+		  }
+		});
+
+		// '출생 연도' 셀렉트 박스 option 목록 동적 생성
+		const birthdayEl = document.querySelector('#birth-day')
+		// option 목록 생성 여부 확인
+		isdayOptionExisted = false;
+		birthdayEl.addEventListener('focus', function () {
+		  // year 목록 생성되지 않았을 때 (최초 클릭 시)
+		  if(!isdayOptionExisted) {
+		    isdayOptionExisted = true
+		    for(var i = 1; i <= 31; i++) {
+		      // option element 생성
+		      const YearOption = document.createElement('option')
+		      YearOption.setAttribute('value', i)
+		      YearOption.innerText = i
+		      // birthYearEl의 자식 요소로 추가
+		      this.appendChild(YearOption);
+		    }
+		  }
+		});
+		/* --------------- 생년월일 선택하기 끝  ---------------- */	
+	
+	
+	
 	$("span.error").hide();
 	$("input#name").focus();
 	
@@ -19,21 +81,18 @@ $(document).ready(function(){
 		if(name == "") {
 			// 입력하지 않거나 공백만 입력했을 경우
 			
-			$("table#tblMemberRegister :input").prop("disabled", true);
-			$(e.target).prop("disabled", false);
-			$(e.target).val("").focus();
 			
-		//	$(e.target).next().show();
+			$(e.target).next().show();
 		//	또는
-			$(e.target).parent().find("span.error").show();
+			//$(e.target).parent().find("span.error").show();
 		}
 		else {
 			// 공백이 아닌 글자를 입력했을 경우
 			
 			$("table#tblMemberRegister :input").prop("disabled", false);
-		//	$(e.target).next().show();
+			$(e.target).next().hide();
 		//	또는
-			$(e.target).parent().find("span.error").hide();
+		//	$(e.target).parent().find("span.error").hide();
 		}
 		
 	}); // 아이디가 name 인 것이 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
@@ -41,25 +100,28 @@ $(document).ready(function(){
 	
 	$("input#userid").blur((e) => {
 			
-		const userid = $(e.target).val().trim();
-		if(userid == "") {
-			// 입력하지 않거나 공백만 입력했을 경우
+		//const userid = $(e.target).val().trim();
+		
+		const regExp_Userid = /^[a-zA-Z][a-zA-Z0-9_-]{3,14}$/;
 			
-			$("table#tblMemberRegister :input").prop("disabled", true);
-			$(e.target).prop("disabled", false);
-			$(e.target).val("").focus();
+		const bool = regExp_Userid.test($(e.target).val());
+		
+		if(!bool) {
+			// 아이디가 정규표현식에 위배된 경우
 			
-		//	$(e.target).next().show();
+			$("#idcheckResult").text(""); // 중복확인이 성공한 경우의 문구가 있을 수 있으니 사전에 제거
+			$(e.target).parent().next().show();
+			
 		//	또는
-			$(e.target).parent().find("span.error").show();
+			//$(e.target).parent().find("span.error").show();
 		}
 		else {
-			// 공백이 아닌 글자를 입력했을 경우
+			// 아이디가 정규표현식에 부합하는 경우
 			
 			$("table#tblMemberRegister :input").prop("disabled", false);
-		//	$(e.target).next().show();
+			$(e.target).parent().next().hide();
 		//	또는
-			$(e.target).parent().find("span.error").hide();
+		//	$(e.target).parent().find("span.error").hide();
 		}
 		
 	}); // 아이디가 userid 인 것이 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
@@ -77,13 +139,9 @@ $(document).ready(function(){
 		if(!bool) {
 			// 암호가 정규표현식에 위배된 경우
 			
-			$("table#tblMemberRegister :input").prop("disabled", true);
-			$(e.target).prop("disabled", false);
-			$(e.target).val("").focus();
-			
-		//	$(e.target).next().show();
+			$(e.target).next().show();
 		//	또는
-			$(e.target).parent().find("span.error").show();
+		//	$(e.target).parent().find("span.error").show();
 		}
 		else {
 			// 암호가 정규표현식에 부합하는 경우
@@ -91,7 +149,7 @@ $(document).ready(function(){
 			$("table#tblMemberRegister :input").prop("disabled", false);
 		//	$(e.target).next().show();
 		//	또는
-			$(e.target).parent().find("span.error").hide();
+			$(e.target).next().hide();
 		}
 		
 	}); // 아이디가 pwd 인 것이 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
@@ -102,15 +160,12 @@ $(document).ready(function(){
 		if( $("input#pwd").val() != $(e.target).val() ) {
 			// 암호와 암호확인값이 일치하지 않는 경우
 			
-			$("table#tblMemberRegister :input").prop("disabled", true);
-			$("input#pwd").prop("disabled", false);
-			$(e.target).prop("disabled", false);
-			$("input#pwd").val("").focus();
+			
 			$(e.target).val("");
 			
 		//	$(e.target).next().show();
 		//	또는
-			$(e.target).parent().find("span.error").show();
+			$(e.target).next().show();
 		}
 		else {
 			// 암호와 암호확인값이 일치하는 경우
@@ -118,7 +173,7 @@ $(document).ready(function(){
 			$("table#tblMemberRegister :input").prop("disabled", false);
 		//	$(e.target).next().show();
 		//	또는
-			$(e.target).parent().find("span.error").hide();
+			$(e.target).next().hide();
 		}
 		
 	}); // 아이디가 pwdcheck 인 것이 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
@@ -136,21 +191,18 @@ $(document).ready(function(){
 		if(!bool) {
 			// 이메일이 정규표현식에 위배된 경우
 			
-			$("table#tblMemberRegister :input").prop("disabled", true);
-			$(e.target).prop("disabled", false);
-			$(e.target).val("").focus();
 			
-		//	$(e.target).next().show();
+			$("#emailCheckResult").text(""); // 중복확인이 성공한 경우의 문구가 있을 수 있으니 사전에 제거
+			$(e.target).parent().next().show();
 		//	또는
-			$(e.target).parent().find("span.error").show();
+		//	$(e.target).parent().find("span.error").show();
 		}
 		else {
 			// 이메일이 정규표현식에 부합한 경우
 			
-			$("table#tblMemberRegister :input").prop("disabled", false);
-		//	$(e.target).next().show();
+			$(e.target).parent().next().hide();
 		//	또는
-			$(e.target).parent().find("span.error").hide();
+		//	$(e.target).parent().find("span.error").hide();
 		}
 		
 	}); // 아이디가 email 인 것이 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
@@ -167,22 +219,20 @@ $(document).ready(function(){
 		
 		if(!bool) {
 			// 연락처 국번이 정규표현식에 위배된 경우
-			
-			$("table#tblMemberRegister :input").prop("disabled", true);
-			$(e.target).prop("disabled", false);
-			$(e.target).val("").focus();
-			
 		//	$(e.target).next().show();
 		//	또는
-			$(e.target).parent().find("span.error").show();
+			$(e.target).next().next().show();
 		}
 		else {
 			// 연락처 국번이 정규표현식에 부합하는 경우
+			if($("input#hp3").val()==""){
+					$("#hp_error").show();
+					return;
+				}
 			
-			$("table#tblMemberRegister :input").prop("disabled", false);
 		//	$(e.target).next().show();
 		//	또는
-			$(e.target).parent().find("span.error").hide();
+			$(e.target).next().next().hide();
 		}
 		
 	}); // 아이디가 hp2 인 것이 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
@@ -204,72 +254,36 @@ $(document).ready(function(){
 		if(!bool) {
 			// 연락처 마지막 4자리가 정규표현식에 위배된 경우
 			
-			$("table#tblMemberRegister :input").prop("disabled", true);
-			$(e.target).prop("disabled", false);
-			$(e.target).val("").focus();
-			
 		//	$(e.target).next().show();
 		//	또는
-			$(e.target).parent().find("span.error").show();
+		//	$(e.target).parent().find("span.error").show();
+			$(e.target).next().show();
 		}
 		else {
+			if($("input#hp2").val()==""){
+					$("#hp_error").show();
+					return;
+				}
 			// 연락처 마지막 4자리가 정규표현식에 부합하는 경우
-			
-			$("table#tblMemberRegister :input").prop("disabled", false);
 		//	$(e.target).next().show();
 		//	또는
-			$(e.target).parent().find("span.error").hide();
+		//	$(e.target).parent().find("span.error").hide();
+		$(e.target).next().hide();
 		}
 		
 	}); // 아이디가 hp3 인 것이 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
 	
 	
-	$("input#postcode").blur((e) => {
-								
-		const regExp_postcode = /^\d{5}$/;
-		// 숫자 5자리만 들어오도록 검사해주는 정규표현식 객체 생성
-		
-		const bool = regExp_postcode.test($(e.target).val());
-		
-		if(!bool) {
-			// 우편번호가 정규표현식에 위배된 경우
-			
-			$("table#tblMemberRegister :input").prop("disabled", true);
-			$(e.target).prop("disabled", false);
-			$(e.target).val("").focus();
-			
-		//	$(e.target).next().show();
-		//	또는
-			$(e.target).parent().find("span.error").show();
-		}
-		else {
-			// 우편번호가 정규표현식에 부합하는 경우
-			
-			$("table#tblMemberRegister :input").prop("disabled", false);
-		//	$(e.target).next().show();
-		//	또는
-			$(e.target).parent().find("span.error").hide();
-		}
-		
-	}); // 아이디가 postcode 인 것이 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
-	
-	
-	///////////////////////////////////////////////////////////////////////////////////
-
-    // 우편번호를 읽기전용(readonly) 로 만들기
-    /*   
-        >>>> .prop() 와 .attr() 의 차이 <<<<            
-        .prop() ==> form 태그내에 사용되어지는 엘리먼트의 disabled, selected, checked 의 속성값 확인 또는 변경하는 경우에 사용함. 
-        .attr() ==> 그 나머지 엘리먼트의 속성값 확인 또는 변경하는 경우에 사용함.
-    */
-    $("input#postcode").attr("readonly", true);
-    // 우편번호를 읽기전용(readonly) 로 만들기
-    $("input#address").attr("readonly", true);
-    // 참고항목을 읽기전용(readonly) 로 만들기
-    $("input#extraAddress").attr("readonly", true);
-
- 
-    
+	$("input#hp2").on("input", (e) => {
+		    const input = $(e.target);
+		    const sanitizedValue = input.val().replace(/[^0-9]/g, ""); // 숫자가 아닌 문자를 제거
+		    input.val(sanitizedValue); // 필드에 정제된 값 설정
+	});
+	$("input#hp3").on("input", (e) => {
+	    const input = $(e.target);
+	    const sanitizedValue = input.val().replace(/[^0-9]/g, ""); // 숫자가 아닌 문자를 제거
+	    input.val(sanitizedValue); // 필드에 정제된 값 설정
+	});
 
 	 
 	 // === jQuery UI 의 datepicker === //
@@ -333,7 +347,7 @@ $(document).ready(function(){
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	  
 	  
-	$("input#datepicker").bind("keyup", e => {
+	/*$("input#datepicker").bind("keyup", e => {
 		$(e.target).val("").next().show();
 	}); // 생년월일을 키보드로 입력하는 경우
 	
@@ -341,104 +355,54 @@ $(document).ready(function(){
 		if( $(e.target).val() != "" ) {
 			$(e.target).next().hide();
 		}
-	}); // 생년월일을 마우스로 입력하는 경우
+	}); // 생년월일을 마우스로 입력하는 경우*/
+	
+	$("input.requiredInfo_radio").bind("change", e => {
+				$("#gender_error").hide();
+	}); // 성별을 선택한 경우 경고문고를 숨김.
 
 	
 	//////////////////////////////////////////////////////////////////////////
 	
 	// "아이디중복확인" 을 클릭했을 때 이벤트 처리하기 시작 //
-	$("img#idcheck").click(function(){
+	$("button#idcheck").click(function(){
 		b_idcheck_click = true;
-		// "아이디중복확인" 을 클릭했는지 클릭 하지 않았는지 여부를 알아오기 위한 용도
 		
-		// 입력하고자 하는 아이디가 데이터베이스 테이블에 존재하는지, 존재하지 않는지 알아와야 한다.
-		/*
-           	Ajax (Asynchronous JavaScript and XML)란?                         
-          	==> 이름만 보면 알 수 있듯이 '비동기 방식의 자바스크립트와 XML' 로서     
-              	Asynchronous JavaScript + XML 인 것이다.
-              	한마디로 말하면, Ajax 란? Client 와 Server 간에 XML 데이터를 JavaScript 를 사용하여 비동기 통신으로 주고 받는 기술이다.
-              	하지만 요즘에는 데이터 전송을 위한 데이터 포맷방법으로 XML 을 사용하기 보다는 JSON(Javascript Standard Object Notation) 을 더 많이 사용한다. 
-              	참고로 HTML은 데이터 표현을 위한 포맷방법이다.
-              	그리고, 비동기식이란 어떤 하나의 웹페이지에서 여러가지 서로 다른 다양한 일처리가 개별적으로 발생한다는 뜻으로서, 
-              	어떤 하나의 웹페이지에서 서버와 통신하는 그 일처리가 발생하는 동안 일처리가 마무리 되기전에 또 다른 작업을 할 수 있다는 의미이다.
-		*/
-	/*	
-		// === 첫번째 방법 === //
-		$.ajax({
-			url : "idDuplicateCheck.mp",
-			data : {"userid": $("input#userid").val()}, // data 속성은 http://localhost:9090/MyMVC/member/idDuplicateCheck.mp 로 전송해야할 데이터를 말한다.
-			type : "post",	// type 을 생략하면 type : "GET" 이다.
-			async : true,	// async:true 가 비동기 방식을 말한다. async 을 생략하면 기본값이 비동기 방식인 async:true 이다.
-							// async:false 가 동기 방식이다. 지도를 할때는 반드시 동기방식인 async:false 을 사용해야만 지도가 올바르게 나온다.
-			success : function(text){
-				// console.log(text);
-				// {"isExists":false}
-				// {"isExists":true}
-				// text 는 idDuplicateCheck.mp 을 통해 가져온 결과물인 "{"isExists":true}" 또는 "{"isExists":false}" 로 되어지는 string 타입의 결과물이다.
-				
-				// console.log("~~~ txt 의 데이터타입 : ", typeof text);
-				// ~~~ txt 의 데이터타입 : string
-				
-				const json = JSON.parse(text);
-				// JSON.parse(text); 은 JSON.parse("{"isExists":true}"); 또는 JSON.parse("{"isExists":false}"); 와 같은 것인데
-				// 그 결과물은 {"isExists":true} 또는 {"isExists":false} 와 같은 문자열을 자바스크립트 객체로 변환해주는 것이다.
-				// 조심할 것은 text 는 반드시 JSON 형식으로 되어진 문자열이어야 한다.
-				
-				// console.log("json => ", json);
-				// json =>  {isExists: true}
-				// json =>  {isExists: false}
-				
-				// console.log("~~~ json 의 데이터타입 : ", typeof json);
-				// ~~~ json 의 데이터타입 :  object
-				
-				if(json.isExists) {
-					// 입력한 userid 가 이미 사용중이라면
-					$("span#idcheckResult").html( $("input#userid").val() + "은 이미 사용중 이므로 다른 아이디를 입력하세요" 	).css({"color":"red"});
-					$("input#userid").val("");
-				}
-				else {
-					// 입력한 userid 가 존재하지 않는 경우라면
-					$("span#idcheckResult").html( $("input#userid").val() + "은 사용가능 합니다." 	).css({"color":"blue"});
-				}
-			},
-			
-			error: function(request, status, error){
-                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-            }
-			
-		});
-	*/	
-		
-		
-		// === 두번째 방법 === //
 		$.ajax({
 			url : "idDuplicateCheck.mp", // js 파일이므로 상대경로를 사용할 수 없다.
 			data : {"userid": $("input#userid").val()}, // data 속성은 http://localhost:9090/MyMVC/member/idDuplicateCheck.mp 로 전송해야할 데이터를 말한다.
-			type : "post",	// type 을 생략하면 type : "GET" 이다.
-	//		async : true,	// async:true 가 비동기 방식을 말한다. async 을 생략하면 기본값이 비동기 방식인 async:true 이다.
-							// async:false 가 동기 방식이다. 지도를 할때는 반드시 동기방식인 async:false 을 사용해야만 지도가 올바르게 나온다.
+			type : "post",	
 							
-			dataType : "json",	// Javascript Standard Object Notation.  dataType은 /MyMVC/member/idDuplicateCheck.mp 로 부터 실행되어진 결과물을 받아오는 데이터타입을 말한다. 
-								// 만약에 dataType:"xml" 으로 해주면 /MyMVC/member/idDuplicateCheck.mp 로 부터 받아오는 결과물은 xml 형식이어야 한다. 
-								// 만약에 dataType:"json" 으로 해주면 /MyMVC/member/idDuplicateCheck.mp 로 부터 받아오는 결과물은 json 형식이어야 한다.
+			dataType : "json",	
 								
 			success : function(json){
 				console.log(json);
-				// {"isExists":false}
-				// {"isExists":true}
-				// json 은 idDuplicateCheck.mp 을 통해 가져온 결과물인 {"isExists":true} 또는 {"isExists":false} 로 되어지는 object 타입의 결과물이다.
+				
 				
 				console.log("~~~ json 의 데이터타입 : ", typeof json);
 				// ~~~ json 의 데이터타입 : object
 				
+				const regExp_Userid = /^[a-zA-Z][a-zA-Z0-9_-]{3,14}$/;
+							
+				const bool = regExp_Userid.test($("#userid").val());
+				
 				if(json.isExists) {
 					// 입력한 userid 가 이미 사용중이라면
-					$("span#idcheckResult").html( $("input#userid").val() + "은 이미 사용중 이므로 다른 아이디를 입력하세요" 	).css({"color":"red"});
+					$("span#idcheckResult").html("이미 사용 중인 아이디입니다.").css({"color":"navy","fontSize":"10pt"});
 					$("input#userid").val("");
+					b_idcheck_click = false;
+				}
+				else if($("input#userid").val()==""){
+					$("span#idcheckResult").html("").css({"color":"blue"});
+					b_idcheck_click = false;
+				}
+				else if(!bool){
+					$("span#idcheckResult").html("").css({"color":"blue"});
+					b_idcheck_click = false;
 				}
 				else {
 					// 입력한 userid 가 존재하지 않는 경우라면
-					$("span#idcheckResult").html( $("input#userid").val() + "은 사용가능 합니다.").css({"color":"blue"});
+					$("span#idcheckResult").html("사용 가능한 아이디입니다.").css({"color":"navy","fontSize":"10pt"});
 				}
 			},
 			
@@ -459,33 +423,43 @@ $(document).ready(function(){
 	
 	
 	// "이메일중복확인" 을 클릭했을 때 이벤트 처리하기 시작 //
-	$("span#emailcheck").click(function(){
+	$("button#emailcheck").click(function(){
 		b_emailcheck_click = true;
 		// "이메일중복확인" 을 클릭했는지 클릭 하지 않았는지 여부를 알아오기 위한 용도
 		
 		$.ajax({
 			url: "emailDuplicateCheck.mp",
-			data: {"email":$("input#email").val()},  // data 속성은 http://localhost:9090/MyMVC/member/emailDuplicateCheck.mp 로 전송해야할 데이터를 말한다.
-			type: "post",	// type 을 생략하면 type : "get"이다.
-		//	async: true,	// async:true 가 비동기 방식을 말한다. async 을 생략하면 기본값이 비동기 방식인 async:true 이다.
-							// async:false 가 동기 방식이다. 지도를 할때는 반드시 동기방식인 async:false 을 사용해야만 지도가 올바르게 나온다.
-							
-			dataType: "json",	// Javascript Standard Object Notation.  dataType은 /MyMVC/member/idDuplicateCheck.mp 로 부터 실행되어진 결과물을 받아오는 데이터타입을 말한다. 
-								// 만약에 dataType:"xml" 으로 해주면 /MyMVC/member/idDuplicateCheck.mp 로 부터 받아오는 결과물은 xml 형식이어야 한다. 
-								// 만약에 dataType:"json" 으로 해주면 /MyMVC/member/idDuplicateCheck.mp 로 부터 받아오는 결과물은 json 형식이어야 한다.
-								
+			data: {"email":$("input#email").val()},  
+			type: "post",	
+			dataType: "json",		
 			success:function(json){
+				const regExp_email = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i);
+				// 숫자/문자/특수문자 포함 형태의 8~15자리 이내의 암호 정규표현식 객체 생성
+				
+				const bool = regExp_email.test($("#email").val());
+				
 				if(json.isExists) {
 					// 입력한 email 이 이미 사용중이면
-					$("span#emailCheckResult").html( $("input#email").val() + "은 이미 사용중 이므로 다른 아이디를 입력하세요").css({"color":"red"});
+					$("span#emailCheckResult").html("이미 사용 중인 이메일입니다.").css({
+					        "color": "red",
+					        "fontSize": "10pt"
+					    });
 					$("input#email").val("");
+					b_emailcheck_click = false;
+				}
+				else if($("input#email").val()==""){
+					$("span#emailCheckResult").html("");
+					b_emailcheck_click = false;
+				}
+				else if(!bool){
+					$("span#emailCheckResult").html("");
+					b_emailcheck_click = false;
 				}
 				else {
 					// 입력한 email 이 존재하지 않는다면
-					$("span#emailCheckResult").html( $("input#email").val() + "은 사용가능 합니다.").css({"color":"navy"});
+					$("span#emailCheckResult").html("사용 가능한 이메일입니다.").css({"color":"navy","fontSize": "10pt"});
 				}
 			},
-				
 			error: function(request, status, error){
                 alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
             }
@@ -506,73 +480,59 @@ $(document).ready(function(){
 // function declaration
 // "가입하기" 버튼 클릭시 호출되는 함수
 function goRegister() {
+
+	// 가입하기 버튼 클릭 시 값 입력을 안한 곳으로 이동
 	
-	// **** 필수입력사항에 모두 입력이 되었는지 검사하기 시작 **** //
-	let b_requiredInfo = true;
-/*	
-	$("input.requiredInfo").each( function(index, elmt) {
-		const data = $(elmt).val().trim();
-		if(data == "") {
-			alert("*로 표시된 필수입력사항은 모두 입력하셔야 합니다.");
-			b_requiredInfo = false;
-			return false; // break; 라는 뜻이다.
-		}
-	});
-*/	
-// 또는
-	const requiredInfo_list = document.querySelectorAll("input.requiredInfo");
-	for(let i=0; i<requiredInfo_list.length; i++) {
-		const val = requiredInfo_list[i].value.trim();
-		if(val == "") {
-			alert("*로 표시된 필수입력사항은 모두 입력하셔야 합니다.");
-			b_requiredInfo = false;
-			break;
-		}
-	}
+	if($("#name").val().trim()==""){
+		$("#name").focus();
+		return;
 		
-	if(!b_requiredInfo) {
-		return; // goRegister() 함수를 종료한다.
 	}
-	// **** 필수입력사항에 모두 입력이 되었는지 검사하기 끝 **** //
-	
-	// **** "아이디 중복확인"을 클릭했는지 검사하기 시작 **** //
-	if(!b_idcheck_click) {
-		// "아이디중복확인"을 클릭 하지 않았을 경우
-		alert("아이디 중복확인을 클릭하셔야 합니다.");
-		return; // goRegister() 함수를 종료한다.
+	if($("#userid").val().trim()==""){
+			$("#userid").focus();
+			return;	
+	}
+	if($("#pwd").val().trim()==""){
+			$("#pwd").focus();
+			return;	
+	}
+	if($("#pwdcheck").val().trim()==""){
+			$("#pwdcheck").focus();
+			return;	
+	}
+	if($("#email").val().trim()==""){
+			$("#email").focus();
+			return;	
+	}
+	if($("#hp2").val().trim()==""){
+			$("#hp2").focus();
+			return;	
+	}
+	if($("#hp3").val().trim()==""){
+			$("#hp3").focus();
+			return;	
 	}
 	
-	// **** "아이디 중복확인"을 클릭했는지 검사하기 끝 **** //
 	
-	// **** "이메일 중복확인"을 클릭했는지 검사하기 시작 **** //
-	if(!b_emailcheck_click) {
-		// "이메일중복확인"을 클릭 하지 않았을 경우
-		alert("이메일 중복확인을 클릭하셔야 합니다.");
-		return; // goRegister() 함수를 종료한다.
-	}
 	
-	// **** "이메일 중복확인"을 클릭했는지 검사하기 끝 **** //
 	
 	// **** "성별"을 선택했는지 검사하기 시작 **** //
 	const radio_chechked_length = $("input:radio[name='gender']:checked").length;
 	
 	if(radio_chechked_length == 0) {
-		alert("성별을 선택하셔야 합니다.");
+		//alert("성별을 선택하셔야 합니다.");
+		$("#gender_error").show();
 		return; // goRegister() 함수를 종료한다.
 	}
 	
 	// **** "성별"을 선택했는지 검사하기 끝 **** //
-	
-	// **** "셩년월일"의 값을 입력했는지 검사하기 시작 **** //
-	const birthday = $("input#datepicker").val().trim();
-	
-	if(birthday == "") {
-		alert("생년월일을 입력하셔야 합니다.");
-		return; // goRegister() 함수를 종료한다.
-	}
+	/*
+	if($("#datepicker").val().trim()==""){
+			$("#datepicker").next().show();
+			return;
+		}
+		*/
 		
-	// **** "셩년월일"의 값을 입력했는지 검사하기 끝 **** //
-	
 	// **** 약관에 동의를 했는지 검사하기 시작 **** //
 	const checkbox_chechked_length = $("input:checkbox[id='agree']:checked").length;
 		
@@ -583,6 +543,25 @@ function goRegister() {
 
 	// **** 약관에 동의를 했는지 검사하기 끝 **** //
 	
+
+		
+		// **** "아이디 중복확인"을 클릭했는지 검사하기 시작 **** //
+		if(!b_idcheck_click) {
+			// "아이디중복확인"을 클릭 하지 않았을 경우
+			alert("아이디 중복확인을 클릭하셔야 합니다.");
+			return; // goRegister() 함수를 종료한다.
+		}
+		
+		// **** "아이디 중복확인"을 클릭했는지 검사하기 끝 **** //
+		
+		// **** "이메일 중복확인"을 클릭했는지 검사하기 시작 **** //
+		if(!b_emailcheck_click) {
+			// "이메일중복확인"을 클릭 하지 않았을 경우
+			alert("이메일 중복확인을 클릭하셔야 합니다.");
+			return; // goRegister() 함수를 종료한다.
+		}
+		
+		// **** "이메일 중복확인"을 클릭했는지 검사하기 끝 **** //
 	
 	
 	const frm = document.registerFrm;

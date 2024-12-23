@@ -6,11 +6,11 @@
     //    /MyMVC
 %>
 
-<%--사용자 css --%>
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/login/idFind.css" > 
 
 <jsp:include page="/WEB-INF/header1.jsp" />
 
+<%--사용자 css --%>
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/login/idFind.css" > 
 
 <script type="text/javascript">
 
@@ -23,12 +23,10 @@ $(document).ready(function(){
 	
 	
 	$("input:text[name='email']").bind("keyup", function(e){
-		if(e.keyCode == 13) {
-	  	goidfind();
-	 }
-});// end of $("input:text[name='email']").bind("keyup", function(e){})-------
-		  
-// Function Declaration
+		 if(e.keyCode == 13) {
+		  	goidfind();
+		 }
+	});// end of $("input:text[name='email']").bind("keyup", function(e){})-------
 		  
 }); // end of $(document).ready(function(){})------------------------------------------------------------
 	
@@ -60,7 +58,7 @@ function goidfind() {
 		
 		
 		
-		/////////////////============ ajax ============///////////////////////
+	/////////////////============ ajax ============///////////////////////
 	
     $.ajax({
         url: "idFind.mp", // 서버의 컨트롤러 매핑 주소
@@ -73,11 +71,11 @@ function goidfind() {
         success: function(json) {
             if (json.userid) {
                 // 성공적으로 아이디를 찾은 경우
-            	$("#div_findResult > span").html(name + " 회원님의 아이디는 <span style='color: orange; font-size: 18pt; font-weight: bold;'>" + json.userid + "</span>입니다.");
+            	$("#div_findResult ").html(name + " 회원님의 아이디는 <span style='color: orange; font-size: 18pt; font-weight: bold;'>" + json.userid + "</span>입니다.");
 
             } else {
                 // 아이디를 찾지 못한 경우
-                $("#div_findResult > span").html("존재하지 않은 정보입니다.");
+                $("#div_findResult").html("존재하지 않은 정보입니다.");
             }
         },
         error: function(request, status, error) {
@@ -88,50 +86,34 @@ function goidfind() {
 	
 </script>
 
-<style>
 
+<div id="form_container">
 
-</style>
-
-<div class="container" style="height:600px;">
-
-
-	<div id="form_container">
-			<form name="idFindFrm">
-		
-				<div id="inputIdPW">
-					<div id="logo">LOGO</div>
-		
-					<table id="loginTbl">
-						<tr>
-							<td>성명</td>
-							<td><input type="text" name="name" size="25" class="inputNameEmail" placeholder="성명을 입력하세요" autocomplete="off" /> 
-							</td>
-						</tr>
-						<tr>
-							<td style="padding-top:20px;">이메일</td>
-							<td style="padding-top:20px;">
-								<input type="text" name="email" size="25" class="inputNameEmail" placeholder="이메일을 입력하세요" autocomplete="off" />
-							</td>
-						</tr>
-					</table>
-				</div>
-				<button type="button"  class="loginjspBtn" id="btnSubmit"onclick="goidfind()">아이디 찾기</button>
-			</form>
-			
-			<div style="width: 350px; margin: 0 auto;">
-		    <div id="buttonContainer">
-					<button type="button" class="loginjspBtn" id="findIdBtn" onclick="location.href='<%=request.getContextPath()%>/login/login.mp'">로그인</button>
-				<form action="<%=request.getContextPath()%>/login/idpwFind.mp" method="get">
-					<button type="submit" class="loginjspBtn" id="findPwBtn" name="action" value="findPw">비밀번호 찾기</button>
-				</form>
-		    </div>
-		</div>
-		<div class="my-3 text-center" id="div_findResult">
-		   <span style="color: black; font-size: 14pt; font-weight: bold;"></span>
-		</div>
+<div id="logo">LOGO</div>
+	<form name="pwdFindFrm">
 	
+        <label style="display: block; width: 90px; margin:0px;">성명</label>
+        <input type="text" name="name" size="25" autocomplete="off" placeholder="성명을 입력하세요" style="display: block; width:100%;"/> 
+ 
+        <label style="display: block; width: 90px; margin:10px 0 0 0;">이메일</label>
+        <div style="display:flex">
+        	<input type="text" name="email" size="28" autocomplete="off" placeholder="이메일을 입력하세요" style="display: block; "/> <button type="button" id="findBtn"onclick="goidfind()">아이디 찾기</button>
+        </div>
+	
+	   
+	</form>
+	 <div class="my-3 text-center" id="div_findResult">
+
 	</div>
 	
+	<div style="width: 350px; margin: 0 auto;">
+	    <div id="buttonContainer">
+				<button type="button" class="loginjspBtn" id="loginBtn" onclick="location.href='<%=request.getContextPath()%>/login/login.mp'">로그인</button>
+			<form action="<%=request.getContextPath()%>/login/idpwFind.mp" method="get">
+				<button type="submit" class="loginjspBtn" id="findPwBtn" name="action" value="findPw">비밀번호 찾기</button>
+			</form>
+	    </div>
+	</div>
 </div>
+	
 <jsp:include page="/WEB-INF/footer1.jsp" />

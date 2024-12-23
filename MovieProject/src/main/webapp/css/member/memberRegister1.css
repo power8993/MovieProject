@@ -1,0 +1,167 @@
+@charset "UTF-8";
+
+div#divRegisterFrm{
+	margin: 0 auto;
+	width:980px;
+	border:solid 1px red;
+	
+}
+input[name='userid'],input[name='name'],input[name='email'],input[name='pwd'],input[name='pwdcheck'],input[name='pwd2'],input[name='hp1'],input[name='hp2'],input[name='hp3'],input[name='birthday']{
+	border: none;        /* 테두리 제거 */
+    outline: none;       /* 포커스 시 나타나는 아웃라인 제거 (선택 사항) */
+    background-color: transparent; /* 배경을 투명하게 */
+    padding: 5px;  
+    border-bottom: solid 2px gray; 
+    
+}
+input[name='hp1'],input[name='hp2'],input[name='hp3']{
+	text-align:center;
+}
+
+.labelName{
+	margin-top:30px;
+	display: block;
+	width:110px;
+}
+
+.error{
+	font-size:10pt;
+	color:red;
+	/* font-weight:700; */
+}
+
+#registerbtn {
+	width:100px;
+	height:50px;
+	color: #ffffff; 
+    font-size: 14px; 
+    background-color: #ff7a00;
+    border: none;
+    border-radius: 5px; 
+    cursor: pointer;
+    flex: 1;
+    text-align: center; 
+    font-weight:700;
+    transition: 0.3s;
+}
+#registerbtn:hover{
+	
+	background-color: #fa9205;
+
+}
+
+#resetbtn {
+	width:100px;
+	height:50px;
+	color: #ffffff;
+    font-size: 14px;
+    background-color: #ccc5b9; 
+    border: none; 
+    border-radius: 5px;
+    cursor: pointer; 
+    flex: 1; 
+    text-align: center; 
+    font-weight:700;
+    transition: 0.3s;
+}
+#resetbtn:hover{
+	background-color: #c7c2be; 
+}
+
+/* -----------------------------  */
+
+
+
+
+table#tblMemberRegister {
+ /*	border: solid 1px red; */ 
+	width: 93%;
+	margin: 1% auto;
+}
+
+table#tblMemberRegister th {
+    border: solid 1px gray; 
+}
+
+table#tblMemberRegister th {
+	height: 60px;
+	background-color: silver;
+	font-size: 14pt;
+}
+
+table#tblMemberRegister td {
+	line-height: 200%;
+	padding: 1.2% 0;
+}
+/* 
+span.star {
+	color: red;
+	font-weight: bold;
+	font-size: 13pt;
+}
+ */
+
+table#tblMemberRegister > tbody > tr > td:first-child {
+	width: 20%;
+	font-weight: bold;
+	text-align: left;
+}
+
+table#tblMemberRegister > tbody > tr > td:nth-child(2) {
+	width: 80%;
+	text-align: left;
+}
+
+img#idcheck, img#zipcodeSearch {
+	cursor: pointer;
+}
+
+span#emailcheck {
+	border: solid 1px gray;
+	border-radius: 5px;
+	font-size: 8pt;
+	display: inline-block;
+	width: 80px;
+	height: 30px;
+	text-align: center;
+	margin-left: 10px;
+	cursor: pointer;
+}
+
+
+
+/*                */
+
+
+
+/* SECTION - BIRTH */
+.box{
+	background: transparent;
+	border:none;
+	border-bottom: solid 2px gray;
+	margin-top:auto;
+}
+.info#info__birth {
+  display: flex;
+}
+
+.info#info__birth select {
+  margin-left : 7px;
+}
+
+.info#info__birth select:first-child {
+  margin-left : 0px;
+}
+.info#info__birth select::-webkit-scrollbar {
+  width: 10px;
+}
+
+.info#info__birth select::-webkit-scrollbar-thumb {
+  background-color: #b6b6b6;
+  border-radius: 3px;
+}
+
+.info#info__birth select::-webkit-scrollbar-track {
+  background-color: #ebe9e9;
+  border-radius: 6px;
+}
