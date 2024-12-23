@@ -84,9 +84,9 @@ $(document).ready(function(){
 					v_html = "<table><tbody>"
 					
 					$.each(json, function(index, item){
-						
-						v_html += "<tr class='time_choice'><td class='time_data' onclick='onScreenClick(" + item.start_time + ")')>" + (item.start_time).substr(0,2) 
-								+ ":" + (item.start_time).substr(2,2) + "</td><td>" + item.unused_seat + "석</td></tr>";
+						console.log(item.seat_arr);
+						v_html += "<tr class='time_choice'><td class='time_data' onclick='onScreenClick(" + item.start_time + "," + item.seq_showtime_no + "," + item.fk_screen_no + ",'" + item.seat_arr + "')')>" + (item.start_time).substr(0,2) 
+								+ "" + (item.start_time).substr(2,2) + "</td><td>" + item.unused_seat + "석</td></tr>";
 						
 					}); // end of $.each(json, function(index, item)--------------------------------------------------
 					
@@ -121,11 +121,16 @@ function goMovieChoice() {
 	$("button#goSeatChoice").show();
 }
 
-function onScreenClick(start_time) {
+function onScreenClick(start_time, seq_showtime_no, fk_screen_no, seat_arr) {
+	
 	$("div#time-choice").html(String(start_time).substr(0,2) + ":" + String(start_time).substr(2,2));
 	
     $("div#screen-time-info").html(String(start_time).substr(0,2) + ":" + String(start_time).substr(2,2));
+	$("div#seq_showtime_no").html(seq_showtime_no);
 	
+	console.log(fk_screen_no)
+	console.log(seat_arr);
+	console.log(typeof seat_arr);
 }
 
 </script>
@@ -287,6 +292,7 @@ function onScreenClick(start_time) {
 				<div>
 					<div id="date-choice">시간선택</div>
 					<div id="time-choice"></div>
+					<div id="seq_showtime_no" style="display: none;"></div>
 				</div>
 				<div>> 좌석선택</div>
 				<div>> 결제</div>

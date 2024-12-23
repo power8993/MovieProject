@@ -54,6 +54,7 @@ public class GetScreenTime extends AbstractController {
 	            jsonObj.put("fk_seq_movie_no", svo.getFk_seq_movie_no());
 	            jsonObj.put("total_viewer", svo.getTotal_viewer());
 	            jsonObj.put("unused_seat", svo.getUnused_seat());
+	            jsonObj.put("fk_screen_no", svo.getFk_screen_no());
 				
 	            jsonArr.put(jsonObj);
 	            

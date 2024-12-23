@@ -98,7 +98,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 			conn = ds.getConnection();
 			
 			String sql = " select to_char(start_time, 'hh24mi') as start_time, to_char(end_time, 'hh24mi') as end_time, "
-					   + " seat_arr, seq_showtime_no, fk_seq_movie_no, total_viewer, unused_seat "
+					   + " seat_arr, seq_showtime_no, fk_seq_movie_no, total_viewer, unused_seat, fk_screen_no "
 					   + " from tbl_showtime "
 					   + " where FK_SEQ_MOVIE_NO = ? and to_char(start_time, 'yyyymmdd') = ? ";
 			
@@ -110,7 +110,6 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 			
 			while(rs.next()) {
 				ShowTimeVO_sunghoon showTime = new ShowTimeVO_sunghoon();
-				
 				showTime.setStart_time(rs.getString("start_time"));
 				showTime.setEnd_time(rs.getString("end_time"));
 				showTime.setSeat_arr(rs.getString("seat_arr"));
@@ -118,6 +117,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 				showTime.setFk_seq_movie_no(rs.getInt("fk_seq_movie_no"));
 				showTime.setTotal_viewer(rs.getInt("total_viewer"));
 				showTime.setUnused_seat(rs.getInt("unused_seat"));
+				showTime.setFk_screen_no(rs.getInt("fk_screen_no"));
 				
 				showTimeList.add(showTime);
 			}
