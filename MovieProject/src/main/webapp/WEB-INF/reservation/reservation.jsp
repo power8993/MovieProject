@@ -49,44 +49,61 @@ $(document).ready(function(){
 			return;
 		}
 		
-		
-		
 	});
 	
 	// 예약페이지에서 날짜를 선택했을 때
 	$("li#day").find("span").click(e => {
 		$("li#day").css({'background-color':'','color':''});
         $(e.target).parent().css({'background-color':'black','color':'white'});
-        $("div#time-choice").html("<div>" + $(e.target).parent().find("span#input_date").text() + "</div>");
+        $("div#date-choice").html($(e.target).parent().find("span#input_date").text());
+        $("div#time-choice").empty();
         
         input_date = $(e.target).parent().find("span#input_date").text();
+        
+        $("div#screen-date-info").html(input_date);
         
         if($("div#movie-choice").text() == "영화선택") {
         	return;
         }
         
-        $("div#screen-info").html("<div>" + input_date + "</div>");
         
         $.ajax({
 			url:"${pageContext.request.contextPath}/reservation/getScreenTime.mp",
-			type:"post",
+			dataType:"json",
 			data: {
 	             "input_date": input_date,
 	             "seq_movie_no": seq_movie_no
 	        },
-	        success: function(data){
-	        	$(data).each(function(){
-					console.log(this.start_time);
-				});
+	        success: function(json){
+	        	if(json.length == 0) {
+	        		v_html = `선택하신 날짜에 상영중인 영화가 없습니다.`;
+	        		$("div.time").find("div.col-body").html(v_html);
+				}
+				else if(json.length > 0) {
+				   
+					v_html = "<table><tbody>"
+					
+					$.each(json, function(index, item){
+						
+						v_html += "<tr class='time_choice'><td class='time_data' onclick='onScreenClick(" + item.start_time + ")')>" + (item.start_time).substr(0,2) 
+								+ ":" + (item.start_time).substr(2,2) + "</td><td>" + item.unused_seat + "석</td></tr>";
+						
+					}); // end of $.each(json, function(index, item)--------------------------------------------------
+					
+					v_html += "</table></tbody>"
+							
+					$("div.time").find("div.col-body").html(v_html);
+				}
 			},
 			error: function(){
 				alert("request error!");
 			}
-		});
+		}); // end of $.ajax({})---------------------------------------------------------------------
         
-	});
-
+	}); // end of $("li#day").find("span").click(e => {})-------------------------------------------
 	
+	
+
 }); // end of $(document).ready(function() {});;--------------------------------------------
 
 
@@ -102,6 +119,13 @@ function goMovieChoice() {
 	$("div#step2").hide();
 	$("button#goMovieChoice").hide();
 	$("button#goSeatChoice").show();
+}
+
+function onScreenClick(start_time) {
+	$("div#time-choice").html(String(start_time).substr(0,2) + ":" + String(start_time).substr(2,2));
+	
+    $("div#screen-time-info").html(String(start_time).substr(0,2) + ":" + String(start_time).substr(2,2));
+	
 }
 
 </script>
@@ -201,7 +225,6 @@ function goMovieChoice() {
 				</div>
 
 				<div class="col-body">
-				
 				</div>
 			</div>
 			
@@ -218,20 +241,39 @@ function goMovieChoice() {
 					<div id="numberOfPeople">
 						<div>
 							<label>일반</label>
-							<button>a</button>
+							<button>0</button>
+							<button>1</button>
+							<button>2</button>
+							<button>3</button>
+							<button>4</button>
+							<button>5</button>
 						</div>
 						<div>
 							<label>청소년</label>
-							<button>a</button>
+							<button>0</button>
+							<button>1</button>
+							<button>2</button>
+							<button>3</button>
+							<button>4</button>
+							<button>5</button>
 						</div>
 						<div>
 							<label>어린이</label>
-							<button>a</button>
+							<button>0</button>
+							<button>1</button>
+							<button>2</button>
+							<button>3</button>
+							<button>4</button>
+							<button>5</button>
 						</div>
 					</div>
 					<div id="screen-info">
-						
+						<div id="screen-date-info"></div>
+						<div id="screen-time-info"></div>
 					</div>
+				</div>
+				<div id="seat-screen">
+					<div>ddd</div>
 				</div>
 			</div>
 		</div>
@@ -242,7 +284,10 @@ function goMovieChoice() {
 			<div id="ticket-info" class="container ticket-info" style="align-content: center;">
 				<button id="goMovieChoice" onclick="goMovieChoice()">-> 영화선택</button>
 				<div id="movie-choice" class="movie-choice">영화선택</div>
-				<div id="time-choice">시간선택</div>
+				<div>
+					<div id="date-choice">시간선택</div>
+					<div id="time-choice"></div>
+				</div>
 				<div>> 좌석선택</div>
 				<div>> 결제</div>
 				<button id="goSeatChoice" onclick="goSeatChoice()">-> 좌석선택</button>

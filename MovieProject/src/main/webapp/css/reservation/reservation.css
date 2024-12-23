@@ -122,3 +122,21 @@ div#time-choice {
 	color : white;
 }
 
+div#person-screen {
+	height: 150px;
+}
+
+div#numberOfPeople {
+	display: inline-block;
+	width: 500px;
+}
+
+div#screen-info {
+	display: inline-block;
+	width: 400px;
+}
+
+div#seat-screen {
+	display: block;	
+	height: 350px;
+}

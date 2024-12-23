@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,29 +26,49 @@ public class GetScreenTime extends AbstractController {
 
 		String method = request.getMethod(); // "GET" 또는 "POST"
 		
-		if("POST".equalsIgnoreCase(method)) {
-	        // 비밀번호 찾기 모달창에서 "찾기" 버튼을 클릭했을 경우
 			
-			String input_date = request.getParameter("input_date");
-			String seq_movie_no = request.getParameter("seq_movie_no");
+		String input_date = request.getParameter("input_date");
+		String seq_movie_no = request.getParameter("seq_movie_no");
+		
+		Map<String, String> paraMap = new HashMap<>();
+		paraMap.put("input_date", input_date);
+		paraMap.put("seq_movie_no", seq_movie_no);
+		
+		List<ShowTimeVO_sunghoon> showTimeList = mdao.getScreenTime(paraMap);
+		
+		request.setAttribute("showTimeList", showTimeList);
+		
+		JSONArray jsonArr = new JSONArray(); // []
+		
+		if(showTimeList.size() > 0) {
+			// DB에서 조회해온 결과물이 있을 경우
 			
-			Map<String, String> paraMap = new HashMap<>();
-			paraMap.put("input_date", input_date);
-			paraMap.put("seq_movie_no", seq_movie_no);
+			for (ShowTimeVO_sunghoon svo : showTimeList) {
+				
+				JSONObject jsonObj = new JSONObject(); // {}
+				
+				jsonObj.put("start_time", svo.getStart_time());
+				jsonObj.put("end_time", svo.getEnd_time());
+				jsonObj.put("seat_arr", svo.getSeat_arr());
+				jsonObj.put("seq_showtime_no", svo.getSeq_showtime_no());
+	            jsonObj.put("fk_seq_movie_no", svo.getFk_seq_movie_no());
+	            jsonObj.put("total_viewer", svo.getTotal_viewer());
+	            jsonObj.put("unused_seat", svo.getUnused_seat());
+				
+	            jsonArr.put(jsonObj);
+	            
+			} // end of for----------------------------------------------
 			
-			List<ShowTimeVO_sunghoon> showTimeList = mdao.getScreenTime(paraMap);
-			
-			System.out.println(showTimeList.size());
-			
-			request.setAttribute("showTimeList", showTimeList);
-			
-			
-		} // end of if("POST".equalsIgnoreCase(method))-----------------------------------------
-			
-		request.setAttribute("method", method);
+		} // end of if(productList.size() > 0) -----------------------------------------------------------
+		
+		String json = jsonArr.toString(); // 문자열로 변환
+		
+		request.setAttribute("json", json);
 		
 		super.setRedirect(false);
-	    super.setViewPage("/WEB-INF/reservation/reservation.jsp");
+		super.setViewPage("/WEB-INF/jsonview.jsp");
+			
+			
 	}
 
 }
