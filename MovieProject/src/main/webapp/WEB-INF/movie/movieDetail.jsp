@@ -128,12 +128,14 @@
 <body>
 <script src="https://kit.fontawesome.com/0c69fdf2c0.js" crossorigin="anonymous"></script>
 <jsp:include page="/WEB-INF/header1.jsp" />
+<script type="text/javascript" src="<%= ctxPath%>/js/movie/movieDetail.js"></script>
+
 
 <div class="container">
     <div class="movie-header">
     	<div style="position: relative; width: 185px; height: 260px;">
-        	<img src="" alt="영화 포스터" class="movie-poster" style="border: 0px solid red; width:100%; height: 260px; display: block; position: absolute; top:0px; left: 0px;">
-        	<i class="fa-solid fa-heart" style="color:white; position: absolute; top: 10px; right: 10px; z-index: 5; font-size: 20pt;"></i>
+        	<img src="https://i.namu.wiki/i/F9-VHNMvy23qFNV9moV7bsaQsSHzREVkry2ZZTCOhEdDXKoaYR3G89gpHwBh_YpR82DraNnHgUscE5_GQed9uPS2ADEKYc9nitowed_U4zuRyeE94P-4XbXbPKYj-Jlu0Ij-NRMX-Q5tZZa-QG48Pw.webp" alt="영화 포스터" class="movie-poster" style="border: 0px solid red; width:100%; height: 260px; display: block; position: absolute; top:0px; left: 0px;">
+        	<i id="like" class="fa-solid fa-heart fa-bounce" style="color:#252422; position: absolute; top: 10px; right: 10px; z-index: 5; font-size: 20pt; "></i>
         </div>
         <div class="movie-details" style="margin: 0 15px">
             <div class="movie-title">${mvo.movie_title} </div>
