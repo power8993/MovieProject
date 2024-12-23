@@ -35,9 +35,7 @@ public class MovieDAO_imple implements MovieDAO {
 		} 
 		
 	}
-	
-	
-	
+
 	// === Method === //
 	// 사용한 자원을 반납하는 close() 메소드 생성하기
 	private void close() {
@@ -240,6 +238,8 @@ public class MovieDAO_imple implements MovieDAO {
 		
 		return mvvo;
 	}// end of public MovieVO selectMovieDetail(String seq) throws SQLException {}-------------------
+
+	
 	
 
 	

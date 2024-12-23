@@ -1,0 +1,10 @@
+package movie.model;
+
+import java.sql.SQLException;
+
+import movie.domain.MovieVO_wonjae;
+
+public interface MovieDAO_wonjae {
+	 // 영화상세보기
+	 MovieVO_wonjae movieDetail(int seq_movie_no) throws SQLException;
+}
