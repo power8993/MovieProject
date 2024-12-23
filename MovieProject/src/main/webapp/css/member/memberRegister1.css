@@ -19,7 +19,7 @@ input[name='hp1'],input[name='hp2'],input[name='hp3']{
 }
 
 .labelName{
-	margin-top:30px;
+	margin-top: 15px;
 	display: block;
 	width:110px;
 }
@@ -130,22 +130,22 @@ span#emailcheck {
 
 
 
-/*                */
-
-
 
 /* SECTION - BIRTH */
 .box{
 	background: transparent;
 	border:none;
 	border-bottom: solid 2px gray;
-	margin-top:auto;
+	color: gray;
+	display:block;
+	height:30px;
+	outline: none; 
 }
-.info#info__birth {
+/* .info#birth {
   display: flex;
-}
+} */
 
-.info#info__birth select {
+.info#birth select {
   margin-left : 7px;
 }
 

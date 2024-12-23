@@ -60,17 +60,20 @@
 			     <input type="radio" name="gender" value="2" id="female" class="requiredInfo_radio" style="margin-left: 10%;" /><label for="female" style="margin-left: 1.5%;">여자</label>
 			          <span class="error" id="gender_error" style="display:block;">•성별을 선택해 주세요.</span>
 			  </div>    
-			  <div class="info" id="info__birth">
-				  <select class="box" id="birth-year" name="year">
-				    <option disabled selected>출생 연도</option>
-				  </select>
-				  <select class="box" id="birth-month" name="month">
-				    <option disabled selected>월</option>
-				  </select>
-				  <select class="box" id="birth-day" name="day">
-				    <option disabled selected>일</option>
-				  </select>
-				  <span class="error" id="gender_error" style="display:block;">•성별을 선택해 주세요.</span>
+			  <div class="info" id="birth">
+			  <label class="labelName">생년월일</label>
+				  <div style="display:flex;">
+					  <select class="box" id="birth-year" name="year" style="margin-left:0px;">
+					    <option disabled selected value="">출생 연도</option>
+					  </select>
+					  <select class="box" id="birth-month" name="month">
+					    <option disabled selected value="">월</option>
+					  </select>
+					  <select class="box" id="birth-day" name="day">
+					    <option disabled selected value="">일</option>
+					  </select>
+				  </div>
+			  <span class="error" id="birth_error" style="display:block;">•생년월일을 모두 선택해 주세요.</span>
 			  </div>
 	      </div>                 
 	  </div>         

@@ -8,62 +8,68 @@ $(document).ready(function(){
 	
 	
 	/* --------------- 생년월일 선택하기 시작 ---------------- */
-	// '출생 연도' 셀렉트 박스 option 목록 동적 생성
-	const birthYearEl = document.querySelector('#birth-year')
-	// option 목록 생성 여부 확인
-	isYearOptionExisted = false;
+	// '출생 연도', '출생 월', '출생 일' 엘리먼트 가져오기
+	const birthYearEl = document.querySelector('#birth-year');
+	const birthMonthEl = document.querySelector('#birth-month');
+	const birthDayEl = document.querySelector('#birth-day');
+
+	// option 목록 생성 여부 확인 변수
+	let isYearOptionExisted = false;
+	let isMonthOptionExisted = false;
+
+	// 연도 선택 옵션 동적 생성
 	birthYearEl.addEventListener('focus', function () {
-	  // year 목록 생성되지 않았을 때 (최초 클릭 시)
-	  if(!isYearOptionExisted) {
-	    isYearOptionExisted = true
-	    for(var i = 1940; i <= 2025; i++) {
-	      // option element 생성
-	      const YearOption = document.createElement('option')
-	      YearOption.setAttribute('value', i)
-	      YearOption.innerText = i
-	      // birthYearEl의 자식 요소로 추가
-	      this.appendChild(YearOption);
+	  if (!isYearOptionExisted) {
+	    isYearOptionExisted = true;
+	    for (let i = 1940; i <= 2025; i++) {
+	      const yearOption = document.createElement('option');
+	      yearOption.setAttribute('value', i);
+	      yearOption.innerText = i;
+	      this.appendChild(yearOption);
 	    }
 	  }
 	});
-	
-	// '출생 연도' 셀렉트 박스 option 목록 동적 생성
-		const birthmonthEl = document.querySelector('#birth-month')
-		// option 목록 생성 여부 확인
-		ismonthOptionExisted = false;
-		birthmonthEl.addEventListener('focus', function () {
-		  // year 목록 생성되지 않았을 때 (최초 클릭 시)
-		  if(!ismonthOptionExisted) {
-		    ismonthOptionExisted = true
-		    for(var i = 1; i <= 12; i++) {
-		      // option element 생성
-		      const YearOption = document.createElement('option')
-		      YearOption.setAttribute('value', i)
-		      YearOption.innerText = i
-		      // birthYearEl의 자식 요소로 추가
-		      this.appendChild(YearOption);
-		    }
-		  }
-		});
 
-		// '출생 연도' 셀렉트 박스 option 목록 동적 생성
-		const birthdayEl = document.querySelector('#birth-day')
-		// option 목록 생성 여부 확인
-		isdayOptionExisted = false;
-		birthdayEl.addEventListener('focus', function () {
-		  // year 목록 생성되지 않았을 때 (최초 클릭 시)
-		  if(!isdayOptionExisted) {
-		    isdayOptionExisted = true
-		    for(var i = 1; i <= 31; i++) {
-		      // option element 생성
-		      const YearOption = document.createElement('option')
-		      YearOption.setAttribute('value', i)
-		      YearOption.innerText = i
-		      // birthYearEl의 자식 요소로 추가
-		      this.appendChild(YearOption);
-		    }
-		  }
-		});
+	// 월 선택 옵션 동적 생성
+	birthMonthEl.addEventListener('focus', function () {
+	  if (!isMonthOptionExisted) {
+	    isMonthOptionExisted = true;
+	    for (let i = 1; i <= 12; i++) {
+	      const monthOption = document.createElement('option');
+	      monthOption.setAttribute('value', i);
+	      monthOption.innerText = i;
+	      this.appendChild(monthOption);
+	    }
+	  }
+	});
+
+	// 일 선택 옵션 동적 생성 및 업데이트
+	function updateDays() {
+	  // 선택된 연도와 월 가져오기
+	  const selectedYear = parseInt(birthYearEl.value);
+	  const selectedMonth = parseInt(birthMonthEl.value);
+
+	  // 일 선택지 초기화
+	  birthDayEl.innerHTML = '<option disabled selected>일</option>';
+
+	  // 선택된 연도와 월에 따라 일 수 계산
+	  if (selectedYear && selectedMonth) {
+	    const daysInMonth = new Date(selectedYear, selectedMonth, 0).getDate(); // 마지막 날 계산
+	    for (let i = 1; i <= daysInMonth; i++) {
+	      const dayOption = document.createElement('option');
+	      dayOption.setAttribute('value', i);
+	      dayOption.innerText = i;
+	      birthDayEl.appendChild(dayOption);
+	    }
+	  }
+	}
+
+	// 연도 또는 월이 변경될 때 일 업데이트
+	birthYearEl.addEventListener('change', updateDays);
+	birthMonthEl.addEventListener('change', updateDays);
+
+	
+	
 		/* --------------- 생년월일 선택하기 끝  ---------------- */	
 	
 	
@@ -360,6 +366,75 @@ $(document).ready(function(){
 	$("input.requiredInfo_radio").bind("change", e => {
 				$("#gender_error").hide();
 	}); // 성별을 선택한 경우 경고문고를 숨김.
+	
+	/* 생년월일 선택시 진해지게(원래 회색이었던 것을 검정색으로) */
+	$("#birth-year").on("change", function () {
+		$("#birth-year").css({"color":"black"});
+	});
+	$("#birth-month").on("change", function () {
+		$("#birth-month").css({"color":"black"});
+	});
+	$("#birth-day").on("change", function () {
+		$("#birth-day").css({"color":"black"});
+	});
+
+	
+	/*
+	$("#birth-year, #birth-month, #birth-day").on("change", function () {
+		console.log($("#birth-year").val());
+		console.log($("#birth-month").val());
+		console.log($("#birth-day").val());
+		
+	    if ($("#birth-year").val() !== "" &&
+	        $("#birth-month").val() !== ""&&
+	        $("#birth-day").val() !== "") 
+			{
+		        $("#birth_error").hide(); 
+				return;
+		    }
+		if ($("#birth-year").val() == "" ||
+	        $("#birth-month").val() == ""||
+	        $("#birth-day").val() == "") 
+			{
+		        $("#birth_error").show(); 
+				return;
+		    }		
+	});
+	
+	$("#birth-year").on("change", function() {
+
+		if ($("#birth-year").val() != "") {
+			$("#birth_error").hide();
+			return;
+		}
+		else{
+			$("#birth_error").show();
+		}
+
+	});
+	$("#birth-month").on("change", function() {
+
+		if ($("#birth-month").val() != "") {
+			$("#birth_error").hide();
+			return;
+		}
+		else {
+			$("#birth_error").show();
+		}
+
+	});
+	$("#birth-day").on("change", function() {
+
+		if ($("#birth-day").val() != "") {
+			$("#birth_error").hide();
+			return;
+		}
+		else {
+			$("#birth_error").show();
+		}
+
+	});
+	*/
 
 	
 	//////////////////////////////////////////////////////////////////////////
@@ -526,7 +601,10 @@ function goRegister() {
 	}
 	
 	// **** "성별"을 선택했는지 검사하기 끝 **** //
-	/*
+	
+	
+	
+	/*데이트피커(달력) 삭제 전 코드
 	if($("#datepicker").val().trim()==""){
 			$("#datepicker").next().show();
 			return;
