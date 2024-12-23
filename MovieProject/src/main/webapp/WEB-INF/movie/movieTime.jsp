@@ -57,11 +57,11 @@
         <c:if test="${movieTime != null && not empty movieTime}">
             <c:forEach var="movie" items="${movieTime}">
                 <div class="movie-section">
-                    <div class="movie-title">${movie.movie_title} | ${movie.fk_category_code} | ${movie.running_time}분</div>
+                    <div class="movie-title">${movie.movie_title} | ${movie.running_time}분 | ${movie.start_date} 개봉</div>
                     <div>
-                       <c:forEach var="movie" items="${movieTime}">
-                        <button class="showtime available">${movie.start_date}<span class="seat-info"> (잔여석 100석)</span></button>
-                        </c:forEach>
+                      
+                        <button class="showtime available">${movie.svo.start_time}<span class="seat-info"> ${movie.svo.start_time}</span></button>
+                       
                     </div>
                 </div>
             </c:forEach>

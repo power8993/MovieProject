@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import movie.domain.MovieVO;
+import movie.domain.MovieVO_yeo;
 import movie.model.MoveDAO_imple_yeo;
 import movie.model.MovieDAO_yeo;
 
@@ -17,7 +18,7 @@ public class MovieTime extends AbstractController {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            List<MovieVO> movieTime = mdao.selectMovieTiem();
+            List<MovieVO_yeo> movieTime = mdao.selectMovieTiem();
             request.setAttribute("movieTime", movieTime);
 
             super.setRedirect(false);
@@ -26,6 +27,7 @@ public class MovieTime extends AbstractController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+       
     }
 }
 

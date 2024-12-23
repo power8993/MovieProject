@@ -9,6 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import movie.domain.MovieVO;
+import movie.domain.MovieVO_yeo;
 import movie.model.*;
 
 public class MovieList extends AbstractController {
@@ -21,14 +22,11 @@ public class MovieList extends AbstractController {
 
         try {
             // 영화 데이터 가져오기
-        	List<MovieVO> movies = mdao.select_Movies();
-        	System.out.println("영화 데이터 크기: " + (movies != null ? movies.size() : "null"));
-
+        	List<MovieVO_yeo> movies = mdao.select_Movies();
 
             // 영화 데이터를 request에 저장
             request.setAttribute("movies", movies);
            
-
             // View 경로 설정 (forward 방식)
             super.setRedirect(false);
             super.setViewPage("/WEB-INF/movie/movieList.jsp");
