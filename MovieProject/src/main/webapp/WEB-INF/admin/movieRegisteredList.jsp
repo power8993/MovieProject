@@ -66,8 +66,8 @@
 						<c:forEach var="movievo" items="${requestScope.movieList}">
 							<tr>
 								<td><span style="display:none;">${movievo.seq_movie_no}</span>${movievo.register_date}</td>
-								<td>${movievo.fk_category_code}</td>
-								<td><img src="${movie.poster_file}" alt="${movie.movie_title}" style="width:50px; height:auto;">&nbsp;${movievo.movie_title}</td>
+								<td>${movievo.catevo.category}</td>
+								<td><img src="<%= ctxPath%>/images/admin/poster_file/${movievo.poster_file}" alt="${movievo.movie_title}" style="width:60px; height:auto;">&nbsp;${movievo.movie_title}</td>
 								<td><img src="<%= ctxPath%>/images/admin/movie_grade/${movievo.movie_grade}.png" alt="${movievo.movie_grade}" style="width:30px; height:auto;"></td>
 								<td>${movievo.start_date}</td>
 								

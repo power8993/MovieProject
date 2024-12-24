@@ -33,11 +33,13 @@ public class MovieRegisterSearch extends AbstractController {
 				// movieList 를 JOSN 배열로 변환
 				JSONArray movieArray = new JSONArray();
 				
+				
 				for (MovieVO movie : movieList) {
+
 					JSONObject jsonObj = new JSONObject();
 					jsonObj.put("poster_file", movie.getPoster_file());
 					jsonObj.put("movie_title", movie.getMovie_title());
-					jsonObj.put("fk_category_code", movie.getFk_category_code()); 
+					jsonObj.put("fk_category_code",movie.getCatevo().getCategory()); 
 					jsonObj.put("movie_grade", movie.getMovie_grade()); 
 					jsonObj.put("register_date", movie.getRegister_date()); 
 					
@@ -66,7 +68,7 @@ public class MovieRegisterSearch extends AbstractController {
 				request.setAttribute("loc", loc);
 				
 				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/error.jsp");
+				super.setViewPage("/WEB-INF/msg.jsp");
 				
 			}
 			

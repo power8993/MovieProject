@@ -19,7 +19,7 @@ public class MovieEdit extends AbstractController {
 		if ("POST".equalsIgnoreCase(method)) {
 			
 			String seq = request.getParameter("seq");
-			
+ 
 			MovieVO mvvo = mvdao.selectMovieDetail(seq);
 			
 			request.setAttribute("mvvo", mvvo);

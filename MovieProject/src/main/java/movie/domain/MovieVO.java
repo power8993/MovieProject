@@ -18,8 +18,38 @@ public class MovieVO {
 	private String video_url;          // 비디오URL
 	private String register_date;      // 등록일자
 	
+	// === Join Field === // 
+	private ScreenVO   scvo;
+	private CategoryVO catevo;
+	private ShowtimeVO showvo;
+
+
 	
 	// === Method === //
+	public ShowtimeVO getShowvo() {
+		return showvo;
+	}
+
+	public void setShowvo(ShowtimeVO showvo) {
+		this.showvo = showvo;
+	}
+
+	public ScreenVO getScvo() {
+		return scvo;
+	}
+
+	public void setScvo(ScreenVO scvo) {
+		this.scvo = scvo;
+	}
+
+	public CategoryVO getCatevo() {
+		return catevo;
+	}
+
+	public void setCatevo(CategoryVO catevo) {
+		this.catevo = catevo;
+	}
+	
 	public int getSeq_movie_no() {
 		return seq_movie_no;
 	}
@@ -131,5 +161,51 @@ public class MovieVO {
 	public void setRegister_date(String register_date) {
 		this.register_date = register_date;
 	}
-
+	
+	
+	// === User Method === //
+	public String category_name(String fk_category_code) {
+		String result = "";
+		
+		switch (fk_category_code) {
+			case "1":
+				result = "액션";
+				break;
+			case "2":
+				result = "코미디";
+				break;
+			case "3":
+				result = "드라마";
+				break;
+			case "4":
+				result = "스릴러";
+				break;
+			case "5":
+				result = "로맨스";
+				break;
+			case "6":
+				result = "sf";
+				break;
+			case "7":
+				result = "판타지";
+				break;
+			case "8":
+				result = "애니메이션";
+				break;
+			case "9":
+				result = "역사";
+				break;
+			case "10":
+				result = "범죄";
+				break;
+			case "11":
+				result = "스포츠";
+				break;
+			case "12":
+				result = "느와르";
+				break;
+		}
+		
+		return result;
+	}// end of public String category_name(String fk_category_code) {}-------------------------------------
 }

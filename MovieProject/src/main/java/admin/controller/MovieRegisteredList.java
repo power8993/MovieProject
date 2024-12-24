@@ -67,7 +67,7 @@ public class MovieRegisteredList extends AbstractController {
 					request.setAttribute("loc", loc);
 					
 					super.setRedirect(false);
-					super.setViewPage("/WEB-INF/error.jsp");
+					super.setViewPage("/WEB-INF/msg.jsp");
 				}
 			}
 			
