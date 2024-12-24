@@ -17,7 +17,7 @@ public class MovieVO_wonjae {
 	private String poster_file;        // 포스터 파일명
 	private String video_url;          // 비디오URL
 	private String register_date;      // 등록일자
-	private CategoryVO cvo;
+	private CategoryVO cvo; // 카데고리
 	
 	public CategoryVO getCvo() {
 		return cvo;

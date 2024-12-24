@@ -20,57 +20,50 @@ public class MovieRegisterSearch extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		String method = request.getMethod();
-		
-		if("GET".equalsIgnoreCase(method)) {
-			
-			String movie_title = request.getParameter("movie_title");
-			
-			try {
-				// **** 영화를 등록 페이지에서 [등록된 영화 조회]를 통해 검색한 영화들을 보여주는 페이지(select) **** //
-				List<MovieVO> movieList = mvdao.selectMovieRegister(movie_title);
-						
-				// movieList 를 JOSN 배열로 변환
-				JSONArray movieArray = new JSONArray();
-				
-				for (MovieVO movie : movieList) {
-					JSONObject jsonObj = new JSONObject();
-					jsonObj.put("poster_file", movie.getPoster_file());
-					jsonObj.put("movie_title", movie.getMovie_title());
-					jsonObj.put("fk_category_code", movie.getFk_category_code()); 
-					jsonObj.put("movie_grade", movie.getMovie_grade()); 
-					jsonObj.put("register_date", movie.getRegister_date()); 
-					
-					movieArray.put(jsonObj);
-				}// end of for-------------------------------
-				
-				
-				// ArrayList와 같은 복잡한 객체를 JSON으로 변환 후 보내는 경우 아래와 같이 전송
-				//response.setContentType("application/json");
-		        //response.getWriter().write(movieArray.toString());
-		        
-				// AJAX 로 여러 개(영화검색정보, ctxPath)의 데이터를 전송
-				JSONObject jsonObj_ctxPath = new JSONObject();
-				jsonObj_ctxPath.put("movie_List", movieArray);
-				jsonObj_ctxPath.put("ctxPath", request.getContextPath());
-				
-				response.setContentType("application/json"); // json 형태로 보내준다.
-				response.getWriter().write(jsonObj_ctxPath.toString());
-			} catch (SQLException e) {
-				e.printStackTrace();
-				
-				String message = "등록된 영화 조회 실패";
-				String loc = "javascript:history.back()";
-				
-				request.setAttribute("message", message);
-				request.setAttribute("loc", loc);
-				
-				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/error.jsp");
-				
-			}
-			
-		}
+String method = request.getMethod();
+        
+        if("GET".equalsIgnoreCase(method)) {
+            
+            String movie_title = request.getParameter("movie_title");  // 영화 제목 파라미터 가져오기
+            
+            try {
+                // 영화를 등록 페이지에서 [등록된 영화 조회]를 통해 검색한 영화들을 보여주는 메서드
+                List<MovieVO> movieList = mvdao.selectMovieRegister(movie_title);
+                
+                // 영화 리스트를 JSON 배열로 변환
+                JSONArray movieArray = new JSONArray();
+                
+                for (MovieVO movie : movieList) {
+                    JSONObject jsonObj = new JSONObject();
+                    jsonObj.put("poster_file", movie.getPoster_file());  // 포스터 파일 경로
+                    jsonObj.put("movie_title", movie.getMovie_title());  // 영화 제목
+                    jsonObj.put("fk_category_code", movie.getFk_category_code());  // 영화 카테고리 코드
+                    jsonObj.put("movie_grade", movie.getMovie_grade());  // 영화 등급
+                    jsonObj.put("register_date", movie.getRegister_date());  // 등록일
+                    
+                    movieArray.put(jsonObj);  // JSON 배열에 추가
+                }
+
+                // 요청에 JSON 데이터만 담아서 전달
+                request.setAttribute("movie_List", movieArray);  // 영화 목록
+                request.setAttribute("ctxPath", request.getContextPath());  // 컨텍스트 경로
+
+                super.setRedirect(false);
+                super.setViewPage("/WEB-INF/movie/movieRegisterSearch.jsp");  // JSP로 포워딩
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                
+                String message = "등록된 영화 조회 실패";
+                String loc = "javascript:history.back()";
+                
+                request.setAttribute("message", message);
+                request.setAttribute("loc", loc);
+                
+                super.setRedirect(false);
+                super.setViewPage("/WEB-INF/error.jsp");  // 오류 페이지로 리디렉션
+            }
+        }
 
 	}
 

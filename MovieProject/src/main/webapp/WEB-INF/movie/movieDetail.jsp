@@ -140,7 +140,7 @@
         <div class="movie-details" style="margin: 0 15px">
             <div class="movie-title">${mvo.movie_title} </div>
             <div class="movie-info">
-                <div><strong>예매율:</strong> ${mvo.movie_title}%</div>
+                <div><strong>예매율:</strong> 0%</div>
                 <div><strong>감독:</strong> ${mvo.director}</div>
                 <div><strong>배우:</strong> ${mvo.actor}</div>
                 <div><strong>장르:</strong> ${mvo.cvo.category}</div>         

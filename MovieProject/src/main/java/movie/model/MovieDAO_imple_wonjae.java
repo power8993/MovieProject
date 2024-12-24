@@ -103,4 +103,69 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 		return mvo;
 	} // end of movieDetail
 
+	// 영화에 좋아요 추가
+	@Override
+	public boolean insertMovieLike(String user_id, int seq_movie_no) throws SQLException {
+		
+		boolean result = false;
+		
+		try {
+			conn = ds.getConnection();
+			
+	        String sql = "insert into movie_likes (user_id, movie_no) values (?, ?)";
+	        
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, user_id);
+            pstmt.setInt(2, seq_movie_no);
+	       
+            int resultnum = pstmt.executeUpdate();
+            
+            // 행이 1 이상이면 성공
+            result = (resultnum > 0);    
+	        
+	    } finally {
+			close();
+		}
+		return result;
+	}
+
+	// 영화에 좋아요 삭제
+	@Override
+	public boolean removeMovieLike(String user_id, int seq_movie_no) throws SQLException {
+		boolean result = false;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = "delete from movie_likes where user_id = ? and movie_no = ?";
+	        
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, user_id);
+            pstmt.setInt(2, seq_movie_no);
+	       
+            int resultnum = pstmt.executeUpdate();
+            
+            // 영향을 받은 행이 1 이상이면 성공
+            result = (resultnum > 0);
+	        
+	    } finally {
+			close();
+		}
+		return result;
+	}
+
+	
+
+	
+	
+
+	
+	
+	
 }
+
+	
+	
+	
+
+
