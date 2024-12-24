@@ -9,12 +9,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import movie.domain.MovieVO;
 import movie.domain.MovieVO_yeo;
-import movie.model.MoveDAO_imple_yeo;
+import movie.model.MovieDAO_imple_yeo;
 import movie.model.MovieDAO_yeo;
 
 public class MovieTime extends AbstractController {
 
-	private MovieDAO_yeo mdao = new MoveDAO_imple_yeo();
+	private MovieDAO_yeo mdao = new MovieDAO_imple_yeo();
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {

@@ -110,21 +110,12 @@
                 <li class="nav-link h5"> <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/movieList.mp">전체목록 </a></li>
                 <li class="nav-link h5"> <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/runningMovies.mp">상영중인영화 </a></li>		                      
                 <select name="searchType">
-                    <option value="">장르검색</option>
-                    <option value="action">액션</option>
-                    <option value="comedy">코미디</option>
-                    <option value="drama">드라마</option>
-                    <option value="thriller">스릴러</option>
-                    <option value="romance">로맨스</option>
-                    <option value="sf">SF</option>
-                    <option value="fantasy">판타지</option>
-                    <option value="animation">애니메이션</option>
-                    <option value="history">역사</option>
-                    <option value="crime">범죄</option>
-                    <option value="sports">스포츠</option>
-                    <option value="noir">느와르</option>
+                    <option value="">장르</option>
+                   <c:forEach var="cg" items="${requestScope.cgList}">
+                     <option value="${cg.category_code}">${cg.category}</option>
+                  </c:forEach> 
                 </select>
-                <button type="button" class="round gray">
+                <button type="button" class="round gray" ">
                     <span>GO</span>
                 </button>
             </ul>
@@ -145,7 +136,8 @@
 					                <div class="movie-details">
 					                    <div class="movie-title">${movie.movie_title}</div>                                     
 					                    <p>예매율: <%-- ${movie.like_count} --%></p>                             
-					                    <p>개봉일: ${movie.start_date}</p>   
+					                    <p>개봉일: ${movie.start_date}</p>
+					                    <p>장르: ${movie.cg.category}</p>    
 					                    <button>예매하러가기</button>                                
 					                </div>
 					            </div>

@@ -6,7 +6,6 @@ public class ShowTimeVO_yeo {
 	   private int   seq_showtime;        // 상영 영화번호
 	   private int fk_seq_movie_no;       // 영화번호
 	   private int fk_screenNO;           // 상영관 번호
-	   private String show_time;          // 상영 날짜
 	   private String start_time;         // 상영 시작 시간
 	   private String end_tiem;           // 상영 종료 시간
 	   private int total_viewer;          // 누적 관객 수 
@@ -32,12 +31,6 @@ public class ShowTimeVO_yeo {
 	   }
 	   public void setFk_screenNO(int fk_screenNO) {
 	      this.fk_screenNO = fk_screenNO;
-	   }
-	   public String getShow_time() {
-	      return show_time;
-	   }
-	   public void setShow_time(String show_time) {
-	      this.show_time = show_time;
 	   }
 	   public String getStart_time() {
 	      return start_time;

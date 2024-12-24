@@ -3,6 +3,7 @@ package movie.model;
 import java.sql.SQLException;
 import java.util.List;
 
+import movie.domain.CategoryVO_yeo;
 import movie.domain.MovieVO;
 import movie.domain.MovieVO_yeo;
 
@@ -20,7 +21,8 @@ public interface MovieDAO_yeo {
 	// 영화 시간표 가져오기 
 	List<MovieVO_yeo> selectMovieTiem() throws SQLException;
 	
-	// 영화 
+	// 장르 종류 가져오기
+	List<CategoryVO_yeo> selectcategory() throws SQLException;
 	
 
 }

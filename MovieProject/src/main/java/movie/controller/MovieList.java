@@ -8,13 +8,14 @@ import common.controller.AbstractController;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import movie.domain.CategoryVO_yeo;
 import movie.domain.MovieVO;
 import movie.domain.MovieVO_yeo;
 import movie.model.*;
 
 public class MovieList extends AbstractController {
 	
-	private MovieDAO_yeo mdao = new MoveDAO_imple_yeo();
+	private MovieDAO_yeo mdao = new MovieDAO_imple_yeo();
 
 	@Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -23,9 +24,14 @@ public class MovieList extends AbstractController {
         try {
             // 영화 데이터 가져오기
         	List<MovieVO_yeo> movies = mdao.select_Movies();
-
-            // 영화 데이터를 request에 저장
+        	// 영화 데이터를 request에 저장
             request.setAttribute("movies", movies);
+            
+            
+            
+            // 장르 종류 가져오기
+        	List<CategoryVO_yeo> cgList =  mdao.selectcategory();
+            request.setAttribute("cgList", cgList);
            
             // View 경로 설정 (forward 방식)
             super.setRedirect(false);

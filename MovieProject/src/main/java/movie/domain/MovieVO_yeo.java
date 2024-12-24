@@ -19,7 +19,20 @@ public class MovieVO_yeo {
 	private String video_url;          // 비디오URL
 	private String register_date;      // 등록일자
 	private ShowTimeVO_yeo svo;
+	private CategoryVO_yeo cg;
 	
+	
+	
+	
+	// === Method === //
+	public CategoryVO_yeo getCg() {
+		return cg;
+	}
+
+	public void setCg(CategoryVO_yeo cg) {
+		this.cg = cg;
+	}
+
 	public ShowTimeVO_yeo getSvo() {
 		return svo;
 	}
@@ -27,8 +40,7 @@ public class MovieVO_yeo {
 	public void setSvo(ShowTimeVO_yeo svo) {
 		this.svo = svo;
 	}
-
-	// === Method === //
+	
 	public int getSeq_movie_no() {
 		return seq_movie_no;
 	}
