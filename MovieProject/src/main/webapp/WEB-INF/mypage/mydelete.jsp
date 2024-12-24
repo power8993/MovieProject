@@ -6,31 +6,77 @@
 <%
 String ctxPath = request.getContextPath();
 %>
-
+<jsp:include page="../header1.jsp" />
 
 <%-- 직접 만든 CSS --%>
 <link rel="stylesheet" type="text/css" href="<%=ctxPath%>/css/mypage/mypagemain.css" />
+<%-- 직접 만든 CSS --%>
+<link rel="stylesheet" type="text/css" href="<%=ctxPath%>/css/mypage/mydelete.css" />
 <%-- h3 a태그의 이모티콘 --%>
 <script src="https://kit.fontawesome.com/0c69fdf2c0.js" crossorigin="anonymous"></script>
 
-<jsp:include page="../header1.jsp" />
+<script type="text/javascript">
+   $(document).ready(function() {
+      // 버튼 클릭 이벤트
+      $("button.btnsuccess").click(function() {
+         gouppwd();
+      });
+
+      // 엔터 키 이벤트 처리
+      $("input:password[name='pwd']").on("keydown", function(e) {
+         if (e.keyCode === 13) { // 엔터 키
+            gouppwd();
+         }
+      });
+
+      // 비밀번호 검증 및 폼 제출 함수
+      function gouppwd() {
+         const pwd = $("input:password[name='pwd']");
+         if (pwd.val().trim() === "") {
+            alert("비밀번호를 입력하세요!!");
+            pwd.val("").focus();
+            return; // 종료
+         }
+         
+         // Confirm 창 띄우기
+         const userConfirmed = confirm("정말로 탈퇴하시겠습니까?");
+         if (!userConfirmed) {
+            return; // 함수 종료
+         }
+         
+         const frm = document.my_deletecheckPwd_Frm;
+         frm.action = "<%=ctxPath%>/mypage/mydelete.mp";
+         frm.method = "post";
+         frm.submit();
+      }
+   });
+</script>
 
 <%-- 전체 창 --%>
 <div class="my_container">
+
 	<%-- 마이페이지 나의 프로필장 --%>
 	<div class="myprofile">
-        <div class="profile-container">
-             <i class="fa-solid fa-circle-user" style="color: #252422;"></i>
-            
-            <!-- 사용자 정보 -->
-            <div class="profile-info">
-                <h2>회원 님</h2>
-                <p>나의 영화 랭킹 <strong>50</strong> 순위</p>
-                <p>사용 가능 포인트: <strong>0pt</strong></p>
-                <p>사용한 포인트: <strong>0pt</strong></p>
-            </div>
-        </div>
-    </div>
+		<div class="profile-container">
+			<i class="fa-solid fa-circle-user" style="color: #252422;"></i>
+			<%-- 사용자 정보 --%>
+			<div class="profile-info">
+				<h2>${(sessionScope.loginuser).name}님</h2>
+				<p>
+					나의 영화 랭킹 <strong>50</strong> 순위
+				</p>
+				<p>
+					사용 가능 포인트: <strong>${(sessionScope.loginuser).point}pt</strong>
+				</p>
+				<p>
+					사용한 포인트: <strong>0pt</strong>
+				</p>
+			</div>
+			<%-- 사용자 정보 끝 --%>
+		</div>
+	</div>
+	<%-- 마이페이지 나의 프로필장 끝 --%>
+	
 	<%-- 마이페이지 사이드바 & 매안 창 --%>
 	<div class="my_main">
 
@@ -59,6 +105,37 @@ String ctxPath = request.getContextPath();
 			</ul>
 		</div>
 		<%-- 마이페이지 사이드바 끝 --%>
+		
+		<!-- 메인 콘텐츠 -->
+		<div class="mypage_main_content">
+		<div class="my_h2">
+				<h2>회원정보 탈퇴</h2>
+				<p>회원님의 소중한 정보를 안전하게 관리하세요.</p>
+			</div>
+			<form name="my_deletecheckPwd_Frm">
+				<h3>회원정보를 탈퇴하시려면 비밀번호를 입력하셔야 합니다.</h3>
+				<p>회원님의 개인정보 보호를 위한 절차이오니, 로그인시 사용하는 비밀번호를 입력해주세요.</p>
+				<ul>
+				<li>아이디 : ${sessionScope.loginuser.userid} </li>
+					<li>비밀번호 : <input type="password" name="pwd" size="25"
+						autocomplete="off" /></li>
+				</ul>
+				
+                <iframe src="<%= ctxPath%>/iframe_agree/agree1.html" width="100%" height="150px" ></iframe>
+                <label for="agree2">이용약관에 동의합니다</label>&nbsp;&nbsp;<input type="checkbox" id="agree2" />
+
+				<div class="mybutton">
+					<button type="button" onclick="javascript:history.back();"
+						class="btn">취소</button>
+					<button type="button" class="btn btnsuccess">탈퇴</button>
+				</div>
+				<c:if test="${not empty message}">
+					<div style="color: red;">${message}</div>
+				</c:if>
+			</form>
+		
+		</div>
+		<!-- 메인 콘텐츠 끝 -->
 		
 	</div><%-- 마이페이지 사이드바 & 매안 창 끝 --%>
 
