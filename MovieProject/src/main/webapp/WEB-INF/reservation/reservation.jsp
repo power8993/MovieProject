@@ -26,114 +26,7 @@
 	
 %>
 
-<script type="text/javascript">
-	
-$(document).ready(function(){
-	
-	$("div#step2").hide();
-	$("button#goMovieChoice").hide();
-	
-	let seq_movie_no = "";
-	let input_date = "";
-	
-	// 예약페이지에서 영화를 선택했을 때
-	$("tr.movie-list").click(e => {
-		$("tr.movie-list").css({'background-color':'','color':''});
-		$(e.target).parent().css({'background-color':'black','color':'white'});
-		
-		$("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
-		
-		seq_movie_no = $(e.target).parent().find("td#seq_movie_no").text();
-		
-		if($("div#time-choice").text() == "시간선택") {
-			return;
-		}
-		
-	});
-	
-	// 예약페이지에서 날짜를 선택했을 때
-	$("li#day").find("span").click(e => {
-		$("li#day").css({'background-color':'','color':''});
-        $(e.target).parent().css({'background-color':'black','color':'white'});
-        $("div#date-choice").html($(e.target).parent().find("span#input_date").text());
-        $("div#time-choice").empty();
-        
-        input_date = $(e.target).parent().find("span#input_date").text();
-        
-        $("div#screen-date-info").html(input_date);
-        
-        if($("div#movie-choice").text() == "영화선택") {
-        	return;
-        }
-        
-        
-        $.ajax({
-			url:"${pageContext.request.contextPath}/reservation/getScreenTime.mp",
-			dataType:"json",
-			data: {
-	             "input_date": input_date,
-	             "seq_movie_no": seq_movie_no
-	        },
-	        success: function(json){
-	        	if(json.length == 0) {
-	        		v_html = `선택하신 날짜에 상영중인 영화가 없습니다.`;
-	        		$("div.time").find("div.col-body").html(v_html);
-				}
-				else if(json.length > 0) {
-				   
-					v_html = "<table><tbody>"
-					
-					$.each(json, function(index, item){
-						console.log(item.seat_arr);
-						v_html += "<tr class='time_choice'><td class='time_data' onclick='onScreenClick(" + item.start_time + "," + item.seq_showtime_no + "," + item.fk_screen_no + "," + "'" + item.seat_arr + "'" + ")')>" + (item.start_time).substr(0,2) 
-								+ "" + ({item.start_time).substr(2,2) + "</td><td>" + item.unused_seat + "석</td></tr>";
-						
-					}); // end of $.each(json, function(index, item)--------------------------------------------------
-					
-					v_html += "</table></tbody>"
-							
-					$("div.time").find("div.col-body").html(v_html);
-				}
-			},
-			error: function(){
-				alert("request error!");
-			}
-		}); // end of $.ajax({})---------------------------------------------------------------------
-        
-	}); // end of $("li#day").find("span").click(e => {})-------------------------------------------
-	
-	
-
-}); // end of $(document).ready(function() {});;--------------------------------------------
-
-
-function goSeatChoice() {
-	$("div#step1").hide();
-	$("div#step2").show();
-	$("button#goMovieChoice").show();
-	$("button#goSeatChoice").hide();
-}
-
-function goMovieChoice() {
-	$("div#step1").show();
-	$("div#step2").hide();
-	$("button#goMovieChoice").hide();
-	$("button#goSeatChoice").show();
-}
-
-function onScreenClick(start_time, seq_showtime_no, fk_screen_no, seat_arr) {
-	
-	$("div#time-choice").html(String(start_time).substr(0,2) + ":" + String(start_time).substr(2,2));
-	
-    $("div#screen-time-info").html(String(start_time).substr(0,2) + ":" + String(start_time).substr(2,2));
-	$("div#seq_showtime_no").html(seq_showtime_no);
-	
-	console.log(fk_screen_no)
-	console.log(seat_arr);
-	console.log(typeof seat_arr);
-}
-
-</script>
+<script type="text/javascript" src="<%= ctxPath%>/js/reservation/reservation.js"></script>
 
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/reservation/reservation.css" />
 
@@ -244,32 +137,32 @@ function onScreenClick(start_time, seq_showtime_no, fk_screen_no, seat_arr) {
 			<div class="col-body">
 				<div id="person-screen">
 					<div id="numberOfPeople">
-						<div>
+						<div class="btn-group">
 							<label>일반</label>
-							<button>0</button>
-							<button>1</button>
-							<button>2</button>
-							<button>3</button>
-							<button>4</button>
-							<button>5</button>
+							<button class="btn btn-primary btn-outline-secondary" value="0">0</button>
+							<button class="btn" value="1">1</button>
+							<button class="btn" value="2">2</button>
+							<button class="btn" value="3">3</button>
+							<button class="btn" value="4">4</button>
+							<button class="btn" value="5">5</button>
 						</div>
-						<div>
+						<div class="btn-group">
 							<label>청소년</label>
-							<button>0</button>
-							<button>1</button>
-							<button>2</button>
-							<button>3</button>
-							<button>4</button>
-							<button>5</button>
+							<button class="btn active" value="0">0</button>
+							<button class="btn" value="1">1</button>
+							<button class="btn" value="2">2</button>
+							<button class="btn" value="3">3</button>
+							<button class="btn" value="4">4</button>
+							<button class="btn" value="5">5</button>
 						</div>
-						<div>
+						<div class="btn-group">
 							<label>어린이</label>
-							<button>0</button>
-							<button>1</button>
-							<button>2</button>
-							<button>3</button>
-							<button>4</button>
-							<button>5</button>
+							<button class="btn active" value="0">0</button>
+							<button class="btn" value="1">1</button>
+							<button class="btn" value="2">2</button>
+							<button class="btn" value="3">3</button>
+							<button class="btn" value="4">4</button>
+							<button class="btn" value="5">5</button>
 						</div>
 					</div>
 					<div id="screen-info">
@@ -277,8 +170,7 @@ function onScreenClick(start_time, seq_showtime_no, fk_screen_no, seat_arr) {
 						<div id="screen-time-info"></div>
 					</div>
 				</div>
-				<div id="seat-screen">
-					<div>ddd</div>
+				<div id="seat-screen" class="text-center">
 				</div>
 			</div>
 		</div>

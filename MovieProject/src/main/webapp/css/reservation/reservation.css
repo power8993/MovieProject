@@ -140,3 +140,18 @@ div#seat-screen {
 	display: block;	
 	height: 350px;
 }
+
+div#seat-screen > button {
+	width: 40px;
+}
+
+div#seat-screen > span {
+	display: inline-block;
+	width: 40px;
+	height: 50px;
+	margin: 0 1%;
+}
+
+div#numberOfPeople label {
+	width: 80px;
+}
