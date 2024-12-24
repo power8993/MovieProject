@@ -18,17 +18,102 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
+	// === 기존의 '줄거리' 값 넣기 === //
 	var content = "${requestScope.mvvo.content}";
-	content = content.replace(<br>, "\n");   
+	content = content.replace(/<br>/g, "\n");   
 	
 	$("textarea#content").val(content);
+	charCount(document.getElementById("content"), 500);
+	
+	//========================================================================//
+	
+	// === 기존의 '감독' 값 넣기 === //
+    const director_list = $("div#director_tags"); 			// 태그를 넣을 위치
+    const director_value = "${requestScope.mvvo.director}"; // 서버에서 받아온 값
+
+    if(director_value.includes(",")) {
+        // 감독이 여러 명일 경우
+        const director_arr = director_value.split(",").map(function(director) {
+            return director.trim(); // 공백 제거 후 배열로 변환
+        });
+        
+        // 감독 태그 추가
+        director_arr.forEach(function(director_name) {
+            if(director_name.trim() !== "") {
+                const director_tag = "<div class='director_tag'>" + 
+                                      director_name +
+                                      "<button type='button' class='remove_director'>x</button>" +
+                                      "</div>";
+                director_list.append(director_tag); 
+            }
+        });
+    }
+    else {
+        // 감독이 한 명일 경우
+        const director_name = director_value.trim();
+
+        if(director_name !== "") {
+            const director_tag = "<div class='director_tag'>" + 
+                                  	director_name + 
+                                  	"<button type='button' class='remove_director'>x</button>" +
+                                  "</div>";
+            director_list.append(director_tag); 
+        }
+    }
+    
+    //========================================================================//
+    
+ 	// === 기존의 '배우' 값 넣기 === //
+    const actor_list = $("div#actor_tags"); 			// 태그를 넣을 위치
+    const actor_value = "${requestScope.mvvo.actor}"; // 서버에서 받아온 값
+
+    if(actor_value.includes(",")) {
+        // 배우가 여러 명일 경우
+        const actor_arr = actor_value.split(",").map(function(actor) {
+            return actor.trim(); // 공백 제거 후 배열로 변환
+        });
+        
+        // 배우 태그 추가
+        actor_arr.forEach(function(actor_name) {
+            if(actor_name.trim() !== "") {
+                const actor_tag = "<div class='actor_tag'>" + 
+                					  actor_name +
+                                      "<button type='button' class='remove_actor'>x</button>" +
+                                   "</div>";
+               actor_list.append(actor_tag); 
+            }
+        });
+    }
+    else {
+        // 배우가 한 명일 경우
+        const actor_name = actor_value.trim();
+
+        if(actor_name !== "") {
+            const actor_tag = "<div class='actor_tag'>" + 
+            					  actor_name + 
+                                  "<button type='button' class='remove_actor'>x</button>" +
+                              "</div>";
+           actor_list.append(actor_tag); 
+        }
+    }
+
+    //========================================================================//
+    
+    // === 기존의 '장르' 값 넣기 === //
+    const category ="${requestScope.mvvo.catevo.category}"
+    $("select[name='fk_category_code']").val(category);
+	
+ 	// === 기존의 '상영등급' 값 넣기 === //
+    const movie_grade ="${requestScope.mvvo.movie_grade}"
+    $("select[name='movie_grade']").val(movie_grade);
+
 });
 </script>
   
 
 	<div class="movie_register_container">
 	    <h2>등록된 영화 수정하기</h2>
-		  <form name="movie_register" method="post" action="<%= ctxPath%>/admin/movieRegister.mp">
+		  <form name="movie_register" method="post" action="<%= ctxPath%>/admin/movieEditEnd.mp">
 		    <table class="table" id="tbl_movie_register">
 		      <tbody>
 		        <!-- 첫 번째 줄: 영화 제목 -->
@@ -52,8 +137,8 @@ $(document).ready(function(){
 		          <td>
 		          	 <!-- 줄거리를 입력받는 텍스트 영역 -->
 		          	<div class="form-group">
-		              <label for="content"><span class="star">*&nbsp;</span>줄거리&nbsp;(300자)</label>
-		              <textarea class="form-control" name="content" id="content" rows="4" placeholder="줄거리를 입력하세요."><%=request.getAttribute("content") %></textarea>
+		              <label for="content"><span class="star">*&nbsp;</span>줄거리&nbsp; <span id="char_count" class="form-text text-muted">0 / 500</span></label>
+		              <textarea class="form-control" name="content" id="content" rows="4" onkeyup="charCount(this,500)" placeholder="줄거리를 입력하세요."></textarea>
 		            </div>
 		          </td>
 		        </tr>
@@ -104,7 +189,7 @@ $(document).ready(function(){
 			            </div>
 			            <div class="col">
 			              <label for="running_time"><span class="star">*&nbsp;</span>러닝타임 (분)</label>
-			              <input type="number" class="form-control" name="running_time" id="running_time" min="0" placeholder="러닝타임">
+			              <input type="number" class="form-control" name="running_time" id="running_time" min="0" value="${requestScope.mvvo.running_time}" placeholder="러닝타임">
 			            </div>
 			            <div class="col">
 			              <label for="movie_grade"><span class="star">*&nbsp;</span>상영등급</label>
@@ -126,11 +211,11 @@ $(document).ready(function(){
 		            <div class="form-row">
 			            <div class="col">
 			              <label for="start_date">상영 시작일(개봉일)</label>
-			              <input type="date" class="form-control" name="start_date" id="start_date">
+			              <input type="date" class="form-control" name="start_date" id="start_date" value="${requestScope.mvvo.start_date}">
 			            </div>
 			            <div class="col">
 			              <label for="end_date">상영 종료일</label>
-			              <input type="date" class="form-control" name="end_date" id="end_date">
+			              <input type="date" class="form-control" name="end_date" id="end_date" value="${requestScope.mvvo.end_date}">
 			            </div>
 		            </div>
 		          </td>
@@ -141,21 +226,24 @@ $(document).ready(function(){
 		          <td>
 		            <div class="form-group">
 		              <label for="poster_file">포스터 파일</label>
-		              <input type="text" class="form-control" name="poster_file" id="poster_file" placeholder="파일명">
+		              <input type="text" class="form-control" name="poster_file" id="poster_file" value="${requestScope.mvvo.poster_file}" placeholder="파일명">
 		            </div>
 		            <div class="form-group">
 		              <label for="video_url">예고편 URL</label>
-		              <input type="url" class="form-control" name="video_url" id="video_url" placeholder="예고편 URL 입력">
+		              <input type="url" class="form-control" name="video_url" id="video_url" value="${requestScope.mvvo.video_url}" placeholder="예고편 URL 입력">
 		            </div>
 		          </td>
 		        </tr>
 		      </tbody>
 		    </table>
-		
+			
+			<input type="hidden" name="seq" value="${requestScope.mvvo.seq_movie_no}"/>
+			
 		    <button type="submit" id="edit_btn" class="btn btn-success" value="등록하기">영화수정하기</button>
-		    <button type="reset" class="btn btn-danger" value="취소하기" onclick="goMovieReset()">취소하기</button>
+		    <button type="button" class="btn btn-danger" value="취소하기" onclick="confirmCancel()">취소하기</button>
 		    
 		  </form>
+		  
 	</div>
 
 <jsp:include page="/WEB-INF/admin_footer1.jsp" />  

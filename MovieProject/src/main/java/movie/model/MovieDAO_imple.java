@@ -13,7 +13,10 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import movie.domain.CategoryVO;
 import movie.domain.MovieVO;
+import movie.domain.ScreenVO;
+import movie.domain.ShowtimeVO;
 
 public class MovieDAO_imple implements MovieDAO {
 	
@@ -35,7 +38,9 @@ public class MovieDAO_imple implements MovieDAO {
 		} 
 		
 	}
-
+	
+	
+	
 	// === Method === //
 	// 사용한 자원을 반납하는 close() 메소드 생성하기
 	private void close() {
@@ -66,7 +71,7 @@ public class MovieDAO_imple implements MovieDAO {
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, movie.getFk_category_code());
+			pstmt.setString(1, movie.getCatevo().getCategory_code());
 			pstmt.setString(2, movie.getMovie_title());
 			pstmt.setString(3, movie.getContent());
 			pstmt.setString(4, movie.getDirector());
@@ -115,7 +120,11 @@ public class MovieDAO_imple implements MovieDAO {
 				
 				mvvo.setPoster_file(rs.getString("poster_file"));
 				mvvo.setMovie_title(rs.getString("movie_title"));
-				mvvo.setFk_category_code(rs.getString("category"));
+				
+				CategoryVO catevo = new CategoryVO();
+				catevo.setCategory(rs.getString("category"));
+				mvvo.setCatevo(catevo);
+				
 				mvvo.setMovie_grade(rs.getString("movie_grade"));
 				mvvo.setRegister_date(rs.getString("register_date"));
 				
@@ -165,7 +174,11 @@ public class MovieDAO_imple implements MovieDAO {
 				
 				mvvo.setSeq_movie_no(rs.getInt("seq_movie_no"));
 				mvvo.setRegister_date(rs.getString("register_date"));
-				mvvo.setFk_category_code(rs.getString("category"));
+				
+				CategoryVO catevo = new CategoryVO();
+				catevo.setCategory(rs.getString("category"));
+				mvvo.setCatevo(catevo);
+				
 				mvvo.setPoster_file(rs.getString("poster_file"));
 				mvvo.setMovie_title(rs.getString("movie_title"));		
 				mvvo.setMovie_grade(rs.getString("movie_grade"));
@@ -200,7 +213,7 @@ public class MovieDAO_imple implements MovieDAO {
 					   + "      , actor "
 					   + "      , movie_grade "
 					   + "      , running_time "
-					   + "      , to_char(end_date, 'yyyy-mm-dd') as start_date "
+					   + "      , to_char(start_date, 'yyyy-mm-dd') as start_date "
 					   + "      , to_char(end_date, 'yyyy-mm-dd') as end_date "
 					   + "      , poster_file"
 					   + "      , video_url "
@@ -218,7 +231,11 @@ public class MovieDAO_imple implements MovieDAO {
 				
 				mvvo = new MovieVO();
 				mvvo.setSeq_movie_no(rs.getInt("seq_movie_no"));
-				mvvo.setFk_category_code(rs.getString("category"));
+				
+				CategoryVO catevo = new CategoryVO();
+				catevo.setCategory(rs.getString("category"));
+				mvvo.setCatevo(catevo);
+				
 				mvvo.setMovie_title(rs.getString("movie_title"));
 				mvvo.setContent(rs.getString("content").replace("\r\n","<br>"));
 				mvvo.setDirector(rs.getString("director"));
@@ -239,7 +256,220 @@ public class MovieDAO_imple implements MovieDAO {
 		return mvvo;
 	}// end of public MovieVO selectMovieDetail(String seq) throws SQLException {}-------------------
 
+
 	
+	// 영화를 수정하는 메소드(seq에 해당하는 영화를 update)
+	@Override
+	public int updateMovie(MovieVO movie) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " update tbl_movie set fk_category_code = (select category_code from tbl_category where category= ? ) "
+					   + "                   , movie_title = ? "
+					   + "                   , content = ? "
+					   + "                   , director = ? "
+					   + "                   , actor = ? "
+					   + "                   , movie_grade = ? "
+					   + "                   , running_time = ? "
+					   + "                   , start_date = ? "
+					   + "                   , end_date = ? "
+					   + "                   , poster_file = ? "
+					   + "                   , video_url = ? "
+					   + " where seq_movie_no = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, movie.getCatevo().getCategory_code());
+			pstmt.setString(2, movie.getMovie_title());
+			pstmt.setString(3, movie.getContent());
+			pstmt.setString(4, movie.getDirector());
+			pstmt.setString(5, movie.getActor());
+			pstmt.setString(6, movie.getMovie_grade());
+			pstmt.setString(7, movie.getRunning_time());
+			pstmt.setString(8, movie.getStart_date());
+			pstmt.setString(9, movie.getEnd_date());
+			pstmt.setString(10, movie.getPoster_file());
+			pstmt.setString(11, movie.getVideo_url());
+			pstmt.setInt(12, movie.getSeq_movie_no());
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		return result;	
+	}// end of public int updateMovie(String seq) throws SQLException {}-----------------------------
+
+
+
+	// 영화를 삭제하는 메소드(seq에 해당하는 영화를 delete)
+	@Override
+	public int deleteMovie(String seq) throws SQLException {
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " delete from tbl_movie where seq_movie_no = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, Integer.parseInt(seq));
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+	}// end of public int deleteMovie(String seq) throws SQLException {}-----------------------------
+
+
+	
+	// 상영일정을 등록해주는 메소드(tbl_showtime 테이블에 insert)
+	@Override
+	public int registerShowtime(MovieVO mvvo) throws SQLException {
+		int result = 0;
+		
+		String seat_arr = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " insert into tbl_showtime (seq_showtime_no, fk_seq_movie_no, fk_screen_no, start_time, end_time, seat_arr, unused_seat) "
+					   + " values(seq_showtime_no.nextval "
+					   + "      , ? "
+					   + "      , ? "
+					   + "      , to_timestamp(replace(?, 'T', ' '), 'yyyy-MM-dd HH24:MI') "
+			           + "      , to_timestamp(replace(?, 'T', ' '), 'yyyy-MM-dd HH24:MI') "
+					   + "      , ? "
+					   + "      , (select seat_cnt from tbl_screen where screen_no = ? ) ) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, mvvo.getSeq_movie_no());
+			pstmt.setInt(2, mvvo.getScvo().getScreen_no());
+			pstmt.setString(3, mvvo.getShowvo().getStart_time());
+			pstmt.setString(4, mvvo.getShowvo().getEnd_time());
+			pstmt.setString(5, seat_arr);
+			pstmt.setInt(6, mvvo.getScvo().getScreen_no());
+
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		return result;		
+	}// end of public int registerShowtime(MovieVO mvvo) throws SQLException {}----------------------
+
+
+
+	// [상영시간 조회하기] 선택한 상영 시간과 상영관에 중첩된 상영이 있는지 확인하는 메소드 (select)
+	@Override
+	public List<MovieVO> selectShowtimeConflict(Map<String, String> paraMap) throws SQLException {
+		List<MovieVO> movieList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " with "
+	                   + " m as ( "
+	                   + "     select seq_movie_no, "
+	                   + "            c.category, "
+	                   + "            movie_title, "
+	                   + "            movie_grade, "
+	                   + "            running_time, "
+	                   + "            to_char(start_date, 'yyyy-mm-dd') as start_date, "
+	                   + "            to_char(end_date, 'yyyy-mm-dd') as end_date, "
+	                   + "            poster_file "
+	                   + "     from tbl_movie m "
+	                   + "     join tbl_category c on m.fk_category_code = c.category_code "
+	                   + " ), "
+	                   + " s as ( "
+	                   + "     select fk_seq_movie_no, "
+	                   + "            seq_showtime_no, "
+	                   + "            sc.screen_no, "
+	                   + "            to_char(start_time, 'yyyy-mm-dd hh24:mi:ss') as start_time, "
+	                   + "            to_char(end_time, 'yyyy-mm-dd hh24:mi:ss') as end_time "
+	                   + "     from tbl_showtime s "
+	                   + "     join tbl_screen sc on s.fk_screen_no = sc.screen_no "
+	                   + " ) "
+	                   + " select m.poster_file, "
+	                   + "        m.movie_title, "
+	                   + "        m.movie_grade, "
+	                   + "        m.category, "
+	                   + "        s.screen_no, "
+	                   + "        m.running_time, "
+	                   + "        s.start_time, "
+	                   + "        s.end_time "
+	                   + " from m "
+	                   + " join s on m.seq_movie_no = s.fk_seq_movie_no "
+	                   + " where s.screen_no = ? "
+	                   + " and ( "
+	                   + "    (s.start_time <= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') "
+	                   + "     and s.end_time >= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss')) "
+	                   + "    or "
+	                   + "    (s.start_time >= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') "
+	                   + "     and s.start_time <= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss')) "
+	                   + "    or "
+	                   + "    (s.end_time >= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') "
+	                   + "     and s.end_time <= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss')) "
+	                   + " ) ";	
+
+	        pstmt = conn.prepareStatement(sql);
+	        
+	        // 시간값을 적절히 포맷
+	        String start_time_str = paraMap.get("start_time").replace("T", " "); // T를 공백으로 변경
+	        String end_time_str = paraMap.get("end_time").replace("T", " "); // T를 공백으로 변경
+	        
+
+			pstmt.setString(1, paraMap.get("screen_no"));
+			pstmt.setString(2, start_time_str); 
+			pstmt.setString(3, end_time_str);
+			pstmt.setString(4, start_time_str); 
+			pstmt.setString(5, end_time_str); 
+			pstmt.setString(6, start_time_str); 
+			pstmt.setString(7, end_time_str); 
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				MovieVO mvvo = new MovieVO();
+				
+				mvvo.setPoster_file(rs.getString("poster_file"));
+				mvvo.setMovie_title(rs.getString("movie_title"));
+				mvvo.setMovie_grade(rs.getString("movie_grade"));
+
+				CategoryVO catevo = new CategoryVO();
+				catevo.setCategory(rs.getString("category"));
+				mvvo.setCatevo(catevo);
+				
+				ScreenVO scvo = new ScreenVO();
+				scvo.setScreen_no(Integer.parseInt(rs.getString("screen_no")));
+				mvvo.setScvo(scvo);
+				
+				mvvo.setRunning_time(rs.getString("running_time"));
+				
+				ShowtimeVO showvo = new ShowtimeVO();
+				showvo.setStart_time(rs.getString("start_time"));
+				showvo.setEnd_time(rs.getString("end_time"));
+				mvvo.setShowvo(showvo);
+				
+				movieList.add(mvvo);
+				
+			}// while(rs.next()) {}------------------------------------------
+					
+		} finally {
+			close();
+		}
+		
+		return movieList;
+	}// end of public List<MovieVO> selectShowtimeConflict(Map<String, String> paraMap) throws SQLException {}----------------------
 	
 
 	

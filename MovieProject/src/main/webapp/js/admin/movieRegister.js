@@ -5,31 +5,8 @@ $(document).ready(function() {
 
 	$("input[id='movie_title']").focus(); // 영화제목 입력에 포커스
 
-	// ===== 영화제목 유효성 검사 시작 ===== //
-	$("input[id='movie_title'").blur((e) => {
-		const movie_title = $("input[id='movie_title']").val().trim();
-		var movie_dom = $("input[id='movie_title'")[0];
 
-		if (movie_title == "") {
-			// 입력하지 않거나 공백만 입력했을 경우
-
-			// 영화 제목이 공백이라면 사용자 정의 오류 메시지 설정
-			movie_dom.setCustomValidity("영화 제목을 입력해주세요!");
-
-		} else {
-			// 앞뒤 공백제거한 영화제목을 넘길 수 있도록 넣는다.
-			$("input[id='movie_title']").val(movie_title.replace(/\s+/g, ' ')); // 여러 공백을 하나로 변환
-			
-			movie_dom.setCustomValidity("");  // 오류 메시지 제거
-			
-			movie_title_exist = true;
-		}
-
-		// 유효성 검사 메시지를 화면에 표시
-		movie_dom.reportValidity();  // 유효성 검사 메시지 표시
-	});// end of $("input[id='movie_title'").blur((e) => {})---------------------
-	// ===== 영화제목 유효성 검사 끝  ===== //
-
+	
 	
 	// ===== 감독 입력 시작 ===== //
 	// --- 입력값 나열되도록 하기
@@ -96,11 +73,8 @@ $(document).ready(function() {
 	});
 	// ===== 배우 입력 끝 ===== //
 	
-	//char_count
 	
-	
-
-		
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	// ===== 제출 버튼 클릭 시 [필수입력값] 유효성 검사 시작 ===== //
 	// 순서대로 유효성 검사 및 메세지가 띄워지도록 각 항목마다 if(is_empty) 작성
@@ -129,6 +103,7 @@ $(document).ready(function() {
 		// ---- [감독 / 배우] 이름 추출 끝  ---- // 
 		
 		
+		const movie_title = $("input[id='movie_title']").val().trim();
 		const content = $("textarea[id='content']").val().trim();
 		const fk_category_code = $("select[id='fk_category_code']").val();
 		const running_time = $("input[id='running_time']").val();
@@ -137,6 +112,27 @@ $(document).ready(function() {
 		const actor = $("div#actor_tags .actor_tag");			// 태그의 개수를 확인한다.
 		
 		let is_empty = false;
+		
+		// ===== 영화제목 유효성 검사  ===== //
+		var movie_dom = $("input[id='movie_title']")[0];
+
+		if (movie_title == "") {
+			// 입력하지 않거나 공백만 입력했을 경우
+			movie_dom.setCustomValidity("영화 제목을 입력해주세요!");
+			movie_dom.reportValidity();  // 유효성 검사 메시지 표시
+						
+			is_empty = true;
+		} 
+		else {
+			// 앞뒤 공백제거한 영화제목을 넘길 수 있도록 넣는다.
+			$("input[id='movie_title']").val(movie_title.replace(/\s+/g, ' ')); // 여러 공백을 하나로 변환		
+			movie_dom.setCustomValidity("");  // 오류 메시지 제거
+		}
+		
+		if (is_empty) {
+		    e.preventDefault();  // 폼 제출을 막음
+		    return;  // 나머지 검사 생략
+		}
 		
 		// ===== 줄거리 유효성 검사  ===== //
 		var content_dom = $("textarea[id='content']")[0];
@@ -148,9 +144,9 @@ $(document).ready(function() {
 			
 			is_empty = true;
 		} 
-		else if($("textarea[id='content']").val().replace(/\r?\n/g, '  ').length > 300) {
+		else if($("textarea[id='content']").val().replace(/\r?\n/g, '  ').length > 500) {
 			// 영화줄거리가 300자 초과인 경우
-			content_dom.setCustomValidity("영화 줄거리는 300자 이내만 입력 가능합니다.");
+			content_dom.setCustomValidity("영화 줄거리는 500자 이내만 입력 가능합니다.");
 			content_dom.reportValidity();  // 유효성 검사 메시지 표시
 			
 			is_empty = true;
@@ -253,16 +249,65 @@ $(document).ready(function() {
 			movie_grade_dom.setCustomValidity("");  // 오류 메시지 제거
 		}
 		
+		// ===== 상영시작일 / 상영종료일 유효성검사 시작 ===== //
+		// 상영종료일이 상영시작일보다 이전일 수 없다.
+		let start_date = $("input[name='start_date']").val();
+		let end_date = $("input[name='end_date']").val();
+		
+		const today = new Date(); // 오늘날짜
+		const start_date_obj = new Date(start_date);
+		const end_date_obj = new Date(end_date);
+		
+		var start_date_dom = $("input[name='start_date']")[0];
+		
+		if(start_date && end_date) {
+			// 상영시작일과 상영종료일이 둘 다 비어있지 않을 경우
+		
+			if(today > start_date_obj) {
+				start_date_dom.setCustomValidity("상영시작일은 오늘보다 이전일 수 없습니다.");
+				start_date_dom.reportValidity();  // 유효성 검사 메시지 표시
+				
+				// 각 값을 비우기
+				$("input[name='start_date']").val("");
+				$("input[name='end_date']").val("");
+				
+				is_empty = true;
+			}
+			else if(start_date_obj > end_date_obj) {
+				start_date_dom.setCustomValidity("상영시작일이 상영종료일보다 나중일 수 없습니다.");
+				start_date_dom.reportValidity();  // 유효성 검사 메시지 표시
+				
+				// 각 값을 비우기
+				$("input[name='start_date']").val("");
+				$("input[name='end_date']").val("");
+				
+				is_empty = true;
+			} 
+			else { 
+				start_date_dom.setCustomValidity("");  // 오류 메시지 제거
+			}
+		}
+		else if(!start_date || !end_date) {
+			// 상영시작일과 상영종료일이 둘 중 한 값이 비어있을 경우
+			start_date_dom.setCustomValidity("상영시작일과 상영종료일은 함께 입력되거나, 둘 다 입력되지 않은 상태여야 합니다");
+			start_date_dom.reportValidity();  // 유효성 검사 메시지 표시
+			
+			is_empty = true;
+		}
+		
+		if (is_empty) {
+	        e.preventDefault();  // 폼 제출을 막음
+	        return;  // 나머지 검사 생략
+	    }
+		// ===== 상영시작일 / 상영종료일 유효성검사 끝 ===== //
+		
+		
 		// ===== 모든 검사 후 폼 제출 여부 확인 ===== //
 		if(is_empty){
 			e.preventDefault();  // 폼 제출을 막음
 		}
 	});
 	// ===== 제출 버튼 클릭 시 [필수입력값] 유효성 검사 유효성 검사 끝 ===== //
-	
-	
-	
-	
 
 });// end of $(document).ready(function(){})----------------------
 
@@ -274,94 +319,91 @@ $(document).ready(function() {
 // ===== [등록된 영화 조회] 클릭 이벤트 처리 시작 ===== //
 // ----- 기존 영화와 중복되면 안되므로, 검색할 수 있는 팝업창을 띄운다.
 function checkDuplicate() {
-
-    // 영화 제목이 입력된 경우에만 모달을 띄운다.
-    if ($("input[id='movie_title']").val().trim() != "") {
         
-        const container = $("div#movie_check_modal"); // 모달을 넣을 위치
+    const container = $("div#movie_check_modal"); // 모달을 넣을 위치
 
-        // 모달 HTML 구조
-        const modal_popup = `
-            <div class="modal fade" id="movie_find" tabindex="-1" aria-labelledby="movie_find" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-    
-                        <!-- Modal Header -->
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="movie_find">등록된 영화 조회</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-    
-                        <!-- Modal Body -->
-                        <div class="modal-body">
-                            <!-- 검색창 -->
-                            <form id="movie_search_frm">
-                                <div class="form-group">
-                                    <label for="movie_search">영화 제목 검색</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="movie_search" placeholder="영화 제목을 입력하세요">
-                                        <div class="input-group-append">
-                                            <button type="button" class="btn btn-primary" id="search_button">검색하기</button>
-                                        </div>
+    // 모달 HTML 구조
+    const modal_popup = `
+        <div class="modal fade" id="movie_find" tabindex="-1" aria-labelledby="movie_find" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="movie_find">등록된 영화 조회</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <div class="modal-body">
+                        <!-- 검색창 -->
+                        <form id="movie_search_frm">
+                            <div class="form-group">
+                                <label for="movie_search">영화 제목 검색</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="movie_search" placeholder="영화 제목을 입력하세요">
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary" id="search_button">검색하기</button>
                                     </div>
                                 </div>
-                            </form>
-    
-                            <!-- 검색 결과 -->
-                            <div id="search_result" style="display:none;">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>영화제목</th>
-                                            <th>장르</th>
-                                            <th>상영등급</th>
-                                            <th>등록일</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="movie_table"></tbody>
-                                </table>
                             </div>
-    
-                            <!-- 검색된 영화가 없을 때 -->
-                            <div id="no_movies_message" style="display:none;">
-                                <p>검색된 영화가 없습니다.</p>
-                            </div>
+                        </form>
+
+                        <!-- 검색 결과 -->
+                        <div id="search_result" style="display:none;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>영화제목</th>
+                                        <th>장르</th>
+                                        <th>상영등급</th>
+                                        <th>등록일</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="movie_table"></tbody>
+                            </table>
                         </div>
-    
-                        <!-- Modal Footer -->
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                        <!-- 검색된 영화가 없을 때 -->
+                        <div id="no_movies_message" style="display:none;">
+                            <p>검색된 영화가 없습니다.</p>
                         </div>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
-        `;
+        </div>
+    `;
 
-        container.html(modal_popup); // 모달 HTML 삽입
+    container.html(modal_popup); // 모달 HTML 삽입
 
-        // 모달을 표시
-        $('#movie_find').modal('show'); // 모달 띄우기
+    // 모달을 표시
+    $('#movie_find').modal('show'); // 모달 띄우기
 
-        // 모달 닫기
-        $(".close").click(function() {
-            $('#movie_find').modal('hide');
-        });
+    // 모달 닫기
+    $(".close").click(function() {
+        $('#movie_find').modal('hide');
+    });
 
-        // 검색 버튼 클릭
-        $('button#search_button').on('click', function(e) {
-            searchMovies(e); // 영화 검색
-        });
-		
-		// 엔터 키에 대해서 기본 폼 제출 방지
-		$("input[id='movie_search']").keydown(function(e) {
-	        if (e.keyCode === 13) {  
-	            e.preventDefault(); // 기본 폼 제출 방지
-	            $('button#search_button').click(); // 검색 클릭 이벤트로 전환
-	        }
-	    });
-    }
+    // 검색 버튼 클릭
+    $('button#search_button').on('click', function(e) {
+        searchMovies(e); // 영화 검색
+    });
+	
+	// 엔터 키에 대해서 기본 폼 제출 방지
+	$("input[id='movie_search']").keydown(function(e) {
+        if (e.keyCode === 13) {  
+            e.preventDefault(); // 기본 폼 제출 방지
+            $('button#search_button').click(); // 검색 클릭 이벤트로 전환
+        }
+    });
+
 }// end of $("button[type='submit']").click(function(e) {})------------------------	
 
 
@@ -430,6 +472,7 @@ function searchMovies(e) {
 }// end of function searchMovies(){}-----------------------------------------
 
 
+// ===== [줄거리]의 글자수를 세주는 함수 ===== //
 function charCount(text, limit) {
     // 텍스트의 줄바꿈을 포함하여 글자 수 계산
     var text_value = text.value;
@@ -437,16 +480,13 @@ function charCount(text, limit) {
     // 줄바꿈을 2글자씩으로 처리하기 위해, 줄바꿈 문자 개수만큼 1을 더해줌
     var char_count = text_value.length + (text_value.match(/\n/g) || []).length;
 
-    // 글자 수가 제한을 초과한 경우
     if (char_count > limit) {
-        // 초과된 글자 수를 사용자에게 알림
+       // 글자 수가 제한을 초과한 경우
         document.getElementById("char_count").innerHTML = "글자 수가 " + limit + "자를 초과했습니다. 현재 글자 수: " + char_count;
 
-        // 초과된 글자 수를 넘기지 않도록 텍스트 수정 요구
-        text.setCustomValidity("글자 수가 " + limit + "자를 초과했습니다.");
     } else {
-        // 글자 수가 제한을 초과하지 않으면 정상적으로 표시
+        // 글자 수가 제한을 초과하지 않은 경우
         document.getElementById("char_count").innerHTML = char_count + " / " + limit;
-        text.setCustomValidity("");  // 유효성 검사 메시지 제거
     }
 }// end of function charCount(text, length){}---------------------------
+
