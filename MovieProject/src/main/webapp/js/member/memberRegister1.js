@@ -377,64 +377,19 @@ $(document).ready(function(){
 	$("#birth-day").on("change", function () {
 		$("#birth-day").css({"color":"black"});
 	});
-
 	
-	/*
-	$("#birth-year, #birth-month, #birth-day").on("change", function () {
-		console.log($("#birth-year").val());
-		console.log($("#birth-month").val());
-		console.log($("#birth-day").val());
-		
-	    if ($("#birth-year").val() !== "" &&
-	        $("#birth-month").val() !== ""&&
-	        $("#birth-day").val() !== "") 
-			{
-		        $("#birth_error").hide(); 
-				return;
-		    }
-		if ($("#birth-year").val() == "" ||
-	        $("#birth-month").val() == ""||
-	        $("#birth-day").val() == "") 
-			{
-		        $("#birth_error").show(); 
-				return;
-		    }		
-	});
 	
-	$("#birth-year").on("change", function() {
-
-		if ($("#birth-year").val() != "") {
-			$("#birth_error").hide();
-			return;
-		}
-		else{
-			$("#birth_error").show();
-		}
-
-	});
-	$("#birth-month").on("change", function() {
-
-		if ($("#birth-month").val() != "") {
-			$("#birth_error").hide();
-			return;
-		}
-		else {
-			$("#birth_error").show();
-		}
-
-	});
+	/////
+	
+	
 	$("#birth-day").on("change", function() {
-
-		if ($("#birth-day").val() != "") {
-			$("#birth_error").hide();
-			return;
-		}
-		else {
-			$("#birth_error").show();
-		}
-
+	    $("#birth_error").hide(); // 생년월일을 모두 선택했다면 에러 메시지 숨기기
 	});
-	*/
+
+			
+		
+
+
 
 	
 	//////////////////////////////////////////////////////////////////////////
@@ -603,13 +558,30 @@ function goRegister() {
 	// **** "성별"을 선택했는지 검사하기 끝 **** //
 	
 	
+	// 생년월일 유효성 검사 (일(day)은 출생연도와 월이 모두 선택되어야 선택할 수 있음. 그래서 일만 유효성 검사를 하는 것.)
+	//alert($("#birth-day > option").text()); // 값 선택 x 시 출생연도/ 그외 출생연도 + select의 text값들 모두
 	
-	/*데이트피커(달력) 삭제 전 코드
-	if($("#datepicker").val().trim()==""){
-			$("#datepicker").next().show();
-			return;
-		}
-		*/
+	let day_list = $("#birth-day > option");
+	
+	var exit = false; // 생년월일을 입력하지 않고 가입하기 버튼을 누를 시 약관동의 유효성 검사도 같이 실행되어서 중간에 함수를 종료하기 위한 변수 
+	
+	day_list.each(function(index,elmt) {
+	  // console.log($(elmt).val()); // DOM 요소를 jQuery 객체로 변환 후 val() 호출
+	   
+	   if($(elmt).val()==""){ // 생년월일을 모두 선택하지 않았다면.일(day)을 선택하지않았다면
+		$("#birth_error").show();
+		exit = true;
+        return false;
+	   }
+	   if($(elmt).val()!=""){ // 생년월일을 모두 선택했다면.=> 일(day)을 선택했다면
+	   		$("#birth_error").hide();
+	   	   }
+	   //$("#birth_error").hide(); // 생년월일을 모두 선택했다면.
+	});
+
+	if(exit) {
+	    return false;
+	}
 		
 	// **** 약관에 동의를 했는지 검사하기 시작 **** //
 	const checkbox_chechked_length = $("input:checkbox[id='agree']:checked").length;
@@ -623,23 +595,23 @@ function goRegister() {
 	
 
 		
-		// **** "아이디 중복확인"을 클릭했는지 검사하기 시작 **** //
-		if(!b_idcheck_click) {
-			// "아이디중복확인"을 클릭 하지 않았을 경우
-			alert("아이디 중복확인을 클릭하셔야 합니다.");
-			return; // goRegister() 함수를 종료한다.
-		}
-		
-		// **** "아이디 중복확인"을 클릭했는지 검사하기 끝 **** //
-		
-		// **** "이메일 중복확인"을 클릭했는지 검사하기 시작 **** //
-		if(!b_emailcheck_click) {
-			// "이메일중복확인"을 클릭 하지 않았을 경우
-			alert("이메일 중복확인을 클릭하셔야 합니다.");
-			return; // goRegister() 함수를 종료한다.
-		}
-		
-		// **** "이메일 중복확인"을 클릭했는지 검사하기 끝 **** //
+	// **** "아이디 중복확인"을 클릭했는지 검사하기 시작 **** //
+	if(!b_idcheck_click) {
+		// "아이디중복확인"을 클릭 하지 않았을 경우
+		alert("아이디 중복확인을 클릭하셔야 합니다.");
+		return; // goRegister() 함수를 종료한다.
+	}
+	
+	// **** "아이디 중복확인"을 클릭했는지 검사하기 끝 **** //
+	
+	// **** "이메일 중복확인"을 클릭했는지 검사하기 시작 **** //
+	if(!b_emailcheck_click) {
+		// "이메일중복확인"을 클릭 하지 않았을 경우
+		alert("이메일 중복확인을 클릭하셔야 합니다.");
+		return; // goRegister() 함수를 종료한다.
+	}
+	
+	// **** "이메일 중복확인"을 클릭했는지 검사하기 끝 **** //
 	
 	
 	const frm = document.registerFrm;

@@ -62,7 +62,7 @@
 			  </div>    
 			  <div class="info" id="birth">
 			  <label class="labelName">생년월일</label>
-				  <div style="display:flex;">
+				  <div id="only_birth"style="display:flex;">
 					  <select class="box" id="birth-year" name="year" style="margin-left:0px;">
 					    <option disabled selected value="">출생 연도</option>
 					  </select>
