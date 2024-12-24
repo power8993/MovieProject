@@ -1,34 +1,38 @@
-$(document).ready(function(){
-    // 좋아요 버튼 클릭 이벤트
-    $("#like").click(function() {
-        var isLiked = $(this).hasClass("liked"); // 만약 이미 좋아요 상태라면
-		$(this).css({"color" : "#ff2626"});
-        // AJAX 요청
-        $.ajax({
-            url: "/movie/movieLike.mp",
-            data: {
-                userId: user_Id,
-                movieNo: seq_movie_no,
-                like: isLiked ? "remove" : "add" // 좋아요 추가/제거
-            },
-            type: "POST",
-            dataType: "json",
-            success: function(response) {
-                // 응답 성공 시
-                if (response.status === "success") {
-                    // 상태 변경 (예: 좋아요를 누른 상태와 안 누른 상태)
-                    if (isLiked) {
-                        $("#like").removeClass("liked").html('<i class="fa-solid fa-heart"></i>'); // 좋아요 취소
-                    } else {
-                        $("#like").addClass("liked").html('<i class="fa-solid fa-heart-broken"></i>'); // 좋아요 추가
-                    }
+function golike(element, seq_movie_no) {
+    // 현재 좋아요 상태를 확인 (클래스가 'liked'인지를 체크)
+    var isLiked = $(element).hasClass("liked");
+
+	console.log(isLiked);
+	console.log(seq_movie_no);
+	
+    // AJAX 요청을 보낼 때, 현재 좋아요 상태에 따라 'add' 또는 'remove' 값을 전송
+    $.ajax({
+        url: "/MovieProject/movie/movieLike.mp",  // 서버로 요청을 보낼 URL
+        data: {
+            "seq_movie_no": seq_movie_no,   // 영화 번호
+            "like": isLiked ? "remove" : "add" // 'remove' 또는 'add' 상태
+        },
+        type: "POST",  // POST 방식으로 요청
+        dataType: "json",  // 서버 응답을 JSON 형식으로 받음
+        success: function(json) {
+            // 서버 응답이 성공일 경우
+            if (json.status === "success") {
+                // 좋아요 상태 변경 (클릭한 아이콘의 클래스와 아이콘 변경)
+                if (isLiked) {
+                    // 좋아요 취소 (클래스 제거, 아이콘 변경)
+					$(element).removeClass("liked").css({"color":""});
                 } else {
-                    alert("문제가 발생했습니다: " + response.message);
+                    // 좋아요 추가 (클래스 추가, 아이콘 변경)
+					$(element).addClass("liked").css({"color":"#ff2626"});
                 }
-            },
-            error: function(request, status, error) {
-                alert("code: " + request.status + "\nmessage: " + request.responseText + "\nerror: " + error);
+            } else {
+                // 서버에서 문제가 발생했을 때
+                alert("문제가 발생했습니다: " + json.message);
             }
-        });
+        },
+        error: function(request, status, error) {
+            // AJAX 요청이 실패했을 경우
+            alert("code: " + request.status + "\nmessage: " + request.responseText + "\nerror: " + error);
+        }
     });
-});
+}

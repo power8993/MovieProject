@@ -10,6 +10,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import member.domain.MemberVO;
 import movie.domain.CategoryVO;
 import movie.domain.MovieVO_wonjae;
 
@@ -84,6 +85,7 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 
 			if (rs.next()) {
 				mvo = new MovieVO_wonjae();
+				mvo.setSeq_movie_no(rs.getInt("seq_movie_no"));
 				mvo.setMovie_title(rs.getString("movie_title"));
 				mvo.setDirector(rs.getString("director"));
 				mvo.setActor(rs.getString("actor"));
@@ -105,17 +107,17 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 
 	// 영화에 좋아요 추가
 	@Override
-	public boolean insertMovieLike(String user_id, int seq_movie_no) throws SQLException {
+	public boolean insertMovieLike(MemberVO loginuser, int seq_movie_no) throws SQLException {
 		
 		boolean result = false;
 		
 		try {
 			conn = ds.getConnection();
 			
-	        String sql = "insert into movie_likes (user_id, movie_no) values (?, ?)";
+	        String sql = "insert into tbl_like (fk_user_id, fk_seq_movie_no) values (?, ?)";
 	        
 	        pstmt = conn.prepareStatement(sql);
-	        pstmt.setString(1, user_id);
+	        pstmt.setString(1, loginuser.getUserid());
             pstmt.setInt(2, seq_movie_no);
 	       
             int resultnum = pstmt.executeUpdate();
@@ -123,7 +125,9 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
             // 행이 1 이상이면 성공
             result = (resultnum > 0);    
 	        
-	    } finally {
+	    } catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
 			close();
 		}
 		return result;
@@ -131,16 +135,16 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 
 	// 영화에 좋아요 삭제
 	@Override
-	public boolean removeMovieLike(String user_id, int seq_movie_no) throws SQLException {
+	public boolean removeMovieLike(MemberVO loginuser, int seq_movie_no) throws SQLException {
 		boolean result = false;
 		
 		try {
 			conn = ds.getConnection();
 			
-			String sql = "delete from movie_likes where user_id = ? and movie_no = ?";
+			String sql = "delete from tbl_like where fk_user_id = ? and fk_seq_movie_no = ?";
 	        
 	        pstmt = conn.prepareStatement(sql);
-	        pstmt.setString(1, user_id);
+	        pstmt.setString(1, loginuser.getUserid());
             pstmt.setInt(2, seq_movie_no);
 	       
             int resultnum = pstmt.executeUpdate();

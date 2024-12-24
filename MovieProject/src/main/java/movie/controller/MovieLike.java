@@ -7,6 +7,8 @@ import org.json.JSONObject;
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import member.domain.MemberVO;
 import movie.model.MovieDAO_imple_wonjae;
 import movie.model.MovieDAO_wonjae;
 
@@ -17,7 +19,13 @@ public class MovieLike extends AbstractController {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String user_id = request.getParameter("user_id");
+    	
+    	HttpSession session = request.getSession();
+
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+		
+		
+		
         int seq_movie_no = Integer.parseInt(request.getParameter("seq_movie_no"));
         String movieLike = request.getParameter("like"); // "add" or "remove"
 
@@ -27,10 +35,12 @@ public class MovieLike extends AbstractController {
 
             if ("add".equals(movieLike)) {
                 // 좋아요 추가
-                success = mdao.insertMovieLike(user_id, seq_movie_no);
+                success = mdao.insertMovieLike(loginuser, seq_movie_no);
+                System.out.println("추가" + loginuser.getUserid());
             } else if ("remove".equals(movieLike)) {
                 // 좋아요 취소
-                success = mdao.removeMovieLike(user_id, seq_movie_no);
+                success = mdao.removeMovieLike(loginuser, seq_movie_no);
+                System.out.println("취소" + loginuser.getUserid());
             }
 
             if (success) {
