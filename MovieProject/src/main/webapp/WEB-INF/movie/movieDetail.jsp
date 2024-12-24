@@ -123,35 +123,43 @@
             cursor: pointer;
             margin-top: 10px;
         }       
+
+
     </style>
 </head>
 <body>
-
+<script src="https://kit.fontawesome.com/0c69fdf2c0.js" crossorigin="anonymous"></script>
 <jsp:include page="/WEB-INF/header1.jsp" />
+<script type="text/javascript" src="<%= ctxPath%>/js/movie/movieDetail.js"></script>
+
 
 <div class="container">
     <div class="movie-header">
-        <img src="<%= ctxPath %>" alt="영화 포스터" class="movie-poster">
-        <div class="movie-details">
-            <div class="movie-title">타이틀<%= ctxPath %></div>
+    	<div style="position: relative; width: 185px; height: 260px;">
+        	<img src="<%= ctxPath %>/images/미니언덩이즈.png" alt="영화 포스터" class="movie-poster" style="border: 0px solid red; width:100%; height: 260px; display: block; position: absolute; top:0px; left: 0px;">
+        	<i id="like" class="fa-solid fa-heart fa-bounce" onclick="golike(this,${mvo.seq_movie_no})"  style="color:#252422; position: absolute; top: 10px; right: 10px; z-index: 5; font-size: 20pt; "></i>
+        </div>
+        <div class="movie-details" style="margin: 0 15px">
+            <div class="movie-title">${mvo.movie_title} </div>
             <div class="movie-info">
-                <div><strong>예매율:</strong> <%= ctxPath %>%</div>
-                <div><strong>장르:</strong> <%= ctxPath %></div>
-                <div><strong>감독:</strong> <%= ctxPath %></div>
-                <div><strong>배우:</strong> <%= ctxPath %></div>
-                <div><strong>상영시간:</strong> <%= ctxPath %></div>
-                <div><strong>개봉일:</strong> <%= ctxPath %></div>
-            </div>            
+                <div><strong>예매율:</strong> 0%</div>
+                <div><strong>감독:</strong> ${mvo.director}</div>
+                <div><strong>감독:</strong> ${mvo.director}</div>
+                <div><strong>배우:</strong> ${mvo.actor}</div>
+                <div><strong>장르:</strong> ${mvo.cvo.category}</div>         
+                <div><strong>상영시간:</strong> ${mvo.running_time} 분</div>
+                <div><strong>개봉일:</strong> ${mvo.start_date}</div>
+            </div>
             <!-- 예매하기 버튼 -->
-            <button class="reservation-btn" onclick="">
-                예매하기
+            <button class="reservation-btn">
+                <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${mvo.seq_movie_no}">예매하기</a>
             </button>
         </div>
     </div>
 
     <div class="synopsis">
         <strong>줄거리</strong>
-        <p><%= ctxPath%></p>
+        <p>${mvo.content}</p>
     </div>
 
     <!-- 후기 작성 -->

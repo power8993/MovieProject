@@ -22,29 +22,11 @@
 	
 	String[] dayname = {"일", "월", "화", "수", "목", "금", "토"};
 	
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+	
 %>
 
-<script type="text/javascript">
-	
-$(document).ready(function(){
-	
-	$("tr.movie-list").click(e => {
-		$("tr.movie-list").css({'background-color':'','color':''});
-        $(e.target).parent().css({'background-color':'black','color':'white'});
-        $("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
-	});
-	
-	$("li#day").find("span").click(e => {
-		$("li#day").css({'background-color':'','color':''});
-        $(e.target).parent().css({'background-color':'black','color':'white'});
-        $("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
-	});
-	
-	
-	
-}); // end of $(document).ready(function() {});;--------------------------------------------
-
-</script>
+<script type="text/javascript" src="<%= ctxPath%>/js/reservation/reservation.js"></script>
 
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/reservation/reservation.css" />
 
@@ -54,7 +36,7 @@ $(document).ready(function(){
 	
 	<div id="ticket" class="ticket">
 		
-		<div class="steps">
+		<div id="step1" class="steps">
 			
 			<div class="section movie">
 				
@@ -70,6 +52,7 @@ $(document).ready(function(){
 									<tr class="movie-list">
 										<td class="movie-grade">${movievo.movie_grade}</td>
 										<td class="movie-title">${movievo.movie_title}</td>
+										<td id="seq_movie_no" style="display: none">${movievo.seq_movie_no}</td>
 									</tr>
 			      				</c:forEach>
 		      				</tbody>
@@ -98,6 +81,7 @@ $(document).ready(function(){
 						<li class="day" id="day" data-index="0">
 							<span class="dayweek" name="dd"><%= dayname[currentDate.get(Calendar.DAY_OF_WEEK)-1]%>&nbsp;&nbsp;</span>
 							<span class="date"><%= currentDate.get(Calendar.DATE) %></span>
+							<span id="input_date" style="display: none"><%= sdf.format(currentDate.getTime())%></span>
 						</li>
 						<% 
 							for(int i=0; i<20; i++) {
@@ -122,6 +106,7 @@ $(document).ready(function(){
 								<li class="day" id="day">
 									<span class="dayweek"><%= dayname[currentDate.get(Calendar.DAY_OF_WEEK)-1] %>&nbsp;&nbsp;</span>
 									<span class="date"><%= currentDate.get(Calendar.DATE) %></span>
+									<span id="input_date" style="display: none"><%= sdf.format(currentDate.getTime())%></span>
 								</li>
 								<%
 							} // end of for---------------------------------------
@@ -138,7 +123,6 @@ $(document).ready(function(){
 				</div>
 
 				<div class="col-body">
-				
 				</div>
 			</div>
 			
@@ -146,11 +130,65 @@ $(document).ready(function(){
 		
 		<%-- -------------------------------------------------------------------- --%>
 		
+		<div id="step2" class="steps">
+			<div class="col-head">
+				<h3 class="title">인원 / 좌석</h3>
+			</div>
+			<div class="col-body">
+				<div id="person-screen">
+					<div id="numberOfPeople">
+						<div class="btn-group">
+							<label>일반</label>
+							<button class="btn btn-primary btn-outline-secondary" value="0">0</button>
+							<button class="btn" value="1">1</button>
+							<button class="btn" value="2">2</button>
+							<button class="btn" value="3">3</button>
+							<button class="btn" value="4">4</button>
+							<button class="btn" value="5">5</button>
+						</div>
+						<div class="btn-group">
+							<label>청소년</label>
+							<button class="btn active" value="0">0</button>
+							<button class="btn" value="1">1</button>
+							<button class="btn" value="2">2</button>
+							<button class="btn" value="3">3</button>
+							<button class="btn" value="4">4</button>
+							<button class="btn" value="5">5</button>
+						</div>
+						<div class="btn-group">
+							<label>어린이</label>
+							<button class="btn active" value="0">0</button>
+							<button class="btn" value="1">1</button>
+							<button class="btn" value="2">2</button>
+							<button class="btn" value="3">3</button>
+							<button class="btn" value="4">4</button>
+							<button class="btn" value="5">5</button>
+						</div>
+					</div>
+					<div id="screen-info">
+						<div id="screen-date-info"></div>
+						<div id="screen-time-info"></div>
+					</div>
+				</div>
+				<div id="seat-screen" class="text-center">
+				</div>
+			</div>
+		</div>
+		
+		<%-- -------------------------------------------------------------------- --%>
+		
 		<div id="ticket-info-container" class="ticket-info-container">
 			<div id="ticket-info" class="container ticket-info" style="align-content: center;">
+				<button id="goMovieChoice" onclick="goMovieChoice()">-> 영화선택</button>
 				<div id="movie-choice" class="movie-choice">영화선택</div>
-				<div id="theater-choice">극장선택</div>
-				<div>> 좌석선택 > 결제</div>
+				<div>
+					<div id="date-choice">시간선택</div>
+					<div id="time-choice"></div>
+					<div id="seq_showtime_no" style="display: none;"></div>
+				</div>
+				<div>> 좌석선택</div>
+				<div>> 결제</div>
+				<button id="goSeatChoice" onclick="goSeatChoice()">-> 좌석선택</button>
 			</div>
 		</div>
 		

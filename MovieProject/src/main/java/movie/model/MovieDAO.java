@@ -20,4 +20,6 @@ public interface MovieDAO {
 	// 등록된 영화를 보여주는 페이지에서 영화 클릭 시, 해당 영화 상세 내용 보여주기(select)
 	MovieVO selectMovieDetail(String seq) throws SQLException;
 
+	
+
 }

@@ -12,11 +12,16 @@ import java.util.Properties;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebInitParam;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+@MultipartConfig ( // 위의 location 을 기입하지 않으면 Windows 는 자동적으로 C:\Windows\Temp 디렉토리를 사용하도록 되어있다.
+		maxFileSize = 20971520,
+		maxRequestSize = 31457280)
 
 @WebServlet (
 	description = "사용자가 웹에서 *.mp 을 했을 경우 이 서블릿이 응답을 해주도록 한다.",
@@ -25,6 +30,7 @@ import jakarta.servlet.http.HttpServletResponse;
 		@WebInitParam(name = "propertyConfig", value = "C:\\git\\MovieProject\\MovieProject\\src\\main\\webapp\\WEB-INF\\Command.Properties", description = "*.mp 에 대한 클래스의 매핑파일") 
 	}
 )
+
 public class FrontController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;

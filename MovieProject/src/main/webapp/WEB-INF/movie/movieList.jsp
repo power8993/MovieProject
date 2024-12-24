@@ -134,23 +134,25 @@
             <div class="row">
                 <!-- 데이터가 있는 경우 -->
                 <c:if test="${movies != null && not empty movies}">
-                    <c:forEach var="movie" items="${movies}" varStatus="status">
-                        <div class="col-md-4 mb-4 ${status.index >= 15 ? 'movie-hidden hidden' : ''}" >
-                            <div class="movie-card position-relative" onclick="<%= ctxPath%>/movie/movieDetail.mp">
-                                <div class="rank">No. ${status.index + 1}</div>
-                                <div class="poster">
-                                    <img src="${movie.poster_file}" alt="${movie.movie_title}">
-                                </div>
-                                                              
-                                <div class="movie-details">
-                                <div class="movie-title">${movie.movie_title}</div>                                     
-                                    <p>좋아요 수: ${movie.like_count}</p>                             
-                                    <p>개봉일: ${movie.start_date}</p>   
-                                    <button>예매하러가기</button>                                
-                                </div>
-                            </div>
-                        </div>
-                    </c:forEach>
+                   <c:forEach var="movie" items="${movies}" varStatus="status">
+    				<div class="col-md-4 mb-4 ${status.index >= 15 ? 'movie-hidden hidden' : ''}">
+        			<a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}">
+            		<div class="movie-card position-relative">	
+                <div class="rank">No. ${status.index + 1}</div>
+                <div class="poster">
+                    <img src="${movie.poster_file}" alt="${movie.movie_title}">
+                </div>                                                              
+                <div class="movie-details">
+                    <div class="movie-title">${movie.movie_title}</div>                                     
+                    <p>좋아요 수: ${movie.like_count}</p>                             
+                    <p>개봉일: ${movie.start_date}</p>   
+                    <button>예매하러가기</button>                                
+                </div>
+            </div>
+        </a>
+    </div>
+</c:forEach>
+
                 </c:if>
 
                 <!-- 데이터가 없는 경우 -->
