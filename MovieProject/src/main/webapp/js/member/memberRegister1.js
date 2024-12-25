@@ -558,30 +558,19 @@ function goRegister() {
 	// **** "성별"을 선택했는지 검사하기 끝 **** //
 	
 	
-	// 생년월일 유효성 검사 (일(day)은 출생연도와 월이 모두 선택되어야 선택할 수 있음. 그래서 일만 유효성 검사를 하는 것.)
+	
 	//alert($("#birth-day > option").text()); // 값 선택 x 시 출생연도/ 그외 출생연도 + select의 text값들 모두
 	
-	let day_list = $("#birth-day > option");
-	
-	var exit = false; // 생년월일을 입력하지 않고 가입하기 버튼을 누를 시 약관동의 유효성 검사도 같이 실행되어서 중간에 함수를 종료하기 위한 변수 
-	
-	day_list.each(function(index,elmt) {
-	  // console.log($(elmt).val()); // DOM 요소를 jQuery 객체로 변환 후 val() 호출
-	   
-	   if($(elmt).val()==""){ // 생년월일을 모두 선택하지 않았다면.일(day)을 선택하지않았다면
-		$("#birth_error").show();
-		exit = true;
-        return false;
-	   }
-	   if($(elmt).val()!=""){ // 생년월일을 모두 선택했다면.=> 일(day)을 선택했다면
-	   		$("#birth_error").hide();
-	   	   }
-	   //$("#birth_error").hide(); // 생년월일을 모두 선택했다면.
-	});
+	var year = $("#birth-year").val(); 
+    var month = $("#birth-month").val(); 
+    var day = $("#birth-day").val(); 
 
-	if(exit) {
-	    return false;
-	}
+   if (!year || !month || !day) {  // 세 가지 중 하나라도 선택되지 않으면
+       $("#birth_error").show();
+	   return;
+   } else {
+       $("#birth_error").hide(); 
+   }
 		
 	// **** 약관에 동의를 했는지 검사하기 시작 **** //
 	const checkbox_chechked_length = $("input:checkbox[id='agree']:checked").length;

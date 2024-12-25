@@ -156,100 +156,110 @@ public class MemberDAO_imple implements MemberDAO {
 
 	
 	// 로그인 처리
-   @Override
-   public MemberVO login(Map<String, String> paraMap) throws SQLException {
-      
-      MemberVO member = null;
-      
-      try {
-         conn = ds.getConnection();
-         
-         String sql = " SELECT USER_ID, NAME, email, mobile ,IDLE_STATUS, birthday, PWD_CHANGE_DATE as lastpwdchangedate "
-               + " FROM TBL_MEMBER "
-               + " WHERE USER_STATUS = 1 AND USER_ID = ? and pwd = ? ";
-         
-         
-         /* 기존 코드는 이것인데 일단은 로그인이 되게하려고 밑의 만료기간에 따른 로그인처리는 주석처리함!!!!!!!!!!!!!!!!!!!!!!!!!
-         String sql = " SELECT USER_ID, name, coin, point, pwdchangegap, "
-                  + "        NVL( lastlogingap, TRUNC( months_between(sysdate, registerday) ) ) AS lastlogingap, idle, email, mobile, gender, birthday "
-                  + " FROM "
-                  + " (select userid, name, coin, point, "
-                  + "         trunc( months_between(sysdate, lastpwdchangedate) ) AS pwdchangegap, "
-                  + "         registerday, idle, email, mobile, postcode, address, detailaddress, extraaddress, gender, birthday "
-                  + " FROM tbl_member "
-                  + " WHERE status = 1 AND userid = ? AND pwd = ? "
-                  + " ) M "
-                  + " CROSS JOIN "
-                  + " (select trunc( months_between(sysdate, max(logindate) ) ) AS lastlogingap "
-                  + " FROM tbl_loginhistory "
-                  + " WHERE fk_userid = ? "
-                  + " ) H " ;
-         */
-         pstmt = conn.prepareStatement(sql);
-         
-         pstmt.setString(1, paraMap.get("userid"));
-         pstmt.setString(2, Sha256.encrypt(paraMap.get("pwd")));
-         
-         rs = pstmt.executeQuery();
-         
-         if(rs.next()) {
-            member = new MemberVO();
-            
-            member.setUserid(rs.getString("USER_ID"));
-            member.setName(rs.getString("name"));
-            /*
-            if( rs.getInt("lastlogingap") >= 12 ) {
-               // 마지막으로 로그인 한 날짜시간이 현재시각으로 부터 1년이 지났으면 휴면으로 지정
-               member.setIdle(1);
-               
-               if(rs.getInt("idle") == 0) {
-                  // === tbl_member 테이블의 idle 컬럼의 값을 1로 변경하기 === //
-                  sql = " update tbl_member set idle = 1 "
-                     + " where userid = ? ";
-                  
-                  pstmt = conn.prepareStatement(sql);
-                  pstmt.setString(1, paraMap.get("userid"));
-                  
-                  pstmt.executeUpdate();
-                  
-               } // end of if(rs.getInt("idle") == 0)-----------------------------
-               
-            } // end of if( rs.getInt("lastlogingap") >= 12 )-----------------------
-            */
-            
-            // === 휴면이 아닌 회원만 tbl_loginhistory(로그인기록) 테이블에 insert 하기 시작 === //
-            /*
-            if( rs.getInt("lastlogingap") < 12) {
-               sql = " insert into tbl_loginhistory(historyno, fk_userid, clientip) "
-                  + " values(seq_historyno.nextval, ?, ?) ";
-               
-               pstmt = conn.prepareStatement(sql);
-               pstmt.setString(1, paraMap.get("userid"));
-               pstmt.setString(2, paraMap.get("clientip"));
-               
-               pstmt.executeUpdate();
-               // === 휴면이 아닌 회원만 tbl_loginhistory(로그인기록) 테이블에 insert 하기 끝 === //
-               
-               if( rs.getInt("pwdchangegap") >= 3 ) {
-                  // 마지막으로 암호를 변경한 날짜가 현재시각으로 부터 3개월이 지났으면 true
-                  // 마지막으로 암호를 변경한 날짜가 현재시각으로 부터 3개월이 지나지 않았으면 false 
-                  
-                  member.setRequirePwdChange(true); // 로그인시 암호를 변경해라는 alert 를 띄우도록 할때 사용한다.
-               }
-            }
-            */
-            member.setEmail( aes.decrypt(rs.getString("email")) );
-               member.setMobile( aes.decrypt(rs.getString("mobile")) );
-               member.setBirthday(rs.getString("birthday"));
-               member.setLastpwdchangedate(rs.getString("lastpwdchangedate"));
-               
-         } // end of if(rs.next())------------------------------
-         
-      } catch(GeneralSecurityException | UnsupportedEncodingException e) {
-         e.printStackTrace();
-      } finally {
-         close();
-      }
+	   @Override
+	   public MemberVO login(Map<String, String> paraMap) throws SQLException {
+	      
+	      MemberVO member = null;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+				/*
+				 * String sql =
+				 * " SELECT USER_ID, NAME, email, mobile ,IDLE_STATUS, birthday, PWD_CHANGE_DATE as lastpwdchangedate "
+				 * + " FROM TBL_MEMBER " +
+				 * " WHERE USER_STATUS = 1 AND USER_ID = ? and pwd = ? ";
+				 */
+	         
+	         
+	         
+	         String sql = " SELECT USER_ID, name,pwdchangegap, "
+	                  + "        NVL( lastlogingap, TRUNC( months_between(sysdate, REGISTERDAY) ) ) AS lastlogingap, idle_status, email, mobile, gender, birthday "
+	                  + " FROM "
+	                  + " (select user_id, name, "
+	                  + "         trunc( months_between(sysdate, PWD_CHANGE_DATE) ) AS pwdchangegap, "
+	                  + "         registerday, idle_status, email, mobile, gender, birthday "
+	                  + " FROM tbl_member "
+	                  + " WHERE user_status = 1 AND user_id = ? AND pwd = ? "
+	                  + " ) M "
+	                  + " CROSS JOIN "
+	                  + " (select trunc( months_between(sysdate, min(login_date) ) ) AS lastlogingap "
+	                  + " FROM tbl_login_history "
+	                  + " WHERE fk_user_id = ? "
+	                  + " ) H " ;
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, paraMap.get("userid"));
+	         pstmt.setString(2, Sha256.encrypt(paraMap.get("pwd")));
+	         pstmt.setString(3, paraMap.get("userid"));
+	         
+	         rs = pstmt.executeQuery();
+	         
+	         if(rs.next()) {
+	            member = new MemberVO();
+	            
+	            member.setUserid(rs.getString("USER_ID"));
+	            member.setName(rs.getString("name"));
+	            
+	            //// 마지막로그인과 오늘 날짜 차이 출력해보기 ////
+	            int lastLoginGap = rs.getInt("lastlogingap");
+	            // System.out.println("Last login gap: " + lastLoginGap);
+	            ////////////////////////////////////////////////////////
+	            
+	            member.setIdle(99); // 휴면계정이 아니라면 99를 넣어줌. 휴면계정이라면 0을 전달.
+	            
+	            if( lastLoginGap >= 12 ) {
+	               // 마지막으로 로그인 한 날짜시간이 현재시각으로 부터 1년이 지났으면 휴면으로 지정
+	               member.setIdle(0);
+	               
+	               if(rs.getInt("idle_status") == 1) {
+	                  // === tbl_member 테이블의 idle 컬럼의 값을 0로 변경하기 === //
+	                  sql = " update tbl_member set idle_status = 0 "
+	                     + " where user_id = ? ";
+	                  
+	                  pstmt = conn.prepareStatement(sql);
+	                  pstmt.setString(1, paraMap.get("userid"));
+	                  
+	                  pstmt.executeUpdate();
+	                  
+	               } // end of if(rs.getInt("idle") == 0)-----------------------------
+	               
+	            } // end of if( rs.getInt("lastlogingap") >= 12 )-----------------------
+	            
+	            
+	            // === 휴면이 아닌 회원만 tbl_loginhistory(로그인기록) 테이블에 insert 하기 시작 === //
+	            
+	            if( lastLoginGap < 12) {
+	               sql = " insert into tbl_login_history(HISTORY_NO, fk_user_id, CLIENT_IP) "
+	                  + " values(SEQ_HISTORY_NO.nextval, ?, ?) ";
+	               
+	               pstmt = conn.prepareStatement(sql);
+	               pstmt.setString(1, paraMap.get("userid"));
+	               pstmt.setString(2, paraMap.get("clientip"));
+	               
+	               pstmt.executeUpdate();
+	               // === 휴면이 아닌 회원만 tbl_loginhistory(로그인기록) 테이블에 insert 하기 끝 === //
+	               
+	               if( rs.getInt("pwdchangegap") >= 3 ) {
+	                  // 마지막으로 암호를 변경한 날짜가 현재시각으로 부터 3개월이 지났으면 true
+	                  // 마지막으로 암호를 변경한 날짜가 현재시각으로 부터 3개월이 지나지 않았으면 false 
+	                  
+	                  member.setRequirePwdChange(true); // 로그인시 암호를 변경해라는 alert 를 띄우도록 할때 사용한다.
+	               }
+	            }
+		           member.setEmail( aes.decrypt(rs.getString("email")) );
+	               member.setMobile( aes.decrypt(rs.getString("mobile")) );
+	               member.setBirthday(rs.getString("birthday"));
+	               member.setLastpwdchangedate(rs.getString("pwdchangegap"));
+	               
+	         } // end of if(rs.next())------------------------------
+	         
+	      } catch(GeneralSecurityException | UnsupportedEncodingException e) {
+	         e.printStackTrace();
+	      } finally {
+	         close();
+	      }
 	
 	return member;
 	
