@@ -6,7 +6,7 @@
 <%
 String ctxPath = request.getContextPath();
 %>
-
+<jsp:include page="../header1.jsp" />
 
 <%-- 직접 만든 CSS --%>
 <link rel="stylesheet" type="text/css"
@@ -19,7 +19,7 @@ String ctxPath = request.getContextPath();
 <script src="https://kit.fontawesome.com/0c69fdf2c0.js"
 	crossorigin="anonymous"></script>
 
-<jsp:include page="../header1.jsp" />
+
 
 <%-- 전체 창 --%>
 <div class="my_container">
@@ -27,26 +27,27 @@ String ctxPath = request.getContextPath();
 	<div class="myprofile">
 		<div class="profile-container">
 			<i class="fa-solid fa-circle-user" style="color: #252422;"></i>
-
-			<!-- 사용자 정보 -->
+			<%-- 사용자 정보 --%>
 			<div class="profile-info">
-				<h2>회원 님</h2>
+				<h2>${(sessionScope.loginuser).name}님</h2>
 				<p>
 					나의 영화 랭킹 <strong>50</strong> 순위
 				</p>
 				<p>
-					사용 가능 포인트: <strong>0pt</strong>
+					사용 가능 포인트: <strong>${(sessionScope.loginuser).point}pt</strong>
 				</p>
 				<p>
 					사용한 포인트: <strong>0pt</strong>
 				</p>
 			</div>
+			<%-- 사용자 정보 끝 --%>
 		</div>
 	</div>
+	<%-- 마이페이지 나의 프로필장 끝 --%>
 	<%-- 마이페이지 사이드바 & 매안 창 --%>
 	<div class="my_main">
 
-		<%-- 마이페이지 사이드바 --%>
+		 <%-- 마이페이지 사이드바 --%>
 		<div class="my_hside">
 			<ul>
 				<li><a href="<%=ctxPath%>/mypage/mypage.mp">MyPage HOME</a></li>
@@ -54,15 +55,16 @@ String ctxPath = request.getContextPath();
 				<li><a href="<%=ctxPath%>/mypage/myreservationlist.mp">나의
 						예매내역</a>
 					<ul>
-						<li><a href="<%=ctxPath%>/mypage/myreservationpoint.mp"
-							class="active">포인트 적립/사용 내역</a></li>
+						<li><a href="<%=ctxPath%>/mypage/myreservationpoint.mp" class="active">포인트
+								적립/사용 내역</a></li>
 					</ul></li>
 
 				<li><a href="<%=ctxPath%>/mypage/mywatchedmovie.mp">영화</a>
 					<ul>
 						<li><a href="<%=ctxPath%>/mypage/mywatchedmovie.mp">내가 본
 								영화</a></li>
-						<li><a href="<%=ctxPath%>/mypage/myreview.mp">내가 쓴 평점</a></li>
+						<li><a href="<%=ctxPath%>/mypage/myreview.mp" >내가
+								쓴 평점</a></li>
 						<li><a href="<%=ctxPath%>/mypage/mymovielike.mp">기대되는 영화</a></li>
 					</ul></li>
 
@@ -74,6 +76,7 @@ String ctxPath = request.getContextPath();
 			</ul>
 		</div>
 		<%-- 마이페이지 사이드바 끝 --%>
+		
 		<!-- 메인 콘텐츠 -->
 		<div class="mypage_main_content">
 			<div class="my_h2">

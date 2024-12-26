@@ -39,8 +39,8 @@
 		          <td>
 		          	 <!-- 줄거리를 입력받는 텍스트 영역 -->
 		          	<div class="form-group">
-		              <label for="content"><span class="star">*&nbsp;</span>줄거리&nbsp; <span id="char_count" class="form-text text-muted">0 / 300</span></label>
-		              <textarea class="form-control" name="content" id="content" rows="4" onkeyup="charCount(this,300)" placeholder="줄거리를 입력하세요."></textarea>
+		              <label for="content"><span class="star">*&nbsp;</span>줄거리&nbsp; <span id="char_count" class="form-text text-muted">0 / 500</span></label>
+		              <textarea class="form-control" name="content" id="content" rows="4" onkeyup="charCount(this,500)" placeholder="줄거리를 입력하세요."></textarea>
 		            </div>
 		          </td>
 		        </tr>
@@ -140,7 +140,7 @@
 		    </table>
 		
 		    <button type="submit" id="resister_btn" class="btn btn-success" value="등록하기">영화등록하기</button>
-		    <button type="reset" class="btn btn-danger" value="취소하기" onclick="goMovieReset()">취소하기</button>
+		    <button type="reset" class="btn btn-danger" value="취소하기">취소하기</button>
 		    
 		  </form>
 	</div>

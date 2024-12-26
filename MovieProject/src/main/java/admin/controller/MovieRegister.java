@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import movie.domain.CategoryVO;
 import movie.domain.MovieVO;
 import movie.model.*;
 
@@ -37,23 +38,13 @@ public class MovieRegister extends AbstractController {
 			String poster_file = request.getParameter("poster_file");     
 			String video_url = request.getParameter("video_url");       
 			
-			 // System.out.println()으로 각 값 출력
-            System.out.println("fk_category_code: " + fk_category_code);
-            System.out.println("movie_title: " + movie_title);
-            System.out.println("content: " + content);
-            System.out.println("director: " + director);
-            System.out.println("actor: " + actor);
-            System.out.println("movie_grade: " + movie_grade);
-            System.out.println("running_time: " + running_time);
-            System.out.println("start_date: " + start_date);
-            System.out.println("end_date: " + end_date);
-            System.out.println("poster_file: " + poster_file);
-            System.out.println("video_url: " + video_url);
-			
 			// 위의 값을 MovieVO 객체에 담는다.
 			MovieVO movie = new MovieVO();
 			
-			movie.setFk_category_code(fk_category_code);
+			CategoryVO catevo = new CategoryVO();
+			catevo.setCategory_code(fk_category_code);
+			movie.setCatevo(catevo);
+			
 			movie.setMovie_title(movie_title);
 			movie.setContent(content);
 			movie.setDirector(director);
@@ -64,7 +55,6 @@ public class MovieRegister extends AbstractController {
 			movie.setEnd_date(end_date);
 			movie.setPoster_file(poster_file);
 			movie.setVideo_url(video_url);
-			
 			
 			try {
 				
@@ -85,7 +75,7 @@ public class MovieRegister extends AbstractController {
 				request.setAttribute("loc", loc);
 				
 				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/error.jsp");
+				super.setViewPage("/WEB-INF/msg.jsp");
 			}
 		}
 

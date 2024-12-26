@@ -1,0 +1,79 @@
+@charset "UTF-8";
+
+body > div.my_container > div.my_main > div.mypage_main_content > form{
+	border: solid 1px black;
+	background-color: white;
+	margin: 20px;
+	text-align: center;
+	padding: 70px 0;
+}
+
+body > div.my_container > div.my_main >div.mypage_main_content>form h3 {
+	font-size: 23px;
+	
+}
+
+body > div.my_container > div.my_main >div.mypage_main_content>form p {
+	font-size: 13px;
+}
+
+body > div.my_container > div.my_main > div.mypage_main_content > form > ul{
+	list-style-type: none;
+	padding: 0;
+}
+
+div.my_h2 {
+	text-align: center;
+}
+
+div.my_h2 h2 {
+	font-weight: bold;
+	font-size: 28px;
+}
+
+div.my_h2 p {
+	font-size: 18px;
+}
+
+div.mybutton {
+	/* border: solid 1px black; */
+}
+
+div.mybutton> button.btn {
+	padding: 6px 60px;
+	border: 1px solid #403d39;
+	background-color: #fff;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+div.mypage_main_content > form > div > button:nth-child(2){
+	background-color: #403d39;
+	color: white;
+}
+/* iframe 스타일 */
+body > div.my_container > div.my_main > div.mypage_main_content > form > iframe {
+    border: 1px solid navy;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 체크박스와 레이블 스타일 */
+body > div.my_container > div.my_main > div.mypage_main_content > form > iframe > label:agree2 {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.agree input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.agree label {
+    cursor: pointer;
+}

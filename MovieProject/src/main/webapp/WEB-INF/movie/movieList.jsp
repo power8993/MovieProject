@@ -99,30 +99,6 @@
             margin-top: 2rem;
         }
     </style>
-    
-
-<script type="text/javascript">
-
-  /* function Search(){
-      
-      const searchType = $("select[name='searchType']").val();
-      
-      if(searchType == ""){
-         alert("검색대상을 선택하세요!!");
-         return; // goSearch()함수 종료
-      }
-      
-      const frm = document.member_search_frm;
-   //   frm.action = "memberList.up"; // form 태그에 action 이 명기되지 않았으면 현재보이는(자신의 페이지) URL 경로로 submit 되어진다.
-   //   frm.method = "get";         // form 태그에 method 를 명기하지 않으면 "get" 방식이다.
-      frm.submit();
-      
-   }// end of function goSearch()------------------------
-          */
-
-</script>    
-    
-    
 </head>
 <body>
     <jsp:include page="../header1.jsp" />   
@@ -131,15 +107,24 @@
     <div class="container mt-4">
         <div>
             <ul style="display: flex; gap: 20px; padding: 0; margin-top: 20px; justify-content: flex-end; list-style-type: none;">
-                <li class="nav-link h5"> <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/runningMovies.mp">상영중인영화 </a></li>
-		         <li class="nav-link h5"> <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/upcomingMovies.mp">상영예정작 </a></li>             
+                <li><a class="nav-link h5" href="#">상영중인영화</a></li>
+                <li><a class="nav-link h5" href="#">상영예정작</a></li>
                 <select name="searchType">
-                   <option value="">장르</option>
-                   <c:forEach var="cg" items="${requestScope.cgList}">
-                     <option value="${cg.category_code}">${cg.category}</option>
-                  </c:forEach>    
+                    <option value="">장르검색</option>
+                    <option value="action">액션</option>
+                    <option value="comedy">코미디</option>
+                    <option value="drama">드라마</option>
+                    <option value="thriller">스릴러</option>
+                    <option value="romance">로맨스</option>
+                    <option value="sf">SF</option>
+                    <option value="fantasy">판타지</option>
+                    <option value="animation">애니메이션</option>
+                    <option value="history">역사</option>
+                    <option value="crime">범죄</option>
+                    <option value="sports">스포츠</option>
+                    <option value="noir">느와르</option>
                 </select>
-                <button type="button" class="round gray"> <!-- onclick="Search()" -->
+                <button type="button" class="round gray">
                     <span>GO</span>
                 </button>
             </ul>
@@ -149,25 +134,25 @@
             <div class="row">
                 <!-- 데이터가 있는 경우 -->
                 <c:if test="${movies != null && not empty movies}">
-                    <c:forEach var="movie" items="${movies}" varStatus="status">
-					    <div class="col-md-4 mb-4 <%-- ${status.index >= 15 ? 'movie-hidden hidden' : ''} --%>">
-					        <a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}">
-					            <div class="movie-card position-relative">   
-					                <div class="rank">No. ${status.index + 1}</div>
-					                <div class="poster">
-					                    <img src="${movie.poster_file}" alt="${movie.movie_title}">
-					                </div>                                                              
-					                <div class="movie-details">
-					                    <div class="movie-title">${movie.movie_title}</div>                                     
-					                    <p>예매율: <%-- ${movie.like_count} --%></p>                             
-					                    <p>개봉일: ${movie.start_date}</p>   
-					                    <p>장르: ${movie.cg.category}</p>   
-					                    <button>예매하러가기</button>                                
-					                </div>
-					            </div>
-					        </a>
-					    </div>
-					</c:forEach>
+                   <c:forEach var="movie" items="${movies}" varStatus="status">
+                <div class="col-md-4 mb-4 ${status.index >= 15 ? 'movie-hidden hidden' : ''}">
+                 <a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}">
+                  <div class="movie-card position-relative">   
+                <div class="rank">No. ${status.index + 1}</div>
+                <div class="poster">
+                    <img src="${movie.poster_file}" alt="${movie.movie_title}">
+                </div>                                                              
+                <div class="movie-details">
+                    <div class="movie-title">${movie.movie_title}</div>                                     
+                    <p>좋아요 수: ${movie.like_count}</p>                             
+                    <p>개봉일: ${movie.start_date}</p>   
+                    <button>예매하러가기</button>                                
+                </div>
+            </div>
+        </a>
+    </div>
+</c:forEach>
+
                 </c:if>
 
                 <!-- 데이터가 없는 경우 -->
