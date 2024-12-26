@@ -168,6 +168,8 @@
 					<div id="screen-info">
 						<div id="screen-date-info"></div>
 						<div id="screen-time-info"></div>
+						<div id="total_seat_cnt" style="display: none;"></div>
+						<div id="selected_seat_cnt" style="display: none;">0</div>
 					</div>
 				</div>
 				<div id="seat-screen" class="text-center">
@@ -186,9 +188,10 @@
 					<div id="time-choice"></div>
 					<div id="seq_showtime_no" style="display: none;"></div>
 				</div>
-				<div>> 좌석선택</div>
+				<div id="seat-choice">> 좌석선택</div>
 				<div>> 결제</div>
 				<button id="goSeatChoice" onclick="goSeatChoice()">-> 좌석선택</button>
+				<button id="goPay" onclick="goPay()">-> 결제선택</button>
 			</div>
 		</div>
 		
