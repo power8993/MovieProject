@@ -48,8 +48,7 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
         }
     }
 
-    // 모든 영화 정보 가져오기 (예매율 순으로 바꾸기)
-    // 장르 가져와야함
+    // 전체 목록 (예매율순)
     @Override
     public List<MovieVO_yeo> select_Movies() throws SQLException {
        
@@ -60,19 +59,22 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
             conn = ds.getConnection(); // DB 연결
         
             // SQL 쿼리 작성
-            String sql = "SELECT "
-            		   + " seq_movie_no,fk_category_code, category,movie_title,content, director, actor, movie_grade, "
-            		   + " running_time,  like_count, "
-            		   + " to_char(start_date, 'yyyy-mm-dd') as start_date , "
-            		   + " end_date,   poster_file, video_url, register_date "
-            		   + " FROM "
-            		   + " tbl_movie m "
-            		   + " JOIN "
-            		   + " tbl_category c "
-            		   + " ON "
-            		   + " m.fk_category_code = c.category_code "
-            		   + " ORDER BY "
-            		   + " m.seq_movie_no ";
+            String sql = " select "
+            		   + "    m.seq_movie_no, m.movie_title, m.fk_category_code,  c.category, m.content, m.director, m.actor, m.movie_grade, "
+            		   + "    m.running_time,  m.like_count, to_char(m.start_date, 'yyyy-mm-dd') as start_date,  m.end_date,  m.poster_file, m.video_url, "
+            		   + "    m.register_date,st.seq_showtime_no,s.screen_no,s.seat_cnt, "
+            		   + "    (s.seat_cnt - st.unused_seat) as reserved_seats, "
+            		   + "    round((s.seat_cnt - st.unused_seat) / s.seat_cnt * 100, 2) as reservation_rate "
+            		   + " from "
+            		   + "    tbl_movie m" 
+            		   + " join "
+            		   + "    tbl_category c on m.fk_category_code = c.category_code "
+            		   + " join "
+            		   + "    tbl_showtime st on m.seq_movie_no = st.fk_seq_movie_no "
+            		   + " join "
+            		   + "    tbl_screen s on st.fk_screen_no = s.screen_no "
+            		   + " order by "
+            		   + "    reservation_rate desc ";
            
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery();
@@ -111,10 +113,11 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
             close(); // 자원 해제
         }
         return movieList;
-    }  // 모든 영화 정보 가져오기 (예매율 순으로 바꾸기) ------------------------------------------------------------------------------------
+    }  // 전체 목록 (예매율순)  ------------------------------------------------------------------------------------
  
+    
+  
     // 상영중 영화 가져오기(개봉 날짜 순)
-    // 장르 가져와야함
 	@Override
 	public List<MovieVO_yeo> select_run_Movies() throws SQLException {		
 	
@@ -123,19 +126,24 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
         try {
             conn = ds.getConnection();
             //System.out.println("DB 연결 성공");
-            String sql = " SELECT movie_title, movie_grade, "
-            		   + " to_char(start_date, 'yyyy-mm-dd') as start_date , "
-            		   + " category "
-            		   + " FROM tbl_movie m"
-            		   + " JOIN "
-            		   + "    tbl_category c"
-            		   + " ON "
-            		   + "    m.fk_category_code = c.category_code "
-            		   + " WHERE "
-            		   + "    sysdate >= m.start_date "
-            		   + "    AND sysdate <= m.end_date + 1 "
-            		   + " ORDER BY "
-            		   + "    m.start_date ";
+            String sql = " select  "
+            	   	   + " m.seq_movie_no, m.movie_title, m.fk_category_code,  c.category, m.content, m.director, m.actor, m.movie_grade,  "
+            	   	   + " m.running_time,  m.like_count, to_char(m.start_date, 'yyyy-mm-dd') as start_date,  m.end_date,  m.poster_file, m.video_url,  "
+            	   	   + " m.register_date,st.seq_showtime_no,s.screen_no,s.seat_cnt,  "
+            	   	   + " (s.seat_cnt - st.unused_seat) as reserved_seats,  "
+            	   	   + " round((s.seat_cnt - st.unused_seat) / s.seat_cnt * 100, 2) as reservation_rate  "
+            	   	   + " from  "
+            	   	   + "    tbl_movie m "
+            	   	   + " join  "
+            	   	   + "    tbl_category c on m.fk_category_code = c.category_code "
+            	   	   + " join  "
+            	   	   + "    tbl_showtime st on m.seq_movie_no = st.fk_seq_movie_no "
+            	   	   + " join  "
+            	   	   + "    tbl_screen s on st.fk_screen_no = s.screen_no "
+            	   	   + " where  "
+            	   	   + "    st.start_time >= sysdate  "
+            	   	   + " order by  "
+            	   	   + "    reservation_rate desc ";
            // System.out.println("실행할 SQL: " + sql);
 
             pstmt = conn.prepareStatement(sql);
@@ -146,9 +154,11 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
             	MovieVO_yeo movie = new MovieVO_yeo();
             	CategoryVO_yeo cg = new CategoryVO_yeo();
             	
-            	movie.setMovie_title(rs.getString("movie_title"));
-            	movie.setMovie_grade(rs.getString("movie_grade"));
-				movie.setStart_date(rs.getString("start_date"));
+            	movie.setMovie_title(rs.getString("movie_title"));  // 영화제목
+            	movie.setMovie_grade(rs.getString("movie_grade"));  // 연령대
+				movie.setStart_date(rs.getString("start_date"));    // 개봉일
+				
+				// 러닝타임 좌석
 												
 				cg.setCategory(rs.getString("category"));
                 
@@ -168,8 +178,8 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 
 	} // 상영중 영화 가져오기(개봉 날짜 순) 끝 -----------------------------------------------------------------------------
 
+	
 	// 상영예정작 가져오기(예매율 순)
-	// 장르 가져와야함
 	@Override
 	public List<MovieVO_yeo> select_Upc_Movies() throws SQLException {
 		
@@ -178,19 +188,25 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
         try {
             conn = ds.getConnection();
             //System.out.println("DB 연결 성공");
-            String sql = " SELECT movie_title,movie_grade, "
-            		   + " to_char(start_date, 'yyyy-mm-dd') as start_date , "
-            		   + " category "
-            		   + " FROM tbl_movie m  "
-            		   + " JOIN  "
-            		   + "    tbl_category c "
-            		   + " ON  "
-            		   + "    m.fk_category_code = c.category_code "
-            		   + " WHERE "
-            		   + "    sysdate >= m.start_date "
-            		   + "    AND sysdate <= m.end_date + 1 "
-            		   + " ORDER BY  "
-            		   + "    m.start_date ";
+            String sql = " select  "
+            	   	   + "    m.seq_movie_no, m.movie_title, m.fk_category_code, c.category, m.content, m.director, m.actor, m.movie_grade,  "
+            	   	   + "    m.running_time, m.like_count, to_char(m.start_date, 'yyyy-mm-dd') as start_date, m.end_date, m.poster_file, m.video_url,  "
+            	   	   + "    m.register_date, st.seq_showtime_no, s.screen_no, s.seat_cnt,  "
+            	   	   + "    (s.seat_cnt - st.unused_seat) as reserved_seats,   "
+            	   	   + "    round((s.seat_cnt - st.unused_seat) / s.seat_cnt * 100, 2) as reservation_rate  "
+            	   	   + " from  "
+            	   	   + "    tbl_movie m "
+            	   	   + " join  "
+            	   	   + "    tbl_category c on m.fk_category_code = c.category_code "
+            	   	   + " join  "
+            	   	   + "    tbl_showtime st on m.seq_movie_no = st.fk_seq_movie_no "
+            	   	   + " join  "
+            	   	   + "    tbl_screen s on st.fk_screen_no = s.screen_no "
+            	   	   + " where  "
+            	   	   + "    st.start_time <= sysdate  "
+            	   	   + " order by  "
+            	   	   + "    m.start_date ";
+
      		 
            // System.out.println("실행할 SQL: " + sql);
 

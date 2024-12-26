@@ -126,7 +126,7 @@
                 <!-- 데이터가 있는 경우 -->
                 <c:if test="${movies != null && not empty movies}">
                     <c:forEach var="movie" items="${movies}" varStatus="status">
-					    <div class="col-md-4 mb-4 ${status.index >= 15 ? 'movie-hidden hidden' : ''}">
+					    <div class="col-md-4 mb-4 <%-- ${status.index >= 15 ? 'movie-hidden hidden' : ''} --%>">
 					        <a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}">
 					            <div class="movie-card position-relative">   
 					                <div class="rank">No. ${status.index + 1}</div>
@@ -134,10 +134,10 @@
 					                    <img src="${movie.poster_file}" alt="${movie.movie_title}">
 					                </div>                                                              
 					                <div class="movie-details">
-					                   <%--  <div class="movie-title">${movie.movie_title}</div>    --%>                                  
+					                    <div class="movie-title">${movie.movie_title}</div>                                     
 					                    <p>예매율: <%-- ${movie.like_count} --%></p>                                
 					                    <p>개봉일: ${movie.start_date}</p> 
-					                    <p>장르: ${movie.cg.category}</p>    
+					                    <p>장르: ${movie.cg.category}</p>    <!-- 나중에 지우기 -->
 					                    <button>예매하러가기</button>                                
 					                </div>
 					            </div>

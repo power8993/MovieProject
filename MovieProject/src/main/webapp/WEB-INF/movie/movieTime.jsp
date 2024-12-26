@@ -54,17 +54,28 @@
     <!-- Movie Schedule -->
     <div class="container">
         <!-- 영화 데이터가 있는 경우 -->
-        <c:if test="${movieTime != null && not empty movieTime}">
-            <c:forEach var="movie" items="${movieTime}">
-                <div class="movie-section">
-                    <div class="movie-title">${movie.movie_title} | ${movie.running_time}분 | ${movie.start_date} 개봉</div>
-                    <div>
-                      
-                        <button class="showtime available">${movie.svo.start_time} | ${movie.svo.unused_seat} 좌석</button>
-                       
-                    </div>
+        <c:if test="${requestScope.movieTime != null && not empty requestScope.movieTime}">
+        
+           <div class="movie-section">
+		      <c:set var="movieTitle" value="${movieTime[0].movie_title}"/>
+				<div class="movie-title">${movieTime[0].movie_title} | ${movieTime[0].running_time}분 | ${movieTime[0].start_date} 개봉</div>                  
+                 <c:forEach var="movie" items="${requestScope.movieTime}">
+                 	<c:if test="${movieTitle == movie.movie_title}">
+					  <div>
+						<button class="showtime available">${movie.svo.start_time} | ${movie.svo.unused_seat} 좌석</button>
+					  </div>
+                 	</c:if>
+                 	<c:if test="${movieTitle != movie.movie_title}">
+                 	<c:set var="movieTitle" value="${movie.movie_title}"/>
+	                    <div class="movie-title">${movie.movie_title} | ${movie.running_time}분 | ${movie.start_date} 개봉</div>                  
+					  <div>
+						<button class="showtime available">${movie.svo.start_time} | ${movie.svo.unused_seat} 좌석</button>
+					  </div>
+                 	</c:if>
+						
+                    </c:forEach>
                 </div>
-            </c:forEach>
+            
         </c:if>
 
         <!-- 영화 데이터가 없는 경우 -->

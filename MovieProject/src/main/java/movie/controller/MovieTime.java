@@ -18,9 +18,15 @@ public class MovieTime extends AbstractController {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
+        	
+        	
+        	      	
+        	// 영화 시간표들( 상영 중인 영화들)
             List<MovieVO_yeo> movieTime = mdao.selectMovieTiem();
             request.setAttribute("movieTime", movieTime);
 
+            
+            
             super.setRedirect(false);
             super.setViewPage("/WEB-INF/movie/movieTime.jsp");
 
