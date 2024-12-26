@@ -41,7 +41,7 @@
 
 	<%-- === 로그인을 하기 위한 폼을 생성 === --%>
 	<div id="form_container">
-		<form name="loginFrm" action="<%=ctx_Path%>/login/login.mp" method="post">
+		<form name="loginFrm" ><%--action="<%=ctx_Path%>/login/login.mp" method="post" --%>
 	
 			<div id="inputIdPW">
 				<div id="logo">LOGO</div>
@@ -64,7 +64,7 @@
 					</tr>
 				</table>
 					
-				
+				<div id="login_error"></div>
 			</div>
 			
 			<button type="button" class="loginjspBtn" id="btnSubmit">로그인</button>
