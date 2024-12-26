@@ -57,13 +57,13 @@ function goLogin() {
 	    type: "post",
 	    dataType: "json", // 서버에서 JSON 형식의 응답을 받음
 	    success: function(json) {
-	        console.log("서버 응답:", json);
+	        //console.log("서버 응답:", json);
 	        let resultHtml = "";
-
+			//console.log("겟아이들 : ",json.getIdle);
 	        if (json.getIdle == 0 ) { //휴면계정일 경우 (휴면계정이 아니라면 99임)
-				console.log("확인용 : " + json.getIdle);
-	            resultHtml = `				<div style="width:500px; margin:0 auto; margin-top:100px;">
-					<h1>휴면 계정 안내</h1>
+				//console.log("확인용 : " + json.getIdle);
+				resultHtml = `				<div style="width:500px; margin:0 auto; margin-top:100px;">
+					<h1 style="font-size: 32px; font-weight: bold;">휴면 계정 안내</h1>
 					<p>
 						<span>안녕하세요!
 				        	<br>
@@ -81,28 +81,33 @@ function goLogin() {
 
 				<hr>
 				<div style="display:flex; justify-content:space-between; margin-top:30px;">
-				<button type="button" style="border:solid 1px #cccccc;background-color:transparent; height:40px;width:100%;">취소</button> 
-				<button type="button" style="border:solid 1px #cccccc; height:40px;width:100%;">휴면 해제하기</button> 
+				<button type="button" id="idleCancel" style="border:solid 1px #cccccc;background-color:transparent; height:40px;width:100%;">취소</button> 
+				<button type="button" id="idleClear" style="border:solid 1px #cccccc; height:40px;width:100%;">휴면 해제하기</button> 
 				</div>
 				</div>`;
-	            $("#findPwBtn").hide();
+				$("#form_container").html(resultHtml);
 	        }
 	        else if (json.getIdle == 99 ) {
 	            //로그인이 완료된 경우 && 휴면계정이 아닐 경우 (getIdle이 있다는 것은 로그인이 되었다는 것.)
-				console.log(json.ctxPath+"/index.mp");
+				//console.log(json.ctxPath+"/index.mp");
 
 				location.href = json.ctxPath+"/index.mp";
 
 	        } 
-			/*else if(json.getIdle==""){
-				$("#login_error").html("아이디 또는 비밀번호가 일치하지 않습니다.");
-			}*/
+			else if(json.loginuser==null){
+				resultHtml ="아이디 또는 비밀번호가 일치하지 않습니다.";
+				$("#loginUserid").val("");
+				$("#loginPwd").val("");
+				$("#login_error").html(resultHtml);
+			}
 	        // 결과를 div에 삽입
-	        $("#form_container").html(resultHtml);
+	        
 	    },
-	    error: function(request, status, error) {
-	        alert("code: " + request.status + "\nmessage: " + request.responseText + "\nerror: " + error);
-	    }
+		error: function(request, status, error) {
+		    console.error("AJAX 요청 실패:", status, error);
+		    alert("로그인 요청에 실패했습니다. 다시 시도해주세요.");
+		}
+
 	});
 	
 } // end of function goLogin()---------------------------

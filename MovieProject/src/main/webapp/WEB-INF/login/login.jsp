@@ -64,25 +64,11 @@
 					</tr>
 				</table>
 					
-				<div id="login_error"></div>
-			</div>
+				<div id="login_error" style="color:red; font-size:14px;"></div>
+			
 			
 			<button type="button" class="loginjspBtn" id="btnSubmit">로그인</button>
 		</form>
-		
-		<%-------
-		
-		onclick="location.href='<%= ctx_Path %>/WEB-INF/login/idpwFind.mp'" 을 하려면 command.Properties에 idpwFind.mp을 추가해야함!! 
-		할 시에 성훈이형에게 말하기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		
-		idpwFind.mp에서 String action = request.getParameter("action");로 폼 값을 받고 
-		폼 값을 활용하여 .mp에서 idFind인지, pwFind 인지 if문을 활용하여 나누기
-		
-		
-		
-		super.setRedirect(false);
-		super.setViewPage("/WEB-INF/login/login.jsp");
-		-------%>
 		
 		<div style="width: 350px; margin: 0 auto;">
 		    <div id="buttonContainer">
@@ -94,7 +80,7 @@
 		    </div>
 		</div>
 	</div>
-
+</div>
 
 
 <%-- --------------------------------------------------------------- --%>
