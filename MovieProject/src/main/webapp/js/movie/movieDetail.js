@@ -17,7 +17,7 @@ function golike(element, seq_movie_no) {
                     $(element).addClass("liked").css({"color": "#ff2626"});
                 }
             } else {
-                alert("문제가 발생했습니다: " + json.message);
+                alert(json.message);
             }
         },
         error: function(request, status, error) {

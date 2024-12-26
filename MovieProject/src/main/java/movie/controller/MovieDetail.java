@@ -26,6 +26,7 @@ public class MovieDetail extends AbstractController {
         //String check = request.getParameter("like");
         
         if("POST".equalsIgnoreCase(method)) {
+        	String json = "";
 	        // 로그인 체크
 	        if (loginuser != null) {           
 	            boolean isLiked = mdao.checkMovieLike(loginuser, seq_movie_no);
@@ -33,13 +34,22 @@ public class MovieDetail extends AbstractController {
 	            JSONObject jsonObj = new JSONObject();
 				jsonObj.put("isLiked", isLiked);
 	
-				String json = jsonObj.toString();
+				json = jsonObj.toString();
 	            
-				request.setAttribute("json", json);
 				
-				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/jsonview.jsp");
 	        }
+	        else {
+	            // 로그인하지 않은 경우에는 기본값을 반환 (isLiked = false)
+	            JSONObject jsonObj = new JSONObject();
+	            jsonObj.put("isLiked", false);  // 로그인하지 않았으면 기본값 false로 설정
+
+	            json = jsonObj.toString();
+	        }
+	        
+	        request.setAttribute("json", json);
+	        
+	        super.setRedirect(false);
+	        super.setViewPage("/WEB-INF/jsonview.jsp");
         }
         else {
 	        // DB에서 해당 영화 정보를 가져옴
