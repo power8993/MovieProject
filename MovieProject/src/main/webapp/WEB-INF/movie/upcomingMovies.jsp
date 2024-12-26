@@ -107,15 +107,15 @@
     <div class="container mt-4">
         <div>
             <ul style="display: flex; gap: 20px; padding: 0; margin-top: 20px; justify-content: flex-end; list-style-type: none;">
-                 <li class="nav-link h5"> <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/runningMovies.mp">상영중인영화 </a></li>
-		         <li class="nav-link h5"> <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/upcomingMovies.mp">상영예정작 </a></li>
+                <li class="nav-link h5"> <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/movieList.mp">전체목록 </a></li>
+                <li class="nav-link h5"> <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/runningMovies.mp">상영중인영화 </a></li>		                      
                 <select name="searchType">
                     <option value="">장르</option>
                    <c:forEach var="cg" items="${requestScope.cgList}">
                      <option value="${cg.category_code}">${cg.category}</option>
                   </c:forEach> 
                 </select>
-                <button type="button" class="round gray">
+                <button type="button" class="round gray" ">
                     <span>GO</span>
                 </button>
             </ul>
@@ -129,14 +129,14 @@
 					    <div class="col-md-4 mb-4 ${status.index >= 15 ? 'movie-hidden hidden' : ''}">
 					        <a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}">
 					            <div class="movie-card position-relative">   
-					                <div class="rank">No. ${status.index + 1}</div>
+					                <!-- <div class="rank"> </div> -->
 					                <div class="poster">
 					                    <img src="${movie.poster_file}" alt="${movie.movie_title}">
 					                </div>                                                              
 					                <div class="movie-details">
-					                   <%--  <div class="movie-title">${movie.movie_title}</div>    --%>                                  
-					                    <p>예매율: <%-- ${movie.like_count} --%></p>                                
-					                    <p>개봉일: ${movie.start_date}</p> 
+					                    <div class="movie-title">${movie.movie_title}</div>                                     
+					                    <p>예매율: <%-- ${movie.like_count} --%></p>                             
+					                    <p>개봉일: ${movie.start_date}</p>
 					                    <p>장르: ${movie.cg.category}</p>    
 					                    <button>예매하러가기</button>                                
 					                </div>
@@ -145,7 +145,6 @@
 					    </div>
 					</c:forEach>
                 </c:if>
-
 
                 <!-- 데이터가 없는 경우 -->
                 <c:if test="${movies == null || empty movies}">
