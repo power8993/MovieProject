@@ -105,57 +105,77 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 		return mvo;
 	} // end of movieDetail
 
-	// 영화에 좋아요 추가
 	@Override
 	public boolean insertMovieLike(MemberVO loginuser, int seq_movie_no) throws SQLException {
-		
-		boolean result = false;
-		
-		try {
-			conn = ds.getConnection();
-			
+	    boolean result = false;
+	    
+	    try {
+	        conn = ds.getConnection();
+	        
 	        String sql = "insert into tbl_like (fk_user_id, fk_seq_movie_no) values (?, ?)";
 	        
 	        pstmt = conn.prepareStatement(sql);
 	        pstmt.setString(1, loginuser.getUserid());
-            pstmt.setInt(2, seq_movie_no);
-	       
-            int resultnum = pstmt.executeUpdate();
-            
-            // 행이 1 이상이면 성공
-            result = (resultnum > 0);    
+	        pstmt.setInt(2, seq_movie_no);
 	        
+	        int resultnum = pstmt.executeUpdate();
+	        
+	        result = (resultnum > 0);  // 성공 여부 판단
 	    } catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			close();
-		}
-		return result;
+	        e.printStackTrace();
+	    } finally {
+	        close();
+	    }
+	    return result;
 	}
 
-	// 영화에 좋아요 삭제
 	@Override
 	public boolean removeMovieLike(MemberVO loginuser, int seq_movie_no) throws SQLException {
-		boolean result = false;
-		
-		try {
-			conn = ds.getConnection();
-			
-			String sql = "delete from tbl_like where fk_user_id = ? and fk_seq_movie_no = ?";
+	    boolean result = false;
+	    
+	    try {
+	        conn = ds.getConnection();
+	        
+	        String sql = "delete from tbl_like where fk_user_id = ? and fk_seq_movie_no = ?";
 	        
 	        pstmt = conn.prepareStatement(sql);
 	        pstmt.setString(1, loginuser.getUserid());
-            pstmt.setInt(2, seq_movie_no);
-	       
-            int resultnum = pstmt.executeUpdate();
-            
-            // 영향을 받은 행이 1 이상이면 성공
-            result = (resultnum > 0);
+	        pstmt.setInt(2, seq_movie_no);
 	        
+	        int resultnum = pstmt.executeUpdate();
+	        
+	        result = (resultnum > 0); // 성공 여부 판단
 	    } finally {
-			close();
-		}
-		return result;
+	        close();
+	    }
+	    return result;
+	}
+
+	@Override
+	public boolean checkMovieLike(MemberVO loginuser, int seq_movie_no) throws SQLException {
+	    boolean isLiked = false;
+
+	    try {
+	        conn = ds.getConnection();
+
+	        String sql = "select count(*) from tbl_like where fk_user_id = ? and fk_seq_movie_no = ?";
+
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, loginuser.getUserid());
+	        pstmt.setInt(2, seq_movie_no);
+
+	        rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	            int count = rs.getInt(1); // 좋아요를 누른 개수
+	            if (count > 0) {
+	                isLiked = true; // 좋아요 상태
+	            }
+	        }
+	    } finally {
+	        close();
+	    }
+	    return isLiked;
 	}
 
 	
