@@ -71,11 +71,51 @@ $(document).ready(function(){
 			}
 		}); // end of $.ajax({})---------------------------------------------------------------------
 		
-		$("tr.time_choice").click(e => {
-			alert("dd");
-		});
         
 	}); // end of $("li#day").find("span").click(e => {})-------------------------------------------
+	
+	$("div#adult").find(":nth-child(2)").css({'background-color':'black','color':'white'});
+	$("div#adolescent").find(":nth-child(2)").css({'background-color':'black','color':'white'});
+	$("div#youth").find(":nth-child(2)").css({'background-color':'black','color':'white'});
+	
+	let adult_cnt = 0;
+	let adolescent_cnt = 0;
+	let youth_cnt = 0;
+	let total_cnt = 0;
+	
+	$("div#adult").find("button").click(e => {
+		total_cnt = Number($(e.target).val()) + adolescent_cnt + youth_cnt;
+		if(total_cnt > 5) {
+			alert("예매는 5명까지 가능합니다.");
+			return false;
+		}
+		adult_cnt = Number($(e.target).val());
+		$("div#adult").find("button").css({'background-color':'','color':''})
+		$(e.target).css({'background-color':'black','color':'white'});
+		
+	});
+	
+	$("div#adolescent").find("button").click(e => {
+		total_cnt = adult_cnt + Number($(e.target).val()) + youth_cnt;
+		if(total_cnt > 5) {
+			alert("예매는 5명까지 가능합니다.");
+			return false;
+		}
+		adolescent_cnt = Number($(e.target).val());
+		$("div#adolescent").find("button").css({'background-color':'','color':''})
+		$(e.target).css({'background-color':'black','color':'white'});
+	});
+	
+	$("div#youth").find("button").click(e => {
+		total_cnt = adult_cnt + adolescent_cnt + Number($(e.target).val());
+		if(total_cnt > 5) {
+			alert("예매는 5명까지 가능합니다.");
+			return false;
+		}
+		youth_cnt = Number($(e.target).val());
+		$("div#youth").find("button").css({'background-color':'','color':''})
+		$(e.target).css({'background-color':'black','color':'white'});
+	});
 	
 	
 
@@ -139,6 +179,5 @@ function onScreenClick(start_time, seq_showtime_no, fk_screen_no, seat_str) {
     });// end of seat_arr.forEach((item, index) => {} -------------------------
 	
 	$("div#seat-screen").html(html);
-	
 	
 }
