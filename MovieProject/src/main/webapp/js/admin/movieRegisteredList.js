@@ -1,4 +1,12 @@
 
+let confirm_movie_title;	// [삭제하기] 버튼의 confirm 에서 사용할 변수
+
+// [상영일정등록] 버튼의 유효성 검사
+let start_date_val;
+let end_date_val;
+let poster_file_val;
+let video_url_val;
+
 $(document).ready(function(){
 	
 	// === 영화 검색에 따른 목록을 보여주는 이벤트 처리 시작 === //
@@ -72,7 +80,7 @@ $(document).ready(function(){
 					                                    <table class="table">
 					                                        <tbody>
 																<tr>
-																	<td rowspan="3"><img src="${mvvo.poster_file}" alt="" style="width:50px; height:auto;"></td>
+																	<td rowspan="3"><img src="${mvvo.ctxPath}/images/admin/poster_file/${mvvo.poster_file}" alt="" style="width:200px; height:auto;"></td>
 																	<td colspan="2">${mvvo.movie_title}</td>
 																</tr>
 					                                            <tr>
@@ -112,6 +120,7 @@ $(document).ready(function(){
 
 					                                    <!-- 버튼 -->
 					                                    <div class="modal-footer">
+															<button type="button" class="btn btn-success" id="register_button" style="margin-right: auto;">상영일정 등록</button>
 					                                        <button type="button" class="btn btn-primary" id="edit_button">수정하기</button>
 					                                        <button type="button" class="btn btn-danger" id="delete_button">삭제하기</button>
 					                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소하기</button>
@@ -129,6 +138,15 @@ $(document).ready(function(){
 					
 					// 모달을 표시
 					$('div#movie_find').modal('show');
+					
+					// [삭제하기] 버튼의 confirm 에서 사용
+					confirm_movie_title = mvvo.movie_title
+					
+					// [상영일정등록] 버튼의 유효성 검사를 위한 임시 저장 변수
+					start_date_val = mvvo.start_date;
+					end_date_val = mvvo.end_date;
+					poster_file_val = mvvo.poster_file;
+					video_url_val = mvvo.video_url;
 					
 	            },
 	            error: function() {
@@ -149,7 +167,49 @@ $(document).ready(function(){
 			frm.submit();  // 폼 전송
 		});  // end of $(document).on('click', '#edit_button')
 		// === 수정하기 버튼 클릭 이벤트 끝 === //
+		
+		
+		// === 삭제하기 버튼 클릭 이벤트 (모달 내에서) === //
+		$(document).one('click', '#delete_button', function(e) {
 			
+			const user_confirm = confirm("영화 "+ confirm_movie_title +"를 정말로 삭제하시겠습니까?");
+			if(user_confirm) {
+				const frm = document.seqFrm;
+				//const seq = frm.seq.value;	// 선택한 영화의 seq
+				
+				frm.action = "movieDelete.mp";  // 삭제할 페이지로 이동
+				frm.method = "post";  // POST 방식
+				frm.submit();  // 폼 전송
+			}
+			else { 
+				return;
+			}
+		});  // end of $(document).on('click', '#delete_button')
+		// === 삭제하기 버튼 클릭 이벤트 끝 === //
+		
+		
+		// === 상영일정 등록 버튼 클릭 이벤트 (모달 내에서) === //
+		$(document).one('click', '#register_button', function(e) {	// 이벤트 핸들러가 중복 방지 'one' 사용
+																	// 버튼 클릭 후 이벤트 핸들러가 자동으로 제거되어 클릭 이벤트가 한 번만 실행되게 한다.
+			
+			if(start_date_val  == undefined || start_date_val  == "" ||
+			   end_date_val    == undefined || end_date_val    == "" ||
+			   poster_file_val == undefined || poster_file_val == "" ||
+			   video_url_val   == undefined || video_url_val   == "") {
+				alert("모든 영화정보를 [수정하기]에서 입력해주세요.");
+				return; 
+			}
+			else {
+				const frm = document.seqFrm;
+				//const seq = frm.seq.value;	// 선택한 영화의 seq
+				
+				frm.action = "movieShowtimeRegister.mp";  // 상영일정 등록 페이지로 이동
+				frm.method = "post";  // POST 방식
+				frm.submit();  // 폼 전송	
+			}
+			
+		});  // end of $(document).on('click', '#register_button')
+		// === 상영일정 등록 버튼 클릭 이벤트 끝 === //
 		
 	});// end of $("tbody > tr").click( (e) => {})-------------------------------	
 	// === 특정 영화에 대한 상세정보 보기 이벤트 처리 끝 === //

@@ -7,9 +7,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import movie.domain.CategoryVO;
 import movie.domain.MovieVO;
-import movie.model.*;
+import movie.model.MovieDAO;
+import movie.model.MovieDAO_imple;
 
-public class MovieRegister extends AbstractController {
+public class MovieEditEnd extends AbstractController {
 
 	private MovieDAO mvdao = new MovieDAO_imple();
 	
@@ -17,15 +18,11 @@ public class MovieRegister extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		String method = request.getMethod();
-
-		if("GET".equalsIgnoreCase(method)) { // [영화등록] 버튼 클릭 후 폼태그 보이기
-			
-			super.setViewPage("/WEB-INF/admin/movieRegister.jsp");
-			
-		}
-		else {	// 폼태그 작성 후 [영화등록하기] 버튼 클릭
-			
+		
+		if ("POST".equalsIgnoreCase(method)) {
+		
 			// 폼태그의 값 받기	
+			String seq = request.getParameter("seq");
 			String fk_category_code = request.getParameter("fk_category_code");
 			String movie_title = request.getParameter("movie_title");     
 			String content = request.getParameter("content");         
@@ -40,9 +37,10 @@ public class MovieRegister extends AbstractController {
 			
 			// 위의 값을 MovieVO 객체에 담는다.
 			MovieVO movie = new MovieVO();
+			movie.setSeq_movie_no(Integer.parseInt(seq));
 			
 			CategoryVO catevo = new CategoryVO();
-			catevo.setCategory_code(fk_category_code);
+			catevo.setCategory_code(fk_category_code);;
 			movie.setCatevo(catevo);
 			
 			movie.setMovie_title(movie_title);
@@ -58,17 +56,18 @@ public class MovieRegister extends AbstractController {
 			
 			try {
 				
-				// **** 영화를 등록해주는 메소드(tbl_movie 테이블에 insert) **** //
-				int n = mvdao.registerMovie(movie);
+				// **** 영화를 수정하는 메소드(seq에 해당하는 영화를 update) **** //
+				int n = mvdao.updateMovie(movie);
 				
 				if(n == 1) {
-					
+					super.setRedirect(false); 
+			        super.setViewPage("/WEB-INF/admin/movieRegisteredList.jsp");
 				}
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
 				
-				String message = "영화 등록 실패";
+				String message = "영화 수정 실패";
 				String loc = "javascript:history.back()";
 				
 				request.setAttribute("message", message);
@@ -79,6 +78,5 @@ public class MovieRegister extends AbstractController {
 			}
 		}
 
-	}
-
+	}// end of public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {}-----------------
 }

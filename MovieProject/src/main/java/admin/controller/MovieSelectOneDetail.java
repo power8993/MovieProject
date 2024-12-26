@@ -33,7 +33,7 @@ public class MovieSelectOneDetail extends AbstractController {
 
 					// SONObject의 mvvo 속성으로 포함되어 전달
 					jsonObj.put("seq_movie_no", mvvo.getSeq_movie_no());
-					jsonObj.put("fk_category_code", mvvo.getFk_category_code());
+					jsonObj.put("fk_category_code", mvvo.getCatevo().getCategory());
 					jsonObj.put("movie_title", mvvo.getMovie_title());
 					jsonObj.put("content", mvvo.getContent());
 					jsonObj.put("director", mvvo.getDirector());
@@ -64,7 +64,7 @@ public class MovieSelectOneDetail extends AbstractController {
 				request.setAttribute("loc", loc);
 				
 				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/error.jsp");
+				super.setViewPage("/WEB-INF/msg.jsp");
 				
 			}
 			

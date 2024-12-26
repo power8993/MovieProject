@@ -57,11 +57,11 @@ $(document).ready(function() {
 	$("input#hp2").blur((e) => {
 
 		const regExp_hp2 = new RegExp(/^[1-9][0-9]{3}$/);
-		
+
 		const bool = regExp_hp2.test($(e.target).val());
 
 		if (!bool) {
-		
+
 			$("table#tblMemberEdit :input").prop("disabled", true);
 			$(e.target).prop("disabled", false);
 
@@ -81,11 +81,11 @@ $(document).ready(function() {
 	$("input#hp3").blur((e) => {
 
 		const regExp_hp3 = new RegExp(/^\d{4}$/);
-	
+
 		const bool = regExp_hp3.test($(e.target).val());
 
 		if (!bool) {
-	
+
 			$("table#tblMemberEdit :input").prop("disabled", true);
 			$(e.target).prop("disabled", false);
 
@@ -94,7 +94,7 @@ $(document).ready(function() {
 			$(e.target).val("").focus();
 		}
 		else {
-		
+
 			$("table#tblMemberEdit :input").prop("disabled", false);
 
 			$(e.target).parent().find("span.error").hide();
@@ -111,14 +111,14 @@ $(document).ready(function() {
 			data: {
 				"email": $("input#email").val()
 				, "userid": $("input:hidden[name='userid']").val()
-			}, 
-			type: "post", 
+			},
+			type: "post",
 
-			async: true,  
-			dataType: "json", 
+			async: true,
+			dataType: "json",
 			success: function(json) {
 				if (json.isExists) {
-					$("span#emailCheckResult").html($("input#email").val() + " 은 이미 사용중 이므로 다른 이메일을 입력하세요").css({ "color": "red" });
+					$("span#emailCheckResult").html($("input#email").val() + " 은 이미 사용중 이므로 다른 이메일을 입력하세요").css({ "color": "#eb5e28" });
 					$("input#email").val("");
 				}
 				else {
@@ -163,10 +163,15 @@ function goEdit() {
 	if (b_requiredInfo) {
 		return; // goRegister() 함수를 종료한다.
 	}
-	
+
 	if (b_email_change && !b_emailcheck_click) {
 		alert("이메일 중복확인을 클릭하셔야 합니다.");
 		return; // goEdit() 함수를 종료한다.
 	}
+
+	const frm = document.editFrm;
+	frm.action = "myupEditEnd.mp";
+	frm.method = "post";
+	frm.submit();
 }
 
