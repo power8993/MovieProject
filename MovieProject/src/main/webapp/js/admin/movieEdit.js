@@ -260,7 +260,7 @@ $(document).ready(function() {
 				// 상영시작일과 상영종료일이 둘 다 비어있지 않을 경우
 			
 				if(today > start_date_obj) {
-					start_date_dom.setCustomValidity("상영시작일은 오늘보다 이전일 수 없습니다.");
+					start_date_dom.setCustomValidity("상영시작일은 오늘보다 이후여야 합니다.");
 					start_date_dom.reportValidity();  // 유효성 검사 메시지 표시
 					
 					// 각 값을 비우기

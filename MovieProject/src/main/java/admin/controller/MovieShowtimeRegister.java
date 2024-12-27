@@ -59,7 +59,8 @@ public class MovieShowtimeRegister extends AbstractController {
 					int n = mvdao.registerShowtime(mvvo);
 					
 					if(n == 1) {
-						
+						super.setRedirect(false);
+						super.setViewPage("/WEB-INF/admin/movieRegisteredList.jsp");
 					}
 					
 				} catch (SQLException e) {
