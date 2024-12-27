@@ -16,7 +16,7 @@
         .container {
             width: 70%; /* 컨테이너 너비 */
             margin: 0 auto;
-            background-color: #fff;
+            background-color: #fffcf2;
             padding: 20px;
             border-radius: 8px;
         }
@@ -33,38 +33,41 @@
             font-size: 16px;
             display: block;
             margin-bottom: 5px;
+            background-color: #ccc5b9;
+    		color: #252422;
         }
         .form-group input, .form-group textarea {
             width: 100%;
             padding: 10px;
             font-size: 16px;
             border-radius: 5px;
-            border: 1px solid #ddd;
+            border: 0px solid #ddd;
         }
         .form-group textarea {
             resize: vertical;
             height: 150px; /* 기본 텍스트 영역 높이 설정 */
         }
         .submit-btn {
-            padding: 10px 20px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            padding: 6px 17px;
+		    background-color: #252422;
+		    color: white;
+		    border: none;
+		    border-radius: 5px;
+		    font-size: 17px;
         }
         .submit-btn:hover {
-            background-color: #218838;
+            background-color: #eb5e28;
         }
+        .
     </style>
 </head>
 <body>
-
+<script src="https://kit.fontawesome.com/0c69fdf2c0.js" crossorigin="anonymous"></script>
 <jsp:include page="/WEB-INF/header1.jsp" />
 
 <div class="container">
     <div class="form-header">
-        <h3>공지사항 작성</h3>
+        <h3><i class="fa-solid fa-pen">공지사항 작성</i></h3>
     </div>
 
     <!-- 공지사항 작성 폼 -->
