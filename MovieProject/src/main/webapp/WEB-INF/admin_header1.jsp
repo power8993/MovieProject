@@ -94,6 +94,7 @@ window.onscroll = function () {
 					<ul>
 						<li><a href="movieRegister.mp">영화 등록</a></li>
 						<li><a href="movieRegisteredList.mp">영화 리스트<br>[수정/삭제/상영등록]</a></li>
+						<li><a href="showtimeList.mp">상영일정 리스트<br>[조회/삭제(고려사항)]</a></li>
 					</ul>
 				<li>공지관리</li>
 					<ul>

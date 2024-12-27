@@ -214,9 +214,20 @@ $(document).ready(function(){
 	});// end of $("tbody > tr").click( (e) => {})-------------------------------	
 	// === 특정 영화에 대한 상세정보 보기 이벤트 처리 끝 === //
 	
-	
-	
-	
-	
-	
 });// end of $(document).ready(function(){})------------------------------
+
+
+
+
+// Function
+
+// ===== 장르 및 검색어에 해당하는 영화를 보여주는 메소드 ===== //
+function goSearch(){
+	
+	const frm = document.movie_search_frm
+	// frm.action = "movieRegisteredList.mp";
+	// frm.method = "get";
+	
+	frm.submit();
+	
+}// end of function goSearch(){}------------------------------
