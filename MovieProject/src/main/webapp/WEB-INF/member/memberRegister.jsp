@@ -8,107 +8,80 @@
 
 <jsp:include page="../header1.jsp" /> 
 
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/member/memberRegister.css" />
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/member/memberRegister1.css" />
 
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> 
-<script type="text/javascript" src="<%= ctxPath%>/js/member/memberRegister.js"></script> 
+<script type="text/javascript" src="<%= ctxPath%>/js/member/memberRegister1.js"></script> 
 
 <div class="row" id="divRegisterFrm">
    <div class="col-md-12">
       <form name="registerFrm">
-          <table id="tblMemberRegister">
-             <thead>
-                <tr>
-                   <th colspan="2">::: 회원가입 <span style="font-size: 10pt; font-style: italic;">(<span class="star">*</span>표시는 필수입력사항)</span> :::</th>
-                </tr>
-             </thead>
-             
-             <tbody>
-                <tr>
-                    <td colspan="2" style="line-height: 50%;">&nbsp;</td>
-                </tr>
-                
-                <tr>
-                    <td>성명&nbsp;<span class="star">*</span></td>
-                    <td>
-                       <input type="text" name="name" id="name" maxlength="30" class="requiredInfo" />
-                       <span class="error">성명은 필수입력 사항입니다.</span>
-                    </td>
-                </tr>
-                
-                <tr>
-                    <td>아이디&nbsp;<span class="star">*</span></td>
-                    <td>
-                       <input type="text" name="userid" id="userid" maxlength="40" class="requiredInfo" />&nbsp;&nbsp;  
-                       <%-- 아이디중복체크 --%>
-                       <img src="<%= ctxPath%>/images/b_id_check.gif" id="idcheck" />
+      
+      <div style="width:400px; margin: 0 auto; margin-top:100px;">
+	      <label class="labelName" >성명</label>
+		  <input type="text" name="name" id="name"size="25" autocomplete="off" placeholder="성명을 입력하세요" style="display: block; width:100%;"/> 
+	          <span class="error">•성명은 필수입력 사항입니다.</span>
+	       
+	          
+	      <label class="labelName" >아이디</label>
+	      <div style="display:flex;">
+		  <input type="text" name="userid" id="userid"size="25" autocomplete="off" placeholder="아이디를 입력하세요" style="display: block; width:100%;"/> <button  type="button" id="idcheck" class="btn btn-info" style="width:120px; margin-left:20px;">중복확인</button>
+	       </div>   
+	       <span class="error">•숫자,영문자,특수문자 포함 형태의 4~15 자리 이내의 아이디를 입력하세요.</span>
+	          <%-- 아이디중복체크 --%>
                        <span id="idcheckResult"></span>
-                       <span class="error">아이디는 필수입력 사항입니다.</span>
-                    </td>
-                </tr>
-                
-                <tr>
-                    <td>비밀번호&nbsp;<span class="star">*</span></td>
-                    <td>
-                       <input type="password" name="pwd" id="pwd" maxlength="15" class="requiredInfo" />
-                       <span class="error">암호는 영문자,숫자,특수기호가 혼합된 8~15 글자로 입력하세요.</span>
-                    </td>
-                </tr>
-                
-                <tr>
-                    <td>비밀번호확인&nbsp;<span class="star">*</span></td>
-                    <td>
-                       <input type="password" id="pwdcheck" maxlength="15" class="requiredInfo" />
-                       <span class="error">암호가 일치하지 않습니다.</span>
-                    </td>
-                </tr>
-                
-                <tr>
-                    <td>이메일&nbsp;<span class="star">*</span></td>
-                    <td>
-                       <input type="text" name="email" id="email" maxlength="60" class="requiredInfo" />
-                       <span class="error">이메일 형식에 맞지 않습니다.</span>
-                       <%-- 이메일중복체크 --%>
-                       <span id="emailcheck">이메일중복확인</span>
-                       <span id="emailCheckResult"></span>
-                    </td>
-                </tr>
-                
-                <tr>
-                    <td>연락처&nbsp;<span class="star">*</span></td>
-                    <td>
-                       <input type="text" name="hp1" id="hp1" size="6" maxlength="3" value="010" readonly />&nbsp;-&nbsp; 
-                       <input type="text" name="hp2" id="hp2" size="6" maxlength="4" class="requiredInfo"/>&nbsp;-&nbsp;
-                       <input type="text" name="hp3" id="hp3" size="6" maxlength="4" class="requiredInfo"/>    
-                       <span class="error">휴대폰 형식이 아닙니다.</span>
-                    </td>
-                </tr>
-                
-                <tr>
-                    <td>성별<span class="star">*</span></td>
-                    <td>
-                       <input type="radio" name="gender" value="1" id="male" class="requiredInfo_radio"/><label for="male" style="margin-left: 1.5%;">남자</label>
-                       <input type="radio" name="gender" value="2" id="female" class="requiredInfo_radio" style="margin-left: 10%;" /><label for="female" style="margin-left: 1.5%;">여자</label>
-                    </td>
-                </tr>
-                
-                <tr>
-                    <td>생년월일<span class="star">*</span></td>
-                    <td>
-                       <input type="text" name="birthday" id="datepicker" maxlength="10" class="requiredInfo"/>
-                       <span class="error">생년월일은 마우스로만 클릭하세요.</span>
-                    </td>
-                </tr>
-                
-           <%--      
-		        <tr>
-					<td>투숙기간</td>
-					<td>
-						시작일자: <input type="text" id="fromDate">&nbsp;&nbsp; 
-						종료일자: <input type="text" id="toDate">
-					</td>
-				</tr>
-           --%>
+                       
+	      <label class="labelName">비밀번호</label>
+		  <input type="password" name="pwd" id="pwd"size="25" autocomplete="off" placeholder="비밀번호를 입력하세요" style="display: block; width:100%;"/> 
+	          <span class="error">•숫자,문자,특수문자 포함 형태의 8~15자리 이내의 비밀번호를 입력하세요.</span>    
+	          
+	      <label class="labelName" >비밀번호 확인</label>
+		  <input type="password" name="pwdcheck" id="pwdcheck"size="25" autocomplete="off" placeholder="비밀번호를 입력하세요" style="display: block; width:100%;"/> 
+	          <span class="error">•암호가 일치하지 않습니다.</span>
+	          
+	      <label class="labelName">이메일</label>
+	      <div style="display:flex;">
+		  <input type="text" name="email" id="email"size="25" autocomplete="off" placeholder="이메일을 입력하세요" style="display: block; width:100%;"/> <button  type="button" id="emailcheck" class="btn btn-info" style="width:120px; margin-left:20px;">중복확인</button>
+	       </div>
+	       <span class="error">•이메일 주소가 정확한지 확인해 주세요.</span>
+	          <%-- 이메일중복체크 --%>
+	                       <span id="emailCheckResult"></span>
+	      
+	      <label class="labelName" >전화번호</label>
+		  <input type="text" name="hp1" id="hp1" size="6" maxlength="3" value="010" readonly />&nbsp;-&nbsp; 
+	      <input type="text" name="hp2" id="hp2" size="6" maxlength="4" class="requiredInfo" placeholder="1234"/>&nbsp;-&nbsp;
+	      <input type="text" name="hp3" id="hp3" size="6" maxlength="4" class="requiredInfo" placeholder="5678"/>    
+	      					<span class="error" id="hp_error" style="display:block;">•전화번호를 입력해 주세요.</span> 
+	     
+	     <div style="display:flex; justify-content: space-between;">
+		     <div>
+			     <label class="labelName" >성별</label>
+				 <input type="radio" name="gender" value="1" id="male" class="requiredInfo_radio"/><label for="male" style="margin-left: 1.5%;">남자</label>
+			     <input type="radio" name="gender" value="2" id="female" class="requiredInfo_radio" style="margin-left: 10%;" /><label for="female" style="margin-left: 1.5%;">여자</label>
+			          <span class="error" id="gender_error" style="display:block;">•성별을 선택해 주세요.</span>
+			  </div>    
+			  <div class="info" id="birth">
+			  <label class="labelName">생년월일</label>
+				  <div id="only_birth"style="display:flex;">
+					  <select class="box" id="birth-year" name="year" style="margin-left:0px;">
+					    <option disabled selected value="">출생 연도</option>
+					  </select>
+					  <select class="box" id="birth-month" name="month">
+					    <option disabled selected value="">월</option>
+					  </select>
+					  <select class="box" id="birth-day" name="day">
+					    <option disabled selected value="">일</option>
+					  </select>
+				  </div>
+			  <span class="error" id="birth_error" style="display:block;">•생년월일을 모두 선택해 주세요.</span>
+			  </div>
+	      </div>                 
+	  </div>         
+	          
+          
+          
+          <table id="tblMemberRegister">
+             <tbody>
                 
                 <tr>
                     <td colspan="2">
@@ -124,8 +97,8 @@
                 
                 <tr>
                     <td colspan="2" class="text-center">
-                       <input type="button" class="btn btn-success btn-lg mr-5" value="가입하기" onclick="goRegister()" />
-                       <input type="reset"  class="btn btn-danger btn-lg" value="취소하기" onclick="goReset()" />
+                       <input type="button" id="registerbtn" value="가입하기" onclick="goRegister()" />
+                       <input type="reset"  id="resetbtn" value="취소하기" onclick="goReset()" />
                     </td>
                 </tr>
                  
@@ -142,6 +115,8 @@
       </form>
    </div>
 </div>
+
+
 
 <jsp:include page="../footer1.jsp" />
    

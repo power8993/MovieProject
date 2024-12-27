@@ -107,8 +107,8 @@
     <div class="container mt-4">
         <div>
             <ul style="display: flex; gap: 20px; padding: 0; margin-top: 20px; justify-content: flex-end; list-style-type: none;">
-                 <li class="nav-link h5"> <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/runningMovies.mp">상영중인영화 </a></li>
-		         <li class="nav-link h5"> <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/upcomingMovies.mp">상영예정작 </a></li>
+                <li class="nav-link h5"> <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/movieList.mp">전체목록 </a></li>
+                <li class="nav-link h5"> <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/upcomingMovies.mp">상영예정작 </a></li>		                      
                 <select name="searchType">
                     <option value="">장르</option>
                    <c:forEach var="cg" items="${requestScope.cgList}">
@@ -145,7 +145,6 @@
 					    </div>
 					</c:forEach>
                 </c:if>
-
 
                 <!-- 데이터가 없는 경우 -->
                 <c:if test="${movies == null || empty movies}">

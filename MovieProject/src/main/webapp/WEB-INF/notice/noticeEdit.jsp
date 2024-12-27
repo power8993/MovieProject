@@ -11,34 +11,29 @@
     <style>
         /* 전체 배경 */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa; /* 밝은 회색 배경 */
-            color: #403d39;
+            font-family: Arial, sans-serif;
+	        background-color: #fffcf2; /* 부드러운 아이보리 배경색 */
+	        margin: 0;
+	        padding: 0;
         }
 
         /* 컨테이너 설정 */
         .container {
-            width: 60%; /* 컨테이너 너비 */
-            margin: 40px auto;
-            padding: 30px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+             width: 70%; /* 컨테이너 너비를 70%로 설정 */
+		     margin: 50px auto;
+		     padding: 30px;
         }
 
-        /* 헤더 스타일 */
         .form-header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #eb5e28; /* 주황색 강조 */
+            display: flex;
+	        justify-content: space-between;
+	        align-items: center;
+	        margin-bottom: 30px;
+	        color: #403d39;
         }
         .form-header h3 {
             font-size: 28px;
-            color: #403d39;
-            font-weight: 600;
+		    font-weight: bold;
         }
 
         /* 입력 필드 및 텍스트 영역 */
@@ -47,9 +42,10 @@
         }
         .form-group label {
             font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #252422;
+		    display: block;
+		    margin-bottom: 5px;
+		    background-color: #ccc5b9;
+		    color: #252422;
         }
         .form-group input, .form-group textarea {
             width: 100%;
@@ -73,16 +69,13 @@
 
         /* 제출 버튼 */
         .submit-btn {
-            padding: 12px 25px;
-            background-color: #eb5e28; /* 주황색 버튼 */
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            padding: 6px 17px;
+	        background-color: #252422;
+	        color: white;
+	        border: none;
+	        border-radius: 5px;
+	        font-size: 17px;
+	        cursor: pointer;
         }
         .submit-btn:hover {
             background-color: #d85e1b; /* 어두운 주황색 */
@@ -90,9 +83,8 @@
         }
 
         /* 버튼을 중앙 정렬 */
-        .form-group button {
+        .form-groups {
             text-align: center;
-            width: 100%;
         }
 
         /* 반응형 디자인: 화면이 좁아지면 입력 필드 및 버튼이 자동으로 줄어듬 */
@@ -106,10 +98,10 @@
 <body>
 
 <jsp:include page="/WEB-INF/header1.jsp" />
-
+<script src="https://kit.fontawesome.com/0c69fdf2c0.js" crossorigin="anonymous"></script>
 <div class="container">
     <div class="form-header">
-        <h3>공지사항 수정하기</h3>
+        <h3><i class="fa-solid fa-pen-to-square">공지사항 수정하기</i></h3>
     </div>
 
     <!-- 공지사항 수정 폼 -->
@@ -127,7 +119,7 @@
             <textarea id="notice_content" name="notice_content" placeholder="공지사항 내용을 입력하세요" required><%=request.getAttribute("notice_content")%></textarea>
         </div>
 
-        <div class="form-group">
+        <div class="form-groups">
             <button type="submit" class="submit-btn" onclick="return confirm('정말 수정하시겠습니까?');">수정하기</button>
         </div>
     </form>

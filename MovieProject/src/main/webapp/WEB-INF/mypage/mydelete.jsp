@@ -45,7 +45,7 @@ String ctxPath = request.getContextPath();
          }
          
          const frm = document.my_deletecheckPwd_Frm;
-         frm.action = "<%=ctxPath%>/mypage/mydelete.mp";
+         frm.action = "<%=ctxPath%>/mypage/mydeleteEnd.mp";
          frm.method = "post";
          frm.submit();
       }
@@ -90,10 +90,11 @@ String ctxPath = request.getContextPath();
 						<li><a href="<%= ctxPath %>/mypage/myreservationpoint.mp">포인트 적립/사용 내역</a></li>
 					</ul></li>
 
-				<li><a href="<%= ctxPath %>/mypage/mywatchedmovie.mp">영화</a>
+				<li><a href="<%=ctxPath%>/mypage/mymoviewatched.mp">영화</a>
 					<ul>
-						<li><a href="<%= ctxPath %>/mypage/mywatchedmovie.mp">내가 본 영화</a></li>
-						<li><a href="<%= ctxPath %>/mypage/myreview.mp">내가 쓴 평점</a></li>
+						<li><a href="<%=ctxPath%>/mypage/mymoviewatched.mp">내가 본
+								영화</a></li>
+						<li><a href="<%=ctxPath%>/mypage/mymoviereview.mp">내가 쓴 평점</a></li>
 						<li><a href="<%= ctxPath %>/mypage/mymovielike.mp">기대되는 영화</a></li>
 					</ul></li>
 
@@ -117,7 +118,7 @@ String ctxPath = request.getContextPath();
 				<p>회원님의 개인정보 보호를 위한 절차이오니, 로그인시 사용하는 비밀번호를 입력해주세요.</p>
 				<ul>
 				<li>아이디 : ${sessionScope.loginuser.userid} </li>
-					<li>비밀번호 : <input type="password" name="pwd" size="25"
+				<li>비밀번호 : <input type="password" name="pwd" size="25"
 						autocomplete="off" /></li>
 				</ul>
 				

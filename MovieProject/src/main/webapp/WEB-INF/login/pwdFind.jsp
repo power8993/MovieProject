@@ -8,30 +8,32 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%--사용자 css --%>
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/login/pwdFind.css" > 
+
 
 
 <jsp:include page="/WEB-INF/header1.jsp" />
+<%--사용자 css --%>
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/login/pwdFind.css" > 
 
 <script type="text/javascript">
 
 $(document).ready(function(){
     
-	// --- 처음에는 아이디 찾은 결과를 보여주는 태그를 가린다. --- //
+	
 	const method = "${requestScope.method}";
 	
-	
+	// --- 처음에는 아이디 찾은 결과를 보여주는 태그를 가린다. --- //
 	if(method == "GET") {
 		$("div#div_findResult").hide();
 	}
 	if(method == "POST") {
 		$("input:text[name='userid']").val("${requestScope.userid}");
 		$("input:text[name='email']").val("${requestScope.email}");
-		
-		if(${requestScope.isUserExist == false || requestScope.sendMailSuccess == true}) { //json으로 받아왔으니... json으로 해야하는 거 아닌감...
-           $("button#findBtn").html("재전송");  /* 재전송문구로 변경이 왜 안되는가.... 무엇이 문제인가..  */
-        }
+		/*
+			if(${requestScope.isUserExist == false || requestScope.sendMailSuccess == true}) { 
+	           $("button#findBtn").html("재전송");  
+	        }
+		*/
 	}
 	
 	$("button#findBtn").click(function(){
@@ -171,62 +173,63 @@ $(document).ready(function(){
 		
 		
 		
-/////////////////============ ajax ============///////////////////////
- $.ajax({
-     url: "verifyCertification.mp", // 서버의 컨트롤러 매핑 주소
-     data: {
-         "userCertificationCode": $("input:text[name='input_confirmCode']").val().trim(),
-         "userid":$("input:text[name='userid']").val().trim()
-     },
-     type: "post",
-     dataType: "json", // 서버에서 JSON 형식의 응답을 받음
-     success: function(json) {
-    	 console.log("서버 응답:", json);
-         let resultHtml = "";
-
-         if (json.is_True_false == false) {
-             // 인증코드가 맞지 않는 경우
-             resultHtml = `<span style="color: red;">코드가 맞지 않습니다. </span>`;
-             $("#findPwBtn").html("비밀번호 찾기");
-	         $("#findPwBtn").val("findPw"); 
-         } 
-         else {
-             // 인증코드가 맞는 경우
-             $("#form_container > form").hide(); // 기존 폼태그 숨기고, 코드가 인증 되었으니 새로운 비밀번호를 생성할 수 있도록.
-             
-             resultHtml = `
-                 <span style="font-size: 12pt; margin-bottom:10px;">
-                     코드가 인증되었습니다.
-                     </span>
-                     <form name="newpwdFrm" style="max-width: 350px;height: 150px;margin: 0 auto; margin-bottom:40px;margin-top:20px;">
-                  	
-          	          <label style="display: block; width: 90px; margin:0px; text-align:left;">새 암호</label>
-          	          <input type="password" name="pwd" size="25" autocomplete="off" placeholder="암호를 입력하세요" style="display: block; width:100%;"/> 
-          	   
-          	          <label style="display: block; width: 90px; margin:10px 0 0 0; text-align:left;">새 암호 확인</label>
-          	          
-          	          	<input type="password" name="pwd2" size="25" autocomplete="off" placeholder="암호를 입력하세요" style="display: block; width:100%;"/> 
-          	          	
-          	          	<button type="button" class="btn " id="finishNewPwd" style="margin-top:10px;">암호변경하기</button>
-          	          
-          	
-          	   
-          	</form>
-                 
-             `;
-         } 
-
-         // 결과를 div에 삽입
-         $("#div_findResult").html(resultHtml);
-         
-         // 전송 버튼 클릭 전 아이디를 폼태그로 담아줌. 이것은 hidden처리 됨.  
-         $("input[name='userid']").val(userid);
-
-     },
-     error: function(request, status, error) {
-         alert("code: " + request.status + "\nmessage: " + request.responseText + "\nerror: " + error);
-     }
- });
+		/////////////////============ ajax ============///////////////////////
+		 $.ajax({
+		     url: "verifyCertification.mp", // 서버의 컨트롤러 매핑 주소
+		     data: {
+		         "userCertificationCode": $("input:text[name='input_confirmCode']").val().trim(),
+		         "userid":$("input:text[name='userid']").val().trim()
+		     },
+		     type: "post",
+		     dataType: "json", // 서버에서 JSON 형식의 응답을 받음
+		     success: function(json) {
+		    	 console.log("서버 응답:", json);
+		         let resultHtml = "";
+		
+		         if (json.is_True_false == false) {
+		             // 인증코드가 맞지 않는 경우
+		             resultHtml = `<span style="color: red;">코드가 맞지 않습니다. </span>`;
+		             $("#findPwBtn").html("비밀번호 찾기");
+			         $("#findPwBtn").val("findPw"); 
+			         $("button#findBtn").html("재전송");
+		         } 
+		         else {
+		             // 인증코드가 맞는 경우
+		             $("#form_container > form").hide(); // 기존 폼태그 숨기고, 코드가 인증 되었으니 새로운 비밀번호를 생성할 수 있도록.
+		             
+		             resultHtml = `
+		                 <span style="font-size: 12pt; margin-bottom:10px;">
+		                     코드가 인증되었습니다.
+		                     </span>
+		                     <form name="newpwdFrm" style="max-width: 350px;height: 150px;margin: 0 auto; margin-bottom:40px;margin-top:20px;">
+		                  	
+		          	          <label style="display: block; width: 90px; margin:0px; text-align:left;">새 암호</label>
+		          	          <input type="password" name="pwd" size="25" autocomplete="off" placeholder="암호를 입력하세요" style="display: block; width:100%;"/> 
+		          	   
+		          	          <label style="display: block; width: 90px; margin:10px 0 0 0; text-align:left;">새 암호 확인</label>
+		          	          
+		          	          	<input type="password" name="pwd2" size="25" autocomplete="off" placeholder="암호를 입력하세요" style="display: block; width:100%;"/> 
+		          	          	
+		          	          	<button type="button" class="btn " id="finishNewPwd" style="margin-top:10px;">암호변경하기</button>
+		          	          
+		          	
+		          	   
+		          	</form>
+		                 
+		             `;
+		         } 
+		
+		         // 결과를 div에 삽입
+		         $("#div_findResult").html(resultHtml);
+		         
+		         // 전송 버튼 클릭 전 아이디를 폼태그로 담아줌. 이것은 hidden처리 됨.  
+		         $("input[name='userid']").val(userid);
+		
+		     },
+		     error: function(request, status, error) {
+		         alert("code: " + request.status + "\nmessage: " + request.responseText + "\nerror: " + error);
+		     }
+		 });
 
 		
 	});

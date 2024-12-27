@@ -136,38 +136,40 @@
 			</div>
 			<div class="col-body">
 				<div id="person-screen">
-					<div id="numberOfPeople">
-						<div class="btn-group">
-							<label>일반</label>
-							<button class="btn btn-primary btn-outline-secondary" value="0">0</button>
-							<button class="btn" value="1">1</button>
-							<button class="btn" value="2">2</button>
-							<button class="btn" value="3">3</button>
-							<button class="btn" value="4">4</button>
-							<button class="btn" value="5">5</button>
+					<div id="numberOfPeople" class="mt-3">
+						<div id="adult" class="btn-group">
+							<label>성인</label>
+							<button type="button" class="btn" value="0">0</button>
+							<button type="button" class="btn" value="1">1</button>
+							<button type="button" class="btn" value="2">2</button>
+							<button type="button" class="btn" value="3">3</button>
+							<button type="button" class="btn" value="4">4</button>
+							<button type="button" class="btn" value="5">5</button>
 						</div>
-						<div class="btn-group">
+						<div id="adolescent" class="btn-group">
 							<label>청소년</label>
-							<button class="btn active" value="0">0</button>
-							<button class="btn" value="1">1</button>
-							<button class="btn" value="2">2</button>
-							<button class="btn" value="3">3</button>
-							<button class="btn" value="4">4</button>
-							<button class="btn" value="5">5</button>
+							<button type="button" class="btn" value="0">0</button>
+							<button type="button" class="btn" value="1">1</button>
+							<button type="button" class="btn" value="2">2</button>
+							<button type="button" class="btn" value="3">3</button>
+							<button type="button" class="btn" value="4">4</button>
+							<button type="button" class="btn" value="5">5</button>
 						</div>
-						<div class="btn-group">
+						<div id="youth" class="btn-group">
 							<label>어린이</label>
-							<button class="btn active" value="0">0</button>
-							<button class="btn" value="1">1</button>
-							<button class="btn" value="2">2</button>
-							<button class="btn" value="3">3</button>
-							<button class="btn" value="4">4</button>
-							<button class="btn" value="5">5</button>
+							<button type="button" class="btn" value="0">0</button>
+							<button type="button" class="btn" value="1">1</button>
+							<button type="button" class="btn" value="2">2</button>
+							<button type="button" class="btn" value="3">3</button>
+							<button type="button" class="btn" value="4">4</button>
+							<button type="button" class="btn" value="5">5</button>
 						</div>
 					</div>
 					<div id="screen-info">
 						<div id="screen-date-info"></div>
 						<div id="screen-time-info"></div>
+						<div id="total_seat_cnt" style="display: none;"></div>
+						<div id="selected_seat_cnt" style="display: none;">0</div>
 					</div>
 				</div>
 				<div id="seat-screen" class="text-center">
@@ -186,9 +188,10 @@
 					<div id="time-choice"></div>
 					<div id="seq_showtime_no" style="display: none;"></div>
 				</div>
-				<div>> 좌석선택</div>
+				<div id="seat-choice">> 좌석선택</div>
 				<div>> 결제</div>
 				<button id="goSeatChoice" onclick="goSeatChoice()">-> 좌석선택</button>
+				<button id="goPay" onclick="goPay()">-> 결제선택</button>
 			</div>
 		</div>
 		

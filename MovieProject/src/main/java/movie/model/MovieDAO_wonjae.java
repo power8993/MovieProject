@@ -15,6 +15,9 @@ public interface MovieDAO_wonjae {
 	// 좋아요가 이미 체크되어있는지확인
 	boolean removeMovieLike(MemberVO userid, int seq_movie_no) throws SQLException;
 
+	// 현재 영화에 대해 사용자가 좋아요를 눌렀는지 확인
+	boolean checkMovieLike(MemberVO userid, int seq_movie_no) throws SQLException;
+
 
 
 }

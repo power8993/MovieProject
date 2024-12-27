@@ -1,6 +1,7 @@
 package movie.domain;
 
-public class MovieVO_wonjae {
+
+public class MovieVO_yeo {
 	
 	// === Field === //
 	private int	seq_movie_no;		   // 영화번호
@@ -17,17 +18,29 @@ public class MovieVO_wonjae {
 	private String poster_file;        // 포스터 파일명
 	private String video_url;          // 비디오URL
 	private String register_date;      // 등록일자
-	private CategoryVO cvo; // 카데고리
+	private ShowTimeVO_yeo svo;
+	private CategoryVO_yeo cg;
 	
-	public CategoryVO getCvo() {
-		return cvo;
-	}
-
-	public void setCvo(CategoryVO cvo) {
-		this.cvo = cvo;
-	}
-
+	
+	
+	
 	// === Method === //
+	public CategoryVO_yeo getCg() {
+		return cg;
+	}
+
+	public void setCg(CategoryVO_yeo cg) {
+		this.cg = cg;
+	}
+
+	public ShowTimeVO_yeo getSvo() {
+		return svo;
+	}
+
+	public void setSvo(ShowTimeVO_yeo svo) {
+		this.svo = svo;
+	}
+	
 	public int getSeq_movie_no() {
 		return seq_movie_no;
 	}
@@ -139,5 +152,5 @@ public class MovieVO_wonjae {
 	public void setRegister_date(String register_date) {
 		this.register_date = register_date;
 	}
-	
+
 }
