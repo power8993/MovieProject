@@ -23,6 +23,7 @@ public class MemberRegister extends AbstractController {
 			super.setViewPage("/WEB-INF/member/memberRegister.jsp");
 		}
 		else {
+			
 			String name = request.getParameter("name");
 			String userid = request.getParameter("userid");
 			String pwd = request.getParameter("pwd");
@@ -31,7 +32,18 @@ public class MemberRegister extends AbstractController {
 	        String hp2 = request.getParameter("hp2");
 	        String hp3 = request.getParameter("hp3");
 	        String gender = request.getParameter("gender");
-	        String birthday = request.getParameter("birthday");
+	        String year = request.getParameter("year");
+	        String month = request.getParameter("month");
+	        String day = request.getParameter("day");
+	        
+	        if(Integer.parseInt(month)<10) {
+	        	month = "0"+month;
+	        }
+	        if(Integer.parseInt(day)<10) {
+	        	day = "0"+day;
+	        }
+	        String birthday = year+"-"+month+"-"+day;
+	        //String birthday = request.getParameter("birthday");
 	        
 	        String mobile = hp1 + hp2 + hp3;
 	        
@@ -87,6 +99,10 @@ public class MemberRegister extends AbstractController {
 	        	}
 	        	
 	        } catch (SQLException e) {
+	        	System.out.println("값"+request.getParameter("name"));
+				System.out.println(request.getParameter("userid"));
+				System.out.println(request.getParameter("pwd"));
+				System.out.println(request.getParameter("email"));
 	        	e.printStackTrace();
 	        	String message = "회원가입 실패";
 	        	String loc = "javascript:history.back()"; // 자바스크립트를 이용한 이전페이지로 이동하는 것.

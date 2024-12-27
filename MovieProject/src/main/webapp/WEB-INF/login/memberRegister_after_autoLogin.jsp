@@ -14,8 +14,6 @@
 <script type="text/javascript">
 	window.onload = function() {
 		
-		alert("회원가입에 감사드립니다.^^");
-		
 		const frm = document.loginFrm;
 		frm.action = "<%= ctxPath%>/login/login.mp";
 		frm.method = "post";
