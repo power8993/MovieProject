@@ -1,3 +1,6 @@
+let adult_ticket_price = 0;
+let adolescent_ticket_price = 0;
+let youth_ticket_price = 0;
 
 $(document).ready(function(){
 	
@@ -7,6 +10,28 @@ $(document).ready(function(){
 	
 	let seq_movie_no = "";
 	let input_date = "";
+	
+	// 영화 티켓 가격 가져오기
+	$.ajax({
+		url:"/MovieProject/reservation/getTicketPrice.mp",
+		dataType:"json",
+        success: function(json){
+        	if(json.length == 0) {
+				console.log("티켓 가격 정보가 없습니다");
+			}
+			else {
+				adult_ticket_price = json.adult_ticket_price;
+				adolescent_ticket_price = json.adolescent_ticket_price;
+				youth_ticket_price = json.youth_ticket_price;
+			}
+		},
+		error: function(){
+			alert("티켓 가격 정보를 가져오는 중 오류 발생!");
+		}
+	}); // end of $.ajax({})---------------------------------------------------------------------
+	
+	console.log(adult_ticket_price);
+	console.log(typeof adult_ticket_price);
 	
 	// 예약페이지에서 영화를 선택했을 때
 	$("tr.movie-list").click(e => {
@@ -207,8 +232,16 @@ function goMovieChoice() {
 	$("button#goPay").hide();
 }
 
+function goPayChoice() {
+	if($("div#total_seat_cnt").text() != $("div#selected_seat_cnt").text()) {
+		alert("관람인원과 선택 좌석 수가 동일하지 않습니다.");
+		return false;
+	}
+	console.log("결제 하기");
+}
+
 function onScreenClick(element, start_time, seq_showtime_no, fk_screen_no, seat_str) {
-	
+
 	$("tr.time_choice").css({'background-color':'','color':''})
 	$(element).parent().css({'background-color':'black','color':'white'});
 	
@@ -288,3 +321,4 @@ function onScreenClick(element, start_time, seq_showtime_no, fk_screen_no, seat_
 	});
 	
 }
+

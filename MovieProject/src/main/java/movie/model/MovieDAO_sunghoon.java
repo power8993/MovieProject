@@ -15,4 +15,7 @@ public interface MovieDAO_sunghoon {
 	// 영화와 날짜를 선택했을 때 보여줄 상영하는 영화 시간 리스트
 	List<ShowTimeVO_sunghoon> getScreenTime(Map<String, String> paraMap) throws SQLException;
 
+	// 영화 티켓 가격 가져오기
+	List<Integer> getTicketPrice() throws SQLException;
+
 }

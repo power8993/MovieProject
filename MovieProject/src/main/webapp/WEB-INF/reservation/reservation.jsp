@@ -191,7 +191,7 @@
 				<div id="seat-choice">> 좌석선택</div>
 				<div>> 결제</div>
 				<button id="goSeatChoice" onclick="goSeatChoice()">-> 좌석선택</button>
-				<button id="goPay" onclick="goPay()">-> 결제선택</button>
+				<button id="goPay" onclick="goPayChoice()">-> 결제선택</button>
 			</div>
 		</div>
 		

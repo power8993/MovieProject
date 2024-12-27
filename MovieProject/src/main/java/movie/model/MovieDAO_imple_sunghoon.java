@@ -129,6 +129,36 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		return showTimeList;
 		
 	} // end of public List<ShowTimeVO_sunghoon> getScreenTime(Map<String, String> paraMap) throws SQLException--------------------
+
+
+	
+	// 영화 티켓 가격 가져오기
+	@Override
+	public List<Integer> getTicketPrice() throws SQLException {
+		
+		List<Integer> ticketPriceList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select price "
+					   + " from tbl_movie_price "
+					   + " order by price desc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ticketPriceList.add(rs.getInt("price"));
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return ticketPriceList;
+		
+	} // end of public List<Integer> getTicketPrice() throws SQLException--------------------------------------
 	
 
 	
