@@ -59,12 +59,11 @@ String ctxPath = request.getContextPath();
 								적립/사용 내역</a></li>
 					</ul></li>
 
-				<li><a href="<%=ctxPath%>/mypage/mywatchedmovie.mp">영화</a>
+				<li><a href="<%=ctxPath%>/mypage/mymoviewatched.mp">영화</a>
 					<ul>
-						<li><a href="<%=ctxPath%>/mypage/mywatchedmovie.mp">내가 본
+						<li><a href="<%=ctxPath%>/mypage/mymoviewatched.mp">내가 본
 								영화</a></li>
-						<li><a href="<%=ctxPath%>/mypage/myreview.mp" >내가
-								쓴 평점</a></li>
+						<li><a href="<%=ctxPath%>/mypage/mymoviereview.mp">내가 쓴 평점</a></li>
 						<li><a href="<%=ctxPath%>/mypage/mymovielike.mp">기대되는 영화</a></li>
 					</ul></li>
 

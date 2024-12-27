@@ -11,14 +11,14 @@ import member.domain.MemberVO;
 import mypage.model.MypageDAO;
 import mypage.model.MypageDAO_imple;
 
+public class MydeleteEnd extends AbstractController {
+	
+	MypageDAO mydao = new MypageDAO_imple();
 
-public class MyupcheckPwd extends AbstractController {
+	@Override
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-    private MypageDAO mydao = new MypageDAO_imple();
-
-    @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        // 세션에서 로그인 사용자 정보 가져오기
+		 // 세션에서 로그인 사용자 정보 가져오기
         HttpSession session = request.getSession();
         MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 
@@ -38,7 +38,7 @@ public class MyupcheckPwd extends AbstractController {
 
             // 세션에서 사용자 ID 가져오기
             String userid = loginuser.getUserid();
-
+            
             Map<String, String> paraMap = new HashMap<>();
             paraMap.put("userid", userid); // 세션에서 가져온 사용자 ID
             paraMap.put("pwd", pwd);
@@ -46,19 +46,31 @@ public class MyupcheckPwd extends AbstractController {
             boolean checkPassword = mydao.checkPassword(paraMap); // 비밀번호 검증 메서드
 
             if (checkPassword) {
-                // 비밀번호가 일치하면 회원정보 수정 페이지로 이동
-                super.setRedirect(true);
-                super.setViewPage(request.getContextPath() + "/mypage/myupEdit.mp"); // 회원정보 수정 페이지
+                // 비밀번호가 일치하면 삭제 실행
+                boolean deletePassword = mydao.deletePassword(userid);
+
+                if (deletePassword) {
+                    // 계정 삭제 성공
+                	session.removeAttribute("loginuser"); // 세션에서 loginuser 제거
+                	super.setRedirect(false);
+                    super.setViewPage("/WEB-INF/mypage/mydeleteEnd.jsp");
+                } else {
+                    // 계정 삭제 실패
+                    request.setAttribute("message", "계정 삭제에 실패했습니다. 다시 시도해주세요.");
+                    request.setAttribute("loc", request.getContextPath() + "/mypage/mydelete.mp");
+                    super.setRedirect(false);
+                    super.setViewPage("/WEB-INF/msg.jsp");
+                }
             } else {
                 // 비밀번호가 일치하지 않을 경우
                 request.setAttribute("message", "비밀번호가 일치하지 않습니다.");
                 super.setRedirect(false);
-                super.setViewPage("/WEB-INF/mypage/myupcheckPwd.jsp");
+                super.setViewPage("/WEB-INF/mypage/mydelete.jsp");
             }
         } else {
             // GET 요청 처리 (비밀번호 입력 페이지로 이동)
             super.setRedirect(false);
-            super.setViewPage("/WEB-INF/mypage/myupcheckPwd.jsp");
+            super.setViewPage("/WEB-INF/mypage/mydelete.jsp");
         }
     }
 }

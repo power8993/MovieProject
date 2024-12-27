@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 body > div.my_container > div.my_main > div.mypage_main_content > form{
-	border: solid 1px black;
+	border: solid 1px #ccc;
 	background-color: white;
 	margin: 20px;
 	text-align: center;
@@ -50,4 +50,9 @@ div.mybutton> button.btn {
 div.mypage_main_content > form > div > button:nth-child(2){
 	background-color: #403d39;
 	color: white;
+}
+
+div.mypage_main_content > form > div > button:nth-child(2):hover{
+	background-color: #ccc5b9;
+	color: black;
 }

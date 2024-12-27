@@ -4,12 +4,15 @@
 <%
     String ctxPath = request.getContextPath();
 %>
+<% String userid = (String) session.getAttribute("userid"); %>
 
 <jsp:include page="../header1.jsp" />
 
 <%-- 직접 만든 CSS --%>
+<%-- 직접 만든 CSS --%>
 <link rel="stylesheet" type="text/css" href="<%=ctxPath%>/css/mypage/mypagemain.css" />
 <link rel="stylesheet" type="text/css" href="<%=ctxPath%>/css/mypage/mypagemovie.css" />
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/mypage/mymovielike.js"></script> 
 
 <%-- h3 a태그의 이모티콘 --%>
 <script src="https://kit.fontawesome.com/0c69fdf2c0.js" crossorigin="anonymous"></script>
@@ -18,8 +21,7 @@
 
 <%-- 전체 창 --%>
 <div class="my_container">
-
-    <%-- 마이페이지 나의 프로필장 --%>
+	<%-- 마이페이지 나의 프로필장 --%>
 	<div class="myprofile">
 		<div class="profile-container">
 			<i class="fa-solid fa-circle-user" style="color: #252422;"></i>
@@ -41,10 +43,11 @@
 	</div>
 	<%-- 마이페이지 나의 프로필장 끝 --%>
 
- <%-- 마이페이지 사이드바 & 매안 창 --%>
-    <div class="my_main">
 
-<%-- 마이페이지 사이드바 --%>
+	<%-- 마이페이지 사이드바 & 매안 창 --%>
+	<div class="my_main">
+
+		<%-- 마이페이지 사이드바 --%>
 		<div class="my_hside">
 			<ul>
 				<li><a href="<%=ctxPath%>/mypage/mypage.mp">MyPage HOME</a></li>
@@ -52,17 +55,17 @@
 				<li><a href="<%=ctxPath%>/mypage/myreservationlist.mp">나의
 						예매내역</a>
 					<ul>
-						<li><a href="<%=ctxPath%>/mypage/myreservationpoint.mp" >포인트
+						<li><a href="<%=ctxPath%>/mypage/myreservationpoint.mp">포인트
 								적립/사용 내역</a></li>
 					</ul></li>
 
-				<li><a href="<%=ctxPath%>/mypage/mywatchedmovie.mp">영화</a>
+				<li><a href="<%=ctxPath%>/mypage/mymoviewatched.mp">영화</a>
 					<ul>
-						<li><a href="<%=ctxPath%>/mypage/mywatchedmovie.mp">내가 본
+						<li><a href="<%=ctxPath%>/mypage/mymoviewatched.mp">내가 본
 								영화</a></li>
-						<li><a href="<%=ctxPath%>/mypage/myreview.mp" >내가
-								쓴 평점</a></li>
-						<li><a href="<%=ctxPath%>/mypage/mymovielike.mp" class="active">기대되는 영화</a></li>
+						<li><a href="<%=ctxPath%>/mypage/mymoviereview.mp">내가 쓴 평점</a></li>
+						<li><a href="<%=ctxPath%>/mypage/mymovielike.mp"
+							class="active">기대되는 영화</a></li>
 					</ul></li>
 
 				<li><a href="<%=ctxPath%>/mypage/myupcheckPwd.mp">회원정보</a>
@@ -73,43 +76,52 @@
 			</ul>
 		</div>
 		<%-- 마이페이지 사이드바 끝 --%>
-        <!-- 메인 콘텐츠 -->
-        <div class="mypage_main_content">
 
-            <!-- 나의 예매내역 -->
-            <div class="my_movie_buttons">
-                <a href="<%=ctxPath%>/mypage/mywatchedmovie.mp" class="button">
-                    <i class="fa-solid fa-feather"></i> 내가 본 영화
-                </a>
-                <a href="<%=ctxPath%>/mypage/myreview.mp" class="button">
-                    <i class="fa-solid fa-star"></i> 내가 쓴 평점
-                </a>
-                <a href="<%=ctxPath%>/mypage/mymovielike.mp" class="button active">
-                    <i class="fa-solid fa-film"></i> 기대되는 영화
-                </a>
-            </div>
+		<%-- 메인콘텐츠 시작 --%>
+		<div class="mypage_main_content">
 
-           <!-- 내가 본 영화 -->
-            <div class="my_main_movie">
-                <div class="my_mywatchedmovie_list">
-                    <c:if test="${not empty requestScope.expectedMovies}">
-                        <ul>
-                            <c:forEach var="movie" items="${requestScope.expectedMovies}">
-                                <li>${movie.MOVIE_TITLE}</li>
-                            </c:forEach>
-                        </ul>
-                    </c:if>
-                    <c:if test="${empty requestScope.expectedMovies}">
-                        <p class="empty">기대되는 영화가 없습니다.</p>
-                    </c:if>
-                </div>
-            </div>
+			<!-- 영화 버튼 바 시작 -->
+			<div class="my_movie_buttons">
+				<a href="<%=ctxPath%>/mypage/mymoviewatched.mp" class="button">
+					<i class="fa-solid fa-feather"></i> 내가 본 영화
+				</a> <a href="<%=ctxPath%>/mypage/mymoviereview.mp" class="button"> <i
+					class="fa-solid fa-star"></i> 내가 쓴 평점
+				</a> <a href="<%=ctxPath%>/mypage/mymovielike.mp" class="button active">
+					<i class="fa-solid fa-film"></i>기대되는 영화
+				</a>
+			</div>
+			<%-- 영화 버튼 바 끝 --%>
 
+			<!-- 기대되는 영화 -->
+    <div>
+      <div class="row" id="mymovielikeHIT" ></div>
+        <input type="hidden" name="userid" id="userid"
+					value="${sessionScope.loginuser.userid}" />
+					
+					
+			<div class="col-12 mt-4">
+            <p class="text-center">
+                <span id="end" class="end-message" style="display:block; margin:20px; font-size: 14pt; font-weight: bold; color: red;"></span>
+                <button type="button" class="btn-load-more btn btn-secondary btn-lg" id="btnmymovielike" value="">더보기...</button>
+                <span id="totalmymovielike">${requestScope.totalmymovielike}</span>
+                <span id="mymovielikecount">0</span>
+            </p>
         </div>
-	<!-- 메인 콘텐츠 끝 -->
-
 </div>
-<%-- 마이페이지 사이드바 & 매안 창 끝 --%>
+
+
+			<%-- 기대되는 영화 끝 --%>
+
+
+
+
+
+
+		</div>
+		<!-- 메인 콘텐츠 끝 -->
+
+	</div>
+	<%-- 마이페이지 사이드바 & 매안 창 끝 --%>
 
 </div>
 <%-- 전체 창 끝 --%>

@@ -22,6 +22,9 @@ String ctxPath = request.getContextPath();
 
 <%-- 전체 창 --%>
 <div class="my_container">
+
+
+
 	<%-- 마이페이지 나의 프로필장 --%>
 	<div class="myprofile">
 		<div class="profile-container">
@@ -43,7 +46,7 @@ String ctxPath = request.getContextPath();
 		</div>
 	</div>
 	<%-- 마이페이지 나의 프로필장 끝 --%>
-	
+
 	<%-- 마이페이지 사이드바 & 매안 창 --%>
 	<div class="my_main">
 
@@ -59,14 +62,13 @@ String ctxPath = request.getContextPath();
 								적립/사용 내역</a></li>
 					</ul></li>
 
-				<li><a href="<%=ctxPath%>/mypage/mywatchedmovie.mp">영화</a>
+				<li><a href="<%=ctxPath%>/mypage/mymoviewatched.mp">영화</a>
 					<ul>
-						<li><a href="<%=ctxPath%>/mypage/mywatchedmovie.mp">내가 본
+						<li><a href="<%=ctxPath%>/mypage/mymoviewatched.mp">내가 본
 								영화</a></li>
-						<li><a href="<%=ctxPath%>/mypage/myreview.mp" class="active">내가
-								쓴 평점</a></li>
+						<li><a href="<%=ctxPath%>/mypage/mymoviereview.mp" class="active">내가 쓴 평점</a></li>
 						<li><a href="<%=ctxPath%>/mypage/mymovielike.mp">기대되는 영화</a></li>
-					</ul></li>
+					</ul></li> 
 
 				<li><a href="<%=ctxPath%>/mypage/myupcheckPwd.mp">회원정보</a>
 					<ul>
@@ -77,20 +79,25 @@ String ctxPath = request.getContextPath();
 		</div>
 		<%-- 마이페이지 사이드바 끝 --%>
 
-		<!-- 메인 콘텐츠 -->
+		<%-- 메인 콘텐츠 시작 --%>
 		<div class="mypage_main_content">
+		
+		
+			<%-- 영화 버튼바 시작 --%>
 			<div class="my_movie_buttons">
-				<a href="<%=ctxPath%>/mypage/mywatchedmovie.mp" class="button">
+				<a href="<%=ctxPath%>/mypage/mymoviewatched.mp" class="button">
 					<i class="fa-solid fa-feather"></i> 내가 본 영화
-				</a> <a href="<%=ctxPath%>/mypage/myreview.mp" class="button active">
+				</a> <a href="<%=ctxPath%>/mypage/mymoviereview.mp" class="button active">
 					<i class="fa-solid fa-star"></i> 내가 쓴 평점
 				</a> <a href="<%=ctxPath%>/mypage/mymovielike.mp" class="button"> <i
 					class="fa-solid fa-film"></i> 기대되는 영화
 				</a>
 			</div>
+			<%-- 영화 버튼바 끝 --%>
 
+
+			<!-- 내가 쓴 평점  -->
 			<div class="my_main_movie">
-				<!-- 내가 쓴 평점  -->
 				<div class="my_mywatchedmovie_list">
 					<c:if test="${not empty requestScope.REVIEW_CONTENT}">
 						<ul>
@@ -104,10 +111,13 @@ String ctxPath = request.getContextPath();
 						<p class="empty">작성한 평점이 없습니다.</p>
 					</c:if>
 				</div>
-				
 			</div>
 			<!-- 내가 쓴 평점  끝 -->
-			
+
+
+
+
+
 		</div>
 		<!-- 메인 콘텐츠 끝 -->
 
