@@ -15,6 +15,11 @@ $(document).ready(function(){
 
 
 // Function Declaration
+$(document).on('click', '#idleCancel', function(){
+	history.back();// 메인 페이지로 가는 것이 아닌 '직전' 직전 페이지로 가도록 함.
+});
+
+
 
 // === 로그인 처리 함수 === //
 function goLogin() {
@@ -73,8 +78,8 @@ function goLogin() {
 					
 					<div style="background-color:#e6ccb3; padding:20px 0 5px 10px;">
 
-							<p>마지막 접속일 : (마지막 로그인 날짜데이터)</p> 
-							<p>휴면 전환일 : (마지막 로그인 날짜데이터+ 1년 후)</p>
+							<p ><span style=" display:inline-block; font-weight:700;">마지막 접속일</span> :   `+ json.lastLogin+`</p> 
+							<p ><span style=" display:inline-block; font-weight:700;">휴면 전환일</span> :    `+ json.idleChange+`</p>
 					</div>
 					
 					<p style="color:gray; font-size:13px; margin-top:20px;" >HGV 계정 서비스를 계속 이용하시려면 <span style="font-weight:700px;">[휴면 해제하기] 버튼을 클릭해주세요.</span></p>

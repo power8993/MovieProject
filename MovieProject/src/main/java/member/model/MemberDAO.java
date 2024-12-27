@@ -27,4 +27,10 @@ public interface MemberDAO {
 
 	// 비밀번호 변경하기
 	int pwdUpdate(Map<String, String> paraMap) throws SQLException;
+
+	// 마지막 로그인 날짜 구하기
+	String lastLogin(Map<String, String> paraMap) throws SQLException;
+
+	//휴면 전환 날짜 날짜 구하기
+	String idleChange(Map<String, String> paraMap);
 }

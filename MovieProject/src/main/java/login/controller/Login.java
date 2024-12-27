@@ -45,11 +45,16 @@ public class Login extends AbstractController {
 			paraMap.put("pwd", pwd);
 			paraMap.put("clientip", clientip);
 			
+
+			
+			String lastLogin = mdao.lastLogin(paraMap); // 마지막 로그인 날짜 구하기
+			String idleChange = mdao.idleChange(paraMap); //휴면 전환 날짜 날짜 구하기
+			
 			MemberVO loginuser = mdao.login(paraMap);
 			
 			if(loginuser != null && loginuser.getIdle()== 99) { // 아이디비밀번호가 맞으며, 휴면계정이 아닐 경우
 	//			System.out.println("~~~~ 확인용 로그인 성공 ^_________________________________^");
-				
+				//System.out.println("비번변경일 : "+loginuser.getLastpwdchangedate());
 				//System.out.println("확인용 : "+loginuser.getIdle());
 				
 				
@@ -92,10 +97,14 @@ public class Login extends AbstractController {
 	        if (loginuser != null) {
 	        	jsonObj.put("loginuser", loginuser.getIdle());
 	        	jsonObj.put("getIdle", loginuser.getIdle());
+	        	jsonObj.put("lastLogin", lastLogin);
+	        	jsonObj.put("idleChange", idleChange);
 	        } 
 	        else { // 로그인 실패시 모든 것이 null값으로 ajax로 넘어감.
 	        	jsonObj.put("loginuser",JSONObject.NULL); 
 	        	jsonObj.put("getIdle", JSONObject.NULL);
+	        	jsonObj.put("lastLogin",JSONObject.NULL); 
+	        	jsonObj.put("idleChange", JSONObject.NULL);
 	        }
 	        jsonObj.put("ctxPath", request.getContextPath());
 	        

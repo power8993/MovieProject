@@ -173,7 +173,7 @@ public class MemberDAO_imple implements MemberDAO {
 	         
 	         
 	         
-	         String sql = " SELECT USER_ID, name,pwdchangegap, PWD_CHANGE_DATE as lastpwdchangedate, "
+	         String sql = " SELECT USER_ID, name,pwdchangegap, to_char(PWD_CHANGE_DATE,'yyyy-mm-dd') as lastpwdchangedate, "
 	                  + "        NVL( lastlogingap, TRUNC( months_between(sysdate, REGISTERDAY) ) ) AS lastlogingap, idle_status, email, mobile, gender, birthday "
 	                  + " FROM "
 	                  + " (select user_id, name, "
@@ -186,7 +186,7 @@ public class MemberDAO_imple implements MemberDAO {
 	                  + " (select trunc( months_between(sysdate, min(login_date) ) ) AS lastlogingap "
 	                  + " FROM tbl_login_history "
 	                  + " WHERE fk_user_id = ? "
-	                  + " ) H " ;
+	                  + " ) H ";
 	         
 	         pstmt = conn.prepareStatement(sql);
 	         
@@ -202,9 +202,9 @@ public class MemberDAO_imple implements MemberDAO {
 	            member.setUserid(rs.getString("USER_ID"));
 	            member.setName(rs.getString("name"));
 	            member.setEmail( aes.decrypt(rs.getString("email")) );
-	               member.setMobile( aes.decrypt(rs.getString("mobile")) );
-	               member.setBirthday(rs.getString("birthday"));
-	               member.setLastpwdchangedate(rs.getString("lastpwdchangedate"));
+	            member.setMobile( aes.decrypt(rs.getString("mobile")) );
+	            member.setBirthday(rs.getString("birthday"));
+	            member.setLastpwdchangedate(rs.getString("lastpwdchangedate"));
 	            
 	            //// 마지막로그인과 오늘 날짜 차이 출력해보기 ////
 	            int lastLoginGap = rs.getInt("lastlogingap");
@@ -252,10 +252,6 @@ public class MemberDAO_imple implements MemberDAO {
 	                  member.setRequirePwdChange(true); // 로그인시 암호를 변경해라는 alert 를 띄우도록 할때 사용한다.
 	               }
 	            }
-	              member.setEmail( aes.decrypt(rs.getString("email")) );
-	               member.setMobile( aes.decrypt(rs.getString("mobile")) );
-	               member.setBirthday(rs.getString("birthday"));
-	               member.setLastpwdchangedate(rs.getString("pwdchangegap"));
 	               
 	         } // end of if(rs.next())------------------------------
 	         
@@ -363,5 +359,61 @@ public class MemberDAO_imple implements MemberDAO {
 		return result;
 		
 	} // end of public int pwdUpdate(Map<String, String> paraMap)---------------------------------------
+
+	// 마지막 로그인 날짜 구하기
+	@Override
+	public String lastLogin(Map<String, String> paraMap) throws SQLException {
+		String lastLogin = "";
+		try {
+			conn = ds.getConnection();
+			String sql = " select to_char(min(login_date),'yyyy-mm-dd') AS lastLogin "
+						+ " FROM tbl_login_history "
+						+ " WHERE fk_user_id = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid") ); 
+			
+
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				lastLogin = rs.getString("lastLogin");
+			}
+	
+		}catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	  
+		return lastLogin;
+	}
+
+	//휴면 전환 날짜 날짜 구하기
+	@Override
+	public String idleChange(Map<String, String> paraMap) {
+		String idleChange = "";
+		try {
+			conn = ds.getConnection();
+			String sql = " select to_char(add_months( min(login_date),12),'yyyy-mm-dd') AS idleChange "
+					+ " FROM tbl_login_history "
+					+ " WHERE fk_user_id = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid") ); 
+			
+
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				idleChange = rs.getString("idleChange");
+			}
+	
+		}catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	  
+		return idleChange;
+	}
 
 }
