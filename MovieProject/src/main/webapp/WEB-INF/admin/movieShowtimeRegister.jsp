@@ -1,7 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<% String ctxPath = request.getContextPath(); %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="movie.domain.MovieVO" %>
+
+<% 
+	String ctxPath = request.getContextPath(); 
+
+	//request에서 mvvo 객체 가져오기
+	MovieVO mvvo = (MovieVO) request.getAttribute("mvvo");
+	
+	// mvvo.start_date 값 가져오기
+    String start_date_str = mvvo.getStart_date(); 
+    String end_date_str = mvvo.getEnd_date(); 
+    
+	// 날짜 포맷
+    SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+    
+ 	// String을 Date로 변환
+    Date start_date_d = inputFormat.parse(start_date_str);
+    Date end_date_d = inputFormat.parse(end_date_str);
+    
+    String start_date = outputFormat.format(start_date_d) + ":00";
+    String end_date = outputFormat.format(end_date_d) + ":00"; 
+%>
 
 <%-- 직접 만든 CSS --%>
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/admin/admin.css" >
@@ -50,7 +74,7 @@
 	                        <div class="form-row">
 	                            <div class="col">
 	                                <label for="start_time"><span class="star">*&nbsp;</span>상영 시작 시간</label>
-	                                <input type="datetime-local" class="form-control" name="start_time" id="start_time" required>
+	                                <input type="datetime-local" class="form-control" name="start_time" id="start_time" required min="<%= start_date %>" max="<%= end_date %>">
 	                            </div>
 	                            <div class="col">
 	                                <label for="end_time">상영 종료 시간</label>

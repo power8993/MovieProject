@@ -21,7 +21,6 @@ String ctxPath = request.getContextPath();
 
 <%-- 전체 창 --%>
 <div class="my_container">
-
 	<%-- 마이페이지 나의 프로필장 --%>
 	<div class="myprofile">
 		<div class="profile-container">
@@ -43,6 +42,9 @@ String ctxPath = request.getContextPath();
 		</div>
 	</div>
 	<%-- 마이페이지 나의 프로필장 끝 --%>
+	
+	<%-- 마이페이지 사이드바 & 매안 창 --%>
+	<div class="my_main">
 
 		<%-- 마이페이지 사이드바 --%>
 		<div class="my_hside">
@@ -56,13 +58,12 @@ String ctxPath = request.getContextPath();
 								적립/사용 내역</a></li>
 					</ul></li>
 
-				<li><a href="<%=ctxPath%>/mypage/mywatchedmovie.mp">영화</a>
+				<li><a href="<%=ctxPath%>/mypage/mymoviewatched.mp">영화</a>
 					<ul>
-						<li><a href="<%=ctxPath%>/mypage/mywatchedmovie.mp"
-							class="active">내가 본 영화</a></li>
-						<li><a href="<%=ctxPath%>/mypage/myreview.mp">내가 쓴 평점</a></li>
-						<li><a href="<%=ctxPath%>/mypage/mymovielike.mp">기대되는
+						<li><a href="<%=ctxPath%>/mypage/mymoviewatched.mp">내가 본
 								영화</a></li>
+						<li><a href="<%=ctxPath%>/mypage/mymoviereview.mp">내가 쓴 평점</a></li>
+						<li><a href="<%=ctxPath%>/mypage/mymovielike.mp">기대되는 영화</a></li>
 					</ul></li>
 
 				<li><a href="<%=ctxPath%>/mypage/myupcheckPwd.mp">회원정보</a>
@@ -74,20 +75,25 @@ String ctxPath = request.getContextPath();
 		</div>
 		<%-- 마이페이지 사이드바 끝 --%>
 
-		<!-- 메인 콘텐츠 -->
+		<%-- 메인 콘텐츠 시작 --%>
 		<div class="mypage_main_content">
-			<div class="my_movie_buttons"><!-- 메인 영화 콘텐츠 버튼 -->
-			<a href="<%=ctxPath%>/mypage/mywatchedmovie.mp" class="button active">
+		
+		<%-- 영화 버튼바 --%>
+			<div class="my_movie_buttons">
+			<a href="<%=ctxPath%>/mypage/mymoviewatched.mp" class="button active">
 					<i class="fa-solid fa-feather"></i> 내가 본 영화
 				</a> 
-				<a href="<%=ctxPath%>/mypage/myreview.mp" class="button">
+				<a href="<%=ctxPath%>/mypage/mymoviereview.mp" class="button">
 					<i class="fa-solid fa-star"></i> 내가 쓴 평점
 				</a>
 				<a href="<%=ctxPath%>/mypage/mymovielike.mp" class="button"> <i
 					class="fa-solid fa-film"></i> 기대되는 영화
 				</a> 
-			</div><!-- 메인 영화 콘텐츠 버튼 끝 -->
-			<div class="my_main_movie"><!-- 내가 본 영화 리스트  -->
+			</div>
+			<!-- 영화 버튼바 끝 -->
+			
+			<!-- 내가 본 영화  -->
+			<div class="my_main_movie">
 			<div class="my_mywatchedmovie_list">
 					<c:if test="${not empty requestScope.watchedMovies}">
 						<ul>

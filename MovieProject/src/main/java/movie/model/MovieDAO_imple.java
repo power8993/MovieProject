@@ -139,11 +139,62 @@ public class MovieDAO_imple implements MovieDAO {
 		return movieList;
 	}// end of public List<MovieVO> selectMovieRegister(String movie_title) throws SQLException {}--------------------
 
-
 	
-	// 페이징 처리를 안한 모든 영화 목록 보여주기(select)
+	
+	// 페이징 처리를 안한 모든 등록된 영화 리스트 보여주기
 	@Override
 	public List<MovieVO> selectMovieList(Map<String, String> paraMap) throws SQLException {
+		
+		List<MovieVO> movieList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select seq_movie_no "
+					   + "      , to_char(register_date, 'yyyy-mm-dd') as register_date "
+					   + "      , c.category "
+					   + "      , poster_file "
+					   + "      , movie_title "
+					   + "      , movie_grade "
+					   + "      , to_char(start_date, 'yyyy-mm-dd') as start_date "
+					   + " from tbl_movie m join tbl_category c "
+					   + " on(m.fk_category_code = c.category_code) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				MovieVO mvvo = new MovieVO();
+				
+				mvvo.setSeq_movie_no(rs.getInt("seq_movie_no"));
+				mvvo.setRegister_date(rs.getString("register_date"));
+				
+				CategoryVO catevo = new CategoryVO();
+				catevo.setCategory(rs.getString("category"));
+				mvvo.setCatevo(catevo);
+				
+				mvvo.setPoster_file(rs.getString("poster_file"));
+				mvvo.setMovie_title(rs.getString("movie_title"));		
+				mvvo.setMovie_grade(rs.getString("movie_grade"));
+				mvvo.setStart_date(rs.getString("start_date"));
+				
+				movieList.add(mvvo);
+				
+			}// while(rs.next()) {}------------------------------------------
+					
+		} finally {
+			close();
+		}
+		return movieList;
+	}// end of public List<MovieVO> selectMovieList(Map<String, String> paraMap) throws SQLException {}----------------
+	
+	
+	
+	// 페이징 처리를 안한 영화제목 검색 결과 보여주기(select)
+	@Override
+	public List<MovieVO> selectSearchMovieList(Map<String, String> paraMap) throws SQLException {
 		
 		List<MovieVO> movieList = new ArrayList<>();
 		
@@ -192,7 +243,7 @@ public class MovieDAO_imple implements MovieDAO {
 			close();
 		}
 		return movieList;
-	}// end of public List<MovieVO> selectMovieList() throws SQLException {}-------------------
+	}// end of public List<MovieVO> selectSearchMovieList() throws SQLException {}-------------------
 
 
 	
@@ -410,15 +461,18 @@ public class MovieDAO_imple implements MovieDAO {
 	                   + " join s on m.seq_movie_no = s.fk_seq_movie_no "
 	                   + " where s.screen_no = ? "
 	                   + " and ( "
-	                   + "    (s.start_time <= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') "
-	                   + "     and s.end_time >= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss')) "
+	                   + "    -- 시작 시간과 종료 시간이 입력 시간에 10분 간격을 더한 범위에 포함\r\n"
+	                   + "    (s.start_time <= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') + INTERVAL '9' MINUTE "
+	                   + "     and s.end_time >= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') - INTERVAL '9' MINUTE) "
 	                   + "    or "
-	                   + "    (s.start_time >= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') "
-	                   + "     and s.start_time <= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss')) "
+	                   + "    -- 상영이 입력된 시간 범위 내에서 시작하는지 여부\r\n"
+	                   + "    (s.start_time >= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') - INTERVAL '9' MINUTE "
+	                   + "     and s.start_time <= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') + INTERVAL '9' MINUTE) "
 	                   + "    or "
-	                   + "    (s.end_time >= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') "
-	                   + "     and s.end_time <= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss')) "
-	                   + " ) ";	
+	                   + "    -- 상영이 입력된 시간 범위 내에서 종료하는지 여부\r\n"
+	                   + "    (s.end_time >= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') - INTERVAL '9' MINUTE "
+	                   + "     and s.end_time <= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') + INTERVAL '9' MINUTE) "
+	                   + ") ";	
 
 	        pstmt = conn.prepareStatement(sql);
 	        
@@ -470,6 +524,279 @@ public class MovieDAO_imple implements MovieDAO {
 		
 		return movieList;
 	}// end of public List<MovieVO> selectShowtimeConflict(Map<String, String> paraMap) throws SQLException {}----------------------
+
+
+	
+	// 페이징 처리를 안한 상영일정이 등록된 모든 영화 리스트 보여주기 (select)
+	@Override
+	public List<MovieVO> selectShowtimeList(Map<String, String> paraMap) throws SQLException {
+		
+		List<MovieVO> movieList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " with "
+					   + " s as "
+					   + " (select seq_showtime_no, fk_seq_movie_no, start_time, end_time, fk_screen_no, unused_seat "
+					   + " from tbl_showtime), "
+					   + " m as "
+					   + " (select seq_movie_no, poster_file, movie_title "
+					   + " from tbl_movie) "
+					   + " select s.seq_showtime_no "
+					   + "      , to_char(s.start_time, 'yyyy-mm-dd hh24:mi') as start_time "
+					   + "      , to_char(s.end_time, 'yyyy-mm-dd hh24:mi') as end_time "
+					   + "      , s.fk_screen_no "
+					   + "      , m.poster_file "
+					   + "      , m.movie_title "
+					   + "      , s.unused_seat "
+					   + " from s join m "
+					   + " on(s.fk_seq_movie_no = m.seq_movie_no) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				MovieVO mvvo = new MovieVO();
+				
+				ShowtimeVO showvo = new ShowtimeVO();
+				showvo.setStart_time(rs.getString("start_time"));
+				showvo.setEnd_time(rs.getString("end_time"));
+				showvo.setFk_screen_no(rs.getInt("fk_screen_no"));
+				showvo.setUnused_seat(rs.getInt("unused_seat"));
+				showvo.setSeq_showtime_no(rs.getInt("seq_showtime_no"));
+				mvvo.setShowvo(showvo);
+				
+				mvvo.setPoster_file(rs.getString("poster_file"));
+				mvvo.setMovie_title(rs.getString("movie_title"));
+				
+				movieList.add(mvvo);
+				
+			}// while(rs.next()) {}------------------------------------------
+					
+		} finally {
+			close();
+		}
+		return movieList;
+	}// end of public List<MovieVO> selectShowtimeList(Map<String, String> paraMap) throws SQLException {}-------------------------
+
+
+
+	// 페이징 처리를 위한 검색유무와 상관 없는 회원에 대한 총 페이지 수 알아오기 
+	@Override
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+		
+		int total_page = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select ceil(count(*)/?) "
+					   + " from tbl_movie ";
+			
+			String category_code = paraMap.get("search_category_code");
+			String search_movie_title = paraMap.get("search_movie_title");
+			
+			if(!category_code.isBlank()) {
+				// 장르를 선택한 경우
+				sql += " where fk_category_code = ? ";
+			}
+			
+			if(!search_movie_title.isBlank()) {
+				// 검색어를 입력한 경우
+				sql += " and movie_title like '%'|| ? ||'%' ";
+			}
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, Integer.parseInt(paraMap.get("size_per_page")));
+			
+			if(!category_code.isBlank() && search_movie_title.isBlank()) {
+				// 장르를 선택, 검색어 입력하지 않음
+				pstmt.setString(1, category_code); 
+			}
+			else if (category_code.isBlank() && !search_movie_title.isBlank()) {
+				// 장르를 미선택, 검색어 입력
+				pstmt.setString(1, search_movie_title); 
+			}
+			else if (!category_code.isBlank() && !search_movie_title.isBlank()){
+				// 장르 선택, 검색어 입력
+				pstmt.setString(1, category_code); 
+				pstmt.setString(2, search_movie_title);
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			total_page = rs.getInt(1);
+			
+		} finally {
+			close();
+		}
+		
+		return total_page;
+	}// end of public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+
+
+	
+	// 페이징 처리를 한 모든 등록된 영화 리스트 보여주기 (select)
+	@Override
+	public List<MovieVO> selectMovieListPaging(Map<String, String> paraMap) throws SQLException {
+		
+		List<MovieVO> movieList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select rno, seq_movie_no, register_date, category, poster_file, movie_title, movie_grade, start_date "
+					   + " from "
+					   + " (select rownum as rno "
+					   + "      , seq_movie_no "
+					   + "      , to_char(register_date, 'yyyy-mm-dd') as register_date "
+					   + "      , c.category "
+					   + "      , poster_file "
+					   + "      , movie_title "
+					   + "      , movie_grade "
+					   + "      , to_char(start_date, 'yyyy-mm-dd') as start_date "
+					   + " from tbl_movie m join tbl_category c "
+					   + " on(m.fk_category_code = c.category_code) ";
+					   
+			
+			String category_code = paraMap.get("search_category_code");
+			String search_movie_title = paraMap.get("search_movie_title");
+			
+			if(!category_code.isBlank()) {
+				// 장르를 선택한 경우
+				sql += " where c.category_code = ? ";
+			}
+			
+			if(!search_movie_title.isBlank()) {
+				// 검색어를 입력한 경우
+				sql += " and movie_title like '%'|| ? ||'%') ";
+			}
+			
+			sql += " where rno between ? and ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			int current_showpage_no = Integer.parseInt(paraMap.get("current_showpage_no"));
+			int size_per_page = Integer.parseInt(paraMap.get("size_per_page"));
+			
+			
+			
+			if(!category_code.isBlank() && search_movie_title.isBlank()) {
+				// 장르를 선택, 검색어 입력하지 않음
+				pstmt.setString(1, category_code); 
+				pstmt.setInt(2, (current_showpage_no * size_per_page) - (size_per_page - 1));
+				pstmt.setInt(3, (current_showpage_no * size_per_page));
+			}
+			else if (category_code.isBlank() && !search_movie_title.isBlank()) {
+				// 장르를 미선택, 검색어 입력
+				pstmt.setString(1, search_movie_title); 
+				pstmt.setInt(2, (current_showpage_no * size_per_page) - (size_per_page - 1));
+				pstmt.setInt(3, (current_showpage_no * size_per_page));
+			}
+			else if (!category_code.isBlank() && !search_movie_title.isBlank()){
+				// 장르 선택, 검색어 입력
+				pstmt.setString(1, category_code); 
+				pstmt.setString(2, search_movie_title);
+				pstmt.setInt(3, (current_showpage_no * size_per_page) - (size_per_page - 1));
+				pstmt.setInt(4, (current_showpage_no * size_per_page));
+			}
+			else if (category_code.isBlank() && search_movie_title.isBlank()){
+				// 장르 미선택, 검색어 입력하지 않음
+				pstmt.setInt(1, (current_showpage_no * size_per_page) - (size_per_page - 1));
+				pstmt.setInt(2, (current_showpage_no * size_per_page));
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				MovieVO mvvo = new MovieVO();
+				
+				mvvo.setSeq_movie_no(rs.getInt("seq_movie_no"));
+				mvvo.setRegister_date(rs.getString("register_date"));
+				
+				CategoryVO catevo = new CategoryVO();
+				catevo.setCategory(rs.getString("category"));
+				mvvo.setCatevo(catevo);
+				
+				mvvo.setPoster_file(rs.getString("poster_file"));
+				mvvo.setMovie_title(rs.getString("movie_title"));		
+				mvvo.setMovie_grade(rs.getString("movie_grade"));
+				mvvo.setStart_date(rs.getString("start_date"));
+				
+				movieList.add(mvvo);
+				
+			}// while(rs.next()) {}------------------------------------------
+					
+		} finally {
+			close();
+		}
+		return movieList;
+	}// end of public List<MovieVO> selectMovieListPaging(Map<String, String> paraMap) throws SQLException {}-------------------------
+
+
+	
+	// 검색이 있는 또는 검색이 없는 회원의 총개수 알아오기
+	@Override
+	public int getTotalMovieCount(Map<String, String> paraMap) throws SQLException {
+		int total_movie_count = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select count(*) "
+					   + " from tbl_movie ";
+			
+			String category_code = paraMap.get("search_category_code");
+			String search_movie_title = paraMap.get("search_movie_title");
+			
+			if(!category_code.isBlank()) {
+				// 장르를 선택한 경우
+				sql += " where fk_category_code = ? ";
+			}
+			
+			if(!search_movie_title.isBlank()) {
+				// 검색어를 입력한 경우
+				sql += " and movie_title like '%'|| ? ||'%' ";
+			}
+			
+			pstmt = conn.prepareStatement(sql);
+
+			if(!category_code.isBlank() && search_movie_title.isBlank()) {
+				// 장르를 선택, 검색어 입력하지 않음
+				pstmt.setString(1, category_code); 
+			}
+			else if (category_code.isBlank() && !search_movie_title.isBlank()) {
+				// 장르를 미선택, 검색어 입력
+				pstmt.setString(1, search_movie_title); 
+			}
+			else if (!category_code.isBlank() && !search_movie_title.isBlank()){
+				// 장르 선택, 검색어 입력
+				pstmt.setString(1, category_code); 
+				pstmt.setString(2, search_movie_title);
+			}
+
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			total_movie_count = rs.getInt(1);
+			
+		} finally {
+			close();
+		}
+		
+		return total_movie_count;
+	}// end of public int getTotalMovieCount(Map<String, String> paraMap) throws SQLException {}------------------------------------
+
+
+
 	
 
 	

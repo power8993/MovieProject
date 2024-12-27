@@ -1,0 +1,52 @@
+@charset "UTF-8";
+
+div.deleteclear{
+	/*  border: solid 1px purple;  */
+	width: 90%;
+    max-width: 980px;
+    min-width: 980px;
+    margin: 0 auto;
+   padding: 30px;
+}
+
+i.fa-solid {
+	/* border: solid 1px purple; */
+    font-size: 60px; 
+    margin-bottom: 10px; 
+    display: block; 
+    text-align: center;
+}
+
+body > div.deleteclear > div.clearborder{
+	border: solid 2px #eb5e28;
+	margin-bottom: 20px;
+}
+
+body > div.deleteclear > h1 {
+	/* border: solid 1px purple; */
+    margin-top: 20px;
+    text-align: center;
+}
+body > div.deleteclear > p{
+	/* border: solid 1px purple; */
+	 text-align: center;
+}
+
+body > div.deleteclear > a.deletemainclear{
+	display: inline-block; 
+    padding: 8px 20px;
+    margin:0 45%;
+    background-color: #403d39;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none; 
+    white-space: nowrap; 
+}
+
+body > div.deleteclear > a.deletemainclear:hover{
+	background-color: #ccc5b9;
+	color: black;
+}

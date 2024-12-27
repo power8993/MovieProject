@@ -3,6 +3,7 @@ $(document).ready(function(){
 	
 	$("div#step2").hide();
 	$("button#goMovieChoice").hide();
+	$("button#goPay").hide();
 	
 	let seq_movie_no = "";
 	let input_date = "";
@@ -19,6 +20,39 @@ $(document).ready(function(){
 		if($("div#time-choice").text() == "시간선택") {
 			return;
 		}
+		
+		$.ajax({
+			url:"/MovieProject/reservation/getScreenTime.mp",
+			dataType:"json",
+			data: {
+	             "input_date": input_date,
+	             "seq_movie_no": seq_movie_no
+	        },
+	        success: function(json){
+	        	if(json.length == 0) {
+	        		v_html = `선택하신 날짜에 상영중인 영화가 없습니다.`;
+	        		$("div.time").find("div.col-body").html(v_html);
+				}
+				else if(json.length > 0) {
+				   
+					v_html = "<table><tbody>"
+					
+					$.each(json, function(index, item){
+						v_html += `<tr class='time_choice'><td class='time_data' 
+									onclick='onScreenClick(this, ${item.start_time},${item.seq_showtime_no},${item.fk_screen_no},"${item.seat_arr}")'>
+									${(item.start_time).substr(0,2)}:${(item.start_time).substr(2,2)}</td><td>${item.unused_seat}석</td></tr>`;
+						
+					}); // end of $.each(json, function(index, item)--------------------------------------------------
+					
+					v_html += `</table></tbody>`;
+							
+					$("div.time").find("div.col-body").html(v_html);
+				}
+			},
+			error: function(){
+				alert("request error!");
+			}
+		}); // end of $.ajax({})---------------------------------------------------------------------
 		
 	});
 	
@@ -56,7 +90,7 @@ $(document).ready(function(){
 					
 					$.each(json, function(index, item){
 						v_html += `<tr class='time_choice'><td class='time_data' 
-									onclick='onScreenClick(${item.start_time},${item.seq_showtime_no},${item.fk_screen_no},"${item.seat_arr}")'>
+									onclick='onScreenClick(this, ${item.start_time},${item.seq_showtime_no},${item.fk_screen_no},"${item.seat_arr}")'>
 									${(item.start_time).substr(0,2)}:${(item.start_time).substr(2,2)}</td><td>${item.unused_seat}석</td></tr>`;
 						
 					}); // end of $.each(json, function(index, item)--------------------------------------------------
@@ -71,11 +105,86 @@ $(document).ready(function(){
 			}
 		}); // end of $.ajax({})---------------------------------------------------------------------
 		
-		$("tr.time_choice").click(e => {
-			alert("dd");
-		});
         
 	}); // end of $("li#day").find("span").click(e => {})-------------------------------------------
+	
+	// 인원 선택
+	$("div#adult").find(":nth-child(2)").css({'background-color':'black','color':'white'});
+	$("div#adolescent").find(":nth-child(2)").css({'background-color':'black','color':'white'});
+	$("div#youth").find(":nth-child(2)").css({'background-color':'black','color':'white'});
+	
+	let adult_cnt = 0;
+	let adolescent_cnt = 0;
+	let youth_cnt = 0;
+	let total_cnt = 0;
+	
+	$("div#adult").find("button").click(e => {
+		total_cnt = Number($(e.target).val()) + adolescent_cnt + youth_cnt;
+		if(total_cnt > 5) {
+			alert("예매는 5명까지 가능합니다.");
+			return false;
+		}
+		else if(total_cnt < Number($("div#selected_seat_cnt").text())) {
+			alert("선택한 좌석이 예매 인원 보다 많습니다.");
+			return false;
+		}
+		adult_cnt = Number($(e.target).val());
+		$("div#adult").find("button").css({'background-color':'','color':''})
+		$(e.target).css({'background-color':'black','color':'white'});
+		$("div#total_seat_cnt").text(total_cnt);
+		if(total_cnt == 0) {
+			$("div#seat-screen").addClass('mouse_block');
+		}
+		else {
+			$("div#seat-screen").removeClass('mouse_block');
+		}
+	});
+	
+	$("div#adolescent").find("button").click(e => {
+		total_cnt = adult_cnt + Number($(e.target).val()) + youth_cnt;
+		if(total_cnt > 5) {
+			alert("예매는 5명까지 가능합니다.");
+			return false;
+		}
+		else if(total_cnt < Number($("div#selected_seat_cnt").text())) {
+			alert("선택한 좌석이 예매 인원 보다 많습니다.");
+			return false;
+		}
+		adolescent_cnt = Number($(e.target).val());
+		$("div#adolescent").find("button").css({'background-color':'','color':''})
+		$(e.target).css({'background-color':'black','color':'white'});
+		$("div#total_seat_cnt").text(total_cnt);
+		if(total_cnt == 0) {
+			$("div#seat-screen").addClass('mouse_block');
+		}
+		else {
+			$("div#seat-screen").removeClass('mouse_block');
+		}
+	});
+	
+	$("div#youth").find("button").click(e => {
+		total_cnt = adult_cnt + adolescent_cnt + Number($(e.target).val());
+		if(total_cnt > 5) {
+			alert("예매는 5명까지 가능합니다.");
+			return false;
+		}
+		else if(total_cnt < Number($("div#selected_seat_cnt").text())) {
+			alert("선택한 좌석이 예매 인원 보다 많습니다.");
+			return false;
+		}
+		youth_cnt = Number($(e.target).val());
+		$("div#youth").find("button").css({'background-color':'','color':''})
+		$(e.target).css({'background-color':'black','color':'white'});
+		$("div#total_seat_cnt").text(total_cnt);
+		if(total_cnt == 0) {
+			$("div#seat-screen").addClass('mouse_block');
+		}
+		else {
+			$("div#seat-screen").removeClass('mouse_block');
+		}
+	});
+	
+	
 	
 	
 
@@ -87,6 +196,7 @@ function goSeatChoice() {
 	$("div#step2").show();
 	$("button#goMovieChoice").show();
 	$("button#goSeatChoice").hide();
+	$("button#goPay").show();
 }
 
 function goMovieChoice() {
@@ -94,9 +204,13 @@ function goMovieChoice() {
 	$("div#step2").hide();
 	$("button#goMovieChoice").hide();
 	$("button#goSeatChoice").show();
+	$("button#goPay").hide();
 }
 
-function onScreenClick(start_time, seq_showtime_no, fk_screen_no, seat_str) {
+function onScreenClick(element, start_time, seq_showtime_no, fk_screen_no, seat_str) {
+	
+	$("tr.time_choice").css({'background-color':'','color':''})
+	$(element).parent().css({'background-color':'black','color':'white'});
 	
 	$("div#time-choice").html(String(start_time).substr(0,2) + ":" + String(start_time).substr(2,2));
 	
@@ -115,16 +229,19 @@ function onScreenClick(start_time, seq_showtime_no, fk_screen_no, seat_str) {
 		division = 6;
 	}
 	
+	let chars = 'ABCDEFGD';
+	let charArr = chars.split('');
+	
 	html = ``;
 	
 	seat_arr.forEach((item, index) => {
 		
 		
         if(item == 0){
-            html += `<button type='button' class='empty'>${index}</button>`;
+            html += `<button type='button' class='seat'>${charArr[Math.floor(index/10)] + (index%10 + 1)}</button>`;
         }
         else {
-            html += `<button type='button' style='background-color:red; color:white;'>${index}</button>`;
+            html += `<button type='button' class='seat mouse_block' style='background-color:gray; color:white;'>${charArr[Math.floor(index/10)] + (index%10 + 1)}</button>`;
         }
 
         if((index + 1) % 10 == division) {
@@ -139,6 +256,35 @@ function onScreenClick(start_time, seq_showtime_no, fk_screen_no, seat_str) {
     });// end of seat_arr.forEach((item, index) => {} -------------------------
 	
 	$("div#seat-screen").html(html);
+	$("div#seat-screen").addClass('mouse_block');
 	
+	let seatArr = [];
+	
+	// 좌석 선택
+	$("button.seat").click(e => {
+		console.log($(e.target).text());
+		const total_seat_cnt = Number($("div#total_seat_cnt").text());
+		const selected_seat_cnt = Number($("div#selected_seat_cnt").text());
+		if(total_seat_cnt < 1) {
+			alert("관람인원은 0명일 수 없습니다.");
+		}
+		else if(selected_seat_cnt == total_seat_cnt && !$(e.target).hasClass('selected')) {
+			alert("이미 좌석을 모두 선택하셨습니다.");
+		}
+		else {
+			if($(e.target).hasClass('selected')) {
+				seatArr.splice(seatArr.indexOf($(e.target).text()),1);
+				$("div#seat-choice").text(seatArr.sort().join(","));
+				$(e.target).removeClass('selected');
+				$("div#selected_seat_cnt").text(selected_seat_cnt-1);
+			}
+			else {
+				seatArr.push($(e.target).text());
+				$("div#seat-choice").text(seatArr.sort().join(","));
+				$(e.target).addClass('selected');
+				$("div#selected_seat_cnt").text(selected_seat_cnt+1);
+			}
+		}
+	});
 	
 }

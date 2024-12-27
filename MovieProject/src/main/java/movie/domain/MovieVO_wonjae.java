@@ -139,5 +139,5 @@ public class MovieVO_wonjae {
 	public void setRegister_date(String register_date) {
 		this.register_date = register_date;
 	}
-
+	
 }
