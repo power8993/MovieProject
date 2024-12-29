@@ -20,20 +20,20 @@
       <div style="width:400px; margin: 0 auto; margin-top:100px;">
 	      <label class="labelName" >성명</label>
 		  <input type="text" name="name" id="name"size="25" autocomplete="off" placeholder="성명을 입력하세요" style="display: block; width:100%;"/> 
-	          <span class="error">•성명은 필수입력 사항입니다.</span>
+	          <span class="error">•성명을 입력해 주세요.</span>
 	       
 	          
 	      <label class="labelName" >아이디</label>
 	      <div style="display:flex;">
 		  <input type="text" name="userid" id="userid"size="25" autocomplete="off" placeholder="아이디를 입력하세요" style="display: block; width:100%;"/> <button  type="button" id="idcheck" class="btn btn-info" style="width:120px; margin-left:20px;">중복확인</button>
 	       </div>   
-	       <span class="error">•숫자,영문자,특수문자 포함 형태의 4~15 자리 이내의 아이디를 입력하세요.</span>
+	       <span class="error">•숫자,영문자 포함 형태의 4~15 자리 이내의 아이디를 입력해 주세요.</span>
 	          <%-- 아이디중복체크 --%>
                        <span id="idcheckResult"></span>
                        
 	      <label class="labelName">비밀번호</label>
 		  <input type="password" name="pwd" id="pwd"size="25" autocomplete="off" placeholder="비밀번호를 입력하세요" style="display: block; width:100%;"/> 
-	          <span class="error">•숫자,문자,특수문자 포함 형태의 8~15자리 이내의 비밀번호를 입력하세요.</span>    
+	          <span class="error">•숫자,문자,특수문자 포함 형태의 8~15자리 이내의 비밀번호를 입력해 주세요.</span>    
 	          
 	      <label class="labelName" >비밀번호 확인</label>
 		  <input type="password" name="pwdcheck" id="pwdcheck"size="25" autocomplete="off" placeholder="비밀번호를 입력하세요" style="display: block; width:100%;"/> 

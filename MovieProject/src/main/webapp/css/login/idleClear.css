@@ -1,0 +1,7 @@
+@charset "UTF-8";
+#container{
+	margin: 0 auto;
+	border:solid 1px red;
+	width:980px;
+	height:500px;
+}

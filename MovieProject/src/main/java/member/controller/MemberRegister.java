@@ -56,7 +56,7 @@ public class MemberRegister extends AbstractController {
 	        member.setGender(gender);
 	        member.setBirthday(birthday);
 
-	        // ==== 회원가입이 성공되어지면 "회원가입 성공" 이라는 alert 를 띄우고 시작페이지로 이동한다. ==== //
+	        // 회원가입이 성공되어지면 "회원가입 성공" 이라는 alert 를 띄우고 시작페이지로 이동 //
 	    /*
 	        String message = "";
 	        String loc = "";
@@ -65,13 +65,13 @@ public class MemberRegister extends AbstractController {
 	        	int n = mdao.registerMember(member);
 	        	
 	        	if(n == 1) {
-	        		message = "회원가입 성공^^";
+	        		message = "회원가입 성공";
 	        		loc = request.getContextPath()+"/index.mp"; // 시작페이지로 이동한다.
 	        		
 	        	}
 	        } catch (SQLException e) {
 	        	e.printStackTrace();
-	        	message = "회원가입 실패ㅜㅜ";
+	        	message = "회원가입 실패";
 	        	loc = "javascript:history.back()"; // 자바스크립트를 이용한 이전페이지로 이동하는 것.
 			}
 	        
@@ -84,7 +84,7 @@ public class MemberRegister extends AbstractController {
 		
 	    */   
 	        
-	        // #### 회원가입이 성공되어지면 자동으로 로그인 되도록 하겠다. #### //
+	        // 회원가입이 성공되어지면 자동으로 로그인 되도록 //
 	        try {
 	        	int n = mdao.registerMember(member);
 	        	

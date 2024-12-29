@@ -32,5 +32,14 @@ public interface MemberDAO {
 	String lastLogin(Map<String, String> paraMap) throws SQLException;
 
 	//휴면 전환 날짜 날짜 구하기
-	String idleChange(Map<String, String> paraMap);
+	String idleChange(Map<String, String> paraMap) throws SQLException;
+
+	//휴면계정 아이디의 전화번호 구하기
+	String idleMemberMobile(String userid) throws SQLException;
+
+	//휴면계정 인증이 완료되었으니 idle_staus를 1으로,  logingap의 데이터 삭제
+	int idleStatusUpdate(String idleMemberMobile) throws SQLException;
+
+	// 로그인 기록 테이블의 login_date컬럼 데이터 삭제
+	int loginHistoryDelete(String idleMemberMobile) throws SQLException;
 }

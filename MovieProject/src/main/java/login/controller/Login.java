@@ -34,6 +34,7 @@ public class Login extends AbstractController {
 			// POST 방식으로 넘어온 것이라면
 			String userid = request.getParameter("userid");
 			String pwd = request.getParameter("pwd");
+			String successRegister = request.getParameter("successRegister");// 회원가입이 성공했다면 "1", 실패 했다면 null
 			
 			// ==== 클라이언트의 IP 주소를 알아오는 것 ==== //
 			String clientip = request.getRemoteAddr();
@@ -64,7 +65,14 @@ public class Login extends AbstractController {
 				session.setAttribute("loginuser", loginuser);
 				// session(세션)에 로그인 되어진 사용자 정보인 loginuser 를 키이름을 "loginuser" 으로 저장시켜두는 것이다.
 	
-			
+				if("1".equals(successRegister)) { // 회원가입 성공 후 자동 로그인
+					//System.out.println("회원가입 완료 : "+method);
+				    //System.out.println("회원가입 성공, 자동 로그인 처리");
+				    super.setRedirect(true); // 페이지 이동을 처리
+				    super.setViewPage(request.getContextPath() + "/index.mp"); // index.mp로 이동
+					return; 
+
+				}
 				 
 				/*if(loginuser.isRequirePwdChange() ) { // 비밀번호를 변경한지 3개월 이상된 경우
 					String message = "비밀번호를 변경하신지 3개월이 지났습니다.\\n암호를 변경하는 페이지로 이동합니다!!"; 
@@ -95,7 +103,8 @@ public class Login extends AbstractController {
 			// JSON 객체 생성
 	        JSONObject jsonObj = new JSONObject();
 	        if (loginuser != null) {
-	        	jsonObj.put("loginuser", loginuser.getIdle());
+	        	jsonObj.put("userid", userid); // id를 이용해서 휴면계정의 아이디와 일치하는 전화번호만 인증이 가능하도록.
+	        	jsonObj.put("loginuser", loginuser.getIdle()); // 아이디비밀번호가 맞으며, 휴면계정이 아닐 경우만 값이 삽입됨.
 	        	jsonObj.put("getIdle", loginuser.getIdle());
 	        	jsonObj.put("lastLogin", lastLogin);
 	        	jsonObj.put("idleChange", idleChange);

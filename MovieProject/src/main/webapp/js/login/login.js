@@ -15,8 +15,20 @@ $(document).ready(function(){
 
 
 // Function Declaration
+
+// 취소하기 버튼 클릭 시
 $(document).on('click', '#idleCancel', function(){
 	history.back();// 메인 페이지로 가는 것이 아닌 '직전' 직전 페이지로 가도록 함.
+});
+
+// 휴면 해제하기 버튼 클릭 시
+$(document).on('click', '#idleClear', function(){
+	alert("idleClear.mp로 url을 이동합니다.");
+	
+	var form = document.idleClearfrm;
+	form.action = $("#path").text() + "/login/idleClear.mp";
+	form.method = "POST";
+	form.submit();
 });
 
 
@@ -85,10 +97,15 @@ function goLogin() {
 					<p style="color:gray; font-size:13px; margin-top:20px;" >HGV 계정 서비스를 계속 이용하시려면 <span style="font-weight:700px;">[휴면 해제하기] 버튼을 클릭해주세요.</span></p>
 
 				<hr>
-				<div style="display:flex; justify-content:space-between; margin-top:30px;">
-				<button type="button" id="idleCancel" style="border:solid 1px #cccccc;background-color:transparent; height:40px;width:100%;">취소</button> 
-				<button type="button" id="idleClear" style="border:solid 1px #cccccc; height:40px;width:100%;">휴면 해제하기</button> 
-				</div>
+				<form name="idleClearfrm">
+				<input type="hidden" name="userid" value="`+json.userid+`" >
+				
+					<div style="display:flex; justify-content:space-between; margin-top:30px;">
+					<button type="button" id="idleCancel" style="border:solid 1px #cccccc;background-color:transparent; height:40px;width:100%;">취소</button> 
+					<button type="submit" id="idleClear" style="border:solid 1px #cccccc; height:40px;width:100%;">휴면 해제하기</button> 
+					</div>
+					
+				</form>
 				</div>`;
 				$("#form_container").html(resultHtml);
 	        }

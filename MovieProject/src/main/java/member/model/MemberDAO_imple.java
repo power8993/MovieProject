@@ -104,7 +104,8 @@ public class MemberDAO_imple implements MemberDAO {
 			
 			String sql = " select USER_ID "
 					   + " from tbl_member "
-					   + " where USER_ID = ? ";
+					   + " where USER_ID = ? "
+					   + " and user_status = 1 ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userid);
@@ -123,7 +124,7 @@ public class MemberDAO_imple implements MemberDAO {
 	} // end of public boolean idDuplicateCheck(String userid)-------------------------------------------------------
 
 	
-	// ID 중복검사 (tbl_member 테이블에서 email 이 존재하면 true 를 리턴해주고, email 이 존재하지 않으면 false 를 리턴한다)
+	// 이메일 중복검사 (tbl_member 테이블에서 email 이 존재하면 true 를 리턴해주고, email 이 존재하지 않으면 false 를 리턴한다)
 	@Override
 	public boolean emailDuplicateCheck(String email) throws SQLException {
 
@@ -134,7 +135,8 @@ public class MemberDAO_imple implements MemberDAO {
 			
 			String sql = " select email "
 					   + " from tbl_member "
-					   + " where email = ? ";
+					   + " where email = ? "
+					   + " AND user_status = 1 ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, aes.encrypt(email));
@@ -341,7 +343,7 @@ public class MemberDAO_imple implements MemberDAO {
 		int result = 0;
 		try {
 			conn = ds.getConnection();
-			String sql = " update tbl_member set pwd = ? " /*, lastpwdchangedate = sysdate 비밀번호 찾기 시 비밀번호를 변경함*/
+			String sql = " update tbl_member set pwd = ?, PWD_CHANGE_DATE = sysdate " 
 					   + " where user_id = ? ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, Sha256.encrypt(paraMap.get("new_pwd")) ); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.
@@ -416,4 +418,117 @@ public class MemberDAO_imple implements MemberDAO {
 		return idleChange;
 	}
 
+	
+	//휴면계정 아이디의 전화번호 구하기
+	@Override
+	public String idleMemberMobile(String userid) throws SQLException {
+		
+		String idleMemberMobile = "";
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select mobile "
+					+ "  from tbl_member "
+					+ "  where user_id= ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				idleMemberMobile = aes.decrypt(rs.getString("mobile"));	
+			}
+			else {
+				idleMemberMobile = "";
+			}
+			// 행이 있으면(휴면계정의 전화번호) 전화번호 ,	
+			// 행이 없으면(휴면계정과 다른 전화번호.) 없으면 ""
+			//+ 휴면계정과 다른 전화번호이면 휴면계정의 인증을 할 수 없음.
+			
+			
+			
+		} catch(GeneralSecurityException | UnsupportedEncodingException e) {
+	         e.printStackTrace();
+	     }finally {
+			close();
+		}
+		
+		
+		return idleMemberMobile;
+	}
+
+	
+	//휴면계정 인증이 완료되었으니 idle_staus, logingap 1과 0으로 초기화
+	@Override
+	public int idleStatusUpdate(String idleMemberMobile) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			String sql = " update tbl_member set idle_status = '1' "
+					+ " where mobile= ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, aes.encrypt(idleMemberMobile) ); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.
+			
+			result = pstmt.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}catch(GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}  finally {
+			close();
+		}
+			
+		
+		
+		return result;
+	}
+
+	// 로그인 기록 테이블의 login_date컬럼 데이터 삭제
+	@Override
+	public int loginHistoryDelete(String idleMemberMobile) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			String sql = "update tbl_login_history set login_date= sysdate  "
+			+ " where fk_user_id =  "
+			+ " ( select user_id from tbl_member "
+			+ "    where mobile = ? "
+			+ " ) ";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, aes.encrypt(idleMemberMobile) ); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.
+		
+		result = pstmt.executeUpdate();
+	
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}catch(GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}  finally {
+			close();
+		}
+		
+		return result;
+	}
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

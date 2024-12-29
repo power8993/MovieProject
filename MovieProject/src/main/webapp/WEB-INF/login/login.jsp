@@ -6,7 +6,6 @@
 
 <%
     String ctx_Path = request.getContextPath();
-    //    /MyMVC
 %>
 <jsp:include page="/WEB-INF/header1.jsp" />
 <link rel="stylesheet" type="text/css" href="<%= ctx_Path%>/css/login/loginForm.css" />
@@ -15,29 +14,29 @@
 <script type="text/javascript">
    $(document).ready(function(){
    
-      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      
-      // === 로그인을 하지 않은 상태일 때 
-      //     로컬스토리지(localStorage)에 저장된 key가 'saveid' 인 userid 값을 불러와서 
-      //     input 태그 userid 에 넣어주기 ===
-           
-        if( ${empty sessionScope.loginuser} ) {  // 로그인이 되어지면 session 정보에 넣어둠   
-           
-           const loginUserid = localStorage.getItem('saveid');  // localStorage에서 값을 꺼내옴
-        
-           if(loginUserid != null) {  //  문서가 로딩 되어지자 마자 바로
-              $("input#loginUserid").val(loginUserid);
-              $("input:checkbox[id='saveid']").prop("checked", true);
-           }
-        }
-       ////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// === 로그인을 하지 않은 상태일 때 
+//     로컬스토리지(localStorage)에 저장된 key가 'saveid' 인 userid 값을 불러와서 
+//     input 태그 userid 에 넣어주기 ===
+     
+  if( ${empty sessionScope.loginuser} ) {  // 로그인이 되어지면 session 정보에 넣어둠   
+     
+     const loginUserid = localStorage.getItem('saveid');  // localStorage에서 값을 꺼내옴
+  
+     if(loginUserid != null) {  //  문서가 로딩 되어지자 마자 바로
+        $("input#loginUserid").val(loginUserid);
+        $("input:checkbox[id='saveid']").prop("checked", true);
+     }
+  }
+ ////////////////////////////////////////////////////////////////////////////////////////
        
            	  
 });  // end of $(document).ready(function(){}) ---------------------------------------------
 
 
 </script>
-
+<div id="path" style="display:none;" ><%= ctx_Path%></div> <%-- 자바스크립트에 값을 전달하기 위한 요소 --%>
 
 	<%-- === 로그인을 하기 위한 폼을 생성 === --%>
 	<div id="form_container">
@@ -56,7 +55,7 @@
 						<td style="padding-top:20px;">비밀번호</td>
 						<td style="padding-top:20px;">
 							<input type="password" name="pwd" class="inputIdPw" id="loginPwd" placeholder="비밀번호를 입력하세요" />
-						</td>
+					</td>
 					</tr>
 					<tr>
 						<td style="text-align:left; border:none;"><input type="checkbox" id="saveid"/>&nbsp;<label for="saveid">아이디저장</label> </td>
