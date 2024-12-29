@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
-   String ctxPath = request.getContextPath();
-    //     /MyMVC
+	String ctxPath = request.getContextPath();
 %>
+
+
 
 <%@ page import="java.util.*"%>
 <%@ page import="java.text.SimpleDateFormat"%>
@@ -189,9 +190,9 @@
 					<div id="seq_showtime_no" style="display: none;"></div>
 				</div>
 				<div id="seat-choice">> 좌석선택</div>
-				<div>> 결제</div>
-				<button id="goSeatChoice" onclick="goSeatChoice()">-> 좌석선택</button>
-				<button id="goPay" onclick="goPayChoice()">-> 결제선택</button>
+				<div id="pay-choice">> 결제</div>
+				<button id="goSeatChoice" onclick="goSeatChoice('${sessionScope.loginuser.userid}')">-> 좌석선택</button>
+				<button id="goPay" onclick="goPayChoice('<%= ctxPath%>', '${sessionScope.loginuser.userid}')">-> 결제선택</button>
 			</div>
 		</div>
 		

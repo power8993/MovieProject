@@ -1,6 +1,10 @@
 let adult_ticket_price = 0;
 let adolescent_ticket_price = 0;
 let youth_ticket_price = 0;
+let total_price = 0;
+let adolescent = 0;
+let adolescent_cnt = 0;
+let youth_cnt = 0;
 
 $(document).ready(function(){
 	
@@ -29,9 +33,6 @@ $(document).ready(function(){
 			alert("티켓 가격 정보를 가져오는 중 오류 발생!");
 		}
 	}); // end of $.ajax({})---------------------------------------------------------------------
-	
-	console.log(adult_ticket_price);
-	console.log(typeof adult_ticket_price);
 	
 	// 예약페이지에서 영화를 선택했을 때
 	$("tr.movie-list").click(e => {
@@ -138,9 +139,6 @@ $(document).ready(function(){
 	$("div#adolescent").find(":nth-child(2)").css({'background-color':'black','color':'white'});
 	$("div#youth").find(":nth-child(2)").css({'background-color':'black','color':'white'});
 	
-	let adult_cnt = 0;
-	let adolescent_cnt = 0;
-	let youth_cnt = 0;
 	let total_cnt = 0;
 	
 	$("div#adult").find("button").click(e => {
@@ -216,12 +214,17 @@ $(document).ready(function(){
 }); // end of $(document).ready(function() {});;--------------------------------------------
 
 
-function goSeatChoice() {
+function goSeatChoice(userid) {
+	if(userid == "") {
+		alert("로그인이 필요한 서비스입니다.");
+		return;
+	}
 	$("div#step1").hide();
 	$("div#step2").show();
 	$("button#goMovieChoice").show();
 	$("button#goSeatChoice").hide();
 	$("button#goPay").show();
+	
 }
 
 function goMovieChoice() {
@@ -232,12 +235,29 @@ function goMovieChoice() {
 	$("button#goPay").hide();
 }
 
-function goPayChoice() {
-	if($("div#total_seat_cnt").text() != $("div#selected_seat_cnt").text()) {
-		alert("관람인원과 선택 좌석 수가 동일하지 않습니다.");
-		return false;
+function goPayChoice(ctxPath, userid) {
+	if($("div#total_seat_cnt").text() == 0) {
+		alert("관람인원은 0명일 수 없습니다.");
 	}
-	console.log("결제 하기");
+	else if($("div#total_seat_cnt").text() != $("div#selected_seat_cnt").text()) {
+		alert("관람인원과 선택 좌석 수가 동일하지 않습니다.");
+		return;
+	}
+	else {
+		const ticketInfo = "영화 : " + $("div#movie-choice").text() + " " + $("div#total_seat_cnt").text() + "명";
+		
+		const width = 1000;
+		const height = 600;
+
+	    const left = Math.ceil( (window.screen.width - width)/2 ); // 정수로 만듬
+	    const top = Math.ceil( (window.screen.height - height)/2 ); // 정수로 만듬
+		    
+	    const url = `${ctxPath}/reservation/goPayTicket.mp?ticketInfo=${ticketInfo}&userid=${userid}&total_price=${total_price}`;      
+
+	    window.open(url, "goPayTicket",
+		               `left=${left}, top=${top}, width=${width}, height=${height}`);
+		
+	}
 }
 
 function onScreenClick(element, start_time, seq_showtime_no, fk_screen_no, seat_str) {
@@ -297,28 +317,93 @@ function onScreenClick(element, start_time, seq_showtime_no, fk_screen_no, seat_
 	$("button.seat").click(e => {
 		console.log($(e.target).text());
 		const total_seat_cnt = Number($("div#total_seat_cnt").text());
-		const selected_seat_cnt = Number($("div#selected_seat_cnt").text());
-		if(total_seat_cnt < 1) {
+		let selected_seat_cnt = Number($("div#selected_seat_cnt").text());
+		
+		if(total_seat_cnt < 1) { // 관람인원을 선택하지 않았을 때
 			alert("관람인원은 0명일 수 없습니다.");
 		}
-		else if(selected_seat_cnt == total_seat_cnt && !$(e.target).hasClass('selected')) {
+		else if(selected_seat_cnt == total_seat_cnt && !$(e.target).hasClass('selected')) { // 관람인원만큼 좌석을 선택했을 때
 			alert("이미 좌석을 모두 선택하셨습니다.");
 		}
-		else {
-			if($(e.target).hasClass('selected')) {
+		else { // 선택할 좌석이 남았을 때
+			
+			if($(e.target).hasClass('selected')) { // 이미 선택된 좌석을 골랐을 때
 				seatArr.splice(seatArr.indexOf($(e.target).text()),1);
 				$("div#seat-choice").text(seatArr.sort().join(","));
 				$(e.target).removeClass('selected');
-				$("div#selected_seat_cnt").text(selected_seat_cnt-1);
+				
+				selected_seat_cnt -= 1;
+				$("div#selected_seat_cnt").text(selected_seat_cnt);
+				
+				let html = ``;
+								
+				if(selected_seat_cnt <= adult_cnt) {
+					html += `<div>${adult_ticket_price} 원 X ${selected_seat_cnt} 명</div>`;
+					total_price = adult_ticket_price * selected_seat_cnt;
+				}
+				else if(selected_seat_cnt > adult_cnt && selected_seat_cnt <= adult_cnt + adolescent_cnt) {
+					html += `<div>${adult_ticket_price} 원 X ${selected_seat_cnt} 명</div>`;
+					html += `<div>${adolescent_ticket_price} 원 X ${selected_seat_cnt - adult_cnt}</div>`;
+					total_price = adult_ticket_price * adult_cnt + adolescent_ticket_price * (selected_seat_cnt - adolescent_cnt);
+				}
+				else {
+					html += `<div>${adult_ticket_price} 원 X ${selected_seat_cnt} 명</div>`;
+					html += `<div>${adolescent_ticket_price} 원 X ${selected_seat_cnt - adult_cnt}</div>`;
+					html += `<div>${youth_ticket_price} 원 X ${selected_seat_cnt - adult_cnt - adolescent_cnt}</div>`;
+					total_price = adult_ticket_price * adult_cnt 
+								+ adolescent_ticket_price * adolescent_cnt
+								+ youth_ticket_price * (selected_seat_cnt - adult_cnt - adolescent_cnt);
+				}
+				
+				html += `<div>총금액 ${total_price}</div>`
+				
+				$("div#pay-choice").html(html);
 			}
-			else {
+			
+			else { // 빈 좌석을 골랐을 때
 				seatArr.push($(e.target).text());
 				$("div#seat-choice").text(seatArr.sort().join(","));
 				$(e.target).addClass('selected');
-				$("div#selected_seat_cnt").text(selected_seat_cnt+1);
+				
+				selected_seat_cnt += 1;
+				$("div#selected_seat_cnt").text(selected_seat_cnt);
+				
+				let html = ``;
+				
+				if(selected_seat_cnt <= adult_cnt) {
+					html += `<div>${adult_ticket_price} 원 X ${selected_seat_cnt} 명</div>`;
+					total_price = adult_ticket_price * selected_seat_cnt;
+				}
+				else if(selected_seat_cnt > adult_cnt && selected_seat_cnt <= adult_cnt + adolescent_cnt) {
+					html += `<div>${adult_ticket_price} 원 X ${selected_seat_cnt} 명</div>`;
+					html += `<div>${adolescent_ticket_price} 원 X ${selected_seat_cnt - adult_cnt}</div>`;
+					total_price = adult_ticket_price * adult_cnt + adolescent_ticket_price * (selected_seat_cnt - adolescent_cnt);
+				}
+				else {
+					html += `<div>${adult_ticket_price} 원 X ${selected_seat_cnt} 명</div>`;
+					html += `<div>${adolescent_ticket_price} 원 X ${selected_seat_cnt - adult_cnt}</div>`;
+					html += `<div>${youth_ticket_price} 원 X ${selected_seat_cnt - adult_cnt - adolescent_cnt}</div>`;
+					total_price = adult_ticket_price * adult_cnt 
+								+ adolescent_ticket_price * adolescent_cnt
+								+ youth_ticket_price * (selected_seat_cnt - adult_cnt - adolescent_cnt);
+				}
+				
+				html += `<div>총금액 ${total_price}</div>`
+				
+				$("div#pay-choice").html(html);
+				
 			}
 		}
 	});
 	
 }
 
+// 결제 내역 만들기
+function makePayment() {
+	
+}
+
+// 티켓 만들기
+function makeTicket() {
+	
+}
