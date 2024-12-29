@@ -63,7 +63,7 @@ public class NoticeDAO_imple implements NoticeDAO {
 	    
 	    try {
 	        conn = ds.getConnection();
-	        
+	                	        	        
 	        String sql = " SELECT RNO, seq_notice_no, notice_subject, notice_write_date, views "
 	        		   + " FROM  (SELECT rownum AS RNO, seq_notice_no, notice_subject, notice_write_date, views "
 	        		   + "             FROM (select seq_notice_no, notice_subject, notice_write_date, views "
@@ -104,8 +104,14 @@ public class NoticeDAO_imple implements NoticeDAO {
 	    try {
 	        conn = ds.getConnection();
 	        
+	        // 조회수 증가 쿼리
+	        String sql = "UPDATE TBL_NOTICE SET views = views + 1 WHERE seq_notice_no = ?";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, seq_notice_no); // seq_notice_no 파라미터 설정
+	        pstmt.executeUpdate(); // 조회수 증가 실행
+	        
 	        // 공지사항 번호(seq_notice_no)를 기준으로 상세 정보를 조회
-	        String sql = " SELECT seq_notice_no, notice_subject, notice_content, notice_write_date, views "
+	        sql = " SELECT seq_notice_no, notice_subject, notice_content, notice_write_date, views "
 	                   + " FROM TBL_NOTICE "
 	                   + " WHERE seq_notice_no = ? ";
 	        
