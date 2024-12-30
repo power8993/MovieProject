@@ -94,7 +94,7 @@ function goLogin() {
 							<p ><span style=" display:inline-block; font-weight:700;">휴면 전환일</span> :    `+ json.idleChange+`</p>
 					</div>
 					
-					<p style="color:gray; font-size:13px; margin-top:20px;" >HGV 계정 서비스를 계속 이용하시려면 <span style="font-weight:700px;">[휴면 해제하기] 버튼을 클릭해주세요.</span></p>
+					<p style="color:gray; font-size:13px; margin-top:20px;" >HGV 계정 서비스를 계속 이용하시려면 <span style="font-weight:700px;">[휴면 해제하기] 버튼을 클릭해 주세요.</span></p>
 
 				<hr>
 				<form name="idleClearfrm">
