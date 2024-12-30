@@ -2,7 +2,7 @@ let adult_ticket_price = 0;
 let adolescent_ticket_price = 0;
 let youth_ticket_price = 0;
 let total_price = 0;
-let adolescent = 0;
+let adult_cnt = 0;
 let adolescent_cnt = 0;
 let youth_cnt = 0;
 
@@ -399,11 +399,63 @@ function onScreenClick(element, start_time, seq_showtime_no, fk_screen_no, seat_
 }
 
 // 결제 내역 만들기
-function makePayment() {
+function makePayment(ctxPath, userid, ticketPrice, imp_uid, status) {
 	
+	const seq_movie_no = $("div#seq_movie_no").text();
+	
+	$.ajax({
+		url:ctxPath + "/reservation/makePayment.mp",
+		data: {
+             "userid": userid,
+             "ticketPrice": ticketPrice,
+             "imp_uid": imp_uid,
+             "seq_movie_no": seq_movie_no,
+             "status": status
+        },
+		type:"post",
+		dataType:"json",
+        success: function(json){
+        	if(json.n == 1) {
+				console.log("성공");
+			}
+			else {
+				console.log("실패");
+			}
+		},
+		error: function(){
+			alert("request error!");
+		}
+	}); // end of $.ajax({})---------------------------------------------------------------------
 }
 
 // 티켓 만들기
-function makeTicket() {
+function makeTicket(ctxPath, imp_uid) {
+	
+	$.ajax({
+		url:ctxPath + "/reservation/makeTicket.mp",
+		data: {
+             "imp_uid":imp_uid,
+			 "adult_cnt":adult_cnt,
+			 "adolescent_cnt":adolescent_cnt,
+			 "youth_cnt":youth_cnt,
+        },
+		type:"post",
+		dataType:"json",
+        success: function(json){
+        	if(json.n == 1) {
+				console.log("성공");
+			}
+			else {
+				console.log("실패");
+			}
+		},
+		error: function(){
+			alert("request error!");
+		}
+	}); // end of $.ajax({})---------------------------------------------------------------------
+}
+
+// 상영 영화 좌석배열 수정 및 남은 좌석 수정
+function updateShowtime() {
 	
 }

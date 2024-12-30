@@ -159,6 +159,38 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		return ticketPriceList;
 		
 	} // end of public List<Integer> getTicketPrice() throws SQLException--------------------------------------
+
+
+	
+	// 결제 내역 생성
+	@Override
+	public int makePayment(Map<String, String> paraMap) throws SQLException {
+		
+		int n = 0;
+	
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " insert into tbl_payment(IMP_UID, FK_USER_ID, FK_SEQ_SHOWTIME_NO, PAY_amount, PAY_TYPE, PAY_STATUS, PAY_SUCCESS_DATE) "
+					   + " values(?,?,?,?,?,?,sysdate) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(paraMap.get("imp_uid")));
+			pstmt.setString(2, paraMap.get("userid"));
+			pstmt.setInt(3, Integer.parseInt(paraMap.get("seq_movie_no")));
+			pstmt.setInt(4, Integer.parseInt(paraMap.get("ticketPrice")));
+			pstmt.setString(5, "card");
+			pstmt.setString(6, paraMap.get("status"));
+			
+			n = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return n;
+
+	} // end of public int makePayment(Map<String, String> paraMap) throws SQLException---------------------
 	
 
 	

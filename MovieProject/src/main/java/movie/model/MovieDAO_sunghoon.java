@@ -18,4 +18,7 @@ public interface MovieDAO_sunghoon {
 	// 영화 티켓 가격 가져오기
 	List<Integer> getTicketPrice() throws SQLException;
 
+	// 결제 내역 생성
+	int makePayment(Map<String, String> paraMap) throws SQLException;
+
 }

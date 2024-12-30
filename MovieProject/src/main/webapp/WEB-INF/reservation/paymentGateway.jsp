@@ -64,12 +64,14 @@ $(document).ready(function() {
 	 <%--   $(opener.location).attr("href", "javascript:goCoinUpdate('<%= ctxPath%>', '${requestScope.userid}','${requestScope.coinmoney}');");  --%> 
 			
 	 		/* 결제 내역 만들기 */
-			window.opener.makePayment('<%= ctxPath%>', '${requestScope.userid}','${requestScope.coinmoney}');
+			window.opener.makePayment('<%= ctxPath%>','${requestScope.userid}','${requestScope.ticketPrice}','${rsp.imp_uid}','${rsp.status}');
+	 		/* 티켓 만들기 */
+			window.opener.makeTicket('<%= ctxPath%>','${rsp.imp_uid}');
 	 		/* showtime 데이터베이스 좌석배열 수정 */
-	 
+	 		
 	 		alert("결제 성공");
-	 
-		    self.close();
+	 		
+			self.close();
 			
         } else {
             // location.href="/MyMVC";
