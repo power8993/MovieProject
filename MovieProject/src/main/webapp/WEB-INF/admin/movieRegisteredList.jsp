@@ -15,8 +15,9 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-	$("select[name='search_category_code']").val("${requestScope.search_category_code}");
-	$("input[name='search_movie_title']").val("${requestScope.search_movie_title}");
+	$("select[name='search_category']").val("${requestScope.search_category}");
+	$("select[name='search_type']").val("${requestScope.search_type}");
+	$("input[name='search_word']").val("${requestScope.search_word}");
 	
 	$("select[name='size_per_page']").val("${requestScope.size_per_page}");
 	
@@ -29,6 +30,14 @@ $(document).ready(function(){
 		frm.submit();
 	});// end of $("select[name='size_per_page']").bind("change", function(){})--------------------------
 	
+	// select 태그의 장르를 선택함에 따라 해당 값의 행만큼 보여지는 이벤트
+	$("select[name='search_category']").bind("change", function(){
+		const frm = document.movie_search_frm;
+		// frm.action = "movieRegisteredList.mp";
+		// frm.method = "get";
+		
+		frm.submit();
+	});// end of $("select[name='size_per_page']").bind("change", function(){})--------------------------
 	
 });
 </script>
@@ -36,29 +45,36 @@ $(document).ready(function(){
 	<div class="movie_edit_container">
 		<h2>영화 [수정/삭제/상영등록]</h2>
 		<form name="movie_search_frm">
-			<select name="search_category_code">
+			<select name="search_category">
 				<option value="">장르</option>
-                <option value="1">액션</option>
-                <option value="2">코미디</option>
-                <option value="3">드라마</option>
-                <option value="4">스릴러</option>
-                <option value="5">로맨스</option>
-                <option value="6">sf</option>
-                <option value="7">판타지</option>
-                <option value="8">애니메이션</option>
-                <option value="9">역사</option>
-                <option value="10">범죄</option>
-                <option value="11">스포츠</option>
-                <option value="12">느와르</option>
+                <option value="액션">액션</option>
+                <option value="코미디">코미디</option>
+                <option value="드라마">드라마</option>
+                <option value="스릴러">스릴러</option>
+                <option value="로맨스">로맨스</option>
+                <option value="sf">sf</option>
+                <option value="판타지">판타지</option>
+                <option value="애니메이션">애니메이션</option>
+                <option value="역사">역사</option>
+                <option value="범죄">범죄</option>
+                <option value="스포츠">스포츠</option>
+                <option value="느와르">느와르</option>
 			</select>
 			
-			<input type="text" name="search_movie_title"/>
-			<button type="button" class="btn btn-primary" onclick="goSearch()">검색</button>
+			<select name="search_type">
+				<option value="">검색대상</option>
+                <option value="movie_title">영화제목</option>
+                <option value="director">감독</option>
+                <option value="actor">배우</option>
+			</select>
 			
-			<select name="size_per_page">
-				<option value="5">5개</option>
+			<input type="text" name="search_word"/>
+			<button type="button" class="btn btn-primary">검색</button>
+			
+			<select name="size_per_page">	
 				<option value="10">10개</option>
 				<option value="15">15개</option>
+				<option value="20">20개</option>
 			</select>
 		</form>
 		

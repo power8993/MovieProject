@@ -283,7 +283,7 @@ $(document).ready(function() {
 					start_date_dom.setCustomValidity("");  // 오류 메시지 제거
 				}
 			}
-			else if(!start_date || !end_date) {
+			else if(start_date || end_date) {
 				// 상영시작일과 상영종료일이 둘 중 한 값이 비어있을 경우
 				start_date_dom.setCustomValidity("상영시작일과 상영종료일은 함께 입력되거나, 둘 다 입력되지 않은 상태여야 합니다");
 				start_date_dom.reportValidity();  // 유효성 검사 메시지 표시

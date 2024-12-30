@@ -9,30 +9,69 @@ let video_url_val;
 
 $(document).ready(function(){
 	
+
 	// === 영화 검색에 따른 목록을 보여주는 이벤트 처리 시작 === //
 	$("button[type='button']").click(function(){
 		
-		const movie_title = $("input:text[name='movie_title']").val().trim();
+		/*
+		const search_word = $("input:text[name='search_word']").val().trim();
 		
-		var movie_title_dom = $("input:text[name='movie_title']")[0];
+		var search_word_dom = $("input:text[name='search_word']")[0];
 		
-		if (movie_title == "") {
-			movie_title_dom.setCustomValidity("검색어를 입력하세요!");
-			movie_title_dom.reportValidity();  // 유효성 검사 메시지 표시
+		if (search_word == "") {
+			search_word_dom.setCustomValidity("검색어를 입력하세요!");
+			search_word_dom.reportValidity();  // 유효성 검사 메시지 표시
 			
 			return;
 		}
 
-		movie_title_dom.setCustomValidity("");  // 오류 메시지 제거
+		search_word_dom.setCustomValidity("");  // 오류 메시지 제거
 		
 		const frm = document.movie_search_frm;
 		frm.action = "movieRegisteredList.mp";	// 현재 페이지 보여준다(생략가능)
 		frm.method = "get";	
 		frm.submit();
+		*/
+		const search_category = $("select[name='search_category']").val();
+		const search_type = $("select[name='search_type']").val();
+		const search_word = $("input:text[name='search_word']").val().trim();
+		
+		var search_word_val_dom = $("input:text[name='search_word']")[0];
+		var search_type_val_dom = $("select[name='search_type']")[0];
+		
+		// 검색어가 비어 있을 경우 유효성 검사
+		if ((search_category && search_type && search_word == "") ||
+			(search_category == "" && search_type && search_word == "")) {
+
+			search_word_val_dom.setCustomValidity("검색어를 입력해주세요!");
+			search_word_val_dom.reportValidity();  // 유효성 검사 메시지 표시
+			
+			return;  // 오류 발생 시 검색 진행하지 않음
+		}
+
+		// 검색타입을 선택하지 않고 검색어를 입력했을 경우
+		if ((search_category && search_type == "" && search_word) ||
+	        (search_category == "" && search_type == "" && search_word)) {
+			search_type_val_dom.setCustomValidity("검색 타입을 선택해주세요!");
+			search_type_val_dom.reportValidity();  // 유효성 검사 메시지 표시
+			
+			return;
+		}
+
+		
+		// 오류 메시지 제거
+	    search_word_val_dom.setCustomValidity("");  
+	    search_type_val_dom.setCustomValidity("");  
+
+		const frm = document.movie_search_frm
+		// frm.action = "movieRegisteredList.mp";
+		// frm.method = "get";
+		
+		frm.submit();
 
 	});// end of $("button[type='button']").click(function(){})----------------
 	// === 영화 검색에 따른 목록을 보여주는 이벤트 처리 끝  === //
-	
+
 	
 	// === 특정 영화에 대한 상세정보 보기 이벤트 처리 시작 === //
 	$("tbody").on("click", "tr", function(e) {
@@ -224,10 +263,6 @@ $(document).ready(function(){
 // ===== 장르 및 검색어에 해당하는 영화를 보여주는 메소드 ===== //
 function goSearch(){
 	
-	const frm = document.movie_search_frm
-	// frm.action = "movieRegisteredList.mp";
-	// frm.method = "get";
 	
-	frm.submit();
 	
 }// end of function goSearch(){}------------------------------

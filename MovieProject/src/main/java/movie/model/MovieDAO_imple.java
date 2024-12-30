@@ -596,35 +596,41 @@ public class MovieDAO_imple implements MovieDAO {
 			String sql = " select ceil(count(*)/?) "
 					   + " from tbl_movie ";
 			
-			String category_code = paraMap.get("search_category_code");
-			String search_movie_title = paraMap.get("search_movie_title");
+			String search_category = paraMap.get("search_category");
+			String search_type = paraMap.get("search_type");
+			String search_word = paraMap.get("search_word");
 			
-			if(!category_code.isBlank()) {
-				// 장르를 선택한 경우
-				sql += " where fk_category_code = ? ";
+			if(!search_category.isBlank() && search_type.isBlank() && search_word.isBlank()) {
+				// 장르
+				sql += " where fk_category_code = (select category_code from tbl_category where category = ? ) ";
 			}
-			
-			if(!search_movie_title.isBlank()) {
-				// 검색어를 입력한 경우
-				sql += " and movie_title like '%'|| ? ||'%' ";
+			else if (search_category.isBlank() && !search_type.isBlank() && !search_word.isBlank()) {
+				// 검색어 + 검색타입
+				sql += " where " + search_type + " like '%'|| ? ||'%'";
+			}
+			else if (!search_category.isBlank() && !search_type.isBlank() && !search_word.isBlank()) {
+				// 장르 + 검색어 + 검색타입
+				sql += " where fk_category_code = (select category_code from tbl_category where category = ? ) "
+					 + " and " + search_type + " like '%'|| ? ||'%'";
 			}
 			
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setInt(1, Integer.parseInt(paraMap.get("size_per_page")));
 			
-			if(!category_code.isBlank() && search_movie_title.isBlank()) {
-				// 장르를 선택, 검색어 입력하지 않음
-				pstmt.setString(1, category_code); 
+			
+			if(!search_category.isBlank() && search_type.isBlank() && search_word.isBlank()) {
+				// 장르
+				pstmt.setString(2, search_category);
 			}
-			else if (category_code.isBlank() && !search_movie_title.isBlank()) {
-				// 장르를 미선택, 검색어 입력
-				pstmt.setString(1, search_movie_title); 
+			else if (search_category.isBlank() && !search_type.isBlank() && !search_word.isBlank()) {
+				// 검색어 + 검색타입
+				pstmt.setString(2, search_word);
 			}
-			else if (!category_code.isBlank() && !search_movie_title.isBlank()){
-				// 장르 선택, 검색어 입력
-				pstmt.setString(1, category_code); 
-				pstmt.setString(2, search_movie_title);
+			else if (!search_category.isBlank() && !search_type.isBlank() && !search_word.isBlank()) {
+				// 장르 + 검색어 + 검색타입
+				pstmt.setString(2, search_category);
+				pstmt.setString(3, search_word);
 			}
 			
 			rs = pstmt.executeQuery();
@@ -653,61 +659,65 @@ public class MovieDAO_imple implements MovieDAO {
 			
 			String sql = " select rno, seq_movie_no, register_date, category, poster_file, movie_title, movie_grade, start_date "
 					   + " from "
-					   + " (select rownum as rno "
-					   + "      , seq_movie_no "
-					   + "      , to_char(register_date, 'yyyy-mm-dd') as register_date "
-					   + "      , c.category "
-					   + "      , poster_file "
-					   + "      , movie_title "
-					   + "      , movie_grade "
-					   + "      , to_char(start_date, 'yyyy-mm-dd') as start_date "
+					   + "  (select rownum as rno "
+					   + "         , seq_movie_no "
+					   + "         , to_char(register_date, 'yyyy-mm-dd') as register_date "
+					   + "         , c.category "
+					   + "         , poster_file "
+					   + "         , movie_title "
+					   + "         , movie_grade "
+					   + "         , to_char(start_date, 'yyyy-mm-dd') as start_date "
 					   + " from tbl_movie m join tbl_category c "
 					   + " on(m.fk_category_code = c.category_code) ";
 					   
+			String search_category = paraMap.get("search_category");
+			String search_type = paraMap.get("search_type");
+			String search_word = paraMap.get("search_word");
 			
-			String category_code = paraMap.get("search_category_code");
-			String search_movie_title = paraMap.get("search_movie_title");
-			
-			if(!category_code.isBlank()) {
-				// 장르를 선택한 경우
-				sql += " where c.category_code = ? ";
+			if(!search_category.isBlank() && search_type.isBlank() && search_word.isBlank()) {
+				// 장르
+				sql += " where c.category = ? ";
+			}
+			else if (search_category.isBlank() && !search_type.isBlank() && !search_word.isBlank()) {
+				// 검색어 + 검색타입
+				sql += " where " + search_type + " like '%'|| ? ||'%'";
+			}
+			else if (!search_category.isBlank() && !search_type.isBlank() && !search_word.isBlank()) {
+				// 장르 + 검색어 + 검색타입
+				sql += " where fk_category_code = (select category_code from tbl_category where category = ? ) "
+					 + " and " + search_type + " like '%'|| ? ||'%'";
 			}
 			
-			if(!search_movie_title.isBlank()) {
-				// 검색어를 입력한 경우
-				sql += " and movie_title like '%'|| ? ||'%') ";
-			}
-			
-			sql += " where rno between ? and ? ";
+			sql += " order by register_date desc "
+				 + " ) "
+				 + " where rno between ? and ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
 			int current_showpage_no = Integer.parseInt(paraMap.get("current_showpage_no"));
 			int size_per_page = Integer.parseInt(paraMap.get("size_per_page"));
 			
-			
-			
-			if(!category_code.isBlank() && search_movie_title.isBlank()) {
-				// 장르를 선택, 검색어 입력하지 않음
-				pstmt.setString(1, category_code); 
+			if(!search_category.isBlank() && search_type.isBlank() && search_word.isBlank()) {
+				// 장르
+				pstmt.setString(1, search_category);
 				pstmt.setInt(2, (current_showpage_no * size_per_page) - (size_per_page - 1));
 				pstmt.setInt(3, (current_showpage_no * size_per_page));
 			}
-			else if (category_code.isBlank() && !search_movie_title.isBlank()) {
-				// 장르를 미선택, 검색어 입력
-				pstmt.setString(1, search_movie_title); 
+			else if (search_category.isBlank() && !search_type.isBlank() && !search_word.isBlank()) {
+				// 검색어 + 검색타입
+				pstmt.setString(1, search_word);
 				pstmt.setInt(2, (current_showpage_no * size_per_page) - (size_per_page - 1));
 				pstmt.setInt(3, (current_showpage_no * size_per_page));
 			}
-			else if (!category_code.isBlank() && !search_movie_title.isBlank()){
-				// 장르 선택, 검색어 입력
-				pstmt.setString(1, category_code); 
-				pstmt.setString(2, search_movie_title);
+			else if (!search_category.isBlank() && !search_type.isBlank() && !search_word.isBlank()) {
+				// 장르 + 검색어 + 검색타입
+				pstmt.setString(1, search_category);
+				pstmt.setString(2, search_word);
 				pstmt.setInt(3, (current_showpage_no * size_per_page) - (size_per_page - 1));
 				pstmt.setInt(4, (current_showpage_no * size_per_page));
 			}
-			else if (category_code.isBlank() && search_movie_title.isBlank()){
-				// 장르 미선택, 검색어 입력하지 않음
+			else {
+				// 검색이 없는 경우 
 				pstmt.setInt(1, (current_showpage_no * size_per_page) - (size_per_page - 1));
 				pstmt.setInt(2, (current_showpage_no * size_per_page));
 			}
@@ -716,7 +726,7 @@ public class MovieDAO_imple implements MovieDAO {
 			
 			while(rs.next()) {
 				
-				MovieVO mvvo = new MovieVO();
+				MovieVO mvvo = new MovieVO(); 
 				
 				mvvo.setSeq_movie_no(rs.getInt("seq_movie_no"));
 				mvvo.setRegister_date(rs.getString("register_date"));
@@ -732,8 +742,8 @@ public class MovieDAO_imple implements MovieDAO {
 				
 				movieList.add(mvvo);
 				
-			}// while(rs.next()) {}------------------------------------------
-					
+			}// end of while()----------------------
+			
 		} finally {
 			close();
 		}
@@ -753,35 +763,40 @@ public class MovieDAO_imple implements MovieDAO {
 			String sql = " select count(*) "
 					   + " from tbl_movie ";
 			
-			String category_code = paraMap.get("search_category_code");
-			String search_movie_title = paraMap.get("search_movie_title");
+			String search_category = paraMap.get("search_category");
+			String search_type = paraMap.get("search_type");
+			String search_word = paraMap.get("search_word");
 			
-			if(!category_code.isBlank()) {
-				// 장르를 선택한 경우
-				sql += " where fk_category_code = ? ";
+			if(!search_category.isBlank() && search_type.isBlank() && search_word.isBlank()) {
+				// 장르
+				sql += " where fk_category_code = (select category_code from tbl_category where category = ? ) ";
 			}
-			
-			if(!search_movie_title.isBlank()) {
-				// 검색어를 입력한 경우
-				sql += " and movie_title like '%'|| ? ||'%' ";
+			else if (search_category.isBlank() && !search_type.isBlank() && !search_word.isBlank()) {
+				// 검색어 + 검색타입
+				sql += " where " + search_type + " like '%'|| ? ||'%'";
+			}
+			else if (!search_category.isBlank() && !search_type.isBlank() && !search_word.isBlank()) {
+				// 장르 + 검색어 + 검색타입
+				sql += " where fk_category_code = (select category_code from tbl_category where category = ? ) "
+					 + " and " + search_type + " like '%'|| ? ||'%'";
 			}
 			
 			pstmt = conn.prepareStatement(sql);
-
-			if(!category_code.isBlank() && search_movie_title.isBlank()) {
-				// 장르를 선택, 검색어 입력하지 않음
-				pstmt.setString(1, category_code); 
+			
+			if(!search_category.isBlank() && search_type.isBlank() && search_word.isBlank()) {
+				// 장르
+				pstmt.setString(1, search_category);
 			}
-			else if (category_code.isBlank() && !search_movie_title.isBlank()) {
-				// 장르를 미선택, 검색어 입력
-				pstmt.setString(1, search_movie_title); 
+			else if (search_category.isBlank() && !search_type.isBlank() && !search_word.isBlank()) {
+				// 검색어 + 검색타입
+				pstmt.setString(1, search_word);
 			}
-			else if (!category_code.isBlank() && !search_movie_title.isBlank()){
-				// 장르 선택, 검색어 입력
-				pstmt.setString(1, category_code); 
-				pstmt.setString(2, search_movie_title);
+			else if (!search_category.isBlank() && !search_type.isBlank() && !search_word.isBlank()) {
+				// 장르 + 검색어 + 검색타입
+				pstmt.setString(1, search_category);
+				pstmt.setString(2, search_word);
 			}
-
+			
 			rs = pstmt.executeQuery();
 			
 			rs.next();
