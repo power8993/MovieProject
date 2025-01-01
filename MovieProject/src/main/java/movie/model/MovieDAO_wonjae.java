@@ -6,6 +6,7 @@ import member.domain.MemberVO;
 import movie.domain.MovieVO_wonjae;
 
 public interface MovieDAO_wonjae {
+	
 	// 영화상세보기
 	MovieVO_wonjae movieDetail(int seq_movie_no) throws SQLException;
 
@@ -17,7 +18,5 @@ public interface MovieDAO_wonjae {
 
 	// 현재 영화에 대해 사용자가 좋아요를 눌렀는지 확인
 	boolean checkMovieLike(MemberVO userid, int seq_movie_no) throws SQLException;
-
-
 
 }

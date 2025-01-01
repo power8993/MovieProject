@@ -18,14 +18,14 @@ public class NoticeDetail extends AbstractController {
         NoticeDTO notice = noticeDAO.detailNotice(Integer.parseInt(seq_Notice_no));
 
         if (notice == null) {
-        	String message = "공지사항이 없습니다.";
+        	String message = "잘못된 접근입니다.";
         	String loc = "javascript:history.back()";
         	
         	request.setAttribute("message", message);
         	request.setAttribute("loc", loc);
         	
         	super.setRedirect(false);
-	        super.setViewPage("/WEB-INF/msg.jsp"); // 공지사항 목록 페이지로
+	        super.setViewPage("/WEB-INF/msg.jsp");
         }
         else {       
 	        // 조회한 공지사항 정보를 request에 담기
