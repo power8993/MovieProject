@@ -98,7 +98,6 @@
                 <tr>
                     <td colspan="2" class="text-center">
                        <input type="button" id="registerbtn" value="가입하기" onclick="goRegister()" />
-                       <input type="reset"  id="resetbtn" value="취소하기" onclick="goReset()" />
                     </td>
                 </tr>
                  

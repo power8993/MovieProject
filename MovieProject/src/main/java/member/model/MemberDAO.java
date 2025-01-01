@@ -42,4 +42,10 @@ public interface MemberDAO {
 
 	// 로그인 기록 테이블의 login_date컬럼 데이터 삭제
 	int loginHistoryDelete(String idleMemberMobile) throws SQLException;
+
+	// 비밀번호 변경 3개월 이상 시 현재 비밀번호와 사용자가 입력한 비밀번호 비교하기
+	boolean currentPwd(String userid,String inputPwd) throws SQLException;
+
+	// 비밀번호 변경 3개월 이상 시 비밀번호 변경하기(update)
+	int threeMonthPwdChange(String userid,String pwd) throws SQLException;
 }

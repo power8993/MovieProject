@@ -18,12 +18,11 @@ $(document).ready(function(){
 
 // 취소하기 버튼 클릭 시
 $(document).on('click', '#idleCancel', function(){
-	history.back();// 메인 페이지로 가는 것이 아닌 '직전' 직전 페이지로 가도록 함.
+	location.href = $("#path").text() + "/login/login.mp";// 로그인 페이지로 이동
 });
 
 // 휴면 해제하기 버튼 클릭 시
 $(document).on('click', '#idleClear', function(){
-	alert("idleClear.mp로 url을 이동합니다.");
 	
 	var form = document.idleClearfrm;
 	form.action = $("#path").text() + "/login/idleClear.mp";
@@ -76,8 +75,12 @@ function goLogin() {
 	    success: function(json) {
 	        //console.log("서버 응답:", json);
 	        let resultHtml = "";
-			//console.log("겟아이들 : ",json.getIdle);
-	        if (json.getIdle == 0 ) { //휴면계정일 경우 (휴면계정이 아니라면 99임)
+	        
+	        //비밀번호 변경 3개월 경과 시
+			if (json.RequirePwdChange === 1) {
+				location.href = json.ctxPath + "/login/threeMonthPwdChange.mp";
+			}
+	       	else if (json.getIdle == 0 ) { //휴면계정일 경우 (휴면계정이 아니라면 99임)
 				//console.log("확인용 : " + json.getIdle);
 				resultHtml = `				<div style="width:500px; margin:0 auto; margin-top:100px;">
 					<h1 style="font-size: 32px; font-weight: bold;">휴면 계정 안내</h1>

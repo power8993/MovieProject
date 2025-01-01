@@ -611,11 +611,11 @@ function goRegister() {
 	
 }
 
-
+/* 취소하기 => 없앰
 function goReset() {
 
     history.back();
 }// end of function goReset()---------------------
-
+*/
 
 

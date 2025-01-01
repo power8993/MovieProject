@@ -251,7 +251,7 @@ public class MemberDAO_imple implements MemberDAO {
 	                  // 마지막으로 암호를 변경한 날짜가 현재시각으로 부터 3개월이 지났으면 true
 	                  // 마지막으로 암호를 변경한 날짜가 현재시각으로 부터 3개월이 지나지 않았으면 false 
 	                  
-	                  member.setRequirePwdChange(true); // 로그인시 암호를 변경해라는 alert 를 띄우도록 할때 사용한다.
+	                  member.setRequirePwdChange(true); // 로그인시 암호를 변경하라는 alert 를 띄우도록 할때 사용
 	               }
 	            }
 	               
@@ -513,6 +513,65 @@ public class MemberDAO_imple implements MemberDAO {
 			close();
 		}
 		
+		return result;
+	}
+
+	// 비밀번호 변경 3개월 이상 시 현재 비밀번호와 사용자가 입력한 비밀번호 비교하기
+	@Override
+	public boolean currentPwd(String userid,String inputPwd) throws SQLException {
+		
+		boolean pwd = false;
+		try {
+			conn = ds.getConnection();
+			String sql = " select PWD "
+					   + " from tbl_member "
+					   + " where user_id =? and pwd=? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			pstmt.setString(2, Sha256.encrypt(inputPwd)); 
+			
+
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				pwd = true;
+			}
+			
+			
+	
+		}catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	  
+		
+		return pwd;
+	}
+
+	
+	//비밀번호 변경 3개월 이상 시 비밀번호 변경하기(update)
+	@Override
+	public int threeMonthPwdChange(String userid,String pwd) throws SQLException {
+
+		int result = 0;
+		try {
+			conn = ds.getConnection();
+			String sql = " update tbl_member set pwd = ?, PWD_CHANGE_DATE = sysdate " 
+					   + " where user_id = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, Sha256.encrypt(pwd) ); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킴.
+			pstmt.setString(2, userid ); 
+			
+
+			result = pstmt.executeUpdate();
+	
+		}catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	  
 		return result;
 	}
 

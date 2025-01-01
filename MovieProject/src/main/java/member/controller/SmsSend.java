@@ -21,24 +21,16 @@ public class SmsSend extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse respone) throws Exception {
 		String method = request.getMethod();
 		String idleMemberMobile =request.getParameter("idleMemberMobile");
-		System.out.println("idleMemberMobile(smssend.java) : " + idleMemberMobile);
+		
 		if("POST".equalsIgnoreCase(method)) {
 	    	String passNumber = request.getParameter("passNumber");
 	    	String randomNumber = request.getParameter("randomNumber");
 	    	
 			JSONObject jsonObj = new JSONObject();
-	        System.out.println("randomNumber: " + randomNumber);
-	        System.out.println("passNumber: " + passNumber);
-	       // System.out.println("aes 암호화 된 서버 전화번호2 : " + aes.encrypt(idleMemberMobile));
-        	System.out.println("암호화 전 서버 전화번호2 : " + idleMemberMobile);
+			
 	        if (passNumber != null && !passNumber.trim().isEmpty()) {
 	            try {
-	            	//System.out.println("Sha256 암호화 된 서버 전화번호1 : " + Sha256.encrypt(idleMemberMobile));
-                	System.out.println("암호화 전 서버 전화번호1 : " + idleMemberMobile);
 	                if (randomNumber.equals(passNumber)) {
-	                	//휴면계정 인증이 완료되었으니 idle_staus, logingap 1과 0으로 초기화
-	                	//System.out.println("암호화 된 서버 전화번호 : " + Sha256.encrypt(idleMemberMobile));
-	                	System.out.println("암호화 전 서버 전화번호 : " + idleMemberMobile);
 	                	int result1 = mdao.idleStatusUpdate(idleMemberMobile);
 	                	int result2 = mdao.loginHistoryDelete(idleMemberMobile);
 	                	jsonObj.put("result1", result1);
@@ -60,7 +52,7 @@ public class SmsSend extends AbstractController {
 	        out.print(jsonObj.toString()); //문자열 형태의 JSON으로 변환  ex: jsonObj.put("userid", "user123"); >> {"userid":"user123"}로 변환
 	        out.flush(); // 출력 버퍼에 있는 데이터를 즉시 클라이언트로 전송
 			return;
-	    }
+	    }//if("POST".equalsIgnoreCase(method)) {})--------------------
 			
 			//난수 생성
 		    int randomNumber = (int)((Math.random()*(9999-1000+1)) + 1000);
@@ -73,9 +65,8 @@ public class SmsSend extends AbstractController {
 			// String api_secret = "발급받은 본인의 API Secret"; // 발급받은 본인 API Secret
 			String api_secret = "QBQHN7YKB2GTNMT7ULHIOPTQSD0PTOXA";
 			String mobile = request.getParameter("mobile");
-			System.out.println("받은 전화번호: " + mobile);
-			if (mobile == null || !mobile.matches("\\d{10,11}")) {
-			    System.out.println("잘못된 전화번호 형식입니다.");
+			
+			if (mobile == null || !mobile.matches("\\d{10,11}")) {// 잘못된 전화번호 형식
 			    return;
 			}
 			
