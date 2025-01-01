@@ -24,15 +24,15 @@ public class GoPayTicket extends AbstractController {
 	            
 				String total_price = request.getParameter("total_price");
 				String ticketInfo = request.getParameter("ticketInfo");
-				String productName = "새우깡";
+				int using_point = Integer.parseInt(request.getParameter("using_point"));
 	            
 				int ticketPrice = Integer.parseInt(total_price);
 	            
 				request.setAttribute("ticketInfo", ticketInfo);
-	         
-				// request.setAttribute("ticketPrice", ticketPrice);
+				request.setAttribute("ticketPrice", ticketPrice);
+				request.setAttribute("using_point", using_point);
 	            
-				request.setAttribute("ticketPrice", 100);
+				// request.setAttribute("ticketPrice", 100);
 	            
 				request.setAttribute("email", loginuser.getEmail());
 	            request.setAttribute("name", loginuser.getName());

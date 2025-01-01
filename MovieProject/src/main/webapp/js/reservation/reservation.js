@@ -9,7 +9,9 @@ let youth_cnt = 0;
 $(document).ready(function(){
 	
 	$("div#step2").hide();
+	$("div#step3").hide();
 	$("button#goMovieChoice").hide();
+	$("button#goPointChoice").hide();
 	$("button#goPay").hide();
 	
 	let seq_movie_no = "";
@@ -209,7 +211,6 @@ $(document).ready(function(){
 	
 	
 	
-	
 
 }); // end of $(document).ready(function() {});;--------------------------------------------
 
@@ -223,7 +224,7 @@ function goSeatChoice(userid) {
 	$("div#step2").show();
 	$("button#goMovieChoice").show();
 	$("button#goSeatChoice").hide();
-	$("button#goPay").show();
+	$("button#goPointChoice").show();
 	
 }
 
@@ -232,19 +233,82 @@ function goMovieChoice() {
 	$("div#step2").hide();
 	$("button#goMovieChoice").hide();
 	$("button#goSeatChoice").show();
-	$("button#goPay").hide();
+	$("button#goPointChoice").hide();
 }
 
-function goPayChoice(ctxPath, userid) {
+function goPointChoice(ctxPath, userid) {
+	$("div#step1").hide();
+	$("div#step2").hide();
+	$("div#step3").show();
+	$("button#goPay").show();
+	$("button#goMovieChoice").hide();
+	$("button#goPointChoice").hide();
+	
+	let havingPoint = 0;
+	
 	if($("div#total_seat_cnt").text() == 0) {
 		alert("관람인원은 0명일 수 없습니다.");
 	}
 	else if($("div#total_seat_cnt").text() != $("div#selected_seat_cnt").text()) {
 		alert("관람인원과 선택 좌석 수가 동일하지 않습니다.");
-		return;
+	}
+	else {
+		$.ajax({
+			url:ctxPath + "/reservation/getHavingPoint.mp",
+			data: {
+	             "userid": userid
+	        },
+			type:"post",
+			dataType:"json",
+	        success: function(json){
+				console.log(json.havingPoint);
+	        	if(json.length != 0) {
+					console.log("포인트 가져오기 성공");
+					$("label#having-point").text(json.havingPoint);
+					havingPoint = json.havingPoint;
+					console.log(havingPoint);
+					console.log(typeof havingPoint);
+					console.log(json.havingPoint);
+					console.log(typeof json.havingPoint);
+				}
+				else {
+					console.log("포인트 가져오기 실패")
+				}
+			},
+			error: function(){
+				alert("request error!");
+			}
+		}); // end of $.ajax({})---------------------------------------------------------------------
+	}
+	
+	$("input#using-point").bind("change", function(e) {
+		if($(e.target).val() > havingPoint) {
+			alert("보유하신 point 만큼만 사용 가능합니다.");
+			$(e.target).val(0);
+		}
+		else if($(e.target).val() < 0) {
+			alert("음수 입력은 불가능합니다.");
+			$(e.target).val(0);
+		}
+		else if($(e.target).val() % 10 != 0) {
+			alert("포인트는 10 단위로 사용 가능합니다.");
+			$(e.target).val( Math.floor($(e.target).val() / 10) * 10 );
+		}
+	});
+	
+	
+}
+
+function goPay(ctxPath, userid) {
+	if($("div#total_seat_cnt").text() == 0) {
+		alert("관람인원은 0명일 수 없습니다.");
+	}
+	else if($("div#total_seat_cnt").text() != $("div#selected_seat_cnt").text()) {
+		alert("관람인원과 선택 좌석 수가 동일하지 않습니다.");
 	}
 	else {
 		const ticketInfo = "영화 : " + $("div#movie-choice").text() + " " + $("div#total_seat_cnt").text() + "명";
+		const using_point = $("input#using-point").val();
 		
 		const width = 1000;
 		const height = 600;
@@ -252,7 +316,7 @@ function goPayChoice(ctxPath, userid) {
 	    const left = Math.ceil( (window.screen.width - width)/2 ); // 정수로 만듬
 	    const top = Math.ceil( (window.screen.height - height)/2 ); // 정수로 만듬
 		    
-	    const url = `${ctxPath}/reservation/goPayTicket.mp?ticketInfo=${ticketInfo}&userid=${userid}&total_price=${total_price}`;      
+	    const url = `${ctxPath}/reservation/goPayTicket.mp?ticketInfo=${ticketInfo}&userid=${userid}&total_price=${total_price}&using_point=${using_point}`;      
 
 	    window.open(url, "goPayTicket",
 		               `left=${left}, top=${top}, width=${width}, height=${height}`);
@@ -261,7 +325,7 @@ function goPayChoice(ctxPath, userid) {
 }
 
 function onScreenClick(element, start_time, seq_showtime_no, fk_screen_no, seat_str) {
-
+	
 	$("tr.time_choice").css({'background-color':'','color':''})
 	$(element).parent().css({'background-color':'black','color':'white'});
 	
@@ -341,17 +405,17 @@ function onScreenClick(element, start_time, seq_showtime_no, fk_screen_no, seat_
 					html += `<div>${adult_ticket_price} 원 X ${selected_seat_cnt} 명</div>`;
 					total_price = adult_ticket_price * selected_seat_cnt;
 				}
-				else if(selected_seat_cnt > adult_cnt && selected_seat_cnt <= adult_cnt + adolescent_cnt) {
-					html += `<div>${adult_ticket_price} 원 X ${selected_seat_cnt} 명</div>`;
+				else if(selected_seat_cnt <= adult_cnt + adolescent_cnt) {
+					html += `<div>${adult_ticket_price} 원 X ${adult_cnt} 명</div>`;
 					html += `<div>${adolescent_ticket_price} 원 X ${selected_seat_cnt - adult_cnt}</div>`;
-					total_price = adult_ticket_price * adult_cnt + adolescent_ticket_price * (selected_seat_cnt - adolescent_cnt);
+					total_price = adult_ticket_price * adult_cnt + adolescent_ticket_price * (selected_seat_cnt - adult_cnt);
 				}
 				else {
-					html += `<div>${adult_ticket_price} 원 X ${selected_seat_cnt} 명</div>`;
-					html += `<div>${adolescent_ticket_price} 원 X ${selected_seat_cnt - adult_cnt}</div>`;
+					html += `<div>${adult_ticket_price} 원 X ${adult_cnt} 명</div>`;
+					html += `<div>${adolescent_ticket_price} 원 X ${adolescent_cnt}</div>`;
 					html += `<div>${youth_ticket_price} 원 X ${selected_seat_cnt - adult_cnt - adolescent_cnt}</div>`;
-					total_price = adult_ticket_price * adult_cnt 
-								+ adolescent_ticket_price * adolescent_cnt
+					total_price = adult_ticket_price * adult_cnt
+								+ adolescent_ticket_price * adolescent_cnt 	
 								+ youth_ticket_price * (selected_seat_cnt - adult_cnt - adolescent_cnt);
 				}
 				
@@ -374,17 +438,17 @@ function onScreenClick(element, start_time, seq_showtime_no, fk_screen_no, seat_
 					html += `<div>${adult_ticket_price} 원 X ${selected_seat_cnt} 명</div>`;
 					total_price = adult_ticket_price * selected_seat_cnt;
 				}
-				else if(selected_seat_cnt > adult_cnt && selected_seat_cnt <= adult_cnt + adolescent_cnt) {
-					html += `<div>${adult_ticket_price} 원 X ${selected_seat_cnt} 명</div>`;
+				else if(selected_seat_cnt <= adult_cnt + adolescent_cnt) {
+					html += `<div>${adult_ticket_price} 원 X ${adult_cnt} 명</div>`;
 					html += `<div>${adolescent_ticket_price} 원 X ${selected_seat_cnt - adult_cnt}</div>`;
-					total_price = adult_ticket_price * adult_cnt + adolescent_ticket_price * (selected_seat_cnt - adolescent_cnt);
+					total_price = adult_ticket_price * adult_cnt + adolescent_ticket_price * (selected_seat_cnt - adult_cnt);
 				}
 				else {
-					html += `<div>${adult_ticket_price} 원 X ${selected_seat_cnt} 명</div>`;
-					html += `<div>${adolescent_ticket_price} 원 X ${selected_seat_cnt - adult_cnt}</div>`;
+					html += `<div>${adult_ticket_price} 원 X ${adult_cnt} 명</div>`;
+					html += `<div>${adolescent_ticket_price} 원 X ${adolescent_cnt}</div>`;
 					html += `<div>${youth_ticket_price} 원 X ${selected_seat_cnt - adult_cnt - adolescent_cnt}</div>`;
-					total_price = adult_ticket_price * adult_cnt 
-								+ adolescent_ticket_price * adolescent_cnt
+					total_price = adult_ticket_price * adult_cnt
+								+ adolescent_ticket_price * adolescent_cnt 	
 								+ youth_ticket_price * (selected_seat_cnt - adult_cnt - adolescent_cnt);
 				}
 				
@@ -399,9 +463,9 @@ function onScreenClick(element, start_time, seq_showtime_no, fk_screen_no, seat_
 }
 
 // 결제 내역 만들기
-function makePayment(ctxPath, userid, ticketPrice, imp_uid, status) {
+function makePayment(ctxPath, userid, ticketPrice, imp_uid) {
 	
-	const seq_movie_no = $("div#seq_movie_no").text();
+	const seq_showtime_no = $("div#seq_showtime_no").text();
 	
 	$.ajax({
 		url:ctxPath + "/reservation/makePayment.mp",
@@ -409,17 +473,16 @@ function makePayment(ctxPath, userid, ticketPrice, imp_uid, status) {
              "userid": userid,
              "ticketPrice": ticketPrice,
              "imp_uid": imp_uid,
-             "seq_movie_no": seq_movie_no,
-             "status": status
+             "seq_showtime_no": seq_showtime_no
         },
 		type:"post",
 		dataType:"json",
         success: function(json){
         	if(json.n == 1) {
-				console.log("성공");
+				console.log("결제 내역 만들기 성공")
 			}
 			else {
-				console.log("실패");
+				console.log("결제 내역 만들기 실패")
 			}
 		},
 		error: function(){
@@ -431,6 +494,8 @@ function makePayment(ctxPath, userid, ticketPrice, imp_uid, status) {
 // 티켓 만들기
 function makeTicket(ctxPath, imp_uid) {
 	
+	const seat_arr = $("div#seat-choice").text();
+	
 	$.ajax({
 		url:ctxPath + "/reservation/makeTicket.mp",
 		data: {
@@ -438,15 +503,16 @@ function makeTicket(ctxPath, imp_uid) {
 			 "adult_cnt":adult_cnt,
 			 "adolescent_cnt":adolescent_cnt,
 			 "youth_cnt":youth_cnt,
+			 "seat_arr":seat_arr
         },
 		type:"post",
 		dataType:"json",
         success: function(json){
-        	if(json.n == 1) {
-				console.log("성공");
+			if(json.n == 1) {
+				console.log("티켓 만들기 성공")
 			}
 			else {
-				console.log("실패");
+				console.log("티켓 만들기 실패")
 			}
 		},
 		error: function(){
@@ -456,6 +522,57 @@ function makeTicket(ctxPath, imp_uid) {
 }
 
 // 상영 영화 좌석배열 수정 및 남은 좌석 수정
-function updateShowtime() {
+function updateShowtime(ctxPath) {
+	
+	const seat_arr = $("div#seat-choice").text();
+	const seq_showtime_no = $("div#seq_showtime_no").text();
+		
+	$.ajax({
+		url:ctxPath + "/reservation/updateShowtime.mp",
+		data: {
+			 "seat_arr":seat_arr,
+			 "seq_showtime_no": seq_showtime_no
+        },
+		type:"post",
+		dataType:"json",
+        success: function(json){
+			if(json.n == 1) {
+				console.log("상영 영화 수정 성공")
+			}
+			else {
+				console.log("상영 영화 수정 실패")
+			}
+		},
+		error: function(){
+			alert("request error!");
+		}
+	}); // end of $.ajax({})---------------------------------------------------------------------
+}
+
+// 포인트 내역 만들기
+function makePoint(ctxPath, userid, using_point, ticketPrice, imp_uid ) {
+	
+	$.ajax({
+		url:ctxPath + "/reservation/makePoint.mp",
+		data: {
+             "userid": userid,
+             "using_point": using_point,
+             "ticketPrice": ticketPrice,
+             "imp_uid": imp_uid
+        },
+		type:"post",
+		dataType:"json",
+        success: function(json){
+        	if(json.n == 1) {
+				console.log("포인트 내역 만들기 성공")
+			}
+			else {
+				console.log("포인트 내역 만들기 실패")
+			}
+		},
+		error: function(){
+			alert("request error!");
+		}
+	}); // end of $.ajax({})---------------------------------------------------------------------
 	
 }

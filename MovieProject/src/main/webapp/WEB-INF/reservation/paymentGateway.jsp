@@ -26,7 +26,7 @@ $(document).ready(function() {
        pay_method : 'card',	// 결제 수단
        merchant_uid : 'merchant_' + new Date().getTime(), // 가맹점에서 생성/관리하는 고유 주문번호
        name : '${requestScope.ticketInfo}',   // 코인충전 또는 order 테이블에 들어갈 주문명 혹은 주문 번호. (선택항목)원활한 결제정보 확인을 위해 입력 권장(PG사 마다 차이가 있지만) 16자 이내로 작성하기를 권장
-       amount : ${requestScope.ticketPrice},  // '${coinmoney}'  결제 금액 number 타입. 필수항목. 
+       amount : 100,  // '${coinmoney}'  결제 금액 number 타입. 필수항목. 
        buyer_email : '${requestScope.email}',  // 구매자 email
        buyer_name : '${requestScope.name}',	   // 구매자 이름 
        buyer_tel : '${requestScope.mobile}',   // 구매자 전화번호 (필수항목)
@@ -62,19 +62,21 @@ $(document).ready(function() {
 		*/
 	 <%--	opener.location.href = "javascript:goCoinUpdate('<%= ctxPath%>', '${requestScope.userid}','${requestScope.coinmoney}');"; --%>
 	 <%--   $(opener.location).attr("href", "javascript:goCoinUpdate('<%= ctxPath%>', '${requestScope.userid}','${requestScope.coinmoney}');");  --%> 
-			
+
+	 		/* 상영 영화 좌석배열 수정 및 남은 좌석 수정 */
+	 		window.opener.updateShowtime('<%= ctxPath%>');
 	 		/* 결제 내역 만들기 */
-			window.opener.makePayment('<%= ctxPath%>','${requestScope.userid}','${requestScope.ticketPrice}','${rsp.imp_uid}','${rsp.status}');
+	 		window.opener.makePayment('<%= ctxPath%>','${requestScope.userid}','${requestScope.ticketPrice}', rsp.imp_uid);
 	 		/* 티켓 만들기 */
-			window.opener.makeTicket('<%= ctxPath%>','${rsp.imp_uid}');
-	 		/* showtime 데이터베이스 좌석배열 수정 */
+	 		window.opener.makeTicket('<%= ctxPath%>', rsp.imp_uid);
+	 		/* 포인트 적립 or 사용 하기 */
+	 		window.opener.makePoint('<%= ctxPath%>','${requestScope.userid}','${requestScope.using_point}','${requestScope.ticketPrice}', rsp.imp_uid);
 	 		
-	 		alert("결제 성공");
-	 		
+	 		alert("결제에 성공하였습니다.");
 			self.close();
 			
         } else {
-            // location.href="/MyMVC";
+			
             alert("결제에 실패하였습니다.");
             self.close();
        }

@@ -4,7 +4,7 @@ public class TicketVO_hoon {
 
 	// field
 	int seq_ticket_no;			// 티켓 번호
-	int fk_imp_uid;				// 결제 번호
+	String fk_imp_uid;			// 결제 번호
 	String seat_no;				// 좌석 이름
 	int ticket_price;			// 티켓 가격
 	String ticket_age_group;	// 티켓 연령대
@@ -16,10 +16,10 @@ public class TicketVO_hoon {
 	public void setSeq_ticket_no(int seq_ticket_no) {
 		this.seq_ticket_no = seq_ticket_no;
 	}
-	public int getFk_imp_uid() {
+	public String getFk_imp_uid() {
 		return fk_imp_uid;
 	}
-	public void setFk_imp_uid(int fk_imp_uid) {
+	public void setFk_imp_uid(String fk_imp_uid) {
 		this.fk_imp_uid = fk_imp_uid;
 	}
 	public String getSeat_no() {

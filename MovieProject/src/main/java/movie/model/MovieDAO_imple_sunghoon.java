@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 
 import movie.domain.MovieVO;
 import movie.domain.ShowTimeVO_sunghoon;
+import reservation.controller.TicketVO_hoon;
 
 public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 	
@@ -175,9 +176,9 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 					   + " values(?,?,?,?,?,?,sysdate) ";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, Integer.parseInt(paraMap.get("imp_uid")));
+			pstmt.setString(1, paraMap.get("imp_uid"));
 			pstmt.setString(2, paraMap.get("userid"));
-			pstmt.setInt(3, Integer.parseInt(paraMap.get("seq_movie_no")));
+			pstmt.setInt(3, Integer.parseInt(paraMap.get("seq_showtime_no")));
 			pstmt.setInt(4, Integer.parseInt(paraMap.get("ticketPrice")));
 			pstmt.setString(5, "card");
 			pstmt.setString(6, paraMap.get("status"));
@@ -191,6 +192,200 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		return n;
 
 	} // end of public int makePayment(Map<String, String> paraMap) throws SQLException---------------------
+
+
+	// 티켓 생성
+	@Override
+	public int makeTicket(TicketVO_hoon ticket) throws SQLException {
+		
+		int n = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " insert into tbl_ticket(SEQ_TICKET_NO, FK_IMP_UID, SEAT_NO, TICKET_PRICE, TICKET_AGE_GROUP) "
+					   + " values(SEQ_TICKET_NO.nextval,?,?,?,?) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, ticket.getFk_imp_uid());
+			pstmt.setString(2, ticket.getSeat_no());
+			pstmt.setInt(3, ticket.getTicket_price());
+			pstmt.setString(4, ticket.getTicket_age_group());
+			
+			n = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return n;
+		
+	} // end of public int makeTicket(TicketVO_hoon ticket) throws SQLException-----------------------------
+
+
+	// 좌석 배열 가져오기
+	@Override
+	public String getSeatArr(int seq_showtime_no) throws SQLException {
+		
+		String seat_arr = "";
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select seat_arr"
+					   + " from tbl_showtime"
+					   + " where SEQ_SHOWTIME_NO = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, seq_showtime_no);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				seat_arr = rs.getString("seat_arr");
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return seat_arr;
+		
+	} // end of public String getSeatArr(int seq_showtime_no) throws SQLException
+
+
+	// 상영 영화 수정
+	@Override
+	public int updateShowtime(String seat_arr_str, int seq_showtime_no, int selected_seat_arr_length) throws SQLException {
+		
+		int n = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " update tbl_showtime set SEAT_ARR = ?, UNUSED_SEAT = UNUSED_SEAT - ? "
+					   + " where SEQ_SHOWTIME_NO = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, seat_arr_str);
+			pstmt.setInt(2, selected_seat_arr_length);
+			pstmt.setInt(3, seq_showtime_no);
+			
+			n = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return n;
+	}
+
+
+	// 보유중인 포인트 가져오기
+	@Override
+	public int getHavingPoint(String userid) throws SQLException {
+		
+		int havingPoint = 0;
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String sql = " select not_used_point - used_point as havingpoint "
+					   + " from "
+					   + " ( "
+					   + "    select NVL(SUM(point), 0) as not_used_point "
+					   + "    from tbl_point "
+					   + "    where fk_user_id = ? and point_type = 1 "
+					   + " ) A "
+					   + " , "
+					   + " ( "
+					   + "    select NVL(SUM(point), 0) as used_point "
+					   + "    from tbl_point "
+					   + "    where fk_user_id = ? and point_type = 0 "
+					   + " ) B ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			pstmt.setString(2, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				havingPoint = rs.getInt("havingPoint");
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return havingPoint;
+		
+	} // end of public int getHavingPoint(String userid) throws SQLException------------------------
+
+
+	// 포인트 거래 내역 만들기
+	@Override
+	public int makePoint(Map<String, String> paraMap) throws SQLException {
+
+		int n = 0;
+		
+		int using_point = Integer.parseInt(paraMap.get("using_point"));
+		int ticketPrice = Integer.parseInt(paraMap.get("ticketPrice"));
+		String userid = paraMap.get("userid");
+		String imp_uid = paraMap.get("imp_uid");
+		
+		try {
+			conn = ds.getConnection();
+			
+			if(using_point == 0) {
+					
+				String sql = " insert into tbl_point(SEQ_POINT_NO, FK_USER_ID, FK_IMP_UID, POINT_TYPE, POINT) "
+						   + " values(SEQ_POINT_NO.nextval, ?, ?, 1, ?) ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, userid);
+				pstmt.setString(2, imp_uid);
+				pstmt.setInt(3, ticketPrice/10);
+				
+				n = pstmt.executeUpdate();
+				
+			}
+			else {
+				
+				String sql = " insert into tbl_point(SEQ_POINT_NO, FK_USER_ID, FK_IMP_UID, POINT_TYPE, POINT) "
+						   + " values(SEQ_POINT_NO.nextval, ?, ?, 1, ?) ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, userid);
+				pstmt.setString(2, imp_uid);
+				pstmt.setInt(3, (ticketPrice - using_point)/10);
+				
+				n = pstmt.executeUpdate();
+				
+				sql = " insert into tbl_point(SEQ_POINT_NO, FK_USER_ID, FK_IMP_UID, POINT_TYPE, POINT) "
+					+ " values(SEQ_POINT_NO.nextval, ?, ?, 0, ?) ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, userid);
+				pstmt.setString(2, imp_uid);
+				pstmt.setInt(3, using_point);
+				
+				n = pstmt.executeUpdate();
+				
+			}
+		} finally {
+			close();
+		}
+		
+		return n;
+		
+	} // end of public int makePoint(Map<String, String> paraMap) throws SQLException----------------------
 	
 
 	

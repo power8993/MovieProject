@@ -3,7 +3,7 @@ package reservation.controller;
 public class PaymentVO_hoon {
 	
 	// field
-	int imp_uid;				// 결제 번호
+	String imp_uid;				// 결제 번호
 	String fk_user_id;			// 사용자 아이디
 	String fk_seq_showtime_no;	// 상영 영화 번호
 	int pay_amount;				// 결제 금액
@@ -13,11 +13,11 @@ public class PaymentVO_hoon {
 	String pay_status;			// 결제 상태
 	
 	// method
-	public int getImp_uid() {
+	public String getImp_uid() {
 		return imp_uid;
 	}
 	
-	public void setImp_uid(int imp_uid) {
+	public void setImp_uid(String imp_uid) {
 		this.imp_uid = imp_uid;
 	}
 	

@@ -180,6 +180,18 @@
 		
 		<%-- -------------------------------------------------------------------- --%>
 		
+		<div id="step3" class="steps">
+			<div class="col-head">
+				<h3 class="title">포인트 사용</h3>
+			</div>
+			<div class="col-body">
+				<input id="using-point" type="number" step="100" min="0" placeholder="point를 입력해주세요" />
+				<div>보유중인 point : <label id="having-point"></label></div>
+			</div>
+		</div>
+		
+		<%-- -------------------------------------------------------------------- --%>
+		
 		<div id="ticket-info-container" class="ticket-info-container">
 			<div id="ticket-info" class="container ticket-info" style="align-content: center;">
 				<button id="goMovieChoice" onclick="goMovieChoice()">-> 영화선택</button>
@@ -192,7 +204,8 @@
 				<div id="seat-choice">> 좌석선택</div>
 				<div id="pay-choice">> 결제</div>
 				<button id="goSeatChoice" onclick="goSeatChoice('${sessionScope.loginuser.userid}')">-> 좌석선택</button>
-				<button id="goPay" onclick="goPayChoice('<%= ctxPath%>', '${sessionScope.loginuser.userid}')">-> 결제선택</button>
+				<button id="goPointChoice" onclick="goPointChoice('<%= ctxPath%>', '${sessionScope.loginuser.userid}')">-> 포인트사용</button>
+				<button id="goPay" onclick="goPay('<%= ctxPath%>', '${sessionScope.loginuser.userid}')">-> 결제하기</button>
 			</div>
 		</div>
 		

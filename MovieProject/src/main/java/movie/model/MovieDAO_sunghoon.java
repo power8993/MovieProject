@@ -6,6 +6,7 @@ import java.util.Map;
 
 import movie.domain.MovieVO;
 import movie.domain.ShowTimeVO_sunghoon;
+import reservation.controller.TicketVO_hoon;
 
 public interface MovieDAO_sunghoon {
 	
@@ -20,5 +21,20 @@ public interface MovieDAO_sunghoon {
 
 	// 결제 내역 생성
 	int makePayment(Map<String, String> paraMap) throws SQLException;
+
+	// 티켓 생성
+	int makeTicket(TicketVO_hoon ticket) throws SQLException;
+
+	// 좌석 배열 가져오기
+	String getSeatArr(int seq_showtime_no) throws SQLException;
+
+	// 상영 영화 수정
+	int updateShowtime(String seat_arr_str, int seq_showtime_no, int selected_seat_arr_length) throws SQLException;
+
+	// 보유중인 포인트 가져오기
+	int getHavingPoint(String userid) throws SQLException;
+
+	// 포인트 거래 내역 만들기
+	int makePoint(Map<String, String> paraMap) throws SQLException;
 
 }
