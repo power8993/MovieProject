@@ -89,9 +89,9 @@ window.onscroll = function () {
         
         <c:if test="${not empty sessionScope.loginuser}">
 	        <ul class="mb-4">
-	            <li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/login/logout.mp" >로그아웃</a></li>
-				<li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/mypage/mypage.mp" >마이페이지</a></li>
-				<li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.mp" >공지사항</a></li>
+	            <li><div class="icon"><a href="<%= ctxPath %>/login/logout.mp" style="color:#eb5e28;"><i class="fa-solid fa-unlock-keyhole fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/login/logout.mp" >로그아웃</a></li>
+				<li><div class="icon"><a href="<%= ctxPath %>/mypage/mypage.mp" style="color:#eb5e28;"><i class="fa-solid fa-user fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/mypage/mypage.mp" >마이페이지</a></li>
+				<li><div class="icon"><a href="<%= ctxPath %>/notice/notice.mp" style="color:#eb5e28;"><i class="fa-solid fa-bell fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.mp" >공지사항</a></li>
 	        </ul>
         </c:if>
     </div>
@@ -104,7 +104,6 @@ window.onscroll = function () {
         <ul class="nav-list" style=" align-items: center;">
             <li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieList.mp">영화</a></li>
 			<li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieTime.mp">상영시간표</a></li>
-			<li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieDetail.mp">영화상세보기</a></li>
 			<li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/reservation/reservation.mp">영화예약</a></li>
 			<li style="margin-left:auto; white-space: nowrap;">
 				<!-- 검색 폼 추가 -->
@@ -120,4 +119,4 @@ window.onscroll = function () {
 		</ul>
     </div>
 </div>
-<hr style="margin-top: 0px; margin-bottom: 0px; height: 2px; background-color: red;">
+<hr style="margin-top: 0px; margin-bottom: 0px; height: 2px; background-color: #eb5e28;">
