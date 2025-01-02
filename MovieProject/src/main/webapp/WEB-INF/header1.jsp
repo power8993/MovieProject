@@ -70,29 +70,29 @@ window.onscroll = function () {
         <div id="web_name" class="mb-4">DEEP DIVE SPACE</div>
         
         
-	        <div>
-	        	
-	        </div>
-	        
-	        
-	     <%-- ${paraMap.userid}가 null이 아니면 로그인이 된 상태와 null인 상태를 나눌 것  --%>
-	     <%-- 로그인이 되지 않은 상태 --%>
-	    <c:if test="${empty sessionScope.loginuser}">
-	        <ul class="mb-4">
-	            <li><div class="icon"><a href="<%= ctxPath %>/login/login.mp" style="color:#eb5e28;"><i class="fa-solid fa-unlock-keyhole fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/login/login.mp" >로그인</a></li>
-				<li><div class="icon"><a href="<%= ctxPath %>/member/memberRegister.mp" style="color:#eb5e28;"><i class="fa fa-user-plus fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/member/memberRegister.mp" >회원가입</a></li>
-				<li><div class="icon"><a href="<%= ctxPath %>/notice/notice.mp" style="color:#eb5e28;"><i class="fa-solid fa-bell fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.mp" >공지사항</a></li>
-	        </ul>
+           <div>
+              
+           </div>
+           
+           
+        <%-- ${paraMap.userid}가 null이 아니면 로그인이 된 상태와 null인 상태를 나눌 것  --%>
+        <%-- 로그인이 되지 않은 상태 --%>
+       <c:if test="${empty sessionScope.loginuser}">
+           <ul class="mb-4">
+               <li><div class="icon"><a href="<%= ctxPath %>/login/login.mp" style="color:#eb5e28;"><i class="fa-solid fa-unlock-keyhole fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/login/login.mp" >로그인</a></li>
+            <li><div class="icon"><a href="<%= ctxPath %>/member/memberRegister.mp" style="color:#eb5e28;"><i class="fa fa-user-plus fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/member/memberRegister.mp" >회원가입</a></li>
+            <li><div class="icon"><a href="<%= ctxPath %>/notice/notice.mp" style="color:#eb5e28;"><i class="fa-solid fa-bell fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.mp" >공지사항</a></li>
+           </ul>
         </c:if>
         
         <%-- 로그인 된 상태 --%>
         
         <c:if test="${not empty sessionScope.loginuser}">
-	        <ul class="mb-4">
-	            <li><div class="icon"><a href="<%= ctxPath %>/login/logout.mp" style="color:#eb5e28;"><i class="fa-solid fa-unlock-keyhole fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/login/logout.mp" >로그아웃</a></li>
-				<li><div class="icon"><a href="<%= ctxPath %>/mypage/mypage.mp" style="color:#eb5e28;"><i class="fa-solid fa-user fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/mypage/mypage.mp" >마이페이지</a></li>
-				<li><div class="icon"><a href="<%= ctxPath %>/notice/notice.mp" style="color:#eb5e28;"><i class="fa-solid fa-bell fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.mp" >공지사항</a></li>
-	        </ul>
+           <ul class="mb-4">
+               <li><div class="icon"><a href="<%= ctxPath %>/login/logout.mp" style="color:#eb5e28;"><i class="fa-solid fa-unlock-keyhole fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/login/logout.mp" >로그아웃</a></li>
+            <li><div class="icon"><a href="<%= ctxPath %>/mypage/mypage.mp" style="color:#eb5e28;"><i class="fa-solid fa-user fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/mypage/mypage.mp" >마이페이지</a></li>
+            <li><div class="icon"><a href="<%= ctxPath %>/notice/notice.mp" style="color:#eb5e28;"><i class="fa-solid fa-bell fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.mp" >공지사항</a></li>
+           </ul>
         </c:if>
     </div>
 </div>
@@ -103,20 +103,21 @@ window.onscroll = function () {
     <div id="nav_mediatop">
         <ul class="nav-list" style=" align-items: center;">
             <li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieList.mp">영화</a></li>
-			<li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieTime.mp">상영시간표</a></li>
-			<li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/reservation/reservation.mp">영화예약</a></li>
-			<li style="margin-left:auto; white-space: nowrap;">
-				<!-- 검색 폼 추가 -->
-				<div style="min-width:250px;">
-				<form  class="d-flex align-items-center" style="white-space: nowrap;">
-					<input id="mv_search" class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
-					<button class="btn btn-outline-success" type="submit">
-						<i class="fas fa-search"></i>
-					</button>
-				</form>
-				</div>
-			</li>
-		</ul>
+         <li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieTime.mp">상영시간표</a></li>
+         <li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/reservation/reservation.mp">영화예약</a></li>
+         <li style="margin-left:auto; white-space: nowrap;">
+                
+            <!-- 검색 폼 -->
+                <div style="position:relative; min-width:250px;">
+                <form action="<%= ctxPath %>/movie/searchMovie.mp" method="get" class="d-flex align-items-center">
+                    <input id="mv_search_input" name="keyword" class="form-control mr-2" type="search" placeholder="영화 검색" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+                </div>           
+         </li>
+      </ul>
     </div>
 </div>
 <hr style="margin-top: 0px; margin-bottom: 0px; height: 2px; background-color: #eb5e28;">
