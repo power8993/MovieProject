@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
- 
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
    String ctxPath = request.getContextPath();
@@ -188,8 +188,29 @@
             <div id="notis">
                <div id="left">
                   <h3>공지사항</h3>
+                  <table>
+                  	<tr style="border-bottom: 1px solid #cccccc;border-top: 1px solid #cccccc;">
+                  		<td style="width:390px; padding:5px 0 5px 0;">제목</td>
+                  		<td style="width:100px;">등록일</td>
+                  	</tr>
+                  	<c:forEach var="notice" items="${noticeList}">  
+	                  	<tr style="border-bottom: 1px solid #cccccc;">
+	                  		<td style="width:390px;  padding:5px 0 5px 0; ">${notice.notice_subject}</td>
+	                  		<td style="width:100px;">2025-01-02</td>
+	                  	</tr>
+                  	</c:forEach>
+                  </table>
                </div>
-               <div id="right"></div>
+               
+               
+               
+               <div id="right">
+               		<div id="rightContent">
+               			<h5>고객센터</h5>
+               			<p style="font-size:22pt; font-weight:500;">1544-1122</p>
+               			<p style="color:gray;">고객센터 운영시간 (평일 09:00~18:00)<br>업무시간 외 자동응답 안내 가능합니다.</p>
+               		</div>
+               </div>
                
             </div>
             <%-- 공지사항 끝 --%>
