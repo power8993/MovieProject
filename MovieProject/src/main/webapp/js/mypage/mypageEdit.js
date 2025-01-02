@@ -1,3 +1,22 @@
+function lastpwdchangedate() {	
+
+	$.ajax({
+		url: "mylastpwdchangedateJSON.mp",
+		data: { "userid": $("input#userid").val()},	
+		dataType: "json",
+		success: function(json) {
+			console.log("~~ 확인용 json =>", json);
+			
+			                $("div#lastpwdchangedate").text(json.pwdChangeDate); // 서버에서 받은 값 표시
+			           
+		 },
+		 		error: function(request, status, error) {
+		 			alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+		 		}
+		 	
+		 });
+
+};
 
 let b_emailcheck_click = false;
 // "이메일중복확인" 을 클릭했는지 클릭을 안했는지 여부를 알아오기 위한 용도
@@ -145,6 +164,7 @@ $(document).ready(function() {
 });// end of $(document).ready(function(){})----------------------
 
 
+
 function goEdit() {
 
 	let b_requiredInfo = false;
@@ -174,4 +194,5 @@ function goEdit() {
 	frm.method = "post";
 	frm.submit();
 }
+
 

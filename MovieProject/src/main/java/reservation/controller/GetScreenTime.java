@@ -24,9 +24,6 @@ public class GetScreenTime extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		String method = request.getMethod(); // "GET" 또는 "POST"
-		
-			
 		String input_date = request.getParameter("input_date");
 		String seq_movie_no = request.getParameter("seq_movie_no");
 		
@@ -36,7 +33,7 @@ public class GetScreenTime extends AbstractController {
 		
 		List<ShowTimeVO_sunghoon> showTimeList = mdao.getScreenTime(paraMap);
 		
-		request.setAttribute("showTimeList", showTimeList);
+		// request.setAttribute("showTimeList", showTimeList);
 		
 		JSONArray jsonArr = new JSONArray(); // []
 		
@@ -68,7 +65,6 @@ public class GetScreenTime extends AbstractController {
 		
 		super.setRedirect(false);
 		super.setViewPage("/WEB-INF/jsonview.jsp");
-			
 			
 	}
 

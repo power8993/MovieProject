@@ -8,6 +8,8 @@ import java.util.Map;
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import member.domain.MemberVO;
 import notice.domain.NoticeDTO;
 import notice.model.*;
 
@@ -22,6 +24,8 @@ public class Notice extends AbstractController {
 		// List<NoticeDTO> NoticeList = ndao.selectNotice();
 		// 가져온 데이터를 request에 저장
 		// request.setAttribute("NoticeList", NoticeList);
+		HttpSession session = request.getSession();
+        MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 		
 		String sizePerPage = "10";
 		String currentShowPageNo = request.getParameter("currentShowPageNo"); // 내가 현재 보고자하는 페이지
@@ -105,6 +109,7 @@ public class Notice extends AbstractController {
 			 * >>> 뷰단(memberList.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 검색이 있는 또는 검색이 없는 회원의
 			 * 총개수 알아오기 끝 <<<
 			 */
+			request.setAttribute("loginuser", loginuser);
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/notice/notice.jsp");
 		} catch (SQLException e) {

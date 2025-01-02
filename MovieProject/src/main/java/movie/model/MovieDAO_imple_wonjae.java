@@ -91,7 +91,7 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 				mvo.setActor(rs.getString("actor"));
 				mvo.setRunning_time(rs.getString("running_time"));
 				mvo.setStart_date(rs.getString("start_date"));
-				mvo.setContent(rs.getString("content"));				
+				mvo.setContent(rs.getString("content").replace("\r\n","<br>"));		
 				mvo.setPoster_file(rs.getString("poster_file"));
 				
 				CategoryVO cvo = new CategoryVO();
