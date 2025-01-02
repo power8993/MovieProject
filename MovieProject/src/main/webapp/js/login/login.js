@@ -130,7 +130,8 @@ function goLogin() {
 	    },
 		error: function(request, status, error) {
 		    console.error("AJAX 요청 실패:", status, error);
-		    alert("로그인 요청에 실패했습니다. 다시 시도해주세요.");
+		    alert("로그인 요청에 실패했습니다.");
+		    location.href = $("#path").text()+"/index.mp";
 		}
 
 	});

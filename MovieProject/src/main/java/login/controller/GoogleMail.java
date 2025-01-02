@@ -52,7 +52,7 @@ public class GoogleMail {
        MimeMessage msg = new MimeMessage(ses);
 
        // 제목 설정
-       String subject = "localhost:9090/MyMVC/index.mp 회원님의 비밀번호를 찾기위한 인증코드 발송";
+       String subject = "HGV 회원님의 [비밀번호 찾기] 인증번호 발송완료";
        msg.setSubject(subject);
                
        // 보내는 사람의 메일주소
@@ -65,7 +65,7 @@ public class GoogleMail {
        msg.addRecipient(Message.RecipientType.TO, toAddr);
                
        // 메시지 본문의 내용과 형식, 캐릭터 셋 설정
-       msg.setContent("발송된 인증코드 : <span style='font-size:14pt; color:red;'>"+certification_code+"</span>", "text/html;charset=UTF-8"); 
+       msg.setContent("발송된 인증코드 : <span style='font-size:14pt; color:red;'>"+certification_code+"<br>인증코드를 정확하게 입력해 주세요.</span>", "text/html;charset=UTF-8"); 
                
        // 메일 발송하기
        Transport.send(msg);
@@ -118,7 +118,7 @@ public class GoogleMail {
        MimeMessage msg = new MimeMessage(ses);
 
        // 제목 설정
-       String subject = "localhost:9090/MyMVC/mallHome1.mp "+name+"님의 주문이 성공했습니다.";
+       String subject = name+"님의 주문이 성공했습니다.";
        msg.setSubject(subject);
                
        // 보내는 사람의 메일주소

@@ -5,13 +5,11 @@
 
 <%
    String ctxPath = request.getContextPath();
-    //     /MyMVC
 %>
 
-<%-- 직접 만든 CSS --%>
 
 <jsp:include page="header1.jsp" />
-
+<script type="text/javascript" src="<%= ctxPath%>/js/index/index.js"></script> 
 
          <div class="a_box" style="width: 100%; height: 80vh; background-color: #000; padding-top: 40px; position: relative; min-width:980px;">
                <div class="embed-responsive embed-responsive-16by9" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;">
@@ -27,9 +25,12 @@
                     <!-- 첫 번째 카드 세트 -->
                     <div class="carousel-item active">
                         <div class="d-flex justify-content-between">
-                            <div class="col mb-3 first-card">
+                            <div class="col mb-3 first-card" >
                                 <div class="card">
-                                    <img src="https://via.placeholder.com/170x234" class="card-img-top" alt="카드1">
+                                    <div class="movieCard" style="position: relative; width: 170px; height: 234px; margin: 0 auto;">
+									    <img src="${pageContext.request.contextPath}/images/admin/poster_file/미니언즈.jpg" class="card-img-top poster" style="width: 100%; height: 100%; object-fit: cover;">
+									   
+									</div>
                                 </div>
                             </div>
                             <div class="col mb-3">
@@ -187,18 +188,31 @@
             <%-- 공지사항 시작 --%>
             <div id="notis">
                <div id="left">
+               
                   <h3>공지사항</h3>
                   <table>
+                  <c:if test="${not empty noticeList}"> <%-- 공지사항이 있을 경우 --%>
                   	<tr style="border-bottom: 1px solid #cccccc;border-top: 1px solid #cccccc;">
                   		<td style="width:390px; padding:5px 0 5px 0;">제목</td>
                   		<td style="width:100px;">등록일</td>
                   	</tr>
-                  	<c:forEach var="notice" items="${noticeList}">  
-	                  	<tr style="border-bottom: 1px solid #cccccc;">
-	                  		<td style="width:390px;  padding:5px 0 5px 0; ">${notice.notice_subject}</td>
-	                  		<td style="width:100px;">2025-01-02</td>
-	                  	</tr>
-                  	</c:forEach>
+                  	
+	                  	<c:forEach var="notice" items="${noticeList}">  
+		                  	<tr style="border-bottom: 1px solid #cccccc;">
+		                  		<td style="width:390px;  padding:5px 0 5px 0; ">${notice.notice_subject}</td>
+		                  		<td style="width:100px;">2025-01-02</td>
+		                  	</tr>
+	                  	</c:forEach>
+                  	</c:if>
+                  	
+                  	<c:if test="${empty noticeList}"><%-- 공지사항이 없을 경우 --%>
+	                  	<p style="line-height:29px;">
+						    현재 공지사항이 없습니다. <br>새로운 이벤트, 업데이트, 또는 중요한 정보가 준비되는 즉시 
+						    이곳에서 안내드릴 예정입니다.<br>궁금한 사항이 있으시다면 언제든 고객센터를 방문해주세요.<br> 
+						    항상 저희 서비스를 이용해 주셔서 감사합니다!
+						</p>
+
+                  	</c:if>
                   </table>
                </div>
                
