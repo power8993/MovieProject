@@ -35,7 +35,7 @@ public class PwdUpdateEnd extends AbstractController {
 			paraMap.put("userid", userid);
 			paraMap.put("new_pwd", new_pwd);
 			
-			n = 0;	// 1로 바꿔서 해봤는데도 똑같이 sql오류가 발생됨 이거 왜 그러는건데
+			n = 0;
 			
 			try {
 				n = mdao.pwdUpdate(paraMap);

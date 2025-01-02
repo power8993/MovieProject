@@ -16,6 +16,22 @@ $(document).ready(function(){
 
 // Function Declaration
 
+// 취소하기 버튼 클릭 시
+$(document).on('click', '#idleCancel', function(){
+	location.href = $("#path").text() + "/login/login.mp";// 로그인 페이지로 이동
+});
+
+// 휴면 해제하기 버튼 클릭 시
+$(document).on('click', '#idleClear', function(){
+	
+	var form = document.idleClearfrm;
+	form.action = $("#path").text() + "/login/idleClear.mp";
+	form.method = "POST";
+	form.submit();
+});
+
+
+
 // === 로그인 처리 함수 === //
 function goLogin() {
 	
@@ -59,8 +75,12 @@ function goLogin() {
 	    success: function(json) {
 	        //console.log("서버 응답:", json);
 	        let resultHtml = "";
-			//console.log("겟아이들 : ",json.getIdle);
-	        if (json.getIdle == 0 ) { //휴면계정일 경우 (휴면계정이 아니라면 99임)
+	        
+	        //비밀번호 변경 3개월 경과 시
+			if (json.RequirePwdChange === 1) {
+				location.href = json.ctxPath + "/login/threeMonthPwdChange.mp";
+			}
+	       	else if (json.getIdle == 0 ) { //휴면계정일 경우 (휴면계정이 아니라면 99임)
 				//console.log("확인용 : " + json.getIdle);
 				resultHtml = `				<div style="width:500px; margin:0 auto; margin-top:100px;">
 					<h1 style="font-size: 32px; font-weight: bold;">휴면 계정 안내</h1>
@@ -73,17 +93,22 @@ function goLogin() {
 					
 					<div style="background-color:#e6ccb3; padding:20px 0 5px 10px;">
 
-							<p>마지막 접속일 : (마지막 로그인 날짜데이터)</p> 
-							<p>휴면 전환일 : (마지막 로그인 날짜데이터+ 1년 후)</p>
+							<p ><span style=" display:inline-block; font-weight:700;">마지막 접속일</span> :   `+ json.lastLogin+`</p> 
+							<p ><span style=" display:inline-block; font-weight:700;">휴면 전환일</span> :    `+ json.idleChange+`</p>
 					</div>
 					
-					<p style="color:gray; font-size:13px; margin-top:20px;" >HGV 계정 서비스를 계속 이용하시려면 <span style="font-weight:700px;">[휴면 해제하기] 버튼을 클릭해주세요.</span></p>
+					<p style="color:gray; font-size:13px; margin-top:20px;" >HGV 계정 서비스를 계속 이용하시려면 <span style="font-weight:700px;">[휴면 해제하기] 버튼을 클릭해 주세요.</span></p>
 
 				<hr>
-				<div style="display:flex; justify-content:space-between; margin-top:30px;">
-				<button type="button" id="idleCancel" style="border:solid 1px #cccccc;background-color:transparent; height:40px;width:100%;">취소</button> 
-				<button type="button" id="idleClear" style="border:solid 1px #cccccc; height:40px;width:100%;">휴면 해제하기</button> 
-				</div>
+				<form name="idleClearfrm">
+				<input type="hidden" name="userid" value="`+json.userid+`" >
+				
+					<div style="display:flex; justify-content:space-between; margin-top:30px;">
+					<button type="button" id="idleCancel" style="border:solid 1px #cccccc;background-color:transparent; height:40px;width:100%;">취소</button> 
+					<button type="submit" id="idleClear" style="border:solid 1px #cccccc; height:40px;width:100%;">휴면 해제하기</button> 
+					</div>
+					
+				</form>
 				</div>`;
 				$("#form_container").html(resultHtml);
 	        }
