@@ -5,6 +5,7 @@
 
 <%
 	String ctxPath = request.getContextPath();
+	String seq_movie_no = request.getParameter("seq_movie_no");
 %>
 
 
@@ -28,6 +29,19 @@
 %>
 
 <script type="text/javascript" src="<%= ctxPath%>/js/reservation/reservation.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	
+	if(<%= seq_movie_no%> != null) {
+		$("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
+	}
+	
+	
+}); // end of $(document).ready(function(){})------------------------------
+
+</script>
 
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/reservation/reservation.css" />
 
@@ -185,7 +199,7 @@
 				<h3 class="title">포인트 사용</h3>
 			</div>
 			<div class="col-body">
-				<input id="using-point" type="number" step="100" min="0" placeholder="point를 입력해주세요" />
+				<input id="using-point" type="number" step="100" min="0" value="0" placeholder="point를 입력해주세요" />
 				<div>보유중인 point : <label id="having-point"></label></div>
 			</div>
 		</div>

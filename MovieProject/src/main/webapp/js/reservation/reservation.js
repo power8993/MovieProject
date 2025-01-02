@@ -8,6 +8,8 @@ let youth_cnt = 0;
 
 $(document).ready(function(){
 	
+	
+	
 	$("div#step2").hide();
 	$("div#step3").hide();
 	$("button#goMovieChoice").hide();
@@ -216,16 +218,21 @@ $(document).ready(function(){
 
 
 function goSeatChoice(userid) {
-	if(userid == "") {
+	if($("div#movie-choice").text() == "영화선택" || $("div#date-choice").text() == "시간선택" || $("div#time-choice").text() == "") {
+		alert("영화와 날짜와 시간을 모두 선택해주세요.");
+		return;
+	}
+	else if(userid == "") {
 		alert("로그인이 필요한 서비스입니다.");
 		return;
 	}
+
 	$("div#step1").hide();
 	$("div#step2").show();
 	$("button#goMovieChoice").show();
 	$("button#goSeatChoice").hide();
 	$("button#goPointChoice").show();
-	
+		
 }
 
 function goMovieChoice() {

@@ -21,6 +21,10 @@ public class Reservation extends AbstractController {
 		
 		request.setAttribute("movieList", movieList);
 		
+		String seq_movie_no = request.getParameter("seq_movie_no");
+		request.setAttribute("seq_moive_no", seq_movie_no);
+		System.out.println(seq_movie_no);
+		
 		super.setRedirect(false);
 		super.setViewPage("/WEB-INF/reservation/reservation.jsp");
 
