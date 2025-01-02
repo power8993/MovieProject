@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%
-    String ctxPath = request.getContextPath();   
+    String ctxPath = request.getContextPath();
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -101,23 +100,29 @@
     </style>
 </head>
 <body>
-    <jsp:include page="../header1.jsp" />   
+    <jsp:include page="../header1.jsp" />
 
     <!-- Movie Cards -->
     <div class="container mt-4">
         <div>
             <ul style="display: flex; gap: 20px; padding: 0; margin-top: 20px; justify-content: flex-end; list-style-type: none;">
-                <li class="nav-link h5"> <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/movieList.mp">전체목록 </a></li>
-                <li class="nav-link h5"> <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/upcomingMovies.mp">상영예정작 </a></li>		                      
-                <select name="searchType">
-                    <option value="">장르</option>
-                   <c:forEach var="cg" items="${requestScope.cgList}">
-                     <option value="${cg.category_code}">${cg.category}</option>
-                  </c:forEach> 
-                </select>
-                <button type="button" class="round gray">
-                    <span>GO</span>
-                </button>
+                <li class="nav-link h5">
+                    <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/movieList.mp">전체목록 </a>
+                </li>
+                <li class="nav-link h5">
+                    <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/upcomingMovies.mp">상영예정작</a>
+                </li>
+                <form id="genreSearchForm" action="<%= ctxPath %>/movie/filterByGenre.mp" method="get">
+                    <select name="genreCode">
+                        <option value="">장르</option>
+                        <c:forEach var="cg" items="${requestScope.cgList}">
+                            <option value="${cg.category_code}">${cg.category}</option>
+                        </c:forEach>
+                    </select>
+                    <button type="button" class="round gray" onclick="submitGenreForm()">
+                        <span>GO</span>
+                    </button>
+                </form>
             </ul>
         </div>
 
@@ -126,36 +131,41 @@
                 <!-- 데이터가 있는 경우 -->
                 <c:if test="${movies != null && not empty movies}">
                     <c:forEach var="movie" items="${movies}" varStatus="status">
-					    <div class="col-md-4 mb-4 ${status.index >= 15 ? 'movie-hidden hidden' : ''}">
-					        <a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}">
-					            <div class="movie-card position-relative">   
-					                <div class="rank">No. ${status.index + 1}</div>
-					                <div class="poster">
-					                    <img src="${movie.poster_file}" alt="${movie.movie_title}">
-					                </div>                                                              
-					                <div class="movie-details">
-					                   <%--  <div class="movie-title">${movie.movie_title}</div>    --%>                                  
-					                    <p>예매율: <%-- ${movie.like_count} --%></p>                                
-					                    <p>개봉일: ${movie.start_date}</p> 
-					                    <p>장르: ${movie.cg.category}</p>    
-					                    <button>예매하러가기</button>                                
-					                </div>
-					            </div>
-					        </a>
-					    </div>
-					</c:forEach>
+                        <div class="col-md-4 mb-4 <%--${status.index >= 15 ? 'movie-hidden hidden' : ''}--%>">
+                            <a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}">
+                                <div class="movie-card position-relative">
+                                    <div class="rank">No. ${status.index + 1}</div>
+                                    <div class="poster">
+                                        <img src="${movie.poster_file}" alt="${movie.movie_title}">
+                                    </div>
+                                    <div class="movie-details">
+                                        <p>예매율: ${movie.bookingRate}</p>
+                                        <p>개봉일: ${movie.start_date} </p>
+                                         <button class="reservation-btn">
+                                         <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie.seq_movie_no}">예매하기</a>
+                                         </button>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </c:forEach>
                 </c:if>
 
                 <!-- 데이터가 없는 경우 -->
                 <c:if test="${movies == null || empty movies}">
-                    <p class="no-data">현재 영화 데이터가 없습니다.</p>
+                    <p class="no-data">상영중인 영화가 없습니다..</p>
                 </c:if>
             </div>
         </div>
     </div>
 
-   <jsp:include page="../footer1.jsp" />
+    <jsp:include page="../footer1.jsp" />
 
+    <script>
+        function submitGenreForm() {
+            const form = document.getElementById('genreSearchForm');
+            form.submit();
+        }
+    </script>
 </body>
-
 </html>

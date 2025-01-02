@@ -27,8 +27,7 @@ public class MovieList extends AbstractController {
         	// 영화 데이터를 request에 저장
             request.setAttribute("movies", movies);
             
-            
-            
+                      
             // 장르 종류 가져오기
         	List<CategoryVO_yeo> cgList =  mdao.selectcategory();
             request.setAttribute("cgList", cgList);
