@@ -257,7 +257,7 @@
 <div class="container">
     <div class="movie-header">
         <div style="position: relative; width: 185px; height: 260px;">
-            <img src="<%= ctxPath %>/images/미니언덩이즈.png" alt="영화 포스터" class="movie-poster" style="border: 0px solid red; width:100%; height: 260px; display: block; position: absolute; top:0px; left: 0px;">
+            <img src="<%= ctxPath %>/images/admin/poster_file/미니언즈.jpg" alt="영화 포스터" class="movie-poster" style="border: 0px solid red; width:100%; height: 260px; display: block; position: absolute; top:0px; left: 0px;">
             <i id="like" class="fa-solid fa-heart fa-bounce" onclick="golike(this, ${mvo.seq_movie_no})"  style="color:${isLiked ? '#ff2626' : '#252422'}; position: absolute; top: 10px; right: 10px; z-index: 5; font-size: 20pt;"></i>
         </div>
         <div class="movie-details" style="margin: 0 15px">
@@ -284,6 +284,13 @@
         <p>${mvo.content}</p>
     </div>
 
+    <hr style="width: 95%; border: 1.5px solid #ccc5b9; margin-bottom: 30px;">
+    
+    <div class="embed-responsive" style="margin-top: 30px; margin-bottom: 30px; width: 95%; height: 500px; margin-left: auto; margin-right: auto; ">
+    	<iframe class="embed-responsive-item" src="${mvo.video_url}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width: 100%; height: 100%;"></iframe>
+	</div>
+
+    
     <hr style="width: 95%; border: 1.5px solid #ccc5b9; margin-bottom: 30px;">
     
     <div id="graphdiv" style="border-top: 1px solid #ccc5b9; border-bottom: 1px solid #ccc5b9; width: 95%; margin: 0 auto;">
