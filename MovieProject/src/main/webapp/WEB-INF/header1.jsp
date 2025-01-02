@@ -57,16 +57,21 @@ window.onscroll = function () {
 
 </head>
 <body>
-<div id="adver">광고영역</div>
+<div id="adver">
+<div id="centerAdver" style="width:980px; margin:0 auto;">
+<img src="<%= ctxPath%>/images/index/top_ad.png"/>
+</div>
+</div>
 
    <!-- 상단 네비게이션 -->
 <div class="container">
     <div id="header">
-        <div id="logo" class="mb-4"><a href="<%= ctxPath%>/">logo</a></div>
-        <div id="web_name" class="mb-4">사이트명</div>
+        <div id="logo" class="mb-4"><a href="<%= ctxPath%>/"><img src="<%= ctxPath%>/images/index/logo.png" style="width:200px;margin-left: -29px; margin-top:-25px;"/></a></div>
+        <div id="web_name" class="mb-4">DEEP DIVE SPACE</div>
+        
+        
 	        <div>
-	        	<a href="<%= ctxPath %>/admin/admin.mp" >관리자</a>
-				<a href="<%= ctxPath %>/mypage/mypage.mp" >마이페이지</a>
+	        	
 	        </div>
 	        
 	        
@@ -74,9 +79,9 @@ window.onscroll = function () {
 	     <%-- 로그인이 되지 않은 상태 --%>
 	    <c:if test="${empty sessionScope.loginuser}">
 	        <ul class="mb-4">
-	            <li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/login/login.mp" >로그인</a></li>
-				<li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/member/memberRegister.mp" >회원가입</a></li>
-				<li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.mp" >공지사항</a></li>
+	            <li><div class="icon"><a href="<%= ctxPath %>/login/login.mp" style="color:#eb5e28;"><i class="fa-solid fa-unlock-keyhole fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/login/login.mp" >로그인</a></li>
+				<li><div class="icon"><a href="<%= ctxPath %>/member/memberRegister.mp" style="color:#eb5e28;"><i class="fa fa-user-plus fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/member/memberRegister.mp" >회원가입</a></li>
+				<li><div class="icon"><a href="<%= ctxPath %>/notice/notice.mp" style="color:#eb5e28;"><i class="fa-solid fa-bell fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.mp" >공지사항</a></li>
 	        </ul>
         </c:if>
         
@@ -84,21 +89,21 @@ window.onscroll = function () {
         
         <c:if test="${not empty sessionScope.loginuser}">
 	        <ul class="mb-4">
-	            <li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/login/logout.mp" >로그아웃</a></li>
-				<li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/mypage/mypage.mp" >마이페이지</a></li>
-				<li><div class="icon">icon</div><a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.mp" >공지사항</a></li>
+	            <li><div class="icon"><a href="<%= ctxPath %>/login/logout.mp" style="color:#eb5e28;"><i class="fa-solid fa-unlock-keyhole fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/login/logout.mp" >로그아웃</a></li>
+				<li><div class="icon"><a href="<%= ctxPath %>/mypage/mypage.mp" style="color:#eb5e28;"><i class="fa-solid fa-user fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/mypage/mypage.mp" >마이페이지</a></li>
+				<li><div class="icon"><a href="<%= ctxPath %>/notice/notice.mp" style="color:#eb5e28;"><i class="fa-solid fa-bell fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.mp" >공지사항</a></li>
 	        </ul>
         </c:if>
     </div>
 </div>
 
 <!-- Sticky 네비게이션 바 -->
+<hr style="margin-top: 0px; margin-bottom: 0px;">
 <div class="nav sticky-nav">
     <div id="nav_mediatop">
         <ul class="nav-list" style=" align-items: center;">
             <li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieList.mp">영화</a></li>
 			<li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieTime.mp">상영시간표</a></li>
-			<li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieDetail.mp">영화상세보기</a></li>
 			<li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/reservation/reservation.mp">영화예약</a></li>
 			<li style="margin-left:auto; white-space: nowrap;">
 				<!-- 검색 폼 추가 -->
@@ -114,3 +119,4 @@ window.onscroll = function () {
 		</ul>
     </div>
 </div>
+<hr style="margin-top: 0px; margin-bottom: 0px; height: 2px; background-color: #eb5e28;">

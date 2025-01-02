@@ -104,7 +104,8 @@ public class MemberDAO_imple implements MemberDAO {
 			
 			String sql = " select USER_ID "
 					   + " from tbl_member "
-					   + " where USER_ID = ? ";
+					   + " where USER_ID = ? "
+					   + " and user_status = 1 ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userid);
@@ -123,7 +124,7 @@ public class MemberDAO_imple implements MemberDAO {
 	} // end of public boolean idDuplicateCheck(String userid)-------------------------------------------------------
 
 	
-	// ID 중복검사 (tbl_member 테이블에서 email 이 존재하면 true 를 리턴해주고, email 이 존재하지 않으면 false 를 리턴한다)
+	// 이메일 중복검사 (tbl_member 테이블에서 email 이 존재하면 true 를 리턴해주고, email 이 존재하지 않으면 false 를 리턴한다)
 	@Override
 	public boolean emailDuplicateCheck(String email) throws SQLException {
 
@@ -134,7 +135,8 @@ public class MemberDAO_imple implements MemberDAO {
 			
 			String sql = " select email "
 					   + " from tbl_member "
-					   + " where email = ? ";
+					   + " where email = ? "
+					   + " AND user_status = 1 ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, aes.encrypt(email));
@@ -173,7 +175,7 @@ public class MemberDAO_imple implements MemberDAO {
 	         
 	         
 	         
-	         String sql = " SELECT USER_ID, name,pwdchangegap, PWD_CHANGE_DATE as lastpwdchangedate, "
+	         String sql = " SELECT USER_ID, name,pwdchangegap, to_char(PWD_CHANGE_DATE,'yyyy-mm-dd') as lastpwdchangedate, "
 	                  + "        NVL( lastlogingap, TRUNC( months_between(sysdate, REGISTERDAY) ) ) AS lastlogingap, idle_status, email, mobile, gender, birthday "
 	                  + " FROM "
 	                  + " (select user_id, name, "
@@ -186,7 +188,7 @@ public class MemberDAO_imple implements MemberDAO {
 	                  + " (select trunc( months_between(sysdate, min(login_date) ) ) AS lastlogingap "
 	                  + " FROM tbl_login_history "
 	                  + " WHERE fk_user_id = ? "
-	                  + " ) H " ;
+	                  + " ) H ";
 	         
 	         pstmt = conn.prepareStatement(sql);
 	         
@@ -202,9 +204,9 @@ public class MemberDAO_imple implements MemberDAO {
 	            member.setUserid(rs.getString("USER_ID"));
 	            member.setName(rs.getString("name"));
 	            member.setEmail( aes.decrypt(rs.getString("email")) );
-	               member.setMobile( aes.decrypt(rs.getString("mobile")) );
-	               member.setBirthday(rs.getString("birthday"));
-	               member.setLastpwdchangedate(rs.getString("lastpwdchangedate"));
+	            member.setMobile( aes.decrypt(rs.getString("mobile")) );
+	            member.setBirthday(rs.getString("birthday"));
+	            member.setLastpwdchangedate(rs.getString("lastpwdchangedate"));
 	            
 	            //// 마지막로그인과 오늘 날짜 차이 출력해보기 ////
 	            int lastLoginGap = rs.getInt("lastlogingap");
@@ -249,13 +251,9 @@ public class MemberDAO_imple implements MemberDAO {
 	                  // 마지막으로 암호를 변경한 날짜가 현재시각으로 부터 3개월이 지났으면 true
 	                  // 마지막으로 암호를 변경한 날짜가 현재시각으로 부터 3개월이 지나지 않았으면 false 
 	                  
-	                  member.setRequirePwdChange(true); // 로그인시 암호를 변경해라는 alert 를 띄우도록 할때 사용한다.
+	                  member.setRequirePwdChange(true); // 로그인시 암호를 변경하라는 alert 를 띄우도록 할때 사용
 	               }
 	            }
-	              member.setEmail( aes.decrypt(rs.getString("email")) );
-	               member.setMobile( aes.decrypt(rs.getString("mobile")) );
-	               member.setBirthday(rs.getString("birthday"));
-	               member.setLastpwdchangedate(rs.getString("pwdchangegap"));
 	               
 	         } // end of if(rs.next())------------------------------
 	         
@@ -345,7 +343,7 @@ public class MemberDAO_imple implements MemberDAO {
 		int result = 0;
 		try {
 			conn = ds.getConnection();
-			String sql = " update tbl_member set pwd = ? " /*, lastpwdchangedate = sysdate 비밀번호 찾기 시 비밀번호를 변경함*/
+			String sql = " update tbl_member set pwd = ?, PWD_CHANGE_DATE = sysdate " 
 					   + " where user_id = ? ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, Sha256.encrypt(paraMap.get("new_pwd")) ); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.
@@ -364,4 +362,232 @@ public class MemberDAO_imple implements MemberDAO {
 		
 	} // end of public int pwdUpdate(Map<String, String> paraMap)---------------------------------------
 
+	// 마지막 로그인 날짜 구하기
+	@Override
+	public String lastLogin(Map<String, String> paraMap) throws SQLException {
+		String lastLogin = "";
+		try {
+			conn = ds.getConnection();
+			String sql = " select to_char(min(login_date),'yyyy-mm-dd') AS lastLogin "
+						+ " FROM tbl_login_history "
+						+ " WHERE fk_user_id = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid") ); 
+			
+
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				lastLogin = rs.getString("lastLogin");
+			}
+	
+		}catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	  
+		return lastLogin;
+	}
+
+	//휴면 전환 날짜 날짜 구하기
+	@Override
+	public String idleChange(Map<String, String> paraMap) {
+		String idleChange = "";
+		try {
+			conn = ds.getConnection();
+			String sql = " select to_char(add_months( min(login_date),12),'yyyy-mm-dd') AS idleChange "
+					+ " FROM tbl_login_history "
+					+ " WHERE fk_user_id = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid") ); 
+			
+
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				idleChange = rs.getString("idleChange");
+			}
+	
+		}catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	  
+		return idleChange;
+	}
+
+	
+	//휴면계정 아이디의 전화번호 구하기
+	@Override
+	public String idleMemberMobile(String userid) throws SQLException {
+		
+		String idleMemberMobile = "";
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select mobile "
+					+ "  from tbl_member "
+					+ "  where user_id= ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				idleMemberMobile = aes.decrypt(rs.getString("mobile"));	
+			}
+			else {
+				idleMemberMobile = "";
+			}
+			// 행이 있으면(휴면계정의 전화번호) 전화번호 ,	
+			// 행이 없으면(휴면계정과 다른 전화번호.) 없으면 ""
+			//+ 휴면계정과 다른 전화번호이면 휴면계정의 인증을 할 수 없음.
+			
+			
+			
+		} catch(GeneralSecurityException | UnsupportedEncodingException e) {
+	         e.printStackTrace();
+	     }finally {
+			close();
+		}
+		
+		
+		return idleMemberMobile;
+	}
+
+	
+	//휴면계정 인증이 완료되었으니 idle_staus, logingap 1과 0으로 초기화
+	@Override
+	public int idleStatusUpdate(String idleMemberMobile) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			String sql = " update tbl_member set idle_status = '1' "
+					+ " where mobile= ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, aes.encrypt(idleMemberMobile) ); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.
+			
+			result = pstmt.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}catch(GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}  finally {
+			close();
+		}
+			
+		
+		
+		return result;
+	}
+
+	// 로그인 기록 테이블의 login_date컬럼 데이터 삭제
+	@Override
+	public int loginHistoryDelete(String idleMemberMobile) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			String sql = "update tbl_login_history set login_date= sysdate  "
+			+ " where fk_user_id =  "
+			+ " ( select user_id from tbl_member "
+			+ "    where mobile = ? "
+			+ " ) ";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, aes.encrypt(idleMemberMobile) ); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다.
+		
+		result = pstmt.executeUpdate();
+	
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}catch(GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}  finally {
+			close();
+		}
+		
+		return result;
+	}
+
+	// 비밀번호 변경 3개월 이상 시 현재 비밀번호와 사용자가 입력한 비밀번호 비교하기
+	@Override
+	public boolean currentPwd(String userid,String inputPwd) throws SQLException {
+		
+		boolean pwd = false;
+		try {
+			conn = ds.getConnection();
+			String sql = " select PWD "
+					   + " from tbl_member "
+					   + " where user_id =? and pwd=? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			pstmt.setString(2, Sha256.encrypt(inputPwd)); 
+			
+
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				pwd = true;
+			}
+			
+			
+	
+		}catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	  
+		
+		return pwd;
+	}
+
+	
+	//비밀번호 변경 3개월 이상 시 비밀번호 변경하기(update)
+	@Override
+	public int threeMonthPwdChange(String userid,String pwd) throws SQLException {
+
+		int result = 0;
+		try {
+			conn = ds.getConnection();
+			String sql = " update tbl_member set pwd = ?, PWD_CHANGE_DATE = sysdate " 
+					   + " where user_id = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, Sha256.encrypt(pwd) ); // 암호를 SHA256 알고리즘으로 단방향 암호화 시킴.
+			pstmt.setString(2, userid ); 
+			
+
+			result = pstmt.executeUpdate();
+	
+		}catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	  
+		return result;
+	}
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

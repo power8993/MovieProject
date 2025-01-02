@@ -27,4 +27,25 @@ public interface MemberDAO {
 
 	// 비밀번호 변경하기
 	int pwdUpdate(Map<String, String> paraMap) throws SQLException;
+
+	// 마지막 로그인 날짜 구하기
+	String lastLogin(Map<String, String> paraMap) throws SQLException;
+
+	//휴면 전환 날짜 날짜 구하기
+	String idleChange(Map<String, String> paraMap) throws SQLException;
+
+	//휴면계정 아이디의 전화번호 구하기
+	String idleMemberMobile(String userid) throws SQLException;
+
+	//휴면계정 인증이 완료되었으니 idle_staus를 1으로,  logingap의 데이터 삭제
+	int idleStatusUpdate(String idleMemberMobile) throws SQLException;
+
+	// 로그인 기록 테이블의 login_date컬럼 데이터 삭제
+	int loginHistoryDelete(String idleMemberMobile) throws SQLException;
+
+	// 비밀번호 변경 3개월 이상 시 현재 비밀번호와 사용자가 입력한 비밀번호 비교하기
+	boolean currentPwd(String userid,String inputPwd) throws SQLException;
+
+	// 비밀번호 변경 3개월 이상 시 비밀번호 변경하기(update)
+	int threeMonthPwdChange(String userid,String pwd) throws SQLException;
 }

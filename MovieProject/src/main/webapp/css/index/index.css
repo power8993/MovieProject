@@ -8,8 +8,9 @@ background-color:#fffcf2;
 
 div#adver {
    width: 100%;
-   border: solid 1px red;
-   height: 92px;
+  /*  border: solid 1px red; */
+   height: 80px;
+   background-color: #1a1413;
 }
 
 div.container {
@@ -18,43 +19,48 @@ div.container {
    margin: 0 auto; /* 가운데 정렬 */
    padding: 0px; /* 좌우 여백 */
    box-sizing: border-box; /* padding 포함 계산 */
-   border: solid 1px red;
+   /* border: solid 1px red; */
 }
 
 div#header{
    width:100%;
    display:flex;
    align-items: flex-start; /* 기본값: 자식 요소들이 위쪽에 정렬 */
-   margin-top:50px;
+   margin-top:20px;
    margin-bottom:0px;
 }
 
 div#logo{
    width: 12.24%;
    height: 61px;
-   border: solid 1px red;
+   /* border: solid 1px red; */
    margin-top: auto;
 }
+
+
 div#web_name{
-   width: 10%; /* 부모가 980px일 때 정확히 98px */
-    max-width: 98px; /* 부모가 작아질 경우 최대 크기를 제한 */
+   width: 36%; 
+    max-width: 295px; 
     height:27px;
-    border: solid 1px red;
+    /* border: solid 1px red; */
     align-self: flex-end; /* 부모 요소의 교차 축(세로) 하단으로 이동 */
-    margin-left:2%;
+    margin-left:5%;
+    letter-spacing: 5px; /* 자간 띄우기 */
 }
 
 
 
 .icon{
 	text-align:center;
-	margin-top:20px;
+	margin-top:22px;
 }
 .custom_a{
 	display: block; /* 또는 inline-block */
     text-align: center;
     width: 100%; /* 부모 요소의 너비를 100%로 설정 */
 	margin-right:0px;
+	font-size: 15px;
+	color: black;
 }
 
 
@@ -66,7 +72,7 @@ div#header > ul {
    margin-left:250px;
    margin-bottom:0px;
    padding:0px;
-   border: solid 1px black;
+   /* border: solid 1px black; */
 }
 
 div#header > ul > li{
@@ -78,20 +84,21 @@ div#header > ul > li{
 
 div#header > ul > li:nth-child(1){
    
-   border: solid 1px red;
+   /* border: solid 1px red; */
    margin-right:5%;
 }
 div#header > ul > li:nth-child(2){
    
-   border: solid 1px blue;
+   /* border: solid 1px blue; */
    margin-left:5%;
    margin-right:5%;
 }
 div#header > ul > li:nth-child(3){
    
-   border: solid 1px black;
+   /* border: solid 1px black; */
    margin-left:5%;
 }
+
 
 /* 네비게이션 바 */
 .nav.sticky-nav {
@@ -120,10 +127,12 @@ div#header > ul > li:nth-child(3){
     margin: 0;
 }
 
+
 .nav-list{
 	min-width: 980px;
-	border:solid 1px red;
+	/* border:solid 1px red; */
 }
+
 
 /* 링크 스타일 초기화 */
 .nav.sticky-nav .nav-link {
@@ -135,6 +144,7 @@ div#header > ul > li:nth-child(3){
 /* 링크 hover 스타일 */
 .nav.sticky-nav .nav-link:hover {
     background-color: #eb5e28;
+    color:white;
 }
 
 .btn-outline-success {

@@ -32,9 +32,9 @@ div#form_container > form {
 	
 .inputIdPw{
 	border: none;        /* 테두리 제거 */
-    outline: none;       /* 포커스 시 나타나는 아웃라인 제거 (선택 사항) */
-    background-color: transparent; /* 배경을 투명하게 (선택 사항) */
-    padding: 5px;        /* 내부 여백 설정 (선택 사항) */
+    outline: none;       
+    background-color: transparent; 
+    padding: 5px;        
 }
 #form_container form {
     text-align: center;
