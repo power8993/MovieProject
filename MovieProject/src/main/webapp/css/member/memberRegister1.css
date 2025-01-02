@@ -31,10 +31,10 @@ input[name='hp1'],input[name='hp2'],input[name='hp3']{
 }
 
 #registerbtn {
-	width:100px;
-	height:50px;
+	width:100%;
+	height:43px;
 	color: #ffffff; 
-    font-size: 14px; 
+    font-size: 18px; 
     background-color: #ff7a00;
     border: none;
     border-radius: 5px; 
@@ -49,7 +49,7 @@ input[name='hp1'],input[name='hp2'],input[name='hp3']{
 	background-color: #fa9205;
 
 }
-
+/* 취소하기 => 없앰.
 #resetbtn {
 	width:100px;
 	height:50px;
@@ -66,7 +66,7 @@ input[name='hp1'],input[name='hp2'],input[name='hp3']{
 }
 #resetbtn:hover{
 	background-color: #c7c2be; 
-}
+} */
 
 /* -----------------------------  */
 
@@ -75,7 +75,7 @@ input[name='hp1'],input[name='hp2'],input[name='hp3']{
 
 table#tblMemberRegister {
  /*	border: solid 1px red; */ 
-	width: 93%;
+	width: 400px;
 	margin: 1% auto;
 }
 

@@ -22,13 +22,14 @@ public class MovieList extends AbstractController {
        
 
         try {
-            // 영화 데이터 가져오기
+        	// 전체 목록 (예매율순)
         	List<MovieVO_yeo> movies = mdao.select_Movies();
+
         	// 영화 데이터를 request에 저장
             request.setAttribute("movies", movies);
             
-            
-            
+
+	
             // 장르 종류 가져오기
         	List<CategoryVO_yeo> cgList =  mdao.selectcategory();
             request.setAttribute("cgList", cgList);

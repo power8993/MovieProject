@@ -1,0 +1,73 @@
+@charset "UTF-8";
+div#form_container  {
+	width: 980px;
+	height: 600px;
+	margin: 0 auto;
+	box-sizing: border-box; /* padding 포함 계산 */
+	border:solid 1px red;
+}
+
+#contentElmt{
+	width:50%;
+	border:solid 1px red;
+	margin: 71px auto;
+	
+}
+
+#contentHeader{
+	display:flex;
+	align-items: center; /* 세로 중앙 정렬 */
+    gap: 10px; /* 이미지와 텍스트 사이 간격 */
+}
+#lockImg > img{
+	width:100px;
+	height:100px;
+}
+#contentHeaderMent{
+	font-size: 24px;
+    font-weight: 500; 
+    margin-bottom:0px;
+	margin-top: 16px;
+}
+
+
+
+#addMent{
+	margin-top: 20px;
+}
+
+
+input[name='currentPwd'],input[name='newPwd1'],input[name='newPwd2']{
+	display:block;
+	width:100%;
+	height:50px;
+	border: 1px solid #ccc;
+	background-color:transparent;
+}
+
+input[name='newPwd1']{
+	margin-top:30px;
+}
+
+
+#btnElmt{
+	margin-top:40px;
+}
+
+button[id='submitBtn'],button[type='button']{
+	width:50%;
+	height:50px;
+	border:solid 1px #ccc;
+}
+
+button[id='submitBtn']{
+	background-color:#eb5e28;
+	color:white;
+	
+}
+
+button[id='button']{
+	background-color:transparent;
+}
+
+

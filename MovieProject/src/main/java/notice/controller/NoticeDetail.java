@@ -17,11 +17,23 @@ public class NoticeDetail extends AbstractController {
         NoticeDAO_imple noticeDAO = new NoticeDAO_imple();
         NoticeDTO notice = noticeDAO.detailNotice(Integer.parseInt(seq_Notice_no));
 
-        // 조회한 공지사항 정보를 request에 담기
-        request.setAttribute("notice", notice);
-
-        // noticeDetail.jsp로 이동
-        super.setRedirect(false);
-        super.setViewPage("/WEB-INF/notice/noticeDetail.jsp");
+        if (notice == null) {
+        	String message = "잘못된 접근입니다.";
+        	String loc = "javascript:history.back()";
+        	
+        	request.setAttribute("message", message);
+        	request.setAttribute("loc", loc);
+        	
+        	super.setRedirect(false);
+	        super.setViewPage("/WEB-INF/msg.jsp");
+        }
+        else {       
+	        // 조회한 공지사항 정보를 request에 담기
+	        request.setAttribute("notice", notice);
+	
+	        // noticeDetail.jsp로 이동
+	        super.setRedirect(false);
+	        super.setViewPage("/WEB-INF/notice/noticeDetail.jsp");
+        }
     }
 }

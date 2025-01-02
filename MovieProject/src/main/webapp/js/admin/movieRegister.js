@@ -2,11 +2,8 @@
 
 $(document).ready(function() {
 	
-
-	$("input[id='movie_title']").focus(); // 영화제목 입력에 포커스
-
-
 	
+	$("input[id='movie_title']").focus(); // 영화제목 입력에 포커스
 	
 	// ===== 감독 입력 시작 ===== //
 	// --- 입력값 나열되도록 하기
@@ -353,7 +350,7 @@ function checkDuplicate() {
 
                         <!-- 검색 결과 -->
                         <div id="search_result" style="display:none;">
-                            <table class="table">
+                            <table class="table" id="modal_table>
                                 <thead>
                                     <tr>
                                         <th>영화제목</th>
@@ -374,7 +371,7 @@ function checkDuplicate() {
 
                     <!-- Modal Footer -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
                     </div>
                 </div>
             </div>
@@ -490,3 +487,16 @@ function charCount(text, limit) {
     }
 }// end of function charCount(text, length){}---------------------------
 
+
+
+// ===== 영화 등록 페이지에서 [취소하기]를 눌렀을 때의 클릭이벤트 ===== //
+function confirmCancel() {
+
+    const user_confirm = confirm("상영일정 등록을 취소하시겠습니까?");
+
+    if (user_confirm) {
+        // 사용자가 '확인'을 눌렀을 경우
+		window.location.href = "admin.mp"; // 관리자의 첫 페이지로 이동
+    }
+
+}// end of function confirmCancel() {}----------------------------------

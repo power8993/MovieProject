@@ -21,7 +21,7 @@
          
          <%-- 무비차트 시작  --%>
          <div id="content">
-            <h3 id="movie_ct">무비차트</h3>
+            <h3 id="movie_ct"  style="font-weight:700;">무비차트</h3>
             <div id="cardCarousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <!-- 첫 번째 카드 세트 -->
@@ -104,7 +104,7 @@
             
             
             <%-- 상영예정작 시작  --%>
-            <h3 id="movie_ct">무비차트</h3>
+            <h3 id="movie_ct" style="font-weight:700;">상영예정작</h3>
             <div id="cardCarousel2" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <!-- 첫 번째 카드 세트 -->

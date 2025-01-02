@@ -32,7 +32,7 @@ function mymovielikeHIT(start) {
 	},	
 		dataType: "json",
 		success: function(json) {
-			//console.log("~~ 확인용 json =>", json);
+			console.log("~~ 확인용 json =>", json);
 			let v_html = ``;
 
 			if (start == "1" && json.length == 0) {
@@ -47,15 +47,16 @@ function mymovielikeHIT(start) {
 					v_html += `	<div class="col-md-6 col-lg-4">
 					            <div class="card mb-3 movielikecss">
 					                <div class="poster_relative">
+									<a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${item.FK_SEQ_MOVIE_NO}" >
 					                   <img src="/MovieProject/images/admin/poster_file/${item.poster_file}" class="card-img-top">
-					                </div>
+					                </a></div>
 					                <div class="movielikecss1" >
 					                    <ul class="list-unstyled">
-					                        <li><label class="prodInfo mylike">${item.movie_title}</label></li>
-					                        <li><label class="prodInfo mylike">${item.start_date}</label></li>
+					                        <li><label class="prodInfo">${item.movie_title}</label></li>
+					                        <li><label class="prodInfo">${item.start_date}</label></li>
 					                        <li class="text-center">
 					                            <a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${item.FK_SEQ_MOVIE_NO}" 
-					                                class="btn stretched-link mybtnlike" role="button">예매하기</a>
+					                                class="btn" role="button">예매하기</a>
 					                        </li>
 										</ul>
 										
@@ -69,11 +70,6 @@ function mymovielikeHIT(start) {
 				$("button#btnmymovielike").val(Number(start) + lenHIT);
 				
 				$("span#mymovielikecount").text(Number($("span#mymovielikecount").text()) + json.length);
-
-				if ($("span#mymovielikecount").text() == $("span#totalmymovielike").text()) {
-					$("button#btnmymovielike").text("처음으로");
-					$("span#mymovielikecount").text("0");
-				}
 
 
 			}

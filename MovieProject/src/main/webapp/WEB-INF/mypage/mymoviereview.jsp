@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <%
 String ctxPath = request.getContextPath();
 %>
@@ -11,9 +9,14 @@ String ctxPath = request.getContextPath();
 <%-- 직접 만든 CSS --%>
 <link rel="stylesheet" type="text/css"
 	href="<%=ctxPath%>/css/mypage/mypagemain.css" />
-<%-- 직접 만든 CSS --%>
+<%-- 영화 버튼바 css --%>
 <link rel="stylesheet" type="text/css"
 	href="<%=ctxPath%>/css/mypage/mypagemovie.css" />
+<%-- 직접 만든 CSS --%>
+<link rel="stylesheet" type="text/css"
+	href="<%=ctxPath%>/css/mypage/mymoviereview.css" />
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/mypage/mymoviereview.js"></script> 
+
 <%-- h3 a태그의 이모티콘 --%>
 <script src="https://kit.fontawesome.com/0c69fdf2c0.js"
 	crossorigin="anonymous"></script>
@@ -96,26 +99,62 @@ String ctxPath = request.getContextPath();
 			<%-- 영화 버튼바 끝 --%>
 
 
-			<!-- 내가 쓴 평점  -->
-			<div class="my_main_movie">
-				<div class="my_mywatchedmovie_list">
-					<c:if test="${not empty requestScope.REVIEW_CONTENT}">
-						<ul>
-							<c:forEach var="my_review" items="${requestScope.REVIEW_CONTENT}">
-								<li>${review.POSTER_FILE}</li>
-								<li>영화:${review.MOVIE_TITLE}-평점:${review.MOVIE_RATING}</li>
-							</c:forEach>
-						</ul>
-					</c:if>
-					<c:if test="${empty requestScope.reviews}">
+
+
+ 			<!-- 내가 쓴 평점  -->
+ 			<div class="my_main_movie">
+ 			
+					<c:if test="${not empty requestScope.mymoviereviewList}">
+					<ul class="my_moviereview_List">
+						<c:forEach var="mrvo" items="${requestScope.mymoviereviewList}"
+							varStatus="status">
+							<li class="my_main_moviereview_card">
+							
+							<div class = "sect-viw-rated">
+							
+							<!-- 포스터 이미지 -->
+								<div class="my_main_moviereview_poster">
+								<a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${mrvo.fk_seq_movie_no}" >
+									<img 
+										src="${pageContext.request.contextPath}/images/admin/poster_file/${mrvo.mvo.poster_file}"
+										alt="${mrvo.mvo.movie_title}"/>
+								</a>					
+								</div>
+								
+								 <!-- 리뷰 정보 -->
+									<div class="my_main_moviereview_box">
+									
+									<div class="my_moviereview_title">
+										<strong>${mrvo.mvo.movie_title}</strong>
+									</div>
+										<ul>
+										<li>${mrvo.fk_user_id} |</li>
+										<li> ${mrvo.review_write_date} </li>
+										</ul>
+											 <!-- 삭제 버튼 -->
+								<button type="button" class="mymoviereview_delete_btn"
+									onclick="mymoviereview_delete(${mrvo.seq_review_no})">×</button>
+									
+										
+									<p class="review_date">평점:${mrvo.movie_rating} ${mrvo.review_content}</p>
+									
+									</div>
+									
+									<!-- 수정 버튼 -->
+									<button type="button" class="mymoviereview_update_btn"
+										onclick="mymoviereview_update(${mrvo.seq_review_no})">수정하기</button>
+								</div>
+									
+							</li>
+						</c:forEach>
+					</ul>
+				</c:if>
+					<c:if test="${empty requestScope.mymoviereviewList}">
 						<p class="empty">작성한 평점이 없습니다.</p>
 					</c:if>
+					
 				</div>
-			</div>
-			<!-- 내가 쓴 평점  끝 -->
-
-
-
+		<!-- 내가 쓴 평점 끝  -->
 
 
 		</div>

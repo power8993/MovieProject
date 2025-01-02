@@ -310,7 +310,7 @@ function goFind() {
              } 
              else if (json.isUserExist && !json.sendMailSuccess) {
                  // 사용자가 존재하지만 메일 발송에 실패한 경우
-                 resultHtml = `<span style="color: red;">메일발송이 실패했습니다</span>`;
+                 resultHtml = `<span style="color: red;">메일발송을 실패했습니다</span>`;
              }
 
              // 결과를 div에 삽입

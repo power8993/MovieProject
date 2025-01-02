@@ -418,7 +418,7 @@ $(document).ready(function(){
 				
 				if(json.isExists) {
 					// 입력한 userid 가 이미 사용중이라면
-					$("span#idcheckResult").html("이미 사용 중인 아이디입니다.").css({"color":"navy","fontSize":"10pt"});
+					$("span#idcheckResult").html("이미 사용 중인 아이디입니다.").css({"color":"red","fontSize":"10pt"});
 					$("input#userid").val("");
 					b_idcheck_click = false;
 				}
@@ -611,14 +611,11 @@ function goRegister() {
 	
 }
 
-
+/* 취소하기 => 없앰
 function goReset() {
 
-    $("span.error").hide();
-
-    $("span#idcheckResult").empty();
-    $("span#emailCheckResult").empty();
+    history.back();
 }// end of function goReset()---------------------
-
+*/
 
 
