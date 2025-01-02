@@ -141,6 +141,15 @@
             width: 100%;
             height: 160px;
         }
+
+		.v-line{
+		 border-left: thick solid #000;
+		 height:100%;
+		 left: 50%;
+		 position: absolute;
+		}
+        
+        
     </style>
 
 </head>
@@ -213,8 +222,8 @@
                 datasets: [{
                     label: '',
                     data: [15, 40, 25, 10, 10],
-                    backgroundColor: '#FF5733',
-                    borderColor: '#FF5733',
+                    backgroundColor: 'Navy',
+                    borderColor: 'Navy',
                     borderWidth: 1
                 }]
             },
@@ -275,22 +284,25 @@
         <p>${mvo.content}</p>
     </div>
 
-    <hr style="width: 95%; border: 1.5px solid #ccc5b9;">
+    <hr style="width: 95%; border: 1.5px solid #ccc5b9; margin-bottom: 30px;">
     
-    <ul class="graph">
-        <li>
-            <strong>성별 예매 분포</strong>
-            <div class="chart">
-                <canvas id="genderChart" width="380" height="160"></canvas>
-            </div>
-        </li>
-        <li>
-            <strong>연령별 예매 분포</strong>
-            <div class="chart">
-                <canvas id="ageChart" width="380" height="160"></canvas>
-            </div>
-        </li>
-    </ul>
+   <div id="graphdiv" style="border-top: 1px solid #ccc5b9; border-bottom: 1px solid #ccc5b9; width: 95%; margin: 0 auto;">
+	    <ul class="graph" style="list-style-type: none; padding: 0; margin: 0; display: flex; justify-content: space-between;">
+	        <li style="flex: 1; border-right: 1px solid #ccc5b9; padding-right: 10px; margin-right: 10px; text-align: center;">
+	            <strong style="display: block; border-bottom: 1px solid #ccc5b9; padding: 10px 0 10px 0; margin-bottom: 25px; color: #eb5e28;">성별 예매 분포</strong>
+	            <div class="chart" style="display: flex; justify-content: center; margin-top: 15px; margin-bottom: 15px;">
+	                <canvas id="genderChart" width="380" height="160"></canvas>
+	            </div>
+	        </li>
+	        
+	        <li style="flex: 1; text-align: center;">
+	            <strong style="display: block; border-bottom: 1px solid #ccc5b9; padding: 10px 0 10px 0; margin-bottom: 25px; color: #eb5e28;">연령별 예매 분포</strong>
+	            <div class="chart" style="display: flex; justify-content: center; margin-top: 15px; margin-bottom: 15px;">
+	                <canvas id="ageChart" width="380" height="160"></canvas>
+	            </div>
+	        </li>
+	    </ul>
+	</div>
 
     <!-- 후기 작성 -->
     <div class="review-section" style="margin-top: 20px;">       
