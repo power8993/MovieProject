@@ -66,10 +66,10 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 			conn = ds.getConnection();
 
 			// 공지사항 번호(seq_notice_no)를 기준으로 상세 정보를 조회
-			String sql = " select seq_movie_no, movie_title, director, actor, running_time, start_date, content, category, poster_file "
+			String sql = " select seq_movie_no, movie_title, director, actor, running_time, start_date, content, category, poster_file, movie_grade "
 					+ " from "
 					+ " ( "
-					+ " select movie_title, director, actor, running_time, start_date, content, poster_file, seq_movie_no "
+					+ " select movie_title, director, actor, running_time, start_date, content, poster_file, seq_movie_no, movie_grade "
 					+ " from tbl_movie "
 					+ " ) m, "
 					+ " ( "
@@ -93,6 +93,7 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 				mvo.setStart_date(rs.getString("start_date"));
 				mvo.setContent(rs.getString("content").replace("\r\n","<br>"));		
 				mvo.setPoster_file(rs.getString("poster_file"));
+				mvo.setMovie_grade(rs.getString("movie_grade"));
 				
 				CategoryVO cvo = new CategoryVO();
 				cvo.setCategory(rs.getString("category"));

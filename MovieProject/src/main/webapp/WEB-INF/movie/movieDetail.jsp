@@ -261,7 +261,7 @@
             <i id="like" class="fa-solid fa-heart fa-bounce" onclick="golike(this, ${mvo.seq_movie_no})"  style="color:${isLiked ? '#ff2626' : '#252422'}; position: absolute; top: 10px; right: 10px; z-index: 5; font-size: 20pt;"></i>
         </div>
         <div class="movie-details" style="margin: 0 15px">
-            <div class="movie-title" style="color:#eb5e28;">${mvo.movie_title} </div>
+            <div class="movie-title" style="color:#eb5e28;"><img src="<%= ctxPath%>/images/admin/movie_grade/${mvo.movie_grade}.png" alt="${mvo.movie_grade}" style="width:35px; height:auto; margin-right: 10px; margin-bottom: 10px;">${mvo.movie_title} </div>
             <div class="movie-info">
                 <div style="border-bottom: solid 2px #ccc5b9; padding-bottom: 10px; width: 100%;"><strong>예매율:</strong> 0%</div>             
                 <div style="width: 20%;"><strong>감독:</strong> ${mvo.director}</div>
