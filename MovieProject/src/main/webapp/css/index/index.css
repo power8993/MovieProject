@@ -294,6 +294,14 @@ div#notis>#right {
   border-top-right-radius: 10px;   /* 왼쪽 위 모서리 둥글게 */
   border-bottom-right-radius: 10px; /* 왼쪽 아래 모서리 둥글게 */
 }
+#rightContent{
+	/* border:solid 1px red; */
+	margin: 0 auto;
+	width:300px;
+	height:150px;
+	margin-top: 40px;
+}
+
 /* 콘텐츠 높이 상관없이 푸터 하단에 두기 
 #wrap {
     min-height: 100%;
