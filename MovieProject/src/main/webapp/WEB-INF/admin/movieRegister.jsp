@@ -14,7 +14,10 @@
   
 
 	<div class="movie_register_container">
-	    <h2>영화 등록</h2>
+		<div class="movie_header">
+		    <h2>영화 등록</h2>
+		    <span><span class="star">*&nbsp;</span>표시는 <span class="star">필수 기재 사항</span>입니다.</span>
+	    </div>
 		  <form name="movie_register" method="post" action="<%= ctxPath%>/admin/movieRegister.mp">
 		    <table class="table" id="tbl_movie_register">
 		      <tbody>
@@ -22,7 +25,7 @@
 		        <tr>
 		          <td>
 		          	<div class="form-group">
-		              	<label for="movie_title"><span class="star">*&nbsp;</span>영화제목</label>
+		              	<label for="movie_title" class="info_text"><span class="star">*&nbsp;</span>영화제목</label>
 		              	<!-- 영화 제목을 입력받는 텍스트 필드 -->
 		           	 	<input type="text" name="movie_title" class="form-control" id="movie_title" placeholder="영화 제목을 입력하세요">
 		            	<!-- 등록된 영화 조회 버튼 -->
@@ -39,7 +42,10 @@
 		          <td>
 		          	 <!-- 줄거리를 입력받는 텍스트 영역 -->
 		          	<div class="form-group">
-		              <label for="content"><span class="star">*&nbsp;</span>줄거리&nbsp; <span id="char_count" class="form-text text-muted">0 / 500</span></label>
+		          		<div class="movie_content">
+			            	<label for="content" class="info_text"><span class="star">*&nbsp;</span>줄거리&nbsp;</label>
+			            	<span id="char_count" class="form-text text-muted">0 / 500</span>
+		              	</div>
 		              <textarea class="form-control" name="content" id="content" rows="4" onkeyup="charCount(this,500)" placeholder="줄거리를 입력하세요."></textarea>
 		            </div>
 		          </td>
@@ -50,14 +56,14 @@
 		        	<td>
 					  <div class="form-row">
 					    <div class="col">
-					      <label for="director"><span class="star">*&nbsp;</span>감독</label>
+					      <label for="director" class="info_text"><span class="star">*&nbsp;</span>감독</label>
 					      <input type="text" id="director" name="director" class="form-control" placeholder="감독 이름을 입력하세요" autocomplete="off">
 					      <div id="director_tags" class="d-flex flex-wrap mt-2">
 					        <!-- 감독 이름이 나열되는 곳 -->
 					      </div>
 					    </div>
 					    <div class="col">
-					      <label for="actor"><span class="star">*&nbsp;</span>배우</label>
+					      <label for="actor" class="info_text"><span class="star">*&nbsp;</span>배우</label>
 					      <input type="text" id="actor" name="actor" class="form-control" placeholder="배우 이름을 입력하세요" autocomplete="off">
 					      <div id="actor_tags" class="d-flex flex-wrap mt-2">
 					        <!-- 배우 이름이 나열되는 곳 -->
@@ -72,7 +78,7 @@
 		          <td>
 		            <div class="form-row">
 			            <div class="col">
-			              <label for="fk_category_code"><span class="star">*&nbsp;</span>장르</label>
+			              <label for="fk_category_code" class="info_text"><span class="star">*&nbsp;</span>장르</label>
 			              <select class="form-control" name="fk_category_code" id="fk_category_code">
 			                <option value="">장르</option>
 			                <option value="액션">액션</option>
@@ -90,11 +96,11 @@
 			              </select>
 			            </div>
 			            <div class="col">
-			              <label for="running_time"><span class="star">*&nbsp;</span>러닝타임 (분)</label>
+			              <label for="running_time" class="info_text"><span class="star">*&nbsp;</span>러닝타임 (분)</label>
 			              <input type="number" class="form-control" name="running_time" id="running_time" min="0" placeholder="러닝타임">
 			            </div>
 			            <div class="col">
-			              <label for="movie_grade"><span class="star">*&nbsp;</span>상영등급</label>
+			              <label for="movie_grade" class="info_text"><span class="star">*&nbsp;</span>상영등급</label>
 			              <select class="form-control" name="movie_grade" id="movie_grade">
 			                <option value="">상영등급</option>
 			                <option value="전체">전체관람가</option>
@@ -112,11 +118,11 @@
 		          <td>
 		            <div class="form-row">
 			            <div class="col">
-			              <label for="start_date">상영 시작일(개봉일)</label>
+			              <label for="start_date" class="info_text">상영 시작일(개봉일)</label>
 			              <input type="date" class="form-control" name="start_date" id="start_date">
 			            </div>
 			            <div class="col">
-			              <label for="end_date">상영 종료일</label>
+			              <label for="end_date" class="info_text">상영 종료일</label>
 			              <input type="date" class="form-control" name="end_date" id="end_date">
 			            </div>
 		            </div>
@@ -127,21 +133,22 @@
 		        <tr>
 		          <td>
 		            <div class="form-group">
-		              <label for="poster_file">포스터 파일</label>
+		              <label for="poster_file" class="info_text">포스터 파일</label>
 		              <input type="text" class="form-control" name="poster_file" id="poster_file" placeholder="파일명">
 		            </div>
 		            <div class="form-group">
-		              <label for="video_url">예고편 URL</label>
+		              <label for="video_url" class="info_text">예고편 URL</label>
 		              <input type="url" class="form-control" name="video_url" id="video_url" placeholder="예고편 URL 입력">
 		            </div>
 		          </td>
 		        </tr>
 		      </tbody>
 		    </table>
-		
-		    <button type="submit" id="resister_btn" class="btn btn-success" value="등록하기">영화등록하기</button>
-		    <button type="reset" class="btn btn-danger" value="취소하기">취소하기</button>
-		    
+			
+			<div class="d-flex justify-content-end btns">
+			    <button type="submit" id="resister_btn" class="btn btn-success ml-auto" value="등록하기">영화등록하기</button>
+			    <button type="reset" id="reset_btn" class="btn btn-danger" value="취소하기" onclick="confirmCancel()">취소하기</button>
+		    </div>
 		  </form>
 	</div>
 

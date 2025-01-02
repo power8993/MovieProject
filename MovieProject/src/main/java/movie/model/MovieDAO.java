@@ -35,17 +35,26 @@ public interface MovieDAO {
 	// [상영시간 조회하기] 선택한 상영 시간과 상영관에 중첩된 상영이 있는지 확인하는 메소드 (select)
 	List<MovieVO> selectShowtimeConflict(Map<String, String> paraMap) throws SQLException;
 
-	// 페이징 처리를 안한 상영일정이 등록된 모든 영화 리스트 보여주기 (select)
+	// 페이징 처리를 안 한 상영일정 리스트 보여주기 (select)
 	List<MovieVO> selectShowtimeList(Map<String, String> paraMap) throws SQLException;
 	
-	// 페이징 처리를 위한 검색유무와 상관 없는 회원에 대한 총 페이지 수 알아오기 
-	int getTotalPage(Map<String, String> paraMap) throws SQLException;
+	// 페이징 처리를 위한 검색유무와 상관 없는 영화에 대한 총 페이지 수 알아오기 
+	int getTotalMoviePage(Map<String, String> paraMap) throws SQLException;
 	
 	// 페이징 처리를 한 모든 등록된 영화 리스트 보여주기 (select)
 	List<MovieVO> selectMovieListPaging(Map<String, String> paraMap) throws SQLException;
 	
-	// 검색이 있는 또는 검색이 없는 회원의 총개수 알아오기
+	// 검색이 있는 또는 검색이 없는 영화의 총개수 알아오기
 	int getTotalMovieCount(Map<String, String> paraMap) throws SQLException;
+	
+	// 페이징 처리를 위한 검색이 있는 또는 검색이 없는 상영일정 목록에 대한 총페이지수 알아오기 
+	int getTotalShowtimePage(Map<String, String> paraMap) throws SQLException;
+	
+	// 페이징 처리를 한 모든 상영일정 리스트 보여주기 (select)
+	List<MovieVO> selectShowtimeListPaging(Map<String, String> paraMap) throws SQLException;
+	
+	// 검색이 있는 또는 검색이 없는 영화 상영 일정의 총개수 알아오기
+	int getTotalShowtimeCount(Map<String, String> paraMap) throws SQLException;
 
 	
 
