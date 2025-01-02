@@ -8,7 +8,7 @@ import movie.domain.MovieVO_yeo;
 import movie.model.MovieDAO_yeo;
 import movie.model.MovieDAO_imple_yeo;
 
-public class MovieTime extends AbstractController {
+public class SearchDate extends AbstractController {
 
     private MovieDAO_yeo mdao = new MovieDAO_imple_yeo();
 
@@ -22,14 +22,25 @@ public class MovieTime extends AbstractController {
         }
 
         try {
-             
-            List<MovieVO_yeo> movieTimeList = mdao.selectMovieTimeByDate(selectedDate);
+        	
+        	 List<MovieVO_yeo> movieTimeList = mdao.selectMovieTimeByDate(selectedDate);
 
-            // JSP에 데이터 전달
-            request.setAttribute("movieTimeList", movieTimeList);
+             // JSP에 데이터 전달
+             request.setAttribute("movieTimeList", movieTimeList);
+             request.setAttribute("selectedDate", selectedDate);
+        	
+        	
+            // 1관 
+            List<MovieVO_yeo> movieTimeList_o = mdao.selectMovieTimeByDateNO1(selectedDate);
+
+            request.setAttribute("movieTimeList_o", movieTimeList_o);
             request.setAttribute("selectedDate", selectedDate);
             
-           
+            // 2관 
+            List<MovieVO_yeo> movieTimeList_t = mdao.selectMovieTimeByDateNO2(selectedDate);
+            
+            request.setAttribute("movieTimeList_t", movieTimeList_t);
+            request.setAttribute("selectedDate", selectedDate);
 
             // View 설정
             super.setRedirect(false);
