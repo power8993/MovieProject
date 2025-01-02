@@ -250,7 +250,7 @@ $(document).ready(function() {
 			let start_date = $("input[name='start_date']").val();
 			let end_date = $("input[name='end_date']").val();
 			
-			const today = new Date(); // 오늘날짜
+//			const today = new Date(); // 오늘날짜
 			const start_date_obj = new Date(start_date);
 			const end_date_obj = new Date(end_date);
 			
@@ -259,7 +259,7 @@ $(document).ready(function() {
 			if(start_date && end_date) {
 				// 상영시작일과 상영종료일이 둘 다 비어있지 않을 경우
 			
-				if(today > start_date_obj) {
+/*				if(today > start_date_obj) {
 					start_date_dom.setCustomValidity("상영시작일은 오늘보다 이후여야 합니다.");
 					start_date_dom.reportValidity();  // 유효성 검사 메시지 표시
 					
@@ -269,7 +269,8 @@ $(document).ready(function() {
 					
 					is_empty = true;
 				}
-				else if(start_date_obj > end_date_obj) {
+				else */
+				if(start_date_obj > end_date_obj) {
 					start_date_dom.setCustomValidity("상영시작일이 상영종료일보다 나중일 수 없습니다.");
 					start_date_dom.reportValidity();  // 유효성 검사 메시지 표시
 					
@@ -283,7 +284,7 @@ $(document).ready(function() {
 					start_date_dom.setCustomValidity("");  // 오류 메시지 제거
 				}
 			}
-			else if(start_date || end_date) {
+			else if((start_date && !end_date) || (!start_date && end_date)) {
 				// 상영시작일과 상영종료일이 둘 중 한 값이 비어있을 경우
 				start_date_dom.setCustomValidity("상영시작일과 상영종료일은 함께 입력되거나, 둘 다 입력되지 않은 상태여야 합니다");
 				start_date_dom.reportValidity();  // 유효성 검사 메시지 표시

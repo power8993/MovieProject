@@ -22,9 +22,9 @@ public class MovieRegisteredList extends AbstractController {
 		String search_category = request.getParameter("search_category");
 		String search_type = request.getParameter("search_type");
 		String search_word = request.getParameter("search_word");
+		String search_orderby = request.getParameter("search_orderby");
 		String size_per_page = request.getParameter("size_per_page");
 		String current_showpage_no = request.getParameter("current_showpage_no"); // 현재 내가 보고자하는 페이지
-		
 		
 		// ===== 입력하지 않았을 경우에 대한 NULL 처리 ===== //
 		if(search_category == null ||
@@ -43,6 +43,11 @@ public class MovieRegisteredList extends AbstractController {
 		if(search_word == null) {
 			search_word = "";
 		}
+		
+		if(search_orderby == null ||
+		  (!"asc".equals(search_orderby)) && (!"desc".equals(search_orderby))) {
+			search_orderby = "desc";
+		}
 	
 		if(size_per_page == null||
 		  (!"10".equals(size_per_page)) && (!"15".equals(size_per_page)) && (!"20".equals(size_per_page))) {
@@ -52,11 +57,12 @@ public class MovieRegisteredList extends AbstractController {
 		if(current_showpage_no == null) {
 			current_showpage_no = "1";
 		}
-
+		
 		/*
 		 * System.out.println("~~~~ 확인용 search_category : " + search_category);
 		 * System.out.println("~~~~ 확인용 searchType : " + search_type);
 		 * System.out.println("~~~~ 확인용 searchWord : " + search_word);
+		 * System.out.println("~~~~ 확인용 search_orderby : " + search_orderby);
 		 * System.out.println("~~~~ 확인용 sizePerPage : " + size_per_page);
 		 * System.out.println("~~~~ 확인용 currentShowPageNo : " + current_showpage_no);
 		 */
@@ -65,14 +71,15 @@ public class MovieRegisteredList extends AbstractController {
 		paraMap.put("search_category", search_category);
 		paraMap.put("search_type", search_type);
 		paraMap.put("search_word", search_word);
+		paraMap.put("search_orderby", search_orderby);
 		paraMap.put("size_per_page", size_per_page); 			  // 한 페이지당 보여줄 행의 개수
 		paraMap.put("current_showpage_no", current_showpage_no);  // 현재 내가 보고자하는 페이지
 		
 		
 		// **** 페이징 처리를 한 모든 영화 목록 또는 검색되어진 영화 목록 보여주기 **** //
 		
-		// 페이징 처리를 위한 검색이 있는 또는 검색이 없는 회원에 대한 총페이지수 알아오기 //
-		int total_page = mvdao.getTotalPage(paraMap);
+		// 페이징 처리를 위한 검색이 있는 또는 검색이 없는 영화에 대한 총페이지수 알아오기 //
+		int total_page = mvdao.getTotalMoviePage(paraMap);
 		// System.out.println("~~~~ 확인용 total_page = > " + total_page);
 		
 		// 총 페이지수가 아닌 페이지를 GET 방식으로 접근하려고 할 때의 처리
@@ -111,20 +118,16 @@ public class MovieRegisteredList extends AbstractController {
 	       		page_bar += "<li class='page-item active'><a class='page-link' href='#'>"+page_no+"</a></li>";
 	       	}
 	       	else {
-	       		page_bar += "<li class='page-item'><a class='page-link' href='movieRegisteredList.mp?search_category="+search_category+"&search_type="+search_type+"&search_word="+search_word+"&size_per_page="+size_per_page+"&current_showpage_no="+page_no+"'>"+page_no+"</a></li>";
+	       		page_bar += "<li class='page-item'><a class='page-link' href='movieRegisteredList.mp?search_category="+search_category+"&search_type="+search_type+"&search_word="+search_word+"&size_per_page="+size_per_page+"&current_showpage_no="+page_no+"&search_orderby="+search_orderby+"'>"+page_no+"</a></li>";
 	       	}
-	       	loop++;   // 1 2 3 4 5 6 7 8 9 10
+	       	loop++;
 	       	
-	       	page_no++; //  1  2  3  4  5  6  7  8  9 10
-	       			  // 11 12 13 14 15 16 17 18 19 20
-	       			  // 21 22 23 24 25 26 27 28 29 30
-	       			  // 31 32 33 34 35 36 37 38 39 40
-	       			  // 41 42
+	       	page_no++; 
 		}// end of while( !(loop > blockSize || pageNo > totalPage))---------------------------------------
        
 		
 		// [다음][마지막] 만들기
-		if(page_no <= total_page) {	// 위의 while 문을 빠져나오면 pageNo 는 43으로 빠져나오기 때문에 <= 를 조건식으로 둔다.
+		if(page_no <= total_page) {	
 			page_bar += "<li class='page-item'><a class='page-link' href='movieRegisteredList.mp?search_category="+search_category+"&search_type="+search_type+"&search_word="+search_word+"&size_per_page="+size_per_page+"&current_showpage_no="+page_no+"'>[다음]</a></li>";
         }
         
@@ -139,20 +142,19 @@ public class MovieRegisteredList extends AbstractController {
 			request.setAttribute("search_category", search_category);
 			request.setAttribute("search_type", search_type);
 			request.setAttribute("search_word", search_word);
+			request.setAttribute("search_orderby", search_orderby);
 			
 			request.setAttribute("size_per_page", size_per_page);
 			request.setAttribute("page_bar", page_bar);
 			
-			/* >>> 뷰단(movieRegisteredList.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 
-             검색이 있는 또는 검색이 없는 회원의 총개수 알아오기 시작 <<< */
+			/* >>> 뷰단(movieRegisteredList.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 검색이 있는 또는 검색이 없는 영화의 총개수 알아오기 시작  <<< */
 			int total_movie_count = mvdao.getTotalMovieCount(paraMap);
 			// System.out.println("확인용 total_movie_count : " + total_movie_count);
 			
 			request.setAttribute("total_movie_count", total_movie_count);
 			request.setAttribute("current_showpage_no", current_showpage_no);
 			
-			/* >>> 뷰단(movieRegisteredList.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 
-             검색이 있는 또는 검색이 없는 회원의 총개수 알아오기 끝  <<< */
+			/* >>> 뷰단(movieRegisteredList.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 검색이 있는 또는 검색이 없는 영화의 총개수 알아오기 끝  <<< */
 			
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/admin/movieRegisteredList.jsp");
@@ -165,7 +167,7 @@ public class MovieRegisteredList extends AbstractController {
 		}
 		
 		
-		/*
+/*
 		try { // **** 페이징 처리를 안한 모든 등록된 영화 리스트 보여주기 **** // 
 			List<MovieVO> movieList = mvdao.selectMovieList(paraMap);
 			
@@ -179,7 +181,7 @@ public class MovieRegisteredList extends AbstractController {
 		
 			super.setRedirect(false); super.setViewPage("/WEB-INF/msg.jsp"); 
 		}
-		*/
+*/
 	}// end of public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {}----------------
 
 }
