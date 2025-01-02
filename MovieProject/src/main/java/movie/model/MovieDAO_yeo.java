@@ -8,11 +8,7 @@ import movie.domain.MovieVO_yeo;
 
 public interface MovieDAO_yeo {
 	
-	
-	
-	
-	
-	// 모든 영화 정보 가져오기 (예매율 순)
+
 	List<MovieVO_yeo> select_Movies() throws SQLException;
 	
 	// 상영중 영화 가져오기(예매율 순)
