@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>   
 <% String ctxPath = request.getContextPath(); %>
 
@@ -13,46 +14,115 @@
 <%-- 직접 만든 Javascript --%>
 <script type="text/javascript" src="<%= ctxPath%>/js/admin/showtimeList.js"></script>
 
-	<div class="movie_edit_container">
-		<h2>상영일정 리스트 [조회/삭제(고려사항)]</h2>
-		<form name="movie_search_frm">
-			<select name="search_orderby">
-				<option value="">상영일자</option>		
-				<option value="내림차순">내림차순</option>   <!-- 상영일자가 먼 순 -->
-				<option value="오름차순">오름차순</option>   <!-- 상영일자가 가까운 순 -->
-			</select>
-			&nbsp;
-			<select name="search_type">
-				<option value="">시간</option>
-                <option value="1">액션</option>
-                <option value="2">코미디</option>
-                <option value="3">드라마</option>
-                <option value="4">스릴러</option>
-                <option value="5">로맨스</option>
-                <option value="6">sf</option>
-                <option value="7">판타지</option>
-                <option value="8">애니메이션</option>
-                <option value="9">역사</option>
-                <option value="10">범죄</option>
-                <option value="11">스포츠</option>
-                <option value="12">느와르</option>
-			</select>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("input[name='search_date']").val("${requestScope.search_date}");
+	$("select[name='search_time']").val("${requestScope.search_time}");
+	$("input[name='search_movie_title']").val("${requestScope.search_movie_title}");
+	$("input[name='search_orderby']").val("${requestScope.search_orderby}");
+	
+	$("select[name='size_per_page']").val("${requestScope.size_per_page}");
+	
+	// select 태그의 숫자를 선택함에 따라 해당 값의 행만큼 보여지는 이벤트
+	$("select[name='size_per_page']").bind("change", function(){
+		const frm = document.showtime_search_frm;
+		// frm.action = "movieRegisteredList.mp";
+		// frm.method = "get";
+		
+		frm.submit();
+	});// end of $("select[name='size_per_page']").bind("change", function(){})--------------------------
+	
+	// select 태그의 날짜를 선택함에 따라 해당 값의 행만큼 보여지는 이벤트
+	$("input[name='search_date']").bind("change", function(){
+		$("input[name='search_movie_title']").val("");
+		
+		const frm = document.showtime_search_frm;
+		// frm.action = "movieRegisteredList.mp";
+		// frm.method = "get";
+		
+		frm.submit();
+	});// end of $("select[name='size_per_page']").bind("change", function(){})--------------------------
+
+	// select 태그의 시간대를 선택함에 따라 해당 값의 행만큼 보여지는 이벤트
+	$("select[name='search_time']").bind("change", function(){
+		$("input[name='search_movie_title']").val("");
+		
+		const frm = document.showtime_search_frm;
+		// frm.action = "movieRegisteredList.mp";
+		// frm.method = "get";
+		
+		frm.submit();
+	});// end of $("select[name='size_per_page']").bind("change", function(){})--------------------------
+
+	
+
+	// === 시간 빠른 순/시간 늦은 순 선택함에 따라 해당 기준으로 정렬하여 보여주는 이벤트
+	$("span.re_orderby").click(function(e){
+		const text = $(e.target).text();
+		
+		if(text == "시간 빠른 순") {
+			$("input[name='search_orderby']").val("asc");
+		}
+		else if(text == "시간 늦은 순") {
+			$("input[name='search_orderby']").val("desc");
+		}
+		
+		const frm = document.showtime_search_frm;
+		// frm.action = "movieRegisteredList.mp";
+		// frm.method = "get";
+		
+		frm.submit()
+		
+	});// end of $("span#re_desc").click(function(){})------------------	
+
+});
+</script>
+
+	<div class="movie_showtime_container">
+		<h2>상영일정 리스트 [조회/삭제]</h2>
+		<form name="showtime_search_frm" class="form-row">
+			<div class="col-2">
+		    	<input type="date" class="form-control" name="search_date" id="search_date">
+		  	</div>
+		
+		  	<div class="col-2">
+		    	<select name="search_time" class="form-control">
+		      		<option value="">시간대</option>
+			      	<option value="모닝(06:00~10:00)">모닝(06:00~10:00)</option>
+			      	<option value="브런치(10:01~13:00)">브런치(10:01~13:00)</option>
+			      	<option value="일반(13:01~23:59)">일반(13:01~23:59)</option>
+		      		<option value="심야(00:00~05:59)">심야(00:00~05:59)</option>
+		   	 	</select>
+		  	</div>
+		
+		  	<div class="col-4">
+		    	<input type="text" name="search_movie_title" class="form-control" placeholder="영화 제목을 입력하세요">
+		  	</div>
+		
+		  	<div class="col-2">
+		    	<button type="button" class="btn btn-primary" onclick="goSearch()">검색</button>
+		  	</div>
+		
+
+		  	<div class="col-2">
+		    	<select name="size_per_page" class="form-control">
+		      		<option value="10">10개</option>
+		      		<option value="15">15개</option>
+		      		<option value="20">20개</option>
+		    	</select>
+		  	</div>
+		
+			<input type="hidden" name="search_orderby"/>
 			
-			<input type="text" name="movie_title"/>
-			<button type="button" class="btn btn-primary">검색</button>
-			
-			<select name="sizePerPage">
-				<option value="10">10개</option>
-				<option value="15">15개</option>
-				<option value="20">20개</option>
-			</select>
 		</form>
 		
 		
 		<div id="search_result">
+			<span class="re_orderby" id="re_desc">시간 빠른 순</span>&nbsp;<span class="re_orderby" id="re_asc">시간 늦은 순</span>
 			<table class="table table-bordered" id="movie_table">
 				<thead>
 					<tr>
+						<th>번호</th>
 						<th>상영일자</th>
 						<th>상영시간</th>
 						<th>상영관</th>
@@ -63,9 +133,13 @@
 				
 				<tbody>
 					<%-- 검색 결과 표시 --%>
-					<c:if test="${not empty requestScope.movieList}">
-						<c:forEach var="movievo" items="${requestScope.movieList}">
-							<tr>
+					<c:if test="${not empty requestScope.showtimeList}">
+						<c:forEach var="movievo" items="${requestScope.showtimeList}" varStatus="status">
+							<tr class="showtime_info">
+								<fmt:parseNumber var="current_showpage_no" value="${requestScope.current_showpage_no}"/>
+								<fmt:parseNumber var="size_per_page" value="${requestScope.size_per_page}"/>
+								<td>${(requestScope.total_showtime_count) - (current_showpage_no - 1) * size_per_page - (status.index)}</td>
+								
 								<td><span style="display: none;">${movievo.showvo.seq_showtime_no}</span>${fn:substring(movievo.showvo.start_time,0,10)}</td>
 								<td>${fn:substring(movievo.showvo.start_time,11,16)} ~ ${fn:substring(movievo.showvo.end_time,11,16)}</td>
 								<td>${movievo.showvo.fk_screen_no}관</td>
@@ -78,7 +152,7 @@
 					</c:if>
 					
 					<%-- 검색 결과가 없을 때 --%>
-					<c:if test="${empty requestScope.movieList}">
+					<c:if test="${empty requestScope.showtimeList}">
 						<tr>
 			            	<td colspan="5">검색된 영화가 없습니다.</td>
 			            </tr>
@@ -86,6 +160,13 @@
 				</tbody>
 				
 			</table>
+			
+			<div id="page_bar">
+				<nav>
+					<ul class="pagination">${requestScope.page_bar}</ul>
+				</nav>
+			</div>
+			
 		</div>
 		
 		<form name="seqFrm">

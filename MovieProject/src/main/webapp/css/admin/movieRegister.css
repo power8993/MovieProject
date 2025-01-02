@@ -1,5 +1,64 @@
 @charset "UTF-8";
 
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*#########*/
+/*   본문   */
+/*#########*/
+
+label.info_text {
+	font-size: 17px;
+	font-weight: bold;
+}
+
+div.movie_header {
+	display: flex;
+	justify-content: space-between; 
+}
+
+/* 영화 등록 라인 */
+div.movie_register_container > div > h2 {
+	color: #333;
+    font-weight: bold;
+    padding-left: 1%;
+    padding-bottom: 2%;
+    padding-top: 1%;
+}
+
+div.movie_header > span {
+	padding-top: 3%;
+	padding-right: 1%;
+}
+
+/* 필수기재사항 강조 */
+span.star {
+	color: #EB5E28;
+	font-weight: bold;
+}
+
+/* 등록된 영화조회 버튼 */
+#tbl_movie_register > tbody > tr:nth-child(1) > td > div > button {
+	float: right;
+	background-color: #403D39;
+	border: none;
+	transition: background-color 0.2s ease;
+}
+
+#tbl_movie_register > tbody > tr:nth-child(1) > td > div > button:hover {
+	background-color: #eb5e28;
+}
+
+/* 줄거리와 글자수를 한 라인에 위치 */
+.movie_content {
+  	display: flex;
+  	justify-content: space-between; 
+  	/* align-items: center; */
+  	margin-bottom: 5px;
+}
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*#################*/
+/*   감독/배우 태그   */
+/*#################*/
 select:disabled {
     background-color: #fff !important;  
     color: #000 !important;             
@@ -60,4 +119,48 @@ input:disabled {
   margin-bottom: 15px;  /* 입력 필드와 태그 간 간격 */
 }
 
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*#################*/
+/*   등록/취소 버튼   */
+/*#################*/
+button#resister_btn {
+    background-color: #EB5E28;
+    color: white;
+   	border: none;
+   	margin-right: 2%;
+   	
+   	width: 130px;
+   	height: 45px;
+   	font-size: 13pt;
+}
 
+button#reset_btn {
+    background-color: #403D39;
+    color: white;
+   	border: none;
+   	margin-right: 2%;
+   	
+   	width: 95px;
+   	font-size: 13pt;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*#########*/
+/*   모달   */
+/*#########*/
+
+/* 검색하기 버튼 */
+button#search_button {
+	border: none;
+	background-color: #403D39;
+	transition: background-color 0.2s ease;
+}
+
+button#search_button:hover {
+	background-color: #EB5E28;
+}
+
+/* 테이블 헤더 */
+table#modal_table {
+	
+}

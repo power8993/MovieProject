@@ -8,31 +8,25 @@ let poster_file_val;
 let video_url_val;
 
 $(document).ready(function(){
-	
+
 	// === 영화 검색에 따른 목록을 보여주는 이벤트 처리 시작 === //
 	$("button[type='button']").click(function(){
-		
-		const movie_title = $("input:text[name='movie_title']").val().trim();
-		
-		var movie_title_dom = $("input:text[name='movie_title']")[0];
-		
-		if (movie_title == "") {
-			movie_title_dom.setCustomValidity("검색어를 입력하세요!");
-			movie_title_dom.reportValidity();  // 유효성 검사 메시지 표시
-			
-			return;
-		}
-
-		movie_title_dom.setCustomValidity("");  // 오류 메시지 제거
-		
-		const frm = document.movie_search_frm;
-		frm.action = "movieRegisteredList.mp";	// 현재 페이지 보여준다(생략가능)
-		frm.method = "get";	
-		frm.submit();
-
+		goSearch();
 	});// end of $("button[type='button']").click(function(){})----------------
+	
+	var search_word_dom = $("input:text[name='search_word']")[0];
+	
+	$("input:text[name='search_word']").bind("keydown", function(e){
+		search_word_dom.setCustomValidity("");  // 오류 메시지 제거
+		
+		if(e.keyCode == 13) {
+			e.preventDefault(); // Enter 키를 눌렀을 때 기본 동작 방지 --> 엔터키를 눌렀을 때 select 요소가 펼쳐지는 현상 방지 
+			goSearch();
+		}
+	});// end of $("input:text[name='search_word']").bind("keydown", function(e){})-----------------------------
 	// === 영화 검색에 따른 목록을 보여주는 이벤트 처리 끝  === //
 	
+
 	
 	// === 특정 영화에 대한 상세정보 보기 이벤트 처리 시작 === //
 	$("tbody").on("click", "tr", function(e) {
@@ -77,43 +71,43 @@ $(document).ready(function(){
 					                                <!-- Modal Body -->
 					                                <div class="modal-body">
 					                                    <!-- 영화 포스터와 제목 -->
-					                                    <table class="table">
+					                                    <table class="table" id="modal_table">
 					                                        <tbody>
 																<tr>
-																	<td rowspan="3"><img src="${mvvo.ctxPath}/images/admin/poster_file/${mvvo.poster_file}" alt="" style="width:200px; height:auto;"></td>
-																	<td colspan="2">${mvvo.movie_title}</td>
+																	<td rowspan="3"><img src="${mvvo.ctxPath}/images/admin/poster_file/${mvvo.poster_file}" alt="" style="width:230px; height:auto;"></td>
+																	<td colspan="2" class="modal_movie_title">${mvvo.movie_title}</td>
 																</tr>
 					                                            <tr>
-					                                                <td>상영 시간<br>${mvvo.running_time}분</td>
-					                                                <td>상영 등급<br><img src="${mvvo.ctxPath}/images/admin/movie_grade/${mvvo.movie_grade}.png" alt="${mvvo.movie_grade}" style="width:30px; height:auto;"></td>
+					                                                <td class="modal_text">상영 시간<br><span class="text_ignore">${mvvo.running_time}분</span></td>
+					                                                <td class="modal_text">상영 등급<br><img src="${mvvo.ctxPath}/images/admin/movie_grade/${mvvo.movie_grade}.png" alt="${mvvo.movie_grade}" style="width:40px; height:auto; margin-left:4%; padding-top:3%;"></td>
 					                                            </tr>
 					                                            <tr>
-					                                                <td>개봉 일자<br>${mvvo.start_date}</td>
-					                                                <td>종영 일자<br>${mvvo.end_date}</td>
+					                                                <td class="modal_text">개봉 일자<br><span class="text_ignore">${mvvo.start_date}</span></td>
+					                                                <td class="modal_text">종영 일자<br><span class="text_ignore">${mvvo.end_date}</span></td>
 					                                            </tr>
 					                                            <tr>
-					                                                <td>장르</td>
-					                                                <td colspan="2">${mvvo.fk_category_code}</td>
+					                                                <td class="modal_text">장르</td>
+					                                                <td colspan="2" class="modal_content">${mvvo.fk_category_code}</td>
 					                                            </tr>
 					                                            <tr>
-					                                                <td>감독</td>
-					                                                <td colspan="2">${mvvo.director}</td>
+					                                                <td class="modal_text">감독</td>
+					                                                <td colspan="2" class="modal_content">${mvvo.director}</td>
 					                                            </tr>
 					                                            <tr>
-					                                                <td>배우</td>
-					                                                <td colspan="2">${mvvo.actor}</td>
+					                                                <td class="modal_text">배우</td>
+					                                                <td colspan="2" class="modal_content">${mvvo.actor}</td>
 					                                            </tr>
 					                                            <tr>
-					                                                <td>줄거리</td>
-					                                                <td colspan="2">${mvvo.content}</td>
+					                                                <td class="modal_text">줄거리</td>
+					                                                <td colspan="2" class="modal_content">${mvvo.content}</td>
 					                                            </tr>
 					                                            <tr>
-					                                                <td>예고편</td>
-					                                                <td colspan="2"><a href="${mvvo.video_url}">${mvvo.video_url}</a></td>
+					                                                <td class="modal_text">예고편</td>
+					                                                <td colspan="2" class="modal_content"><a href="${mvvo.video_url}">${mvvo.video_url}</a></td>
 					                                            </tr>
 					                                            <tr>
-					                                                <td>등록 일자</td>
-					                                                <td colspan="2">${mvvo.register_date}</td>
+					                                                <td class="modal_text">등록 일자</td>
+					                                                <td colspan="2" class="modal_content">${mvvo.register_date}</td>
 					                                            </tr>
 					                                        </tbody>
 					                                    </table>
@@ -123,7 +117,7 @@ $(document).ready(function(){
 															<button type="button" class="btn btn-success" id="register_button" style="margin-right: auto;">상영일정 등록</button>
 					                                        <button type="button" class="btn btn-primary" id="edit_button">수정하기</button>
 					                                        <button type="button" class="btn btn-danger" id="delete_button">삭제하기</button>
-					                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소하기</button>
+					                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 					                                    </div>
 					                                </div>
 					                            </div>
@@ -218,16 +212,43 @@ $(document).ready(function(){
 
 
 
+// === 영화 검색에 따른 목록을 보여주는 이벤트 처리
+function goSearch() {
 
-// Function
+		const search_category = $("select[name='search_category']").val();
+		const search_type = $("select[name='search_type']").val();
+		const search_word = $("input:text[name='search_word']").val().trim();
+		$("input:text[name='search_word']").val(search_word);
+		
+		var search_word_val_dom = $("input:text[name='search_word']")[0];
+		var search_type_val_dom = $("select[name='search_type']")[0];
+		
+		// 검색어가 비어 있을 경우 유효성 검사
+		if ((search_category && search_type && search_word == "") ||
+			(search_category == "" && search_type && search_word == "")) {
 
-// ===== 장르 및 검색어에 해당하는 영화를 보여주는 메소드 ===== //
-function goSearch(){
-	
-	const frm = document.movie_search_frm
-	// frm.action = "movieRegisteredList.mp";
-	// frm.method = "get";
-	
-	frm.submit();
-	
-}// end of function goSearch(){}------------------------------
+			search_word_val_dom.setCustomValidity("검색어를 입력해주세요!");
+			search_word_val_dom.reportValidity();  // 유효성 검사 메시지 표시
+			
+			return;  // 오류 발생 시 검색 진행하지 않음
+		}
+
+		// 검색타입을 선택하지 않고 검색어를 입력했을 경우
+		if ((search_category && search_type == "" && search_word) ||
+	        (search_category == "" && search_type == "" && search_word)) {
+			search_type_val_dom.setCustomValidity("검색 타입을 선택해주세요!");
+			search_type_val_dom.reportValidity();  // 유효성 검사 메시지 표시
+			
+			return;
+		}
+
+		// 오류 메시지 제거
+	    search_word_val_dom.setCustomValidity("");  
+	    search_type_val_dom.setCustomValidity("");  
+
+		const frm = document.movie_search_frm
+		// frm.action = "movieRegisteredList.mp";
+		// frm.method = "get";
+		
+		frm.submit();
+}// end of function goSearch() {}-------------------------------------------
