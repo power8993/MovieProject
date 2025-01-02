@@ -6,6 +6,8 @@
 <%
 	String ctxPath = request.getContextPath();
 	String seq_movie_no = request.getParameter("seq_movie_no");
+	String start_date = request.getParameter("start_date");
+	String start_time = request.getParameter("start_time");
 %>
 
 
@@ -24,7 +26,7 @@
 	
 	String[] dayname = {"일", "월", "화", "수", "목", "금", "토"};
 	
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 %>
 
@@ -34,12 +36,45 @@
 
 $(document).ready(function(){
 	
-	if(<%= seq_movie_no%> != null) {
-		$("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
+	let cnt = 0;
+	
+	if(<%= seq_movie_no%> != null && cnt == 0) {
+		cnt++;
+		$("td#seq_movie_no").each(function(index, elmt) {
+			if($(this).text() == <%= seq_movie_no%>) {
+				$(this).parent().css({'background-color':'black','color':'white'});
+				$("div#movie-choice").text($(this).parent().find("td.movie-title").text());
+				return false;
+			}
+		});
+		
+		if(<%= start_date%> != null && '<%= start_time%>' != null) {
+			$("span.input_date").each(function(index, elmt) {
+				if($(this).text() == '<%= start_date%>') {
+					$(this).parent().css({'background-color':'black','color':'white'});
+					$("div#date-choice").text($(this).parent().find("span.input_date").text());
+					
+					// 영화와 날짜를 선택했을 때 상영 시간이 보여주기
+					getScreenTime('<%= seq_movie_no%>', '<%= start_date%>');
+					return false;
+				}
+			});
+			
+			$("div.time").find("td.time_data").each(function(index, elmt) {
+				console.log("dd");
+				if($(this).text() == '<%= start_time%>') {
+					$(this).parent().css({'background-color':'black','color':'white'});
+					$("div#time-choice").text($(this).text());
+					return false;
+				}
+			});
+			
+		}
 	}
 	
 	
 }); // end of $(document).ready(function(){})------------------------------
+
 
 </script>
 
@@ -96,7 +131,7 @@ $(document).ready(function(){
 						<li class="day" id="day" data-index="0">
 							<span class="dayweek" name="dd"><%= dayname[currentDate.get(Calendar.DAY_OF_WEEK)-1]%>&nbsp;&nbsp;</span>
 							<span class="date"><%= currentDate.get(Calendar.DATE) %></span>
-							<span id="input_date" style="display: none"><%= sdf.format(currentDate.getTime())%></span>
+							<span class="input_date" style="display: none"><%= sdf.format(currentDate.getTime())%></span>
 						</li>
 						<% 
 							for(int i=0; i<20; i++) {
@@ -121,7 +156,7 @@ $(document).ready(function(){
 								<li class="day" id="day">
 									<span class="dayweek"><%= dayname[currentDate.get(Calendar.DAY_OF_WEEK)-1] %>&nbsp;&nbsp;</span>
 									<span class="date"><%= currentDate.get(Calendar.DATE) %></span>
-									<span id="input_date" style="display: none"><%= sdf.format(currentDate.getTime())%></span>
+									<span class="input_date" style="display: none"><%= sdf.format(currentDate.getTime())%></span>
 								</li>
 								<%
 							} // end of for---------------------------------------
@@ -154,30 +189,30 @@ $(document).ready(function(){
 					<div id="numberOfPeople" class="mt-3">
 						<div id="adult" class="btn-group">
 							<label>성인</label>
-							<button type="button" class="btn" value="0">0</button>
-							<button type="button" class="btn" value="1">1</button>
-							<button type="button" class="btn" value="2">2</button>
-							<button type="button" class="btn" value="3">3</button>
-							<button type="button" class="btn" value="4">4</button>
-							<button type="button" class="btn" value="5">5</button>
+							<button type="button" class="btn adult" value="0">0</button>
+							<button type="button" class="btn adult" value="1">1</button>
+							<button type="button" class="btn adult" value="2">2</button>
+							<button type="button" class="btn adult" value="3">3</button>
+							<button type="button" class="btn adult" value="4">4</button>
+							<button type="button" class="btn adult" value="5">5</button>
 						</div>
 						<div id="adolescent" class="btn-group">
 							<label>청소년</label>
-							<button type="button" class="btn" value="0">0</button>
-							<button type="button" class="btn" value="1">1</button>
-							<button type="button" class="btn" value="2">2</button>
-							<button type="button" class="btn" value="3">3</button>
-							<button type="button" class="btn" value="4">4</button>
-							<button type="button" class="btn" value="5">5</button>
+							<button type="button" class="btn adolescent" value="0">0</button>
+							<button type="button" class="btn adolescent" value="1">1</button>
+							<button type="button" class="btn adolescent" value="2">2</button>
+							<button type="button" class="btn adolescent" value="3">3</button>
+							<button type="button" class="btn adolescent" value="4">4</button>
+							<button type="button" class="btn adolescent" value="5">5</button>
 						</div>
 						<div id="youth" class="btn-group">
 							<label>어린이</label>
-							<button type="button" class="btn" value="0">0</button>
-							<button type="button" class="btn" value="1">1</button>
-							<button type="button" class="btn" value="2">2</button>
-							<button type="button" class="btn" value="3">3</button>
-							<button type="button" class="btn" value="4">4</button>
-							<button type="button" class="btn" value="5">5</button>
+							<button type="button" class="btn youth" value="0">0</button>
+							<button type="button" class="btn youth" value="1">1</button>
+							<button type="button" class="btn youth" value="2">2</button>
+							<button type="button" class="btn youth" value="3">3</button>
+							<button type="button" class="btn youth" value="4">4</button>
+							<button type="button" class="btn youth" value="5">5</button>
 						</div>
 					</div>
 					<div id="screen-info">

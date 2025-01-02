@@ -5,19 +5,18 @@ let total_price = 0;
 let adult_cnt = 0;
 let adolescent_cnt = 0;
 let youth_cnt = 0;
+let seq_movie_no = "";
+let input_date = "";
 
 $(document).ready(function(){
 	
-	
-	
+	// 영화, 날짜 선택 외의 다른 div와 button 들 안보이게 하기
 	$("div#step2").hide();
 	$("div#step3").hide();
 	$("button#goMovieChoice").hide();
 	$("button#goPointChoice").hide();
 	$("button#goPay").hide();
 	
-	let seq_movie_no = "";
-	let input_date = "";
 	
 	// 영화 티켓 가격 가져오기
 	$.ajax({
@@ -38,6 +37,7 @@ $(document).ready(function(){
 		}
 	}); // end of $.ajax({})---------------------------------------------------------------------
 	
+	
 	// 예약페이지에서 영화를 선택했을 때
 	$("tr.movie-list").click(e => {
 		$("tr.movie-list").css({'background-color':'','color':''});
@@ -51,38 +51,8 @@ $(document).ready(function(){
 			return;
 		}
 		
-		$.ajax({
-			url:"/MovieProject/reservation/getScreenTime.mp",
-			dataType:"json",
-			data: {
-	             "input_date": input_date,
-	             "seq_movie_no": seq_movie_no
-	        },
-	        success: function(json){
-	        	if(json.length == 0) {
-	        		v_html = `선택하신 날짜에 상영중인 영화가 없습니다.`;
-	        		$("div.time").find("div.col-body").html(v_html);
-				}
-				else if(json.length > 0) {
-				   
-					v_html = "<table><tbody>"
-					
-					$.each(json, function(index, item){
-						v_html += `<tr class='time_choice'><td class='time_data' 
-									onclick='onScreenClick(this, ${item.start_time},${item.seq_showtime_no},${item.fk_screen_no},"${item.seat_arr}")'>
-									${(item.start_time).substr(0,2)}:${(item.start_time).substr(2,2)}</td><td>${item.unused_seat}석</td></tr>`;
-						
-					}); // end of $.each(json, function(index, item)--------------------------------------------------
-					
-					v_html += `</table></tbody>`;
-							
-					$("div.time").find("div.col-body").html(v_html);
-				}
-			},
-			error: function(){
-				alert("request error!");
-			}
-		}); // end of $.ajax({})---------------------------------------------------------------------
+		// 영화와 날짜를 선택했을 때 상영 시간이 보여주기
+		getScreenTime(seq_movie_no, input_date);
 		
 	});
 	
@@ -90,10 +60,10 @@ $(document).ready(function(){
 	$("li#day").find("span").click(e => {
 		$("li#day").css({'background-color':'','color':''});
         $(e.target).parent().css({'background-color':'black','color':'white'});
-        $("div#date-choice").html($(e.target).parent().find("span#input_date").text());
+        $("div#date-choice").html($(e.target).parent().find("span.input_date").text());
         $("div#time-choice").empty();
         
-        input_date = $(e.target).parent().find("span#input_date").text();
+        input_date = $(e.target).parent().find("span.input_date").text();
         
         $("div#screen-date-info").html(input_date);
         
@@ -101,39 +71,8 @@ $(document).ready(function(){
         	return;
         }
         
-        
-        $.ajax({
-			url:"/MovieProject/reservation/getScreenTime.mp",
-			dataType:"json",
-			data: {
-	             "input_date": input_date,
-	             "seq_movie_no": seq_movie_no
-	        },
-	        success: function(json){
-	        	if(json.length == 0) {
-	        		v_html = `선택하신 날짜에 상영중인 영화가 없습니다.`;
-	        		$("div.time").find("div.col-body").html(v_html);
-				}
-				else if(json.length > 0) {
-				   
-					v_html = "<table><tbody>"
-					
-					$.each(json, function(index, item){
-						v_html += `<tr class='time_choice'><td class='time_data' 
-									onclick='onScreenClick(this, ${item.start_time},${item.seq_showtime_no},${item.fk_screen_no},"${item.seat_arr}")'>
-									${(item.start_time).substr(0,2)}:${(item.start_time).substr(2,2)}</td><td>${item.unused_seat}석</td></tr>`;
-						
-					}); // end of $.each(json, function(index, item)--------------------------------------------------
-					
-					v_html += `</table></tbody>`;
-							
-					$("div.time").find("div.col-body").html(v_html);
-				}
-			},
-			error: function(){
-				alert("request error!");
-			}
-		}); // end of $.ajax({})---------------------------------------------------------------------
+		// 영화와 날짜를 선택했을 때 상영 시간이 보여주기
+		getScreenTime(seq_movie_no, input_date);
 		
         
 	}); // end of $("li#day").find("span").click(e => {})-------------------------------------------
@@ -211,12 +150,53 @@ $(document).ready(function(){
 		}
 	});
 	
-	
-	
 
 }); // end of $(document).ready(function() {});;--------------------------------------------
 
 
+// 영화와 날짜를 선택했을 때 상영 시간 보여주기
+function getScreenTime(seq_movie_no1, input_date1) {
+	
+	seq_movie_no = seq_movie_no1;
+	input_date = input_date1;
+	
+	$.ajax({
+		url:"/MovieProject/reservation/getScreenTime.mp",
+		dataType:"json",
+		data: {
+             "input_date": input_date,
+             "seq_movie_no": seq_movie_no
+        },
+        success: function(json){
+        	if(json.length == 0) {
+        		v_html = `선택하신 날짜에 상영중인 영화가 없습니다.`;
+        		$("div.time").find("div.col-body").html(v_html);
+			}
+			else if(json.length > 0) {
+			   
+				v_html = "<table><tbody>"
+				
+				$.each(json, function(index, item){
+					v_html += `<tr class='time_choice'><td class='time_data' 
+								onclick='onScreenClick(this, ${item.start_time},${item.seq_showtime_no},${item.fk_screen_no},"${item.seat_arr}")'>
+								${(item.start_time).substr(0,2)}:${(item.start_time).substr(2,2)}</td><td>${item.unused_seat}석</td></tr>`;
+					
+				}); // end of $.each(json, function(index, item)--------------------------------------------------
+				
+				v_html += `</table></tbody>`;
+						
+				$("div.time").find("div.col-body").html(v_html);
+			}
+		},
+		error: function(){
+			alert("request error!");
+		}
+	}); // end of $.ajax({})---------------------------------------------------------------------
+
+}
+
+
+// 좌석선택 버튼을 눌렀을 경우
 function goSeatChoice(userid) {
 	if($("div#movie-choice").text() == "영화선택" || $("div#date-choice").text() == "시간선택" || $("div#time-choice").text() == "") {
 		alert("영화와 날짜와 시간을 모두 선택해주세요.");
@@ -233,16 +213,20 @@ function goSeatChoice(userid) {
 	$("button#goSeatChoice").hide();
 	$("button#goPointChoice").show();
 		
-}
+} // end of function goSeatChoice(userid)----------------------
 
+
+// 영화선택 버튼을 눌렀을 경우 (좌석선택에서 뒤로 돌아가는 경우)
 function goMovieChoice() {
 	$("div#step1").show();
 	$("div#step2").hide();
 	$("button#goMovieChoice").hide();
 	$("button#goSeatChoice").show();
 	$("button#goPointChoice").hide();
-}
+} // end of function goMovieChoice()-----------------------------------------------
 
+
+// 포인트 사용 버튼을 눌렀을 경우
 function goPointChoice(ctxPath, userid) {
 	$("div#step1").hide();
 	$("div#step2").hide();
@@ -268,7 +252,6 @@ function goPointChoice(ctxPath, userid) {
 			type:"post",
 			dataType:"json",
 	        success: function(json){
-				console.log(json.havingPoint);
 	        	if(json.length != 0) {
 					console.log("포인트 가져오기 성공");
 					$("label#having-point").text(json.havingPoint);
