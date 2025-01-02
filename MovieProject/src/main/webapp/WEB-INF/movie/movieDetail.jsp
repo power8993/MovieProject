@@ -157,6 +157,7 @@
 <script src="https://kit.fontawesome.com/0c69fdf2c0.js" crossorigin="anonymous"></script>
 <script type="text/javascript" src="<%= ctxPath%>/js/movie/movieDetail.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://kit.fontawesome.com/0c69fdf2c0.js" crossorigin="anonymous"></script>
 
 <jsp:include page="/WEB-INF/header1.jsp" />
 
@@ -251,7 +252,17 @@
                 }
             }
         });
+        
+        $('.star_rating > .star').click(function() {
+       	  $(this).parent().children('span').removeClass('on');
+       	  $(this).addClass('on').prevAll('span').addClass('on');
+       	});
+        
     });
+    
+   
+    
+    
 </script>
 
 <div class="container">
@@ -312,21 +323,21 @@
 	</div>
 
     <!-- 후기 작성 -->
-    <div class="review-section" style="margin-top: 20px;">       
+    <div class="review-section" style="margin-top: 20px; width: 95%; margin: 0 auto;">       
         <!-- 별점 선택 -->
         <div class="rating-stars">
-            <label for="reviewText">후기</label>
+            <label for="reviewText"><i class="fa-solid fa-circle-user" style="color: #252422;" aria-hidden="true"></i></label>
             <span data-value="1">&#9733;</span>
             <span data-value="2">&#9733;</span>
             <span data-value="3">&#9733;</span>
             <span data-value="4">&#9733;</span>
             <span data-value="5">&#9733;</span>
         </div>
-        <textarea id="reviewText" placeholder="영화에 대한 후기를 작성해주세요..."></textarea><br>
+        <textarea id="reviewText" placeholder="영화에 대한 후기를 작성해주세요..." style="-webkit-border-radius: 0; outline: 0; resize: none;"></textarea><br>
         <button onclick="submitReview()">후기 제출</button>
     </div>
 
-    <hr style="">
+    <hr style="width: 95%; border: 1.5px solid #ccc5b9; margin-bottom: 30px;">
 
     <!-- 작성된 후기들 -->
     <div class="reviews-list">
