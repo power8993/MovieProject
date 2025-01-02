@@ -118,7 +118,7 @@ String ctxPath = request.getContextPath();
 								<td><button type="button" class="mypagepwdcss" data-toggle="modal"
 									data-target="#passwdFind" data-dismiss="modal"
 									data-backdrop="static">비밀번호 변경</button>
-									<p class="pwdupdate">비밀번호 변경일: ${sessionScope.loginuser.lastpwdchangedate}</p>
+									<div id="lastpwdchangedate"></div>
 									
 									<div class="modal fade" id="passwdFind">
 										<div class="modal-dialog">

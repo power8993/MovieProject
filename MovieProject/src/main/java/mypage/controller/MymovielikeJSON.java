@@ -25,26 +25,18 @@ public class MymovielikeJSON extends AbstractController {
 		String start = request.getParameter("start");
 		String len = request.getParameter("len");
 		
-		/*
-	       맨 처음에는 sname("HIT")상품을  start("1") 부터 len("8")개를 보여준다.
-	       더보기... 버튼을 클릭하면  sname("HIT")상품을  start("9") 부터 len("8")개를 보여준다.
-	       또  더보기... 버튼을 클릭하면 sname("HIT")상품을  start("17") 부터 len("8")개를 보여준다.      
-	    */
-		
 		Map<String, String> paraMap = new HashMap<>();
-	      paraMap.put("userid", userid);  //        "HIT"  "NEW"   "BEST"
-	      paraMap.put("start", start);  // start  "1"  "9"  "17"  "25"  "33"
+	      paraMap.put("userid", userid);  
+	      paraMap.put("start", start); 
 	      
 	      String end = String.valueOf(Integer.parseInt(start) + Integer.parseInt(len) - 1);								
-	      paraMap.put("end", end);		// end => start + len - 1;
-	      								//end "8" "16" "24" "32" "40"
+	      paraMap.put("end", end);		
 	      
 	      List<MovieLikeVO> mymovielikeList = mydao.selectBymymovielike(paraMap);
 	      
 	      JSONArray jsonArr = new JSONArray();
 	      
 	      if(mymovielikeList.size() > 0 ) {
-	    	  //DB에서 조회해온 결과물이 있을 경우
 	    	  
 	    	  for(MovieLikeVO mlvo :mymovielikeList) {
 	    		JSONObject jsonObj = new JSONObject(); // {}
@@ -55,14 +47,12 @@ public class MymovielikeJSON extends AbstractController {
 	    		jsonObj.put("start_date", mlvo.getMvo().getStart_date());
 
 	            jsonArr.put(jsonObj); 
-	            
-	            
-	            
+	    
 	    	  }//end of for ---
 	    	  
 	      }// end of if ---
 	      
-	      String json = jsonArr.toString(); //문자열로 변환
+	      String json = jsonArr.toString();
 	      //System.out.println("~~~ 확인용 json" +json);
 	      
 	      request.setAttribute("json", json);

@@ -1,4 +1,8 @@
 @charset "UTF-8";
+/* mypagemain.css 메인 콘텐츠 영역 영화콘텐츠 영역에서만 조정 */
+body > div.my_container > div.my_main > div.mypage_main_content {
+	min-height: 300px !important;
+	}
 
 /* 버튼 컨테이너 스타일 */
 div.my_movie_buttons {

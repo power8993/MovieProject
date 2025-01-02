@@ -8,10 +8,11 @@
 
 <jsp:include page="../header1.jsp" />
 
-<%-- 직접 만든 CSS --%>
-<%-- 직접 만든 CSS --%>
+<%-- 메인 CSS --%>
 <link rel="stylesheet" type="text/css" href="<%=ctxPath%>/css/mypage/mypagemain.css" />
+<%-- 영화 버튼 CSS --%>
 <link rel="stylesheet" type="text/css" href="<%=ctxPath%>/css/mypage/mypagemovie.css" />
+<link rel="stylesheet" type="text/css" href="<%=ctxPath%>/css/mypage/mymovielike.css" />
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/mypage/mymovielike.js"></script> 
 
 <%-- h3 a태그의 이모티콘 --%>

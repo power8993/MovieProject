@@ -84,6 +84,7 @@ String ctxPath = request.getContextPath();
 					class="fa-solid fa-square-plus"
 					style="color: #ccc5b9; margin-right: 8px;"> </i></a>
 			</h3>
+			
 			<div class="my_box_list">
 				<c:if test="${not empty requestScope.reservationList}">
 					<c:forEach var="reservation"
@@ -115,6 +116,7 @@ String ctxPath = request.getContextPath();
 					class="fa-solid fa-square-plus"
 					style="color: #ccc5b9; margin-right: 8px;"> </i></a>
 			</h3>
+			
 			<div class="my_box_list">
 				<c:if test="${not empty requestScope.watchedMovies}">
 					<ul>
@@ -134,27 +136,55 @@ String ctxPath = request.getContextPath();
 
 		<!-- 내가 쓴 평점 -->
 		<div class="mypage_box_css">
-			<h3>
-				<a href="<%=ctxPath%>/mypage/myreview.mp" class="my_section_title">내가
-					쓴 평점</a> <a href="<%=ctxPath%>/mypage/myreview.mp"><i
+		<h3>
+				<a href="<%=ctxPath%>/mypage/mymoviereview.mp" class="my_section_title">내가
+					쓴 평점</a> <a href="<%=ctxPath%>/mypage/mymoviereview.mp"><i
 					class="fa-solid fa-square-plus"
 					style="color: #ccc5b9; margin-right: 8px;"> </i></a>
 			</h3>
 			<div class="my_box_list">
-				<c:if test="${not empty requestScope.REVIEW_CONTENT}">
-					<ul>
-						<c:forEach var="my_review" items="${requestScope.REVIEW_CONTENT}">
-							<li>${review.POSTER_FILE}</li>
-							<li>영화:${review.MOVIE_TITLE}-평점:${review.MOVIE_RATING}</li>
+			
+			<c:if test="${not empty requestScope.main_mypage_MovieReviewList}">
+					<ul class="mypage_main_List">
+						<c:forEach var="mrvo" items="${requestScope.main_mypage_MovieReviewList}"
+							varStatus="status">
+							<li class="mypage_main_List_card">
+							
+							<div class = "sect-viw-rated">
+							
+							<!-- 포스터 이미지 -->
+								<div class="mypage_main_List_poster">
+								<a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${mrvo.fk_seq_movie_no}" >
+									<img 
+										src="${pageContext.request.contextPath}/images/admin/poster_file/${mrvo.mvo.poster_file}"
+										alt="${mrvo.mvo.movie_title}"/>
+								</a>					
+								</div>
+								
+								 <!-- 리뷰 정보 -->
+									<div class="mypage_main_List_moviereview_box">
+									
+									<div class="mypage_main_List_movieReview_title">
+										<strong>${mrvo.mvo.movie_title}</strong>
+									</div>
+										<ul>
+										<li>${mrvo.fk_user_id} |</li>
+										<li> ${mrvo.review_write_date} </li>
+										</ul>
+									<p class="review_date">평점:${mrvo.movie_rating} ${mrvo.review_content}</p>
+									
+									</div>
+								</div>
+									
+							</li>
 						</c:forEach>
 					</ul>
 				</c:if>
-				<c:if test="${empty requestScope.reviews}">
-					<p>작성한 평점이 없습니다.</p>
-				</c:if>
-			</div>
+					<c:if test="${empty requestScope.main_mypage_MovieReviewList}">
+						<p class="empty">작성한 평점이 없습니다.</p>
+					</c:if>
 		</div>
-
+	</div>
 
 		<!-- 기대되는 영화 -->
 		<div class="mypage_box_css">
@@ -165,15 +195,42 @@ String ctxPath = request.getContextPath();
 					class="fa-solid fa-square-plus"
 					style="color: #ccc5b9; margin-right: 8px;"> </i></a>
 			</h3>
+			
 			<div class="my_box_list">
-				<c:if test="${not empty requestScope.expectedMovies}">
-					<ul>
-						<c:forEach var="movie" items="${requestScope.expectedMovies}">
-							<li>${movie.MOVIE_TITLE}</li>
+			
+				<c:if test="${not empty requestScope.main_mypage_MovieLikeList}">
+					<ul class="mypage_main_List">
+						<c:forEach var="mlvo" items="${requestScope.main_mypage_MovieLikeList}"
+							varStatus="status">
+							<li class="mypage_main_List_card">
+							
+							<div class = "sect-viw-rated">
+							
+							<!-- 포스터 이미지 -->
+								<div class="mypage_main_List_poster">
+								<a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${mlvo.FK_SEQ_MOVIE_NO}" >
+									<img 
+										src="${pageContext.request.contextPath}/images/admin/poster_file/${mlvo.mvo.poster_file}"
+										alt="${mlvo.mvo.movie_title}"/>
+								</a>					
+								</div>
+								
+								 <!-- 영화 정보 -->
+									<div class="mypage_main_List_movieLike_title">
+										<strong>${mlvo.mvo.movie_title}</strong>
+										<p>${mlvo.mvo.start_date}</p>
+										 <div class="text-center">
+					                            <a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${item.FK_SEQ_MOVIE_NO}" 
+					                                class="btn stretched-link mybtnlike" role="button">예매하기</a>
+					                        </div>
+									</div>
+									
+								</div>
+							</li>
 						</c:forEach>
 					</ul>
 				</c:if>
-				<c:if test="${empty requestScope.expectedMovies}">
+				<c:if test="${empty requestScope.main_mypage_MovieLikeList}">
 					<p>기대되는 영화가 없습니다.</p>
 				</c:if>
 			</div>

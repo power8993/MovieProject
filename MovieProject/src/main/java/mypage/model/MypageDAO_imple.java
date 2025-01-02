@@ -17,6 +17,7 @@ import javax.sql.DataSource;
 
 import member.domain.MemberVO;
 import movie.domain.MovieLikeVO;
+import movie.domain.MovieReviewVO;
 import movie.domain.MovieVO;
 import util.security.AES256;
 import util.security.SecretMyKey;
@@ -235,7 +236,7 @@ public class MypageDAO_imple implements MypageDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " SELECT FK_SEQ_MOVIE_NO, userid, POSTER_FILE, MOVIE_TITLE, START_DATE "
+			String sql = " SELECT FK_SEQ_MOVIE_NO, userid, POSTER_FILE, MOVIE_TITLE,to_char(START_DATE, 'yyyy/mm/dd') START_DATE "
 					+ " FROM  "
 					+ " ( "
 					+ "    SELECT row_number() over(order by FK_SEQ_MOVIE_NO desc) AS RNO "
@@ -275,8 +276,204 @@ public class MypageDAO_imple implements MypageDAO {
 		return mymovielikeList;
 	}
 
+	//마이페이지 회원정보수정에서 비밀번호 변경 날짜 가져오기
+	@Override
+	public List<MemberVO> Mylastpwdchangedate(Map<String, String> paraMap) throws SQLException {
+		 List<MemberVO> MylastpwdchangedateList = new ArrayList<>();
+		 
+		 try {
+				conn = ds.getConnection();
+				
+				String sql = " SELECT PWD_CHANGE_DATE  "
+						+ " FROM tbl_member where USER_ID = ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, paraMap.get("userid"));
+				
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					MemberVO mvo = new MemberVO();
+					mvo.setLastpwdchangedate(rs.getString("lastpwdchangedate"));
+					
+					MylastpwdchangedateList.add(mvo);
+				}
+			}finally {
+				close();
+			}
+						
+		return MylastpwdchangedateList;
+	}
 	
 	
+	
+	
+	
+	
+	//마이페이지 내가 쓴 평점 목록 전체 합계
+	@Override
+	public int totalmymoviereview(String userid) throws SQLException {
+		int totalmymoviereview = 0;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " select count(*) "
+	                  + " from TBL_REVIEW "
+	                  + " where fk_user_id = ? ";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         pstmt.setString(1, userid);
+	         
+	         rs = pstmt.executeQuery();
+	         
+	         rs.next();
+	         
+	         totalmymoviereview = rs.getInt(1);
+	         
+	      } finally {
+	         close();
+	      }
+	      
+	      return totalmymoviereview;
+	}
+
+
+	// 마이페이지 내가 쓴 리뷰 목록 리스트
+	@Override
+	public List<MovieReviewVO> mymoviereviewList(Map<String, String> paraMap) throws SQLException {
+		List<MovieReviewVO> mymoviereviewList = new ArrayList<>();
+
+		try {
+			conn = ds.getConnection();
+
+			String sql = " select POSTER_FILE, MOVIE_TITLE, SEQ_REVIEW_NO,userid,FK_SEQ_MOVIE_NO,MOVIE_RATING,REVIEW_CONTENT,to_char(REVIEW_WRITE_DATE, 'yyyy/mm/dd') as REVIEW_WRITE_DATE "
+					+ " from " + " ( "
+					+ " select SEQ_REVIEW_NO,FK_SEQ_MOVIE_NO,FK_USER_ID as userid,MOVIE_RATING,REVIEW_CONTENT,REVIEW_WRITE_DATE, M.POSTER_FILE, M.MOVIE_TITLE "
+					+ " from TBL_REVIEW R " + " join TBL_MOVIE M " + " ON R.FK_SEQ_MOVIE_NO = M.SEQ_MOVIE_NO "
+					+ " WHERE FK_USER_ID = ? " + " ) " + " order by SEQ_REVIEW_NO desc ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				MovieReviewVO mrvo = new MovieReviewVO();
+				mrvo.setFk_user_id(rs.getString("userid"));
+				mrvo.setSeq_review_no(rs.getInt("seq_review_no"));
+				mrvo.setFk_seq_movie_no(rs.getInt("fk_seq_movie_no"));
+				mrvo.setMovie_rating(rs.getInt("movie_rating"));
+				mrvo.setReview_content(rs.getString("review_content"));
+				mrvo.setReview_write_date(rs.getString("review_write_date"));
+
+				MovieVO mvo = new MovieVO();
+				mvo.setPoster_file(rs.getString("poster_file"));
+				mvo.setMovie_title(rs.getString("movie_title"));
+				mrvo.setMvo(mvo);
+
+				mymoviereviewList.add(mrvo);
+			}
+		} finally {
+			close();
+		}
+		return mymoviereviewList;
+	}
+
+	
+	//마이페이지 메인 리스트 = 내가 쓴 리뷰
+	@Override
+	public List<MovieReviewVO> main_mypage_MovieReviewList(Map<String, String> paraMap) throws SQLException {
+		List<MovieReviewVO> main_mypage_MovieReviewList = new ArrayList<>();
+
+		try {
+			conn = ds.getConnection();
+
+			String sql = " select POSTER_FILE, MOVIE_TITLE, SEQ_REVIEW_NO, FK_SEQ_MOVIE_NO, userid,MOVIE_RATING,REVIEW_CONTENT, to_char(REVIEW_WRITE_DATE, 'yyyy/mm/dd') as REVIEW_WRITE_DATE "
+					+ " from "
+					+ " ( "
+					+ " select ROW_NUMBER() OVER (ORDER BY SEQ_REVIEW_NO DESC) AS RNO, SEQ_REVIEW_NO,FK_SEQ_MOVIE_NO,FK_USER_ID as userid, "
+					+ " MOVIE_RATING,REVIEW_CONTENT,REVIEW_WRITE_DATE, M.POSTER_FILE, M.MOVIE_TITLE "
+					+ " from TBL_REVIEW R "
+					+ " join TBL_MOVIE M "
+					+ " ON R.FK_SEQ_MOVIE_NO = M.SEQ_MOVIE_NO "
+					+ " WHERE FK_USER_ID = ? "
+					+ " ) "
+					+ " WHERE RNO BETWEEN 1 AND 2 ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				MovieReviewVO mrvo = new MovieReviewVO();
+				mrvo.setFk_user_id(rs.getString("userid"));
+				mrvo.setSeq_review_no(rs.getInt("seq_review_no"));
+				mrvo.setFk_seq_movie_no(rs.getInt("fk_seq_movie_no"));
+				mrvo.setMovie_rating(rs.getInt("movie_rating"));
+				mrvo.setReview_content(rs.getString("review_content"));
+				mrvo.setReview_write_date(rs.getString("review_write_date"));
+
+				MovieVO mvo = new MovieVO();
+				mvo.setPoster_file(rs.getString("poster_file"));
+				mvo.setMovie_title(rs.getString("movie_title"));
+				mrvo.setMvo(mvo);
+
+				main_mypage_MovieReviewList.add(mrvo);
+			}
+		} finally {
+			close();
+		}
+		return main_mypage_MovieReviewList;
+	}
+
+	
+	
+	//마이페이지 메인 리스트 = 기대되는 영화
+	@Override
+	public List<MovieLikeVO> main_mypage_MovieLikeList(Map<String, String> paraMap) throws SQLException {
+		List<MovieLikeVO> main_mypage_MovieLikeList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " SELECT FK_SEQ_MOVIE_NO, userid, POSTER_FILE, MOVIE_TITLE, to_char(START_DATE, 'yyyy/mm/dd') as START_DATE "
+					+ " FROM ( "
+					+ "    SELECT ROW_NUMBER() OVER (ORDER BY FK_SEQ_MOVIE_NO DESC) AS RNO, "
+					+ "    FK_SEQ_MOVIE_NO, FK_USER_ID AS userid, M.POSTER_FILE, M.MOVIE_TITLE, M.START_DATE "
+					+ "    FROM TBL_LIKE L "
+					+ "    JOIN TBL_MOVIE M "
+					+ "    ON L.FK_SEQ_MOVIE_NO = M.SEQ_MOVIE_NO "
+					+ "    WHERE FK_USER_ID = ? "
+					+ " ) "
+					+ " WHERE RNO BETWEEN 1 AND 2 ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				MovieLikeVO mlvo = new MovieLikeVO();
+				mlvo.setFK_USER_ID(rs.getString("userid"));
+				mlvo.setFK_SEQ_MOVIE_NO(rs.getInt("FK_SEQ_MOVIE_NO"));
+				
+				MovieVO mvo = new MovieVO();
+				mvo.setPoster_file(rs.getString("poster_file"));
+				mvo.setMovie_title(rs.getString("movie_title"));
+				mvo.setStart_date(rs.getString("start_date"));
+				mlvo.setMvo(mvo);
+				
+				main_mypage_MovieLikeList.add(mlvo);
+			}
+		}finally {
+			close();
+		}
+			
+			
+		return main_mypage_MovieLikeList;
+	}
 	
 	
 	

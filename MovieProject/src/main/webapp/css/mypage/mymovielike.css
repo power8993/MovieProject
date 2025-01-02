@@ -1,5 +1,66 @@
 @charset "UTF-8";
 
-div.mymovielikecss{
-	 border: solid 1px gray;
+/* 공통 카드 스타일 */
+div.movielikecss {
+	border: solid 1px black; 
+    height: 360px;
+    width: 197px;
+    margin: auto 20px;
+    background-color: transparent;
+}
+
+div.movielikecss:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+/* 포스터 이미지 케이스 */
+div.poster_relative{
+	width:197px;
+	height:273px;
+	margin: 0 0 14px;
+	padding:6px;
+	background-color: #252422;
+}
+
+/* 이미지 스타일 */
+img.card-img-top {
+	/* border: solid 1px red;  */
+    width: 185px;
+    height: 261px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+}
+div#mymovielikeHIT > div.card-body.movielikecss1 {
+	border: solid 1px blue; 
+	width: 197px;
+	height: 73px;
+	margin-bottom: 20px;
+}
+
+/* 제목과 날짜 스타일 */
+label.mylike {
+    width: 95%;
+    color: #222;
+    font-size: 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+div#mymovielikeHIT > div:nth-child(1) > div > div.movielikecss1 > ul > li:nth-child(2){
+	font-size: 13px;
+}
+
+/* 버튼 스타일 */
+a.mybtnlike {
+    background-color: #252422;
+    color: white;
+    border: none;
+    padding: 10px 5px;
+    font-size: 12pt;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+a.mybtnlike:hover {
+    background-color: #eb5e28;
 }
