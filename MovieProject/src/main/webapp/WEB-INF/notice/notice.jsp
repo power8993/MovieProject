@@ -6,7 +6,6 @@
     String ctxPath = request.getContextPath();
 %>
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -112,9 +111,11 @@
     <!-- 공지 작성 버튼 -->
     <div style="display: flex; margin-bottom: 10px; justify-content: space-between;">
     	<h3><i class="fa-solid fa-list" style="color: #252422;"> 공지사항</i></h3>
-        <a href="<%= ctxPath %>/notice/noticeWrite.mp">
-            <button class="btn-create"><i class="fa-solid fa-pen"> 공지작성</i></button>
-        </a>
+    	<c:if test="${not empty sessionScope.loginuser and sessionScope.loginuser.userid == 'admin' }"> <!-- admin 으로 로그인 했으면 -->
+	        <a href="<%= ctxPath %>/notice/noticeWrite.mp">
+	            <button id=notice class="btn-create"><i class="fa-solid fa-pen"> 공지작성</i></button>
+	        </a>
+        </c:if>
     </div>
 
     <!-- 공지사항 테이블 -->

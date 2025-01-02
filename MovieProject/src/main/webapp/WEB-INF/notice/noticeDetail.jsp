@@ -183,14 +183,16 @@
         <!-- 목록으로 돌아가기 버튼 -->
         <a href="<%= ctxPath %>/notice/notice.mp" class="back-btn"><i class="fa-solid fa-house style=" > 목록으로 돌아가기</i></a>
 
-        <!-- 수정 버튼 (수정 페이지로 이동) -->
-        <a href="<%= ctxPath %>/notice/noticeEdit.mp?seq=${notice.seq_notice_no}&subject=${notice.notice_subject}&notice_content=${notice.notice_content}" class="edit-btn"><i class="fa-solid fa-pen-to-square"> 수정</i></a>
-
-        <form action="<%= ctxPath %>/notice/noticeDelete.mp" method="POST" style="display: inline; text-align: right;">
-	    	<!-- seq_notice_no 값을 실제 공지사항 번호로 전달 -->
-	    	<input type="hidden" name="seq_notice_no" value="${notice.seq_notice_no}">
-	    	<button type="submit" class="delete-btn" onclick="return confirm('정말 삭제하시겠습니까?');"><i class="fa-solid fa-trash"> 삭제</i></button>
-		</form>
+		<c:if test="${not empty sessionScope.loginuser and sessionScope.loginuser.userid == 'admin' }"> <!-- admin 으로 로그인 했으면 -->
+	        <!-- 수정 버튼 (수정 페이지로 이동) -->
+	        <a href="<%= ctxPath %>/notice/noticeEdit.mp?seq=${notice.seq_notice_no}&subject=${notice.notice_subject}&notice_content=${notice.notice_content}" class="edit-btn"><i class="fa-solid fa-pen-to-square"> 수정</i></a>
+	
+	        <form action="<%= ctxPath %>/notice/noticeDelete.mp" method="POST" style="display: inline; text-align: right;">
+		    	<!-- seq_notice_no 값을 실제 공지사항 번호로 전달 -->
+		    	<input type="hidden" name="seq_notice_no" value="${notice.seq_notice_no}">
+		    	<button type="submit" class="delete-btn" onclick="return confirm('정말 삭제하시겠습니까?');"><i class="fa-solid fa-trash"> 삭제</i></button>
+			</form>
+		</c:if>
     </div>
 </div>
 

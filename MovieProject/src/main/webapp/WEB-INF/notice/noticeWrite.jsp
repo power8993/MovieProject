@@ -115,7 +115,7 @@ function gosubmit() {
         return false;  // 폼 제출을 막음
     }
 
-    if (notice_content.replace(/\r?\n/g, '  ').length > 200) {
+    if (notice_content.replace(/\r?\n/g, '<br>').length > 200) {
         alert("내용은 200자 이하로 입력해주세요.");
         return false;  // 폼 제출을 막음
     }
