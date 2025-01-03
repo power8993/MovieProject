@@ -38,8 +38,9 @@ $(document).ready(function(){
 	
 	let cnt = 0;
 	
+	// 영화에서 예매하기를 눌러서 상영 영화 번호를 넘겨줬을 때
 	if(<%= seq_movie_no%> != null && cnt == 0) {
-		cnt++;
+		cnt++; // 처음 페이지에 들어왔을 때만 실행되도록
 		$("td#seq_movie_no").each(function(index, elmt) {
 			if($(this).text() == <%= seq_movie_no%>) {
 				$(this).parent().css({'background-color':'black','color':'white'});
@@ -53,21 +54,13 @@ $(document).ready(function(){
 				if($(this).text() == '<%= start_date%>') {
 					$(this).parent().css({'background-color':'black','color':'white'});
 					$("div#date-choice").text($(this).parent().find("span.input_date").text());
+					$("div#screen-date-info").text('<%= start_date%>');
 					
 					// 영화와 날짜를 선택했을 때 상영 시간이 보여주기
-					getScreenTime('<%= seq_movie_no%>', '<%= start_date%>');
+					getScreenTime('<%= seq_movie_no%>', '<%= start_date%>', '<%= start_time%>');
 					return false;
 				}
-			});
-			
-			$("div.time").find("td.time_data").each(function(index, elmt) {
-				console.log("dd");
-				if($(this).text() == '<%= start_time%>') {
-					$(this).parent().css({'background-color':'black','color':'white'});
-					$("div#time-choice").text($(this).text());
-					return false;
-				}
-			});
+			})
 			
 		}
 	}
@@ -170,6 +163,13 @@ $(document).ready(function(){
 				
 				<div class="col-head">
 					<h3 class="title">시간</h3>
+					<table>
+						<tbody class="time-table">
+							<tr class="time-choice">
+								<td class="time_data" style="display: none"></td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 
 				<div class="col-body">

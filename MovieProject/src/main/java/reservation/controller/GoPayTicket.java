@@ -38,10 +38,6 @@ public class GoPayTicket extends AbstractController {
 	            request.setAttribute("name", loginuser.getName());
 	            request.setAttribute("mobile", loginuser.getMobile());
 	            
-	         
-				// System.out.println("~~~~ 확인용 email : " + loginuser.getEmail());
-	            // System.out.println("~~~~ 확인용 mobile : " + loginuser.getMobile());
-	            
 	            request.setAttribute("userid", userid);
 	            
 	            // super.setRedirect(false);
