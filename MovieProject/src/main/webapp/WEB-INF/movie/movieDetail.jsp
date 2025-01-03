@@ -185,6 +185,39 @@
             }
         });
     	
+    	$.ajax({
+    		url: "/MovieProject/movie/reviwDetail.mp",
+    		type: "POST",
+    		dataType: "json",
+    		data: {
+    			"seq_movie_no": ${mvo.seq_movie_no}
+    		},
+    		success: function(json) {
+				const mrList = json.mrList;
+
+				var reviewList = $("#reviewsList");
+
+    			if(mrList.length > 0) {  
+    				
+    				mrList.forEach(reivew => {
+    					 var reviewHtml = `<li>
+                             <div class="reviewuser">
+                                 <span class="author">작성자: \${reivew.userid}</span><br>
+                                 <span class="rating">별점: \${reivew.movie_rating}점</span><br>
+                                 <p class="content">\${reivew.review_content}</p><br>
+                                 <span class="date">작성날짜: \${reivew.review_write_date}</span><br>
+                             </div>
+                         </li>`;
+    					reviewList.append(reviewHtml);
+    				}) // end of forEach
+    				
+    			} // end of if
+            },
+            error: function(request, status, error){
+                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+            }
+    	});
+    	
         var genderCtx = document.getElementById('genderChart').getContext('2d');
         var genderChart = new Chart(genderCtx, {
             type: 'pie',
@@ -301,18 +334,15 @@
         var reviewList = $("#reviewsList");
         var reviewHtml = `<li>
                              <div class="reviewuser">
-                                 <span class="author">작성자: ${loginuser.getUserid()}</span><br>
-                                 <span class="rating">별점: ${rating}점</span><br>
-                                 <p class="content">${review}</p>
+                                 <span class="author">작성자: ${mrvo.fk_user_id}</span><br>
+                                 <span class="rating">별점: ${mrvo.movie_rating}점</span><br>
+                                 <p class="content">${mrvo.review_content}</p><br>
+                                 <span class="date">작성날짜: ${mrvo.review_write_date}</span><br>
                              </div>
                          </li>`;
         reviewList.append(reviewHtml);
     }
 
-  
-  
-    
-    
 </script>
 
 <div class="container">

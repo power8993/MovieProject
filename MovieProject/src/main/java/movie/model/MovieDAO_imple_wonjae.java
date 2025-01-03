@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -12,6 +14,7 @@ import javax.sql.DataSource;
 
 import member.domain.MemberVO;
 import movie.domain.CategoryVO;
+import movie.domain.MovieReviewVO;
 import movie.domain.MovieVO_wonjae;
 
 public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
@@ -233,6 +236,40 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 			close();
 		}		
 		return n;
+	}
+
+	// 리뷰조회
+	@Override
+	public List<MovieReviewVO> reviewDetail(int seq_movie_no) throws SQLException {
+		List<MovieReviewVO> mrList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+
+			// 공지사항 번호(seq_notice_no)를 기준으로 상세 정보를 조회
+			String sql = " select fk_seq_movie_no, fk_user_id, movie_rating, review_content, review_write_date "
+					   + "from tbl_review "
+					   + "where fk_seq_movie_no = ? ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, seq_movie_no);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				MovieReviewVO mrvo = new MovieReviewVO();
+				mrvo.setFk_seq_movie_no(rs.getInt("fk_seq_movie_no"));
+				mrvo.setFk_user_id(rs.getString("fk_user_id"));
+				mrvo.setMovie_rating(rs.getInt("movie_rating"));
+				mrvo.setReview_content(rs.getString("review_content"));
+				mrvo.setReview_write_date(rs.getString("review_write_date"));
+				
+				mrList.add(mrvo);
+			}			
+		} finally {
+			close();
+		}
+		return mrList;
 	}
 
 	

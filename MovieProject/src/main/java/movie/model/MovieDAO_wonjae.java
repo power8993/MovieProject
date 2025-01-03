@@ -1,8 +1,10 @@
 package movie.model;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import member.domain.MemberVO;
+import movie.domain.MovieReviewVO;
 import movie.domain.MovieVO_wonjae;
 
 public interface MovieDAO_wonjae {
@@ -24,5 +26,8 @@ public interface MovieDAO_wonjae {
 
 	// 리뷰 데이터 저장
 	int submitReview(int seq_movie_no, MemberVO userid, int rating, String review) throws SQLException;
+
+	// 리뷰조회
+	List<MovieReviewVO> reviewDetail(int seq_movie_no) throws SQLException;
 
 }
