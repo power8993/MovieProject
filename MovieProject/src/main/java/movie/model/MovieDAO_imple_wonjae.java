@@ -110,6 +110,7 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 		return mvo;
 	} // end of movieDetail
 
+	// 영화에 좋아요 추가
 	@Override
 	public boolean insertMovieLike(MemberVO loginuser, int seq_movie_no) throws SQLException {
 	    boolean result = false;
@@ -134,6 +135,7 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 	    return result;
 	}
 
+	// 좋아요가 이미 체크되어있는지확인
 	@Override
 	public boolean removeMovieLike(MemberVO loginuser, int seq_movie_no) throws SQLException {
 	    boolean result = false;
@@ -156,6 +158,7 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 	    return result;
 	}
 
+	// 현재 영화에 대해 사용자가 좋아요를 눌렀는지 확인
 	@Override
 	public boolean checkMovieLike(MemberVO loginuser, int seq_movie_no) throws SQLException {
 	    boolean isLiked = false;

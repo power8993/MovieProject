@@ -415,7 +415,7 @@
         </div>
         <textarea id="reviewText" placeholder="영화에 대한 후기를 작성해주세요..." style="-webkit-border-radius: 0; outline: 0; resize: none;"></textarea><br>
         
-        <!-- Hidden Input for Rating -->
+        <!-- 별점값을 가져오기 위함 -->
         <input type="hidden" id="rating" name="rating" value="">
         
         <button onclick="submitReview()">후기 제출</button>
