@@ -10,6 +10,11 @@
 
 <jsp:include page="header1.jsp" />
 <script type="text/javascript" src="<%= ctxPath%>/js/index/index.js"></script> 
+<input type="hidden" value="<%=ctxPath%>" name="forJavaScript">
+
+<c:forEach var="movie" items="${movies}">
+    <div>${movie.showvo.seq_showtime_no},${movie.poster_file},${movie.movie_title}</div>
+</c:forEach>
 
          <div class="a_box" style="width: 100%; height: 80vh; background-color: #000; padding-top: 40px; position: relative; min-width:980px;">
                <div class="embed-responsive embed-responsive-16by9" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;">
@@ -25,65 +30,45 @@
                     <!-- 첫 번째 카드 세트 -->
                     <div class="carousel-item active">
                         <div class="d-flex justify-content-between">
-                            <div class="col mb-3 first-card" >
+                            <%-- <div class="col mb-3 first-card" >
                                 <div class="card">
                                     <div class="movieCard" style="position: relative; width: 170px; height: 234px; margin: 0 auto;">
 									    <img src="${pageContext.request.contextPath}/images/admin/poster_file/미니언즈.jpg" class="card-img-top poster" style="width: 100%; height: 100%; object-fit: cover;">
-									   
+									   	
 									</div>
                                 </div>
-                            </div>
-                            <div class="col mb-3">
+								<p style="text-align:center; margin-top:10px;">영화제목</p>
+                            </div> --%>
+                            
+                            <c:forEach var="movie" items="${movies}">
+							    <div class="col mb-3 first-card" >
                                 <div class="card">
-                                    <img src="https://via.placeholder.com/170x234" class="card-img-top" alt="카드2">
+                                    <div class="movieCard" style="position: relative; width: 170px; height: 234px; margin: 0 auto;">
+									    <img src="${pageContext.request.contextPath}/images/admin/poster_file/${movie.poster_file}" class="card-img-top poster" style="width: 100%; height: 100%; object-fit: cover;">
+									   	<input type="hidden" name="seq_showtime_no" value="${movie.showvo.seq_showtime_no}">
+									</div>
                                 </div>
+								<p style="text-align:center; margin-top:10px;">${movie.movie_title}</p>
                             </div>
-                            <div class="col mb-3">
-                                <div class="card">
-                                    <img src="https://via.placeholder.com/170x234" class="card-img-top" alt="카드3">
-                                </div>
-                            </div>
-                            <div class="col mb-3">
-                                <div class="card">
-                                    <img src="https://via.placeholder.com/170x234" class="card-img-top" alt="카드4">
-                                </div>
-                            </div>
-                            <div class="col mb-3 last-card">
-                                <div class="card">
-                                    <img src="https://via.placeholder.com/170x234" class="card-img-top" alt="카드5">
-                                </div>
-                            </div>
+							</c:forEach>
+                            
                         </div>
                     </div>
             
                     <!-- 두 번째 카드 세트 -->
                     <div class="carousel-item">
                         <div class="d-flex justify-content-between">
-                            <div class="col mb-3 first-card">
+                            <c:forEach var="movie2" items="${movies2}">
+							    <div class="col mb-3 first-card" >
                                 <div class="card">
-                                    <img src="https://via.placeholder.com/170x234" class="card-img-top" alt="카드1">
+                                    <div class="movieCard" style="position: relative; width: 170px; height: 234px; margin: 0 auto;">
+									    <img src="${pageContext.request.contextPath}/images/admin/poster_file/${movie2.poster_file}" class="card-img-top poster" style="width: 100%; height: 100%; object-fit: cover;">
+									   	<input type="hidden" name="seq_showtime_no" value="${movie2.showvo.seq_showtime_no}">
+									</div>
                                 </div>
+								<p style="text-align:center; margin-top:10px;">${movie2.movie_title}</p>
                             </div>
-                            <div class="col mb-3">
-                                <div class="card">
-                                    <img src="https://via.placeholder.com/170x234" class="card-img-top" alt="카드2">
-                                </div>
-                            </div>
-                            <div class="col mb-3">
-                                <div class="card">
-                                    <img src="https://via.placeholder.com/170x234" class="card-img-top" alt="카드3">
-                                </div>
-                            </div>
-                            <div class="col mb-3">
-                                <div class="card">
-                                    <img src="https://via.placeholder.com/170x234" class="card-img-top" alt="카드4">
-                                </div>
-                            </div>
-                            <div class="col mb-3 last-card">
-                                <div class="card">
-                                    <img src="https://via.placeholder.com/170x234" class="card-img-top" alt="카드5">
-                                </div>
-                            </div>
+							</c:forEach>
                         </div>
                     </div>
             

@@ -33,8 +33,8 @@ $(".movieCard").hover(
  });// end of $(document).ready(function(){});---------------------
  
  //=== 카드의 버튼에 마우스 올릴 시 시작 ===//
- $(document).on("mouseenter", "#movieDetailBtn", function () {
-    $(".poster").css("opacity", "0.5"); // .poster 요소를 50% 투명하게
+ $(document).on("mouseenter", "#movieDetailBtn", function (e) {
+     $(e.target).css("opacity", "0.1"); // .poster 요소를 50% 투명하게
 });
 $(document).on("mouseleave", "#movieDetailBtn", function () {
     $(".poster").css("opacity", ""); // 원래 상태로 복구
@@ -48,6 +48,23 @@ $(document).on("mouseleave", "#movieReservationBtn", function () {
     $(".poster").css("opacity", ""); // 원래 상태로 복구
 });
 //=== 카드의 버튼에 마우스 올릴 시 끝 ===//
+
+//== 상세보기 또는 예매하기 버튼에 마우스 올릴 시 시작 ==//
+
+//== 상세보기 또는 예매하기 버튼에 마우스 올릴 시 끝 ==//
+
+
+
+//예매하기 버튼 클릭 시
+ $(document).on("click", "#movieReservationBtn", function () {
+	
+	var ctxPath = $("input[name='forJavaScript']").val();
+	    console.log(ctxPath);
+	const seq_showtime_no = $("input[name='seq_showtime_no']").val();
+	console.log(seq_showtime_no);
+	alert("seq_showtime_no : " + seq_showtime_no);
+    location.href= ctxPath + "/reservation/reservation.mp?seq_movie_no="+seq_showtime_no;
+});
 
 
 

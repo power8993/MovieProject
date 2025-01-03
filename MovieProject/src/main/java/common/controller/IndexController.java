@@ -7,6 +7,11 @@ import common.model.indexDAO;
 import common.model.indexDAO_imple;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import movie.domain.CategoryVO_yeo;
+import movie.domain.MovieVO_sangwoo;
+import movie.domain.MovieVO_yeo;
+import movie.model.MovieDAO_imple_yeo;
+import movie.model.MovieDAO_yeo;
 //import myshop.domain.ImageVO;
 //import myshop.model.ProductDAO;
 //import myshop.model.ProductDAO_imple;
@@ -26,11 +31,22 @@ public class IndexController extends AbstractController {
 	try {
 			
 			List<NoticeDTO> noticeList = idao.NoticeSelectTopThree(); // 공지사항 최신글 3개 조회하기
-			
 			request.setAttribute("noticeList", noticeList);
+			
+			
+
+			/////////////////////////////////////////////
+			// 전체 목록 (예매율순)
+        	List<MovieVO_sangwoo> movies = idao.showMovieChart();
+        	List<MovieVO_sangwoo> movies2 = idao.showMovieChart2();
+        	request.setAttribute("movies", movies);
+        	request.setAttribute("movies2", movies2);
 			
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/index.jsp");
+			
+
+            
 		} catch (SQLException e) {
 			e.printStackTrace();
 			
