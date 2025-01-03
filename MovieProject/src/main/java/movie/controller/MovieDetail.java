@@ -33,7 +33,7 @@ public class MovieDetail extends AbstractController {
 	            JSONObject jsonObj = new JSONObject();
 				jsonObj.put("isLiked", isLiked);
 	
-				json = jsonObj.toString();	            				
+				json = jsonObj.toString();
 	        }
 	        else {
 	            // 로그인하지 않은 경우에는 기본값을 반환 (isLiked = false)

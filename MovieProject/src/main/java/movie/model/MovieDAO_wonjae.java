@@ -19,4 +19,10 @@ public interface MovieDAO_wonjae {
 	// 현재 영화에 대해 사용자가 좋아요를 눌렀는지 확인
 	boolean checkMovieLike(MemberVO userid, int seq_movie_no) throws SQLException;
 
+	// 로그인된 사용자라면 결제 여부를 확인
+	boolean checkuserpay(MemberVO userid) throws SQLException;
+
+	// 리뷰 데이터 저장
+	int submitReview(int seq_movie_no, MemberVO userid, int rating, String review) throws SQLException;
+
 }

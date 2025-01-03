@@ -180,6 +180,61 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 	    return isLiked;
 	}
 
+	// 로그인된 사용자라면 결제 여부를 확인
+	@Override
+	public boolean checkuserpay(MemberVO loginuser) throws SQLException {
+		boolean isPaid = false;
+
+		try {
+			conn = ds.getConnection();
+
+			String sql = "select count(*) as payment_count from tbl_payment where fk_user_id = ? and pay_status = '결제 완료' ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, loginuser.getUserid());
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				int payment_count = rs.getInt("payment_count");
+				// 결제 상태가 '결제완료'면 true 반환
+				if (payment_count > 0) {
+					isPaid = true;
+				}
+			}
+		} finally {
+			close();
+		}
+
+		return isPaid;
+	} // end of checkuserpay
+
+	// 리뷰 데이터 저장
+	@Override
+	public int submitReview(int seq_movie_no, MemberVO loginuser, int rating, String review) throws SQLException {
+		int n = 0;
+		
+		try {
+			conn = ds.getConnection();
+
+			String sql = " insert into tbl_review (seq_review_no, fk_seq_movie_no, fk_user_id, movie_rating, review_content, review_write_date) "
+					   + " values (seq_review_no.nextval, ?, ?, ?, ?, sysdate) ";
+
+			pstmt = conn.prepareStatement(sql);
+	        	     
+			pstmt.setInt(1, seq_movie_no);     			 // FK_SEQ_MOVIE_NO: 영화 번호
+			pstmt.setString(2, loginuser.getUserid());   // FK_USER_ID: 사용자 ID
+			pstmt.setInt(3, rating);      				 // MOVIE_RATING: 별점
+			pstmt.setString(4, review);   				 // REVIEW_CONTENT: 리뷰 내용
+
+			n = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}		
+		return n;
+	}
+
 	
 
 	

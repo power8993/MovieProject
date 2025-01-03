@@ -157,7 +157,6 @@
 <script src="https://kit.fontawesome.com/0c69fdf2c0.js" crossorigin="anonymous"></script>
 <script type="text/javascript" src="<%= ctxPath%>/js/movie/movieDetail.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://kit.fontawesome.com/0c69fdf2c0.js" crossorigin="anonymous"></script>
 
 <jsp:include page="/WEB-INF/header1.jsp" />
 
@@ -252,15 +251,66 @@
                 }
             }
         });
-        
-        $('.star_rating > .star').click(function() {
-       	  $(this).parent().children('span').removeClass('on');
-       	  $(this).addClass('on').prevAll('span').addClass('on');
-       	});
-        
+
+     	// 별점 클릭 이벤트
+        $(".rating-stars span").click(function() {
+            var selectedRating = $(this).data("value");
+            $(".rating-stars span").removeClass("selected");
+            $(this).prevAll().addClass("selected");
+            $(this).addClass("selected");
+
+            $("#rating").val(selectedRating);
+        });
+
+        $(".rating-stars span").click(function() {
+            var rating = $(this).data("value");
+            $("#rating").val(rating); // 이 부분에서 #rating의 값을 설정
+        });
+     	
     });
     
-   
+    function submitReview() {
+        var rating = $("#rating").val();  // 선택된 별점
+        var review = $("#reviewText").val().trim();  // 리뷰 내용
+
+        // AJAX 요청을 보내서 리뷰 데이터를 서버에 제출
+        $.ajax({
+            url: "/MovieProject/movie/moviereview.mp",  // 리뷰를 처리하는 서블릿 URL
+            type: "POST",
+            dataType: "json",
+            data: {
+                "seq_movie_no": ${mvo.seq_movie_no},  // 영화 번호
+                "rating": rating,  // 별점
+                "review": review  // 리뷰 내용
+            },
+            success: function(json) {          	           	
+                if (json.n == 1) {
+                    alert("리뷰가 성공적으로 제출되었습니다.");  // 리뷰 제출 성공 메시지
+                    addReviewToList(rating, review);  // 리뷰 목록에 추가
+                } else {
+                    alert("리뷰 제출에 실패했습니다. 다시 시도해주세요.");  // 리뷰 제출 실패 메시지
+                }           	
+            },
+            error: function(request, status, error){
+                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+            }
+        });
+    }
+
+    function addReviewToList(rating, review) {
+        var reviewList = $("#reviewsList");
+        var reviewHtml = `<li>
+                             <div class="reviewuser">
+                                 <span class="author">작성자: ${loginuser.getUserid()}</span><br>
+                                 <span class="rating">별점: ${rating}점</span><br>
+                                 <p class="content">${review}</p>
+                             </div>
+                         </li>`;
+        reviewList.append(reviewHtml);
+    }
+
+  
+  
     
     
 </script>
@@ -334,6 +384,10 @@
             <span data-value="5">&#9733;</span>
         </div>
         <textarea id="reviewText" placeholder="영화에 대한 후기를 작성해주세요..." style="-webkit-border-radius: 0; outline: 0; resize: none;"></textarea><br>
+        
+        <!-- Hidden Input for Rating -->
+        <input type="hidden" id="rating" name="rating" value="">
+        
         <button onclick="submitReview()">후기 제출</button>
     </div>
 
