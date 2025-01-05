@@ -63,6 +63,10 @@
         .rating-stars span.selected {
             color: gold;
         }
+        
+		.star.filled {
+		    color: gold;  /* 채워진 별 색상 */
+		}
         .review-section {
             margin-top: 20px;
         }
@@ -163,6 +167,21 @@
 <script type="text/javascript">
     $(document).ready(function() {
     	
+    	// 별점 클릭 이벤트
+        $(".rating-stars span").click(function() {
+            var selectedRating = $(this).data("value");
+            $(".rating-stars span").removeClass("selected");
+            $(this).prevAll().addClass("selected");
+            $(this).addClass("selected");
+
+            $("#rating").val(selectedRating);
+        });
+
+        $(".rating-stars span").click(function() {
+            var rating = $(this).data("value");
+            $("#rating").val(rating); // 이 부분에서 #rating의 값을 설정
+        });
+    	
     	// 페이지가 로드될 때 좋아요 상태를 확인하는 함수
         $.ajax({
             url: "/MovieProject/movie/movieDetail.mp",
@@ -185,6 +204,7 @@
             }
         });
     	
+    	// 페이지로드 됬을 때 후기 목록보여주기
     	$.ajax({
     		url: "/MovieProject/movie/reviwDetail.mp",
     		type: "POST",
@@ -200,14 +220,26 @@
     			if(mrList.length > 0) {  
     				
     				mrList.forEach(reivew => {
+    					
+    					var stars = "";
+    	                
+    	                // review.movie_rating 값에 맞는 별을 생성하고 색상 변경
+    	                for (var i = 1; i <= 5; i++) {
+    	                    if (i <= reivew.movie_rating) {
+    	                        stars += '<span class="star filled">★</span>';  // 채워진 별, 색상 변경
+    	                    } else {
+    	                        stars += '<span class="star">★</span>';  // 빈 별
+    	                    }
+    	                }
+    					
     					 var reviewHtml = `<li>
-                             <div class="reviewuser">
-                                 <span class="author">작성자: \${reivew.userid}</span><br>
-                                 <span class="rating">별점: \${reivew.movie_rating}점</span><br>
-                                 <p class="content">\${reivew.review_content}</p><br>
-                                 <span class="date">작성날짜: \${reivew.review_write_date}</span><br>
-                             </div>
-                         </li>`;
+					                             <div class="reviewuser">
+					                                 <span class="author">작성자: \${reivew.userid}</span><br>
+					                                 <span class="rating">별점: \${stars}점</span><br>
+					                                 <p class="content">\${reivew.review_content}</p><br>
+					                                 <span class="date">작성날짜: \${reivew.review_write_date}</span><br>
+					                             </div>
+					                         </li>`;
     					reviewList.append(reviewHtml);
     				}) // end of forEach
     				
@@ -285,26 +317,25 @@
             }
         });
 
-     	// 별점 클릭 이벤트
-        $(".rating-stars span").click(function() {
-            var selectedRating = $(this).data("value");
-            $(".rating-stars span").removeClass("selected");
-            $(this).prevAll().addClass("selected");
-            $(this).addClass("selected");
-
-            $("#rating").val(selectedRating);
-        });
-
-        $(".rating-stars span").click(function() {
-            var rating = $(this).data("value");
-            $("#rating").val(rating); // 이 부분에서 #rating의 값을 설정
-        });
-     	
     });
     
+    // 후기 작성하는 json
     function submitReview() {
-        var rating = $("#rating").val();  // 선택된 별점
+    	
+    	var rating = $("#rating").val();  // 선택된 별점
         var review = $("#reviewText").val().trim();  // 리뷰 내용
+    	
+     	// 1. 리뷰 내용이 비어 있거나 별점이 선택되지 않았을 경우
+        if (review === "" || !rating || rating === "0") {
+            alert("별점과 후기내용을 모두 작성하여야 합니다.");  // 둘 다 작성되지 않았을 때 경고 메시지
+            return;  // 함수 종료
+        }
+
+        // 2. 리뷰 내용이 50글자 이하인지 확인
+        if (review.length > 50) {
+            alert("후기 내용은 50글자 이하이어야 합니다.");
+            return;  // 50글자 미만이면 함수 종료
+        }
 
         // AJAX 요청을 보내서 리뷰 데이터를 서버에 제출
         $.ajax({
@@ -316,31 +347,56 @@
                 "rating": rating,  // 별점
                 "review": review  // 리뷰 내용
             },
-            success: function(json) {          	           	
-                if (json.n == 1) {
+            success: function(json) {
+            	if (json.n == 0) {
+                    // 로그인되지 않았을 때
+                    alert("로그인 후 리뷰를 작성할 수 있습니다.");  // "로그인 후 리뷰를 작성할 수 있습니다." 메시지를 표시
+                }
+            	else if (json.n == 1) {
                     alert("리뷰가 성공적으로 제출되었습니다.");  // 리뷰 제출 성공 메시지
-                    addReviewToList(rating, review);  // 리뷰 목록에 추가
-                } else {
+                    addReviewToList(json.review);  // 리뷰 목록에 추가
+                    
+                    // 리뷰 제출 후 입력 필드 초기화
+                    $("#rating").val("0");  // 별점 초기화
+                    $("#reviewText").val("");  // 후기 내용 초기화
+                    
+                    $(".rating-stars span").removeClass("selected");
+                } 
+                else if (json.n == 2) {
+                    alert("결제된 회원만 후기를 작성할 수 있습니다.");
+                }
+                else {
                     alert("리뷰 제출에 실패했습니다. 다시 시도해주세요.");  // 리뷰 제출 실패 메시지
-                }           	
+                }  
             },
             error: function(request, status, error){
                 alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
             }
         });
     }
-
-    function addReviewToList(rating, review) {
+    
+	// 후기 작성하고나서 추가하는 html
+    function addReviewToList(review) {
         var reviewList = $("#reviewsList");
+               
+        var stars = "";
+        for (var i = 1; i <= 5; i++) {
+            if (i <= review.movie_rating) {
+                stars += '<span class="star filled">★</span>';
+            } else {
+                stars += '<span class="star">★</span>';
+            }
+        }
+        
         var reviewHtml = `<li>
                              <div class="reviewuser">
-                                 <span class="author">작성자: ${mrvo.fk_user_id}</span><br>
-                                 <span class="rating">별점: ${mrvo.movie_rating}점</span><br>
-                                 <p class="content">${mrvo.review_content}</p><br>
-                                 <span class="date">작성날짜: ${mrvo.review_write_date}</span><br>
+                                 <span class="author">작성자: \${review.user_id}</span><br>
+                                 <span class="rating">별점: \${stars}점</span><br>
+                                 <p class="content">\${review.review_content}</p><br>
+                                 <span class="date">작성날짜: \${review.review_write_date}</span><br>
                              </div>
                          </li>`;
-        reviewList.append(reviewHtml);
+        reviewList.prepend(reviewHtml);
     }
 
 </script>
@@ -424,11 +480,22 @@
     <hr style="width: 95%; border: 1.5px solid #ccc5b9; margin-bottom: 30px;">
 
     <!-- 작성된 후기들 -->
-    <div class="reviews-list">
-        <ul id="reviewsList">
+    <div class="reviews-list" style="width: 95%; margin: 0 auto;">
+        <ul id="reviewsList" >
             <!-- 후기가 추가될 곳 -->
         </ul>
     </div>
+    
+    
+    
+    <!-- 페이지네이션 추가 -->
+	<div id="pageBar" style="text-align: center; margin-top: 20px;">
+	    <nav>
+	        <ul class="pagination" id="pagination">
+	            <!-- 페이지 버튼이 동적으로 삽입될 곳 -->
+	        </ul>
+	    </nav>
+	</div>
 </div>
 
 <jsp:include page="/WEB-INF/footer1.jsp" />
