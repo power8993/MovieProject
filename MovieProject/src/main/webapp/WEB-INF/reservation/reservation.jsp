@@ -8,6 +8,7 @@
 	String seq_movie_no = request.getParameter("seq_movie_no");
 	String start_date = request.getParameter("start_date");
 	String start_time = request.getParameter("start_time");
+	String fk_screen_no = request.getParameter("fk_screen_no");
 %>
 
 
@@ -57,7 +58,7 @@ $(document).ready(function(){
 					$("div#screen-date-info").text('<%= start_date%>');
 					
 					// 영화와 날짜를 선택했을 때 상영 시간이 보여주기
-					getScreenTime('<%= seq_movie_no%>', '<%= start_date%>', '<%= start_time%>');
+					getScreenTime('<%= seq_movie_no%>', '<%= start_date%>', '<%= start_time%>', '<%= fk_screen_no%>');
 					return false;
 				}
 			})
@@ -187,6 +188,7 @@ $(document).ready(function(){
 			<div class="col-body">
 				<div id="person-screen">
 					<div id="numberOfPeople" class="mt-3">
+											
 						<div id="adult" class="btn-group">
 							<label>성인</label>
 							<button type="button" class="btn adult" value="0">0</button>
@@ -252,7 +254,7 @@ $(document).ready(function(){
 				</div>
 				<div id="seat-choice">> 좌석선택</div>
 				<div id="pay-choice">> 결제</div>
-				<button id="goSeatChoice" onclick="goSeatChoice('${sessionScope.loginuser.userid}')">-> 좌석선택</button>
+				<button id="goSeatChoice" onclick="goSeatChoice('${sessionScope.loginuser.userid}', '${sessionScope.loginuser.birthday}')">-> 좌석선택</button>
 				<button id="goPointChoice" onclick="goPointChoice('<%= ctxPath%>', '${sessionScope.loginuser.userid}')">-> 포인트사용</button>
 				<button id="goPay" onclick="goPay('<%= ctxPath%>', '${sessionScope.loginuser.userid}')">-> 결제하기</button>
 			</div>
