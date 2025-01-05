@@ -11,6 +11,28 @@ $(document).ready(function(){
 		}
 	});
 	
+	// 아이디 입력 검사 //
+	$(document).on('input', '#loginUserid', function() {
+		if($("#loginUserid").val()==""){
+			$("#idErrorMsg").html("<span>아이디를 입력해 주세요.</span>");
+		}
+		else{
+			$("#idErrorMsg").html("");
+			$("#login_error").html("");
+		}
+	});
+	
+	// 비밀번호 입력 검사 //
+	$(document).on('input', '#loginPwd', function() {
+		if($("#loginPwd").val()==""){
+			$("#pwdErrorMsg").html("<span>비밀번호를 입력해 주세요.</span>");
+		}
+		else{
+			$("#pwdErrorMsg").html("");
+			$("#login_error").html("");
+		}
+	});
+	
 }); // end of $(document).ready(function(){})---------------------------------
 
 
@@ -38,20 +60,18 @@ function goLogin() {
 	// alert("ㄹ그인 한다");
 	
 	if( $("input#loginUserid").val().trim() == "" ) {
-		alert("아이디를 입력하세요!!");
+		$("#errorMsg").html("<span>아이디를 입력해 주세요.</span>");
 		$("input#loginUserid").val("").focus();
 		return; // goLogin() 함수 종료
 	}
 	
 	if( $("input#loginPwd").val().trim() == "" ) {
-		alert("암호를 입력하세요!!");
+		$("#errorMsg").html("<span>비밀번호를 입력해 주세요.</span>");
 		$("input#loginPwd").val("").focus();
 		return; // goLogin() 함수 종료
 	}
 	
 	if( $("input:checkbox[id='saveid']").prop("checked") ) {
-		// alert("아이디저장 체크를 하셨네요~~^^");
-		
 		localStorage.setItem('saveid', $("input#loginUserid").val());
 	}
 	

@@ -17,4 +17,9 @@ public interface indexDAO {
 	//무비차트 예매율 기준 상위 5개 조회하기.(카드의 두번째화면)
 	List<MovieVO_sangwoo> showMovieChart2() throws SQLException;
 
+	//상영예정작 현재날짜에 가까운 영화개봉일 기준 상위 5개 초회(카드의 첫화면)
+	List<MovieVO_sangwoo> showLaterMovies() throws SQLException;
+	
+	//상영예정작 현재날짜에 가까운 영화개봉일 기준 상위 5개 이후 5개 초회(카드의 첫화면)
+	List<MovieVO_sangwoo> showLaterMovies2() throws SQLException;
 }

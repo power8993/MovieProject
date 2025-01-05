@@ -1,28 +1,22 @@
 @charset "UTF-8";
 
+#semiLogo{
+	margin: 0 auto;	
+	margin-top:60px;
+	margin-bottom:30px;
+}
+#semiLogo > a > img{
+	width: 150px;
+}
+
 div#form_container  {
 	width: 980px;
 	height: 600px;
 	margin: 0 auto;
-	box-sizing: border-box; /* padding 포함 계산 */
-	border:solid 1px red;
+	box-sizing: border-box;
+	/* border:solid 1px red; */
 }
 
-
-div#inputIdPW > div#logo{
-	margin: 0 auto;	
-	margin-top:120px;
-	margin-bottom:30px;
-}
-
-#loginTbl{
-	margin: 0 auto;
-}
-
-#loginTbl tbody tr td{
-	border-bottom: 2px solid gray;
-	width:300px;
-}
 
 div#form_container > form {
   	max-width: 350px;
@@ -31,7 +25,7 @@ div#form_container > form {
 }
 	
 .inputIdPw{
-	border: none;        /* 테두리 제거 */
+	border: none;       
     outline: none;       
     background-color: transparent; 
     padding: 5px;        
@@ -40,16 +34,88 @@ div#form_container > form {
     text-align: center;
 }
 
+/* 에러메세지 띄우는 요소 시작 */
+#idErrorMsg{
+	color: red; font-size: 10pt; text-align: left;margin-top: -10px;margin-bottom: 10px;
+}
+#pwdErrorMsg{
+	color: red; font-size: 10pt; text-align: left;margin-top: -10px;margin-bottom: -16px;
+}
+#login_error{
+	color: red; font-size: 10pt; text-align: left;margin-top: 16px;margin-bottom: -16px;
+}
+
+/* 에러메세지 띄우는 요소 끝 */
+
+/*/////////////// 아이디 저장 시작 ///////////////*/
+.form-check{ 
+	text-align: left;
+	padding-left: 0px;
+}
+/* 공통 체크박스 스타일 */
+.custom-checkbox {
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+  font-size: 10pt; 
+}
+.custom-checkbox .form-check-input {
+  width: 18px; 
+  height: 18px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  transition: all 0.3s ease; 
+  cursor: pointer;
+}
+
+/* 체크박스 호버 상태 */
+.custom-checkbox .form-check-input:hover {
+  border-color: #007bff;
+}
+
+/* 체크박스 선택 상태 */
+.custom-checkbox .form-check-input:checked {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+/* 체크박스 내부 아이콘 (기본 브라우저 스타일 제거) */
+.custom-checkbox .form-check-input:checked::before {
+  content: "✔"; 
+  display: block;
+  text-align: center;
+  line-height: 18px;
+  color: white;
+  font-size: 12px;
+}
+
+/* 텍스트 스타일 */
+.custom-checkbox .form-check-label {
+  color: #333; 
+  cursor: pointer;
+  margin: 0;
+}
+/*/////////////// 아이디 저장 끝 ///////////////*/
+
+
+
+
 .loginjspBtn {
-	color: #ffffff; /* 하얀색 폰트 */
-    font-size: 14px; /* 폰트 크기 설정 */
-    background-color: #ff7a00; /* 주황색 배경 */
-    border: none; /* 테두리 제거 */
-    border-radius: 5px; /* 모서리를 둥글게 */
-    cursor: pointer; /* 마우스 포인터 변경 */
-    flex: 1; /* 버튼을 동일한 너비로 설정 */
-    text-align: center; /* 텍스트를 가운데 정렬 */
+	color: #ffffff; 
+    font-size: 14px;
+    background-color: #ff7a00;
+    border: none;
+    border-radius: 5px; 
+    cursor: pointer;
+    flex: 1;
+    text-align: center;
     font-weight:700;
+}
+#btnSubmit:hover{
+	background-color: #e95216;
+	transition: 0.3s;
 }
 
 #btnSubmit{
@@ -57,30 +123,102 @@ div#form_container > form {
 	margin-bottom:20px;
 	width:100%;
 	height:45px;
-	background-color: #ff7a00; /* 주황색 배경 */
-    color: #ffffff; /* 하얀색 폰트 */
-    font-size: 21px; /* 폰트 크기 설정 */
+	background-color: #ff7a00;
+    color: #ffffff;
+    font-size: 21px; 
     
 }
 
 #buttonContainer {
     display: flex;
     justify-content: space-between; /* 버튼 사이의 간격을 동일하게 설정 */
-    gap: 10px; /* 버튼들 사이에 일정한 간격 추가 (선택 사항) */
+    gap: 10px; 
 }
 
 #findIdBtn{
-	background-color: #403d39;
+	background-color: #878178;
 	height:35px;
 }
 
  #findPwBtn{
- 	background-color: #403d39;
+ 	background-color: #878178;
  	height:35px;
 }
 
 #signUpBtn{
 	background-color: #ccc5b9;
 	height:35px;
-	color:black;
+}
+
+#findIdBtn:hover{
+	background-color: #6c6760;
+	transition: 0.3s;
+}
+#findPwBtn:hover{
+	background-color: #6c6760;
+	transition: 0.3s;
+}
+#signUpBtn:hover{
+	background-color: #bfb6a6;
+	transition: 0.3s;
+}
+
+
+
+
+
+
+
+
+/*//////////// 플로팅 상단 정렬 ////////////  */
+/* 공통 스타일 */
+.form-floating-label {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.form-control:focus {
+  background-color: #fffcf2;
+  outline: none;
+}
+#loginUserid:focus,#loginPwd:focus{
+	border: solid 1px;
+	border-color: #eb5e28; 
+	box-shadow: none;
+}
+
+.form-floating-label input {
+  width: 100%;
+  height:54px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: transparent;
+  padding-top:24px;
+}
+
+.form-floating-label label {
+  position: absolute;
+  top: 15px;
+  left: 12px;
+  font-size: 16px;
+  color: #aaa;
+  transition: all 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+/* 포커스 또는 입력 값이 있을 때 라벨 이동 */
+.form-floating-label input:focus + label,
+.form-floating-label input:not(:placeholder-shown) + label {
+  top: 5px;
+  left: 10px;
+  font-size: 12px;
+  color: #cccccc;
+}
+
+.form-floating-label input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
