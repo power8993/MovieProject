@@ -54,7 +54,7 @@ $(document).ready(function(){
 					                            <div class="modal-content">
 					                                <!-- Modal Header -->
 					                                <div class="modal-header">
-					                                    <h5 class="modal-title" id="member_find">${mvo.user_id} 회원 상세정보</h5>
+					                                    <h5 class="modal-title" id="member_find"><i class="fa-solid fa-circle-user" style="color: #252422;"></i>&nbsp;${mvo.user_id} 회원 상세정보</h5>
 					                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					                                        <span aria-hidden="true">&times;</span>
 					                                    </button>
@@ -66,33 +66,40 @@ $(document).ready(function(){
 					                                    <table class="table">
 					                                        <tbody>
 																<tr>
-																	<td>이름</td>
+																	<td class="info_field">이름</td>
 																	<td colspan="2">${mvo.name}</td>
 																</tr>
 																<tr>
-																    <td>연락처</td>
-																	<td colspan="2">${mvo.mobile}</td>
+																    <td class="info_field">연락처</td>
+																	<td colspan="2">${mvo.mobile.substring(0,3)}-${mvo.mobile.substring(3,7)}-${mvo.mobile.substring(7)}</td>
 																</tr>
 																<tr>
-																	<td>이메일</td>
+																	<td class="info_field">이메일</td>
 																	<td colspan="2">${mvo.email}</td>
 																</tr>
-					                                            <tr>
-					                                                <td>예매횟수</td>
-					                                                <td>총결제액</td>
-																	<td>포인트</td>
-					                                            </tr>
-																<tr>
-																    <td>${mvo.reserved_cnt}</td>
-																    <td>${mvo.pay_sum}</td>
-																	<td>${mvo.point_sum}</td>
-																</tr>
-					                                        </tbody>
-					                                    </table>
+															</tbody>
+														</table>
 														
+														<table class="table">
+					                                        <tbody>	
+					                                            <tr class="info_pay">
+					                                                <td class="info_field">예매횟수</td>
+					                                                <td class="info_field">총결제액</td>
+																	<td class="info_field">포인트</td>
+					                                            </tr>
+																<tr class="info_pay">
+																    <td>${mvo.reserved_cnt}&nbsp;회</td>
+																    <td>${Number(mvo.pay_sum).toLocaleString()}&nbsp;원</td>
+																	<td>${Number(mvo.point_sum).toLocaleString()}&nbsp;pt</td>
+																</tr>
+																</tbody>
+														</table>
+              
+														<!-- 한 달간 예매 추이 차트 -->
 														<div id="graph_container">
-										                   <canvas id="reserved_graph"></canvas>
-										               </div>
+															<div><i class="fa-solid fa-chart-simple" style="color: #252422;"></i>&nbsp;한 달간 예매 추이</div>
+										                   	<canvas id="reserved_graph"></canvas>
+										                </div>
 
 					                                    <!-- 버튼 -->
 					                                    <div class="modal-footer">
