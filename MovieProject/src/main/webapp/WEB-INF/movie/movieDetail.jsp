@@ -318,24 +318,12 @@
         });
 
     });
-    
+
     // 후기 작성하는 json
     function submitReview() {
     	
     	var rating = $("#rating").val();  // 선택된 별점
         var review = $("#reviewText").val().trim();  // 리뷰 내용
-    	
-     	// 1. 리뷰 내용이 비어 있거나 별점이 선택되지 않았을 경우
-        if (review === "" || !rating || rating === "0") {
-            alert("별점과 후기내용을 모두 작성하여야 합니다.");  // 둘 다 작성되지 않았을 때 경고 메시지
-            return;  // 함수 종료
-        }
-
-        // 2. 리뷰 내용이 50글자 이하인지 확인
-        if (review.length > 50) {
-            alert("후기 내용은 50글자 이하이어야 합니다.");
-            return;  // 50글자 미만이면 함수 종료
-        }
 
         // AJAX 요청을 보내서 리뷰 데이터를 서버에 제출
         $.ajax({
@@ -348,7 +336,7 @@
                 "review": review  // 리뷰 내용
             },
             success: function(json) {
-            	if (json.n == 0) {
+            	if (json.n == 2) {
                     // 로그인되지 않았을 때
                     alert("로그인 후 리뷰를 작성할 수 있습니다.");  // "로그인 후 리뷰를 작성할 수 있습니다." 메시지를 표시
                 }
@@ -362,12 +350,18 @@
                     
                     $(".rating-stars span").removeClass("selected");
                 } 
-                else if (json.n == 2) {
+                else if (json.n == 3) {
                     alert("결제된 회원만 후기를 작성할 수 있습니다.");
                 }
+                else if (json.n == 4) {
+                	alert("별점과 후기내용을 모두 작성하여야 합니다.");
+                }
+                else if (json.n == 5) {
+                	alert("후기 내용은 50글자 이하이어야 합니다.");
+                }
                 else {
-                    alert("리뷰 제출에 실패했습니다. 다시 시도해주세요.");  // 리뷰 제출 실패 메시지
-                }  
+                	alert("후기 작성을 실패 하셨습니다.");
+                }
             },
             error: function(request, status, error){
                 alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
