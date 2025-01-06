@@ -23,6 +23,13 @@ public class Login extends AbstractController {
 		
 		String method = request.getMethod(); // "GET" 또는 "POST"
 		
+		HttpSession session = request.getSession(); // 기존 세션 가져오기 (없으면 null)
+	    if (session.getAttribute("loginuser") != null) {// 이미 로그인된 상태라면 메인 페이지로 리디렉션
+	    	super.setRedirect(true);
+	    	super.setViewPage(request.getContextPath() + "/index.mp"); // 메인 페이지 URL
+	        return;
+	    }
+		
 		if(!"POST".equalsIgnoreCase(method)) {
 			// POST 방식으로 넘어온 것이 아니라면
 			super.setRedirect(false);
@@ -56,9 +63,9 @@ public class Login extends AbstractController {
 			
 			if(loginuser != null && loginuser.getIdle()== 99) { // 아이디비밀번호가 맞으며, 휴면계정이 아닐 경우
 	
-				System.out.println("비번변경일 : "+loginuser.getLastpwdchangedate());
+				//System.out.println("비번변경일 : "+loginuser.getLastpwdchangedate());
 				
-				HttpSession session = request.getSession();// WAS 메모리에 생성되어져 있는 session 을 불러오는 것
+				//HttpSession session = request.getSession();// WAS 메모리에 생성되어져 있는 session 을 불러오는 것
 	            
 				session.setAttribute("loginuser", loginuser);// session(세션)에 로그인 되어진 사용자 정보인 loginuser 를 키이름을 "loginuser" 으로 저장시켜두는 것
 	
@@ -69,11 +76,11 @@ public class Login extends AbstractController {
 
 				}
 				if(loginuser.isRequirePwdChange() ) { // 비밀번호를 변경한지 3개월 이상된 경우
-					System.out.println("비밀번호를 변경하신지 3개월이 지났습니다.");
+					//System.out.println("비밀번호를 변경하신지 3개월이 지났습니다.");
 					RequirePwdChange = 1;
 				}
 				else { // 비밀번호를 변경한지 3개월 미만인 경우
-					System.out.println("비밀번호를 변경하신지 3개월미만입니다.");
+					//System.out.println("비밀번호를 변경하신지 3개월미만입니다.");
 					RequirePwdChange = 0;
 				}
 			} // end of if(loginuser != null)-------------------------------------------------------------------

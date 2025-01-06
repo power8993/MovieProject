@@ -10,7 +10,7 @@
 <html>
 <head>
 
-<title>:::HOMEPAGE:::</title> 
+<title>깊이 빠져 보다, HGV</title> 
 
 <!-- Required meta tags -->
 <meta charset="utf-8">

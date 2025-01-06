@@ -36,8 +36,56 @@ $(document).ready(function(){
 		*/
 	}
 	
+	// 아이디 입력 검사 //
+	$(document).on('input', '#useridInput', function() {
+		if($("#useridInput").val()==""){
+			$("#idErrorMsg").html("<span>아이디를 입력해 주세요.</span>");
+		}
+		else{
+			$("#idErrorMsg").html("");
+			$("#errorMsg").html("");
+		}
+	});
+	
+	// 이메일 입력 검사 //
+	$(document).on('input', '#emailInput', function() {
+		if($("#emailInput").val()==""){
+			$("#emailErrorMsg").html("<span>비밀번호를 입력해 주세요.</span>");
+		}
+		else{
+			$("#emailErrorMsg").html("");
+			$("#errorMsg").html("");
+		}
+	});
+	
+	// 새 암호 입력 검사 //
+	$(document).on('input', '#newPwd', function() {
+		if($("#newPwd").val()==""){
+			$("#newPwdErrorMsg").html("<span>새 암호를 입력해 주세요.</span>");
+		}
+		else{
+			$("#newPwdErrorMsg").html("");
+			//$("#errorMsg").html("");
+		}
+	});
+	
+	// 새 암호 확인 입력 검사 //
+	$(document).on('input', '#confirmPwd', function() {
+		if($("#confirmPwd").val()==""){
+			$("#confirmPwdErrorMsg").html("<span>새 암호를 입력해 주세요.</span>");
+		}
+		else{
+			$("#confirmPwdErrorMsg").html("");
+			//$("#errorMsg").html("");
+		}
+	});
+	
+	
 	$("button#findBtn").click(function(){
-	     goFind(); 
+	 
+		$("#verificationErr").html("");
+	    goFind(); 
+	      
 	});// end of $("button#findBtn").click(function(){})-----
 	
 	
@@ -55,9 +103,11 @@ $(document).ready(function(){
         
         const pwd  = $("input:password[name='pwd']").val();
         const pwd2 = $("input:password[name='pwd2']").val();
+        console.log(pwd);
+        console.log(pwd2);
         
         if(pwd != pwd2) {
-           alert("암호가 일치하지 않습니다.");
+        	$("#confirmPwdErrorMsg").html("암호가 일치하지 않습니다.");
            $("input:password[name='pwd']").val("");
            $("input:password[name='pwd2']").val("");
            return;  // 종료
@@ -70,7 +120,7 @@ $(document).ready(function(){
            
             if(!bool) {
               // 암호가 정규표현식에 위배된 경우
-              alert("암호는 8글자 이상 15글자 이하에 영문자,숫자,특수기호가 혼합되어야만 합니다.");
+              $("#confirmPwdErrorMsg").html("암호는 8글자 이상 15글자 이하에 영문자,숫자,특수기호가 혼합되어야 합니다.");
               $("input:password[name='pwd']").val("");
               $("input:password[id='pwd2']").val("");
               return; // 종료
@@ -96,7 +146,13 @@ $(document).ready(function(){
 
             	        if (json.method.toLowerCase() === "post" && json.n == 1 ) { // 소문자/대문자 모두 처리(모두 소문자로 변경해주기 때문)
             	            // post 방식이며 회원이 존재할 경우
-            	            resultHtml = `<span style="color: red;margin: 100px 0;display: block;">비밀번호가 변경되었습니다.</span>`;
+            	            resultHtml = `
+										  <div class="password-reset-success">
+										    <h2>비밀번호 변경 완료</h2>
+										    <p>회원님의 비밀번호가 성공적으로 변경되었습니다.</p>
+										  </div>
+										`;
+
             	            $("#findPwBtn").hide();
             	        } 
             	        else if (json.n == 0) {
@@ -159,7 +215,7 @@ $(document).ready(function(){
 			return; // 종료
 		}
 		
-		const userid = $('#form_container > form > input[type=text]').val(); // 입력한 아이디 값을 폼태그에 넣어주기 위해.
+		const userid = $('#useridInput').val(); // 입력한 아이디 값을 폼태그에 넣어주기 위해.
 		//console.log("확인용"+userid); // 값이 제대로 들어있는지 확인
 		
 
@@ -178,7 +234,7 @@ $(document).ready(function(){
 		     url: "verifyCertification.mp", // 서버의 컨트롤러 매핑 주소
 		     data: {
 		         "userCertificationCode": $("input:text[name='input_confirmCode']").val().trim(),
-		         "userid":$("input:text[name='userid']").val().trim()
+		         "userid":userid
 		     },
 		     type: "post",
 		     dataType: "json", // 서버에서 JSON 형식의 응답을 받음
@@ -188,7 +244,7 @@ $(document).ready(function(){
 		
 		         if (json.is_True_false == false) {
 		             // 인증코드가 맞지 않는 경우
-		             resultHtml = `<span style="color: red;">코드가 맞지 않습니다. </span>`;
+		             $("#verificationErr").html("<p style='margin-top: 1px; margin-bottom: 0px;color: red; font-size: 10pt; text-align: left;'>인증에 실패하였습니다. </p>");
 		             $("#findPwBtn").html("비밀번호 찾기");
 			         $("#findPwBtn").val("findPw"); 
 			         $("button#findBtn").html("재전송");
@@ -198,25 +254,30 @@ $(document).ready(function(){
 		             $("#form_container > form").hide(); // 기존 폼태그 숨기고, 코드가 인증 되었으니 새로운 비밀번호를 생성할 수 있도록.
 		             
 		             resultHtml = `
-		                 <span style="font-size: 12pt; margin-bottom:10px;">
-		                     코드가 인증되었습니다.
-		                     </span>
-		                     <form name="newpwdFrm" style="max-width: 350px;height: 150px;margin: 0 auto; margin-bottom:40px;margin-top:20px;">
-		                  	
-		          	          <label style="display: block; width: 90px; margin:0px; text-align:left;">새 암호</label>
-		          	          <input type="password" name="pwd" size="25" autocomplete="off" placeholder="암호를 입력하세요" style="display: block; width:100%;"/> 
-		          	   
-		          	          <label style="display: block; width: 90px; margin:10px 0 0 0; text-align:left;">새 암호 확인</label>
-		          	          
-		          	          	<input type="password" name="pwd2" size="25" autocomplete="off" placeholder="암호를 입력하세요" style="display: block; width:100%;"/> 
-		          	          	
-		          	          	<button type="button" class="btn " id="finishNewPwd" style="margin-top:10px;">암호변경하기</button>
-		          	          
-		          	
-		          	   
-		          	</form>
-		                 
-		             `;
+		            	  <div class="password-reset-container">
+		            	    <p class="reset-message">코드가 인증되었습니다.</p>
+		            	    <form name="newpwdFrm" style="max-width: 350px; margin: 0 auto; margin-bottom: 20px; margin-top: 20px;">
+		            	      <!-- 새 암호 -->
+		            	      <div class="form-group">
+		            	        <div class="form-floating-label">
+		            	          <input type="password" class="form-control" name="pwd" id="newPwd" autocomplete="off" placeholder=" " />
+		            	          <label for="newPwd">새 암호</label>
+		            	        </div>
+		            	        <div id="newPwdErrorMsg"></div>
+		            	      </div>
+		            	      <!-- 새 암호 확인 -->
+		            	      <div class="form-group">
+		            	        <div class="form-floating-label">
+		            	          <input type="password" class="form-control" name="pwd2" id="confirmPwd" autocomplete="off" placeholder=" " />
+		            	          <label for="confirmPwd">새 암호 확인</label>
+		            	        </div>
+		            	        <div id="confirmPwdErrorMsg"></div>
+		            	      </div>
+		            	      <button type="button" class="btn btn-primary" id="finishNewPwd" style="margin-top: 10px; width: 100%;">암호 변경하기</button>
+		            	    </form>
+		            	  </div>
+		            	`;
+
 		         } 
 		
 		         // 결과를 div에 삽입
@@ -244,25 +305,28 @@ $(document).ready(function(){
 // Function Declaration
 function goFind() {
  
-	const userid = $("input:text[name='userid']").val().trim();
-    
-    if(userid == "") {
-    	alert("아이디를 입력하세요!!");
-    	return; // 종료
-    }
+	if( $("input:text[name='userid']").val().trim() == "" ) {
+		$("#idErrorMsg").html("<span>아이디를 입력해 주세요.</span>");
+		$("input:text[name='userid']").focus();
+		return; // goLogin() 함수 종료
+	}
       
-     const email = $("input:text[name='email']").val();
-      
-     // const regExp_email = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;  
-     // 또는
+     
+     
+     if( $("input:text[name='email']").val().trim() == "" ) {
+ 		$("#emailErrorMsg").html("<span>비밀번호를 입력해 주세요.</span>");
+ 		$("input:text[name='email']").focus();
+ 		return; // goLogin() 함수 종료
+ 	}
+     
      const regExp_email = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i);  
      // 이메일 정규표현식 객체 생성 
           
-     const bool = regExp_email.test(email);
+     const bool = regExp_email.test($("input:text[name='email']").val().trim());
   
      if(!bool) {
         // 이메일이 정규표현식에 위배된 경우
-         alert("e메일을 올바르게 입력하세요!!");
+         $("#errorMsg").html("<span>입력하신 이메일 주소 형식이 올바르지 않습니다.</span>");
          return; // 종료
      }    
         <%-- 
@@ -297,15 +361,20 @@ function goFind() {
                  console.log(json); 
                  console.log(json.email); 
                  resultHtml = `
-                     
-                	 <span style="font-size: 12px;">인증코드가</span> <span style="font-weight: 500;">`+json.email+`</span>
-                	 <span style="font-size: 12px;">으로 발송되었습니다.<br>
-                     인증코드를 입력해주세요</span>
-                     <br>
-                     <br>
-                     <input type="text" name="input_confirmCode" />
-                     <br>
-                     <button type="button" class="btn btn-info" id="pwdFindjspBtn">인증하기</button>
+                	 <div class="email-verification">
+                	  <p>
+                	    <span>인증코드가 </span><br>
+                	    <span class="highlight-email">` + json.email + `</span><br>
+                	    <span> 으로 전송되었습니다.</span>
+                	  </p>
+                	  <p>인증코드를 입력해주세요.</p>
+                	  <div class="verification-input">
+                	    <input type="text" name="input_confirmCode"  autocomplete="off" placeholder="인증코드 입력" />
+                	    <button type="button" class="btn btn-info" id="pwdFindjspBtn">인증하기</button>
+                	    
+                	  </div>
+                	  <div id="verificationErr"></div>
+                	</div>
                  `;
              } 
              else if (json.isUserExist && !json.sendMailSuccess) {
@@ -314,7 +383,7 @@ function goFind() {
              }
 
              // 결과를 div에 삽입
-             $("#div_findResult").html(resultHtml);
+             $("#errorMsg").html(resultHtml);
          },
          error: function(request, status, error) {
              alert("code: " + request.status + "\nmessage: " + request.responseText + "\nerror: " + error);
@@ -338,22 +407,32 @@ function goFind() {
 
 <div id="form_container">
 
-<div id="logo">LOGO</div>
+<div id="semiLogo"><a href="<%= ctxPath%>/"><img src="<%= ctxPath%>/images/index/logo.png"/></a></div>
 	<form name="pwdFindFrm">
-	
-	          <label style="display: block; width: 90px; margin:0px;">아이디</label>
-	          <input type="text" name="userid" size="25" autocomplete="off" placeholder="아이디를 입력하세요" style="display: block; width:100%;"/> 
-	   
-	          <label style="display: block; width: 90px; margin:10px 0 0 0;">이메일</label>
-	          <div style="display:flex">
-	          	<input type="text" name="email" size="28" autocomplete="off" placeholder="이메일을 입력하세요" style="display: block; "/> <button type="button" id="findBtn">전송</button>
-	          </div>
-	
-	   
-	</form>
-	<div class="my-3 text-center" id="div_findResult">
+  <!-- 아이디 입력 -->
+  <div class="form-group">
+    <div class="form-floating-label">
+      <input type="text" class="form-control" id="useridInput" name="userid" autocomplete="off" placeholder=" " />
+      <label for="useridInput">아이디</label>
+    </div>
+    <div id="idErrorMsg"></div>
+  </div>
 
-	</div>
+  <!-- 이메일 입력 -->
+  <div class="form-group">
+    <div class="form-floating-label" style="position: relative;">
+      <input type="text" class="form-control" id="emailInput" name="email" autocomplete="off" placeholder=" " />
+      <label for="emailInput" style="left: 10px;">이메일</label>
+      <button type="button" id="findBtn" class="btn btn-primary" style="position: absolute; top: 0; right: 0; height: 100%; border-radius: 0 4px 4px 0;">
+        전송
+      </button>
+    </div>
+    <div id="emailErrorMsg"></div>
+    <div id="errorMsg"></div>
+  </div>
+</form>
+
+	<div class="my-3 text-center" id="div_findResult"></div>
 	
 	<div style="width: 350px; margin: 0 auto;">
 		    <div id="buttonContainer">

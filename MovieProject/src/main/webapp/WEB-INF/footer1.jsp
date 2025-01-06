@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%
     String ctxPath = request.getContextPath();
-    //    /MyMVC
 %>
      <footer>
        <div id="footer_info">

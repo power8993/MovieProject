@@ -4,74 +4,81 @@ div#form_container  {
 	width: 980px;
 	height: 600px;
 	margin: 0 auto;
-	box-sizing: border-box; /* padding 포함 계산 */
-	border:solid 1px red;
+	box-sizing: border-box;
+	/* border:solid 1px red; */
 }
 
-div#form_container > div#logo{
+#semiLogo{
 	margin: 0 auto;	
-	margin-top:120px;
+	width: 150px;
+	margin-top:60px;
 	margin-bottom:30px;
+}
+#semiLogo > a > img{
+	width: 150px;
 }
 
 div#form_container > form {
   	max-width: 350px;
-  	height: 150px;
   	margin: 0 auto;
 }
 
 
 
 input[name='userid'],input[name='email'],input[name='pwd'],input[name='pwd2']{
-	border: none;        /* 테두리 제거 */
-    outline: none;       /* 포커스 시 나타나는 아웃라인 제거 (선택 사항) */
-    background-color: transparent; /* 배경을 투명하게 */
+	border: none;       
+    outline: none;
+    background-color: transparent;
     padding: 5px;  
     border-bottom: solid 2px gray; 
     
 }
 
 #findBtn {
-	color: #ffffff; /* 하얀색 폰트 */
-    font-size: 14px; /* 폰트 크기 설정 */
-    background-color: #ff7a00; /* 주황색 배경 */
-    border: none; /* 테두리 제거 */
-    border-radius: 5px; /* 모서리를 둥글게 */
-    cursor: pointer; /* 마우스 포인터 변경 */
-    flex: 1; /* 버튼을 동일한 너비로 설정 */
-    text-align: center; /* 텍스트를 가운데 정렬 */
+	color: #ffffff;
+    font-size: 14px;
+    background-color: #ff7a00; 
+    border: none; 
+    border-radius: 5px;
+    cursor: pointer; 
+    flex: 1; 
+    text-align: center;
     font-weight:700;
     margin-left:14px;
 }
+#findBtn:focus {
+  outline: none;
+  box-shadow: none;
+}
 
 #pwdFindjspBtn, #finishNewPwd {
-	color: #ffffff; /* 하얀색 폰트 */
-    font-size: 14px; /* 폰트 크기 설정 */
-    background-color: #ff7a00; /* 주황색 배경 */
-    border: none; /* 테두리 제거 */
-    border-radius: 5px; /* 모서리를 둥글게 */
-    cursor: pointer; /* 마우스 포인터 변경 */
-    flex: 1; /* 버튼을 동일한 너비로 설정 */
-    text-align: center; /* 텍스트를 가운데 정렬 */
+	color: #ffffff; 
+    font-size: 14px;
+    background-color: #ff7a00; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    flex: 1;
+    text-align: center; 
     font-weight:700;
 }
 
 .loginjspBtn {
-	color: #ffffff; /* 하얀색 폰트 */
-    font-size: 14px; /* 폰트 크기 설정 */
-    background-color: #ff7a00; /* 주황색 배경 */
-    border: none; /* 테두리 제거 */
-    border-radius: 5px; /* 모서리를 둥글게 */
-    cursor: pointer; /* 마우스 포인터 변경 */
-    flex: 1; /* 버튼을 동일한 너비로 설정 */
-    text-align: center; /* 텍스트를 가운데 정렬 */
+	color: #ffffff; 
+    font-size: 14px;
+    border: none; 
+    border-radius: 5px;
+    cursor: pointer; 
+    flex: 1; 
+    text-align: center;
     font-weight:700;
 }
 
 #buttonContainer {
     display: flex;
-    justify-content: space-between; /* 버튼 사이의 간격을 동일하게 설정 */
-    gap: 10px; /* 버튼들 사이에 일정한 간격 추가 (선택 사항) */
+    justify-content: space-between; 
+    gap: 10px; 
+    margin-top: 20px;
 }
 #loginBtn{
 	background-color: #403d39;
@@ -83,6 +90,274 @@ input[name='userid'],input[name='email'],input[name='pwd'],input[name='pwd2']{
  	height:35px;
 }
 
-#pwdFindjspBtn{
-	margin-top : 10px;
+
+
+/*//////////// 메일 발송 성공하여 인증번호 입력란이 뜬 경우 ////////////*/
+.email-verification {
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+  text-align: center;
+}
+
+.email-verification p {
+  font-size: 14px;
+  color: #555;
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+.email-verification .highlight-email {
+  font-weight: 600;
+  color: #007bff;
+}
+
+.verification-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+  gap: 10px;
+}
+
+.verification-input input {
+  width: calc(100% - 110px);
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+}
+
+.verification-input input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+.verification-input .btn {
+  padding: 10px 15px;
+  font-size: 14px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.verification-input .btn:hover {
+  background-color: #0056b3;
+}
+
+/*//////////// 메일 발송 성공하여 인증번호 입력란이 뜬 경우  끝////////////*/
+
+
+
+
+/*////////////// 이메일 인증에 성공하여 비밀번호 변경하는 경우 시작 //////////////*/
+/* 컨테이너 스타일 */
+.password-reset-container {
+  text-align: center;
+}
+
+.reset-message {
+  font-size: 12pt;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+/* 공통 플로팅 라벨 스타일 */
+#confirmPwd:focus,#newPwd:focus{
+	border: solid 1px #eb5e28;
+	box-shadow: none;
+}
+
+
+/* 버튼 스타일 */
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+/*////////////// 이메일 인증에 성공하여 비밀번호 변경하는 경우 시작 //////////////*/
+
+
+
+/* 이메일 인증 성공 후 비밀번호 변경 완료 시 나오는 페이지 */
+.password-reset-success {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+}
+
+.password-reset-success h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #252422;
+    font-weight: 700;
+}
+
+.password-reset-success p {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.password-reset-success .btn {
+  padding: 10px 20px;
+  font-size: 14px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.password-reset-success .btn:hover {
+  background-color: #0056b3;
+}
+
+/* 이메일 인증 성공 후 비밀번호 변경 완료 시 나오는 페이지  끝*/
+
+
+
+/* 에러메세지 띄우는 요소 시작 */
+#idErrorMsg{
+	color: red; font-size: 10pt; text-align: left;margin-top: -10px;margin-bottom: 10px;
+}
+#emailErrorMsg{
+	color: red; font-size: 10pt; text-align: left;margin-top: -10px;margin-bottom: -16px;
+}
+#errorMsg{
+	color: red; font-size: 10pt; text-align: left;margin-top: 16px;margin-bottom: -16px;
+}
+
+#newPwdErrorMsg{
+	color: red; font-size: 10pt; text-align: left;margin-top: -10px;margin-bottom: 10px;
+}
+#confirmPwdErrorMsg{
+	color: red; font-size: 10pt; text-align: left;margin-top: -10px;margin-bottom: -16px;
+}
+
+/* 에러메세지 띄우는 요소 끝 */
+
+/* 버튼 태그*/
+#findBtn:hover,#pwdFindjspBtn:hover{
+	background-color: #e95216;
+	transition: 0.3s;
+}
+
+#loginBtn{
+	background-color: #878178;
+	height:35px;
+}
+
+ #findPwBtn{
+ 	background-color: #878178;
+ 	height:35px;
+}
+
+#loginBtn:hover{
+	background-color: #6c6760;
+	transition: 0.3s;
+}
+#findPwBtn:hover{
+	background-color: #6c6760;
+	transition: 0.3s;
+}
+/*///////////////////버튼 태그 ///////////////////*/
+
+
+
+
+
+/*//////////// 플로팅 상단 정렬 ////////////  */
+/* 공통 스타일 */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-control:focus {
+  background-color: #fffcf2;
+  outline: none;
+}
+#emailInput:focus,#useridInput:focus,input[name='input_confirmCode']:focus{
+	border: solid 1px;
+	border-color: #eb5e28; 
+	box-shadow: none;
+}
+
+.form-floating-label {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.form-floating-label input {
+  width: 100%;
+  height:54px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: transparent;
+  padding-top:24px;
+}
+
+.form-floating-label label {
+  position: absolute;
+  top: 15px;
+  left: 12px;
+  font-size: 16px;
+  color: #aaa;
+  transition: all 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.form-floating-label input:focus + label,
+.form-floating-label input:not(:placeholder-shown) + label {
+  top: 5px;
+  left: 10px;
+  font-size: 12px;
+  color: #cccccc;
+}
+
+.form-floating-label input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.input-group .form-control {
+  flex: 1;
+  border-radius: 4px 0 0 4px;
+}
+
+.input-group .btn {
+  border-radius: 0 4px 4px 0;
 }
