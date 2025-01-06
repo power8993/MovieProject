@@ -1,13 +1,13 @@
 /* 예매내역 영수증 출력 */
-function Receipt_Printing(userid,ctx_Path){
+function Receipt_Printing(imp_uid){
 
-		const width = 800;
-		const height = 680;
+		const width = 550;
+		const height = 700;
 	 
 		 const left = Math.ceil( (window.screen.width - width)/2 ); // 정수로 만듬
 		 const top = Math.ceil( (window.screen.height - height)/2 ); // 정수로 만듬
 		 
-		 const url = `${ctx_Path}/mypage/myreservationReceipt.mp?userid=${userid}`;      
+		 const url = `${ctx_Path}/mypage/myreservationReceipt.mp?imp_uid=${imp_uid}`;      
 	 
 		 window.open(url, "Receipt_Printing",
 					`left=${left}, top=${top}, width=${width}, height=${height}`);
@@ -20,13 +20,13 @@ function Receipt_Printing(userid,ctx_Path){
 
 
 /* 예매취소 */
-function myreservation_cancel() {
+function myreservation_cancel(imp_uid,fk_seq_movie_no,userid) {
 
 	if (confirm(`예매를 취소하시겠습니까? \n\n ※ 예매 취소는 상영시간 20분 전까지 가능하며, \n 예매 가능은 상영시간 30분 전까지 가능합니다.`)) {
 		$.ajax({
-			url: "/MovieProject/mypage/myreservationCancel.mp",
+			url: "/MovieProject/reservation/reservationCancel.mp",
 			type: "post",
-			data: {},
+			data: {"imp_uid":imp_uid, "fk_seq_movie_no":fk_seq_movie_no,"userid":userid},
 			dataType: "json",
 			success: function(json) {
 				if (json.n == 1) {
