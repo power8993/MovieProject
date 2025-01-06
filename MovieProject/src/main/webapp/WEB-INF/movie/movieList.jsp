@@ -19,9 +19,9 @@
         }
         .movie-card {
             text-align: center;
-            background: #fff;
+            background: #FFFCF2;
             border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+           
             padding: 1rem;
             margin: 0.5rem;
             transition: transform 0.2s ease-in-out;
@@ -45,8 +45,8 @@
             margin-top: 1rem;
         }
         .reservation-btn {
-            background-color: #e63b4c;
-            color: #fff;
+            background-color: #EB5E28;
+            color: #EB5E28;
             font-weight: bold;
             padding: 0.5rem 1rem;
             border-radius: 5px;
@@ -58,7 +58,7 @@
             background-color: #c23041;
         }
         .rank {
-            background-color: #333;
+           background-color: #EB5E28;
             color: #fff;
             padding: 0.3rem 0.7rem;
             border-radius: 5px;
@@ -106,8 +106,10 @@
 </head>
 <body>
     <jsp:include page="../header1.jsp" />
+    
 
     <div class="container mt-4">
+    	<h2>전체 영화</h2> 
         <div class="genre-filter">
             <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/runningMovies.mp" style="margin-right: 20px;">상영중인 영화</a>
             <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/upcomingMovies.mp" style="margin-right: 20px;">상영 예정작</a>
@@ -122,31 +124,37 @@
             </form>
         </div>
 
+ <hr>
+
         <div class="row" id="movie-list">
             <c:if test="${movies != null && not empty movies}">
-                <c:forEach var="movie" items="${movies}" varStatus="status">
+                <c:forEach var="movie" items="${movies}" varStatus="status">              
                     <div class="col-md-4 mb-4 movie-card-container ${status.index >= 15 ? 'hidden' : ''}">
                         <div class="movie-card position-relative">
                             <div class="rank">No. ${status.index + 1}</div>
                             <div class="poster">
                                 <a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}&bookingRate=${movie.bookingRate}">
-                                    <img src="${movie.poster_file}" alt="${movie.movie_title}">
+                                     <img src="<%= ctxPath %>/images/admin/poster_file/미니언즈.jpg" alt="${movie.movie_title}">
+                                    
                                 </a>
                             </div>
                             <div class="movie-details">
                                 <div class="movie-title">
                                     <img src="<%= ctxPath %>/images/admin/movie_grade/${movie.movie_grade}.png" 
                                          alt="${movie.movie_grade}" 
-                                         style="width: 30px; height: 30px; vertical-align: middle; margin-right: 10px;">
+                                         style="width: 30px; height: 30px; margin-right: 10px;">
                                     ${movie.movie_title}
                                 </div>
-                                <p>예매율: ${movie.bookingRate}<br>개봉일: ${movie.start_date}</p>
+                                <p>예매율: ${movie.bookingRate}%<br>개봉일: ${movie.start_date}</p>
                                 <button class="reservation-btn">
                                     <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie.seq_movie_no}" style="color: white; text-decoration: none;">예매하기</a>
                                 </button>
                             </div>
                         </div>
                     </div>
+                    
+                    
+                    
                 </c:forEach>
             </c:if>
             <c:if test="${movies == null || empty movies}">

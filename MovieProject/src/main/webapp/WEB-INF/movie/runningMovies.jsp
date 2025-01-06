@@ -19,9 +19,9 @@
         }
         .movie-card {
             text-align: center;
-            background: #fff;
+            background: #FFFCF2;
             border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+           
             padding: 1rem;
             margin: 0.5rem;
             transition: transform 0.2s ease-in-out;
@@ -37,9 +37,6 @@
             font-weight: bold;
             margin-top: 1rem;
             font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
         .movie-details {
             text-align: left;
@@ -48,7 +45,7 @@
             margin-top: 1rem;
         }
         .reservation-btn {
-            background-color: #e63b4c;
+            background-color: #EB5E28;
             color: #fff;
             font-weight: bold;
             padding: 0.5rem 1rem;
@@ -61,7 +58,7 @@
             background-color: #c23041;
         }
         .rank {
-            background-color: #333;
+            background-color: #EB5E28;
             color: #fff;
             padding: 0.3rem 0.7rem;
             border-radius: 5px;
@@ -95,69 +92,64 @@
             color: #999;
             margin-top: 2rem;
         }
-        ul.nav-links {
+        .genre-filter {
             display: flex;
-            gap: 20px;
-            padding: 0;
-            margin-top: 20px;
             justify-content: flex-end;
-            list-style-type: none;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .genre-filter select {
+            padding: 5px 10px;
+            margin-right: 10px;
         }
     </style>
 </head>
 <body>
     <jsp:include page="../header1.jsp" />
-
-    <div class="container mt-4">
-        <div>
-            <ul class="nav-links">
-                <li class="nav-link h5">
-                    <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/movieList.mp">전체목록</a>
-                </li>
-                <li class="nav-link h5">
-                    <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/upcomingMovies.mp">상영예정작</a>
-                </li>
-                <form id="genreSearchForm" action="<%= ctxPath %>/movie/filterByGenre.mp" method="get">
-                    <select name="genreCode">
-                        <option value="">장르</option>
-                        <c:forEach var="cg" items="${requestScope.cgList}">
-                            <option value="${cg.category_code}" ${cg.category_code == selectedGenre ? "selected" : ""}>${cg.category}</option>
-                        </c:forEach>
-                    </select>
-                    <button type="button" class="round gray" onclick="submitGenreForm()">
-                        <span>GO</span>
-                    </button>
-                </form>
-            </ul>
+	 
+     <div class="container mt-4">
+     <h2>상영중인영화</h2>
+        <div class="genre-filter">
+            <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/movieList.mp" style="margin-right: 20px;">전체 영화</a>
+            <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/upcomingMovies.mp" style="margin-right: 20px;">상영 예정작</a>
+            <form id="genreSearchForm" action="<%= ctxPath %>/movie/allfilterByGenre.mp" method="get">
+                <select name="genreCode">
+                    <option value="">장르</option>
+                    <c:forEach var="cg" items="${cgList}">
+                        <option value="${cg.category_code}" ${cg.category_code == selectedGenre ? "selected" : ""}>${cg.category}</option>
+                    </c:forEach>
+                </select>
+                <button type="button" class="round gray" onclick="submitGenreForm()">GO</button>
+            </form>
         </div>
-
+ <hr>
         <div class="container mt-4">
             <div class="row">
                 <c:if test="${movies != null && not empty movies}">
                     <c:forEach var="movie" items="${movies}" varStatus="status">
-                        <div class="col-md-4 mb-4 movie-card-container ${status.index >= 15 ? 'hidden' : ''}">
-                            <div class="movie-card position-relative">
-                                <div class="rank">No. ${status.index + 1}</div>
-                                <div class="poster">
-                                    <a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}&bookingRate=${movie.bookingRate}">
-                                        <img src="${movie.poster_file}">
-                                    </a>
+                          <div class="col-md-4 mb-4 movie-card-container ${status.index >= 15 ? 'hidden' : ''}">
+                        <div class="movie-card position-relative">
+                            <div class="rank">No. ${status.index + 1}</div>
+                            <div class="poster">
+                                <a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}&bookingRate=${movie.bookingRate}">
+                                     <img src="<%= ctxPath %>/images/admin/poster_file/미니언즈.jpg" alt="${movie.movie_title}">
+                                    
+                                </a>
+                            </div>
+                            <div class="movie-details">
+                                <div class="movie-title">
+                                    <img src="<%= ctxPath %>/images/admin/movie_grade/${movie.movie_grade}.png" 
+                                         alt="${movie.movie_grade}" 
+                                         style="width: 30px; height: 30px; margin-right: 10px;">
+                                    ${movie.movie_title}
                                 </div>
-                                <div class="movie-details">
-                                    <div class="movie-title">
-                                        <img src="<%= ctxPath %>/images/admin/movie_grade/${movie.movie_grade}.png" 
-                                             alt="${movie.movie_grade}" 
-                                             style="width: 30px; height: 30px; margin-right: 10px;">
-                                        ${movie.movie_title}
-                                    </div>
-                                    <p>예매율: ${movie.bookingRate}</p>
-                                    <p>개봉일: ${movie.start_date}</p>
-                                    <button class="reservation-btn">
-                                        <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie.seq_movie_no}" style="color: white; text-decoration: none;">예매하기</a>
-                                    </button>
-                                </div>
+                                <p>예매율: ${movie.bookingRate}%<br>개봉일: ${movie.start_date}</p>
+                                <button class="reservation-btn">
+                                    <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie.seq_movie_no}" style="color: white; text-decoration: none;">예매하기</a>
+                                </button>
                             </div>
                         </div>
+                    </div>
                     </c:forEach>
                 </c:if>
 

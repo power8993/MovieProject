@@ -66,17 +66,17 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 	public List<MovieVO_yeo> select_Movies() throws SQLException {
 	    List<MovieVO_yeo> movieList = new ArrayList<>();
 
-	    String sql = "WITH movie_payment AS ( " +
+	    String sql = " WITH movie_payment AS ( " +
 	                 "    SELECT st.FK_SEQ_MOVIE_NO, COUNT(p.IMP_UID) AS movie_payment_count " +
 	                 "    FROM TBL_PAYMENT p " +
 	                 "    JOIN TBL_SHOWTIME st ON p.FK_SEQ_SHOWTIME_NO = st.SEQ_SHOWTIME_NO " +
 	                 "    GROUP BY st.FK_SEQ_MOVIE_NO " +
-	                 "), " +
-	                 "total_payment AS ( " +
+	                 " ), " +
+	                 " total_payment AS ( " +
 	                 "    SELECT COUNT(p.IMP_UID) AS total_payment_count " +
 	                 "    FROM TBL_PAYMENT p " +
-	                 ") " +
-	                 "SELECT m.SEQ_MOVIE_NO, m.FK_CATEGORY_CODE, c.CATEGORY AS category_name, " +
+	                 " ) " +
+	                 " SELECT m.SEQ_MOVIE_NO, m.FK_CATEGORY_CODE, c.CATEGORY AS category_name, " +
 	                 "       case when length(movie_title) < 10 then movie_title else substr(movie_title, 0, 10) || '...' end as movie_title, m.CONTENT, m.DIRECTOR, m.ACTOR, m.MOVIE_GRADE, m.RUNNING_TIME, m.LIKE_COUNT, " +
 	                 "       TO_CHAR(m.START_DATE, 'yyyy-MM-dd') AS start_date, TO_CHAR(m.END_DATE, 'yyyy-MM-dd') AS end_date, " +
 	                 "       m.POSTER_FILE, m.VIDEO_URL, " +
@@ -85,11 +85,12 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 	                 "       CASE WHEN COALESCE(tp.total_payment_count, 0) > 0 THEN " +
 	                 "            ROUND((COALESCE(mp.movie_payment_count, 0) * 1.0 / COALESCE(tp.total_payment_count, 1)) * 100, 2) " +
 	                 "       ELSE 0 END AS booking_rate " +
-	                 "FROM TBL_MOVIE m " +
-	                 "LEFT JOIN TBL_CATEGORY c ON m.FK_CATEGORY_CODE = c.CATEGORY_CODE " +
-	                 "LEFT JOIN movie_payment mp ON m.SEQ_MOVIE_NO = mp.FK_SEQ_MOVIE_NO " +
-	                 "CROSS JOIN total_payment tp " +
-	                 "ORDER BY booking_rate DESC";
+	                 " FROM TBL_MOVIE m " +
+	                 " LEFT JOIN TBL_CATEGORY c ON m.FK_CATEGORY_CODE = c.CATEGORY_CODE " +
+	                 " LEFT JOIN movie_payment mp ON m.SEQ_MOVIE_NO = mp.FK_SEQ_MOVIE_NO " +
+	                 " CROSS JOIN total_payment tp " +
+	                 " WHERE end_date >= SYSDATE " + // 상영 예정작 조건
+	                 " ORDER BY booking_rate DESC";
 
 	    try {
 	        conn = ds.getConnection();
