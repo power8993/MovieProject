@@ -1,1 +1,182 @@
 @charset "UTF-8";
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*#########*/
+/*   본문   */
+/*#########*/
+
+/* 상단 */
+div.movie_showtime_container > h2 {
+	color: #333;
+    font-weight: bold;
+    padding-left: 1%;
+    padding-bottom: 2%;
+    padding-top: 1%;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*############*/
+/*   검색라인   */
+/*############*/
+
+/* 검색버튼 */
+#mycontent > div > form.form-row > div:nth-child(4) > button {
+	background-color: #eb5e28;
+    color: white;
+   	border: none;
+}
+
+div.movie_showtime_container button:hover {
+	background-color: #808080;
+}
+
+form#showtime_list {
+	margin-bottom: 4%;
+}
+
+/* 버튼 공통 */
+div.btn_container {
+	display: flex;
+}
+
+/* 최신순/등록순 */
+span.re_orderby {
+	border: solid 0px red;
+	border-radius: 10%;
+	padding: 4px;
+	
+	background-color: #CCC5B9;
+	color: white;
+}
+
+span#re_asc {
+	margin-right: 5px;
+}
+
+span.re_orderby:hover {
+	transition: all 0.3s ease; 
+	background-color: #403D39;
+	cursor: pointer;
+}
+
+
+/* 활성화된 버튼의 배경색 뱐걍 */
+.re_orderby.active {
+    background-color: #403D39;  
+    color: white;
+}
+
+/* 상영예정작/상영종료작 */
+span#invalid_showtime {
+	border: solid 0px red;
+	margin-left: auto;
+	border-radius: 10%;
+	padding-top: 4px;
+	padding-right: 5px;
+	padding-left: 5px;	
+	
+	background-color: #403D39;
+	color: white;
+}
+
+span#invalid_showtime:hover {
+	cursor: pointer;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*############*/
+/*   검색결과   */
+/*############*/
+
+/* 테이블 공통 */
+table#showtime_table {
+	margin-top: 10px;
+	border-radius: 10%;
+	
+	border-collapse: separate; /* 테이블 셀 사이를 분리하도록 설정 */
+    border-spacing: 0; /* 셀 간의 간격을 0으로 설정 */
+    border-radius: 5px; /* 테이블의 둥근 모서리 설정 */
+    overflow: hidden; /* 둥근 모서리가 잘리지 않도록 */
+}
+
+table#showtime_table td, 
+table#showtime_table th {
+    border-left: none;  /* 왼쪽 세로선 제거 */
+    border-right: none; /* 오른쪽 세로선 제거 */
+}
+
+table#showtime_table th {
+    border: none;
+}
+
+
+/* 테이블 헤더 */
+div#search_result > table > thead > tr {
+	text-align: center;
+	background-color: #403D39;
+	color: white;
+	font-size: 10pt;
+}
+
+/* 테이블 바디 */
+div#search_result > table > tbody > tr {
+	text-align: center;
+}
+
+div#search_result > table > tbody > tr > td{
+	vertical-align: middle;
+}
+
+div#search_result > table > tbody > tr > td:nth-child(5) {
+	text-align: left;
+}
+
+/* 영화 호버 효과 */
+div#search_result > table > tbody > tr:hover {
+	cursor: pointer;
+	background-color: #dbd7ce; 
+}
+
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*############*/
+/*   페이지바   */
+/*############*/
+
+div#page_bar {
+	border: solid 0px red;
+	width: 80%;
+	margin: 3% auto 0 auto;
+	display: flex;
+}
+
+div#page_bar > nav {
+	margin: auto;
+}
+
+/* 활성 상태의 페이지 번호 글자색 변경 */
+.pagination .page-item.active .page-link {
+    background-color: #EB5E28;
+    border-color: #EB5E28;
+    color: white;
+}
+
+/* 비활성 상태의 페이지 번호 글자색 변경 */
+.pagination .page-item .page-link {
+    color: #403D39;
+}
+
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*#########*/
+/*   툴팁   */
+/*#########*/
+.tooltip > span {
+	display: inline-block;
+	width: 15px;
+	height: 10px;
+	margin: 0 2px;
+	font-size: 5pt;
+	text-align: center;
+}
+

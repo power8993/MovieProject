@@ -135,7 +135,7 @@ button#resister_btn {
 }
 
 button#reset_btn {
-    background-color: #403D39;
+    background-color: #CCC5B9;
     color: white;
    	border: none;
    	margin-right: 2%;
@@ -161,6 +161,17 @@ button#search_button:hover {
 }
 
 /* 테이블 헤더 */
-table#modal_table {
-	
+table#modal_table > thead > tr {
+	text-align: center;
+	background-color: #403D39;
+	color: white;
+}
+
+/* 테이블 바디 */
+table#modal_table > tbody > tr > td {
+	vertical-align: middle;
+	text-align: center;
+}
+table#modal_table > tbody > tr > td:nth-child(1) {
+	text-align: left;
 }

@@ -56,6 +56,9 @@ public interface MovieDAO {
 	// 검색이 있는 또는 검색이 없는 영화 상영 일정의 총개수 알아오기
 	int getTotalShowtimeCount(Map<String, String> paraMap) throws SQLException;
 
+	// 입력한 상영시작일과 상영종료일이 해당 영화의 상영 일정들에 모두 포함되는지 확인하는 메소드
+	boolean isDateValidCheck(Map<String, String> paraMap) throws SQLException;
+	
 	
 
 }

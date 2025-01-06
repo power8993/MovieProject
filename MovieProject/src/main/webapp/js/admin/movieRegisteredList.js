@@ -62,7 +62,7 @@ $(document).ready(function(){
 					                            <div class="modal-content">
 					                                <!-- Modal Header -->
 					                                <div class="modal-header">
-					                                    <h5 class="modal-title" id="movie_find">영화 상세 정보</h5>
+					                                    <h5 class="modal-title" id="movie_find"><i class="fa-solid fa-clapperboard" style="color: #252422;"></i>&nbsp;영화 상세 정보</h5>
 					                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					                                        <span aria-hidden="true">&times;</span>
 					                                    </button>
@@ -116,7 +116,7 @@ $(document).ready(function(){
 					                                    <div class="modal-footer">
 															<button type="button" class="btn btn-success" id="register_button" style="margin-right: auto;">상영일정 등록</button>
 					                                        <button type="button" class="btn btn-primary" id="edit_button">수정하기</button>
-					                                        <button type="button" class="btn btn-danger" id="delete_button">삭제하기</button>
+					                                        <button type="button" class="btn btn-danger" id="delete_button">상영중지</button>
 					                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 					                                    </div>
 					                                </div>
@@ -133,7 +133,7 @@ $(document).ready(function(){
 					// 모달을 표시
 					$('div#movie_find').modal('show');
 					
-					// [삭제하기] 버튼의 confirm 에서 사용
+					// [상영중지] 버튼의 confirm 에서 사용
 					confirm_movie_title = mvvo.movie_title
 					
 					// [상영일정등록] 버튼의 유효성 검사를 위한 임시 저장 변수
@@ -163,20 +163,32 @@ $(document).ready(function(){
 		// === 수정하기 버튼 클릭 이벤트 끝 === //
 		
 		
-		// === 삭제하기 버튼 클릭 이벤트 (모달 내에서) === //
+		// === 상영중지 버튼 클릭 이벤트 (모달 내에서) === //
 		$(document).one('click', '#delete_button', function(e) {
 			
-			const user_confirm = confirm("영화 "+ confirm_movie_title +"를 정말로 삭제하시겠습니까?");
-			if(user_confirm) {
-				const frm = document.seqFrm;
-				//const seq = frm.seq.value;	// 선택한 영화의 seq
-				
-				frm.action = "movieDelete.mp";  // 삭제할 페이지로 이동
-				frm.method = "post";  // POST 방식
-				frm.submit();  // 폼 전송
-			}
-			else { 
+			var current_date = new Date();
+			var year = current_date.getFullYear();
+		    var month = ("0" + (current_date.getMonth() + 1)).slice(-2); // 0부터 시작하므로 +1
+		    var day = ("0" + current_date.getDate()).slice(-2);
+			var current_day = year + "-" + month + "-" + day;
+			
+			if(start_date_val <= current_day && current_day <= end_date_val) {
+				alert("현재 상영 기간 내의 영화는 삭제가 불가합니다.");
 				return;
+			}
+			else {
+				const user_confirm = confirm("영화 "+ confirm_movie_title +"를 정말로 상영중지(비활성화)하시겠습니까?");
+				if(user_confirm) {
+					const frm = document.seqFrm;
+					//const seq = frm.seq.value;	// 선택한 영화의 seq
+					
+					frm.action = "movieDelete.mp";  // 삭제할 페이지로 이동
+					frm.method = "post";  // POST 방식
+					frm.submit();  // 폼 전송
+				}
+				else { 
+					return;
+				}
 			}
 		});  // end of $(document).on('click', '#delete_button')
 		// === 삭제하기 버튼 클릭 이벤트 끝 === //
@@ -194,12 +206,25 @@ $(document).ready(function(){
 				return; 
 			}
 			else {
-				const frm = document.seqFrm;
-				//const seq = frm.seq.value;	// 선택한 영화의 seq
+				var current_date = new Date();
+				var year = current_date.getFullYear();
+			    var month = ("0" + (current_date.getMonth() + 1)).slice(-2); // 0부터 시작하므로 +1
+			    var day = ("0" + current_date.getDate()).slice(-2);
+				var current_day = year + "-" + month + "-" + day;
 				
-				frm.action = "movieShowtimeRegister.mp";  // 상영일정 등록 페이지로 이동
-				frm.method = "post";  // POST 방식
-				frm.submit();  // 폼 전송	
+				if(current_day > end_date_val) {
+					alert("종영일자가 지난 영화입니다.\n상영일정을 등록하려면 [수정하기]에서 상영일자를 수정해주세요.");
+					return;
+				}
+				else {
+					const frm = document.seqFrm;
+					//const seq = frm.seq.value;	// 선택한 영화의 seq
+
+					frm.action = "movieShowtimeRegister.mp";  // 상영일정 등록 페이지로 이동
+					frm.method = "post";  // POST 방식
+					frm.submit();  // 폼 전송	
+				}
+
 			}
 			
 		});  // end of $(document).on('click', '#register_button')
@@ -252,3 +277,25 @@ function goSearch() {
 		
 		frm.submit();
 }// end of function goSearch() {}-------------------------------------------
+
+
+
+// === 상영작/미상영작 버튼 클릭 이벤트 처리
+function toggleMovieInvalidStatus() {
+	
+	var invalid_movie =  $("span#invalid_movie");
+	
+	if (invalid_movie.text() == "상영작") {
+		$("input[name='invalid_movie']").val("미상영작");
+	} 
+	else {
+		$("input[name='invalid_movie']").val("상영작");
+	}
+	
+	const frm = document.movie_search_frm;
+	// frm.action = "movieRegisteredList.mp";
+	// frm.method = "get";
+	
+	frm.submit();
+	
+}// end of function toggleMovieInvalidStatus() {}---------------------------

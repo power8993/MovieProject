@@ -3,7 +3,6 @@
 
 <%
     String ctxPath = request.getContextPath();
-    //    /MyMVC
 %>
 
 
@@ -27,6 +26,37 @@ $(document).ready(function(){
 		  	goidfind();
 		 }
 	});// end of $("input:text[name='email']").bind("keyup", function(e){})-------
+	
+	
+	// 이름에 숫자입력을 시도할 경우 입력을 차단 //
+	document.getElementById("nameInput").addEventListener("keypress", function (event) {
+	  
+	  if (!isNaN(event.key)) {
+	    event.preventDefault();
+	  }
+	});
+
+	
+	// 성명 입력 검사 //
+	$(document).on('input', '#nameInput', function () {
+	   if ($("#nameInput").val() == "") {
+	     $("#nameErrorMsg").html("<span>성명을 입력해 주세요.</span>");
+	   } else {
+	     $("#nameErrorMsg").html("");
+	     $("#div_findResult").html("");
+	   }
+	});
+	
+	// 이메일 입력 검사 //
+	$(document).on('input', '#emailInput', function() {
+		if($("#emailInput").val()==""){
+			$("#emailErrorMsg").html("<span>이메일을 입력해 주세요.</span>");
+		}
+		else{
+			$("#emailErrorMsg").html("");
+			$("#div_findResult").html("");
+		}
+	});
 		  
 }); // end of $(document).ready(function(){})------------------------------------------------------------
 	
@@ -37,11 +67,20 @@ function goidfind() {
 	const name = $("input:text[name='name']").val().trim();
 
 		if(name == "") {
-			alert("성명을 입력하세요!!");
+			$("#nameErrorMsg").html("<span>성명을 입력해 주세요.</span>");
+			$("input#nameInput").val("").focus();
+		 	return; // 종료
+		}
+		
+	const email = $("input:text[name='email']").val();
+	
+		if(email == "") {
+			$("#emailErrorMsg").html("<span>이메일을 입력해 주세요.</span>");
+			$("input#emailInput").val("").focus();
 		 	return; // 종료
 		}
 
-		const email = $("input:text[name='email']").val();
+		
 
 		// const regExp_email = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;  
 		// 또는
@@ -52,7 +91,7 @@ function goidfind() {
 		
 		if(!bool) {
 		      // 이메일이 정규표현식에 위배된 경우
-		      alert("e메일을 올바르게 입력하세요!!");
+		      $("#emailErrorMsg").html("<span>입력하신 이메일 주소 형식이 올바르지 않습니다.</span>");
 		return; // 종료
 	   	}    
 		
@@ -71,11 +110,12 @@ function goidfind() {
         success: function(json) {
             if (json.userid) {
                 // 성공적으로 아이디를 찾은 경우
-            	$("#div_findResult ").html(name + " 회원님의 아이디는 <span style='color: orange; font-size: 18pt; font-weight: bold;'>" + json.userid + "</span>입니다.");
+            	$("#div_findResult").html("<div class='result-card'><h4>" + name + " 회원님,</h4><p>회원님의 아이디는</p><h3 class='userid-display'>[ " + json.userid + " ]</h3><p>입니다.</p></div>");
+
 
             } else {
                 // 아이디를 찾지 못한 경우
-                $("#div_findResult").html("존재하지 않은 정보입니다.");
+                $("#div_findResult").html("<span style='color:red;font-size:10pt;'>성명 또는 이메일을 확인해 주세요.</span>");
             }
         },
         error: function(request, status, error) {
@@ -89,22 +129,34 @@ function goidfind() {
 
 <div id="form_container">
 
-<div id="logo">LOGO</div>
+<div id="semiLogo"><a href="<%= ctxPath%>/"><img src="<%= ctxPath%>/images/index/logo.png"/></a></div>
 	<form name="pwdFindFrm">
+	  <!-- 성명 입력 -->
+	  <div class="form-group">
+	    <div class="form-floating-label">
+	      <input type="text" class="form-control" id="nameInput" name="name" autocomplete="off" placeholder=" " />
+	      <label for="nameInput">성명</label>
+	    </div>
+	    <div id="nameErrorMsg"></div>
+	  </div>
 	
-        <label style="display: block; width: 90px; margin:0px;">성명</label>
-        <input type="text" name="name" size="25" autocomplete="off" placeholder="성명을 입력하세요" style="display: block; width:100%;"/> 
- 
-        <label style="display: block; width: 90px; margin:10px 0 0 0;">이메일</label>
-        <div style="display:flex">
-        	<input type="text" name="email" size="28" autocomplete="off" placeholder="이메일을 입력하세요" style="display: block; "/> <button type="button" id="findBtn"onclick="goidfind()">아이디 찾기</button>
-        </div>
-	
-	   
+	  <!-- 이메일 입력 -->
+	  <div class="form-group">
+	    <div class="form-floating-label">
+	      <div style="position: relative;">
+	        <input type="text" class="form-control" id="emailInput" name="email" autocomplete="off" placeholder=" " />
+	        <label for="emailInput" style="left: 10px;">이메일</label>
+	        <button type="button" id="findBtn" class="btn btn-primary" onclick="goidfind()" >
+	          아이디 찾기
+	        </button>
+	      </div>
+	    </div>
+	    <div id="emailErrorMsg"></div>
+	    <div id="div_findResult"></div>
+	  </div>
 	</form>
-	 <div class="my-3 text-center" id="div_findResult">
 
-	</div>
+	 
 	
 	<div style="width: 350px; margin: 0 auto;">
 	    <div id="buttonContainer">

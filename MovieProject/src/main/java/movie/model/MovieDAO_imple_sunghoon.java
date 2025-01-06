@@ -62,7 +62,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select movie_title, movie_grade, seq_movie_no "
+			String sql = " select case when length(movie_title) < 13 then movie_title else substr(movie_title, 0, 10) || '...' end as movie_title, seq_movie_no, movie_grade "
 					   + " from tbl_movie "
 					   + " where sysdate >= start_date and sysdate <= end_date + 1 ";
 			
@@ -101,7 +101,8 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 			String sql = " select to_char(start_time, 'hh24mi') as start_time, to_char(end_time, 'hh24mi') as end_time, "
 					   + " seat_arr, seq_showtime_no, fk_seq_movie_no, total_viewer, unused_seat, fk_screen_no "
 					   + " from tbl_showtime "
-					   + " where FK_SEQ_MOVIE_NO = ? and to_char(start_time, 'yyyymmdd') = ? ";
+					   + " where FK_SEQ_MOVIE_NO = ? and to_char(start_time, 'yyyymmdd') = ? "
+					   + " order by fk_screen_no asc ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -299,9 +300,12 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 			String sql = " select not_used_point - used_point as havingpoint "
 					   + " from "
 					   + " ( "
-					   + "    select NVL(SUM(point), 0) as not_used_point "
-					   + "    from tbl_point "
-					   + "    where fk_user_id = ? and point_type = 1 "
+					   + "    select NVL(SUM(p2.point), 0) as not_used_point "
+					   + "    from tbl_payment p1 JOIN tbl_showtime s "
+					   + "    on p1.fk_SEQ_SHOWTIME_NO = s.SEQ_SHOWTIME_NO "
+					   + "    join tbl_point p2 "
+					   + "    on p1.imp_uid = p2.fk_imp_uid "
+					   + "    where sysdate > s.end_time and p2.fk_user_id = ? and point_type = 1 "
 					   + " ) A "
 					   + " , "
 					   + " ( "

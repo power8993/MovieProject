@@ -6,6 +6,9 @@
 <%
 String ctxPath = request.getContextPath();
 %>
+
+<% String userid = (String) session.getAttribute("userid"); %>
+
 <jsp:include page="../header1.jsp" />
 
 <%-- 직접 만든 CSS --%>
@@ -17,42 +20,24 @@ String ctxPath = request.getContextPath();
 <%-- h3 a태그의 이모티콘 --%>
 <script src="https://kit.fontawesome.com/0c69fdf2c0.js"
 	crossorigin="anonymous"></script>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/mypage/myreservationlist.js"></script> 
 
 
 <%-- 전체 창 --%>
 <div class="my_container">
-	<%-- 마이페이지 나의 프로필장 --%>
-	<div class="myprofile">
-		<div class="profile-container">
-			<i class="fa-solid fa-circle-user" style="color: #252422;"></i>
-			<%-- 사용자 정보 --%>
-			<div class="profile-info">
-				<h2>${(sessionScope.loginuser).name}님</h2>
-				<p>
-					나의 영화 랭킹 <strong>50</strong> 순위
-				</p>
-				<p>
-					사용 가능 포인트: <strong>${(sessionScope.loginuser).point}pt</strong>
-				</p>
-				<p>
-					사용한 포인트: <strong>0pt</strong>
-				</p>
-			</div>
-			<%-- 사용자 정보 끝 --%>
-		</div>
-	</div>
-	<%-- 마이페이지 나의 프로필장 끝 --%>
+
+	<jsp:include page="mypageProfile.jsp" />
+
 	<%-- 마이페이지 사이드바 & 매안 창 --%>
 	<div class="my_main">
 
-		 <%-- 마이페이지 사이드바 --%>
+		<%-- 마이페이지 사이드바 --%>
 		<div class="my_hside">
 			<ul>
 				<li><a href="<%=ctxPath%>/mypage/mypage.mp">MyPage HOME</a></li>
 
-				<li><a href="<%=ctxPath%>/mypage/myreservationlist.mp" class="active">나의
-						예매내역</a>
+				<li><a href="<%=ctxPath%>/mypage/myreservationlist.mp"
+					class="active">나의 예매내역</a>
 					<ul>
 						<li><a href="<%=ctxPath%>/mypage/myreservationpoint.mp">포인트
 								적립/사용 내역</a></li>
@@ -62,7 +47,8 @@ String ctxPath = request.getContextPath();
 					<ul>
 						<li><a href="<%=ctxPath%>/mypage/mymoviewatched.mp">내가 본
 								영화</a></li>
-						<li><a href="<%=ctxPath%>/mypage/mymoviereview.mp">내가 쓴 평점</a></li>
+						<li><a href="<%=ctxPath%>/mypage/mymoviereview.mp">내가 쓴
+								평점</a></li>
 						<li><a href="<%=ctxPath%>/mypage/mymovielike.mp">기대되는 영화</a></li>
 					</ul></li>
 
@@ -74,10 +60,11 @@ String ctxPath = request.getContextPath();
 			</ul>
 		</div>
 		<%-- 마이페이지 사이드바 끝 --%>
+		
+		
 
 		<!-- 메인 콘텐츠 -->
 		<div class="mypage_main_content">
-
 			<!-- 나의 예매내역 -->
 			<div class="my_box_list">
 				<h3 class="title0">나의 예매내역</h3>
@@ -89,25 +76,55 @@ String ctxPath = request.getContextPath();
 					현장에서 발권하실 경우 꼭 <strong>예매번호</strong>를 확인하세요.
 				</h3>
 				<p class="title2">티켓판매기에 예매번호를 입력하면 티켓을 발급받을 수 있습니다.</p>
-				<c:if test="${not empty requestScope.reservationList}">
+
+				<c:if test="${not empty requestScope.myreservationList}">
 					<c:forEach var="reservation"
-						items="${requestScope.reservationList}">
-						<div class="reservation_item">
-							<div class="poster">포스터</div>
-							<div class="details">
-								<p>예매번호: ${reservation.id}</p>
-								<p>${reservation.movieTitle}|${reservation.date}</p>
-								<p>상영관: ${reservation.theater}</p>
+						items="${requestScope.myreservationList}">
+						<div class="reservation_box">
+
+							<!-- 예매번호 -->
+							 <p class="reservation_number">예매번호 ${reservation.imp_uid}</p>
+
+							<!-- 포스터 이미지 -->
+							<div class="my_main_reservationlist_poster">
+								<a
+									href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${reservation.svo.fk_seq_movie_no}">
+									<img
+									src="${pageContext.request.contextPath}/images/admin/poster_file/${reservation.svo.mvo.poster_file}"
+									alt="${reservation.svo.mvo.movie_title}" />
+								</a>
 							</div>
-							<button type="button" class="btn">영수증 출력</button>
-                            <button type="button" class="btn">예매 취소</button>
+							
+							
+							<!-- 영화제목, 영화총가격, 관람인원, 관람일자, 관람좌석, 상영관, 매수 -->
+							<div class="reservation_details">
+								<h2 class="reservation_h2"><a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${reservation.svo.fk_seq_movie_no}" > ${reservation.svo.mvo.movie_title}</a> <span>${reservation.pay_amount}원</span> </h2>
+								<ul>
+								<li><dl><dt>관람일시</dt> <dd class="start_time">${reservation.svo.start_time}</dd></dl></li>
+								<li><dl><dt>관람좌석</dt> <dd class="seat_no_list"> ${reservation.tvo.seat_no_list}</dd></dl></li>
+								<li><dl><dt>상영관</dt> <dd class="fk_screen_no"> ${reservation.svo.fk_screen_no}관</dd></dl></li>
+								<li><dl><dt>매수</dt> <dd class="seat_count"> ${reservation.tvo.seat_count}매</dd></dl></li>
+							</ul>
+							</div>
+							<!-- 버튼 -->
+							<div class="reservation_actions">
+								<button type="button" class="Receipt_Printing"  onclick="Receipt_Printing('${reservation.imp_uid}')">영수증 출력</button>
+								<div id="Receipt_Printing_model"></div>
+								<button type="button" class="Cancel_Reservation" onclick="myreservation_cancel('${reservation.imp_uid}','${reservation.svo.fk_seq_movie_no}', '${sessionScope.loginuser.userid}')">예매 취소</button>
+								<div id="myreservation_cancel_modal"></div>  <!-- 모달을 삽입할 위치 -->
+							</div>	
+									
+										
 						</div>
 					</c:forEach>
 				</c:if>
-				<c:if test="${empty requestScope.reservationList}">
+
+				<c:if test="${empty requestScope.myreservationList}">
 					<p class="empty-message">고객님의 최근 예매내역이 존재하지 않습니다.</p>
 				</c:if>
 			</div>
+
+
 
 
 
@@ -128,22 +145,27 @@ String ctxPath = request.getContextPath();
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="cancel" items="${cancelList}">
-								<tr>
-									<td>${cancel.movieTitle}</td>
-									<td>${cancel.dateTime}</td>
-									<td>${cancel.cancelDate}</td>
-									<td>${cancel.price}</td>
-								</tr>
-							</c:forEach>
+							<c:if test="${not empty requestScope.myreservationList_cancel}">
+								<c:forEach var="cancel"
+									items="${requestScope.myreservationList_cancel}">
+									<tr>
+										<td>${cancel.svo.mvo.movie_title}</td>
+										<td>${cancel.svo.start_time}</td>
+										<td>${cancel.pay_cancel_date}</td>
+										<td>${cancel.pay_amount}</td>
+									</tr>
+								</c:forEach>
+							</c:if>
 						</tbody>
 					</table>
 				</div>
 
-				<c:if test="${empty requestScope.cancelList}">
+				<c:if test="${empty requestScope.myreservationList_cancel}">
 					<p class="empty-message">고객님의 최근 취소내역이 없습니다.</p>
 				</c:if>
 			</div>
+
+
 		</div>
 		<!-- 메인 콘텐츠 끝 -->
 

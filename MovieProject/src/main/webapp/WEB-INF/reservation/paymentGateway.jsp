@@ -63,7 +63,7 @@ $(document).ready(function() {
 	 <%--	opener.location.href = "javascript:goCoinUpdate('<%= ctxPath%>', '${requestScope.userid}','${requestScope.coinmoney}');"; --%>
 	 <%--   $(opener.location).attr("href", "javascript:goCoinUpdate('<%= ctxPath%>', '${requestScope.userid}','${requestScope.coinmoney}');");  --%> 
 
-	 		/* 상영 영화 좌석배열 수정 및 남은 좌석 수정 */
+        	/* 상영 영화 좌석배열 수정 및 남은 좌석 수정 */
 	 		window.opener.updateShowtime('<%= ctxPath%>');
 	 		/* 결제 내역 만들기 */
 	 		window.opener.makePayment('<%= ctxPath%>','${requestScope.userid}','${requestScope.ticketPrice}', rsp.imp_uid);
@@ -71,12 +71,14 @@ $(document).ready(function() {
 	 		window.opener.makeTicket('<%= ctxPath%>', rsp.imp_uid);
 	 		/* 포인트 적립 or 사용 하기 */
 	 		window.opener.makePoint('<%= ctxPath%>','${requestScope.userid}','${requestScope.using_point}','${requestScope.ticketPrice}', rsp.imp_uid);
+	 		/* 결제 완료 문자 보내기 */
+	 		window.opener.sendReservationSMS('<%= ctxPath%>','${requestScope.name}','${requestScope.ticketInfo}','${requestScope.ticketPrice}', '${requestScope.mobile}');
+	 		
 	 		
 	 		alert("결제에 성공하였습니다.");
 			self.close();
 			
         } else {
-			
             alert("결제에 실패하였습니다.");
             self.close();
        }

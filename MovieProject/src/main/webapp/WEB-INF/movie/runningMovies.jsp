@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>영화차트</title>
+    <title>상영 중인 영화</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,6 +37,9 @@
             font-weight: bold;
             margin-top: 1rem;
             font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .movie-details {
             text-align: left;
@@ -56,11 +59,6 @@
         }
         .reservation-btn:hover {
             background-color: #c23041;
-        }
-        .rating {
-            font-size: 0.9rem;
-            color: #555;
-            margin-top: 0.3rem;
         }
         .rank {
             background-color: #333;
@@ -97,17 +95,24 @@
             color: #999;
             margin-top: 2rem;
         }
+        ul.nav-links {
+            display: flex;
+            gap: 20px;
+            padding: 0;
+            margin-top: 20px;
+            justify-content: flex-end;
+            list-style-type: none;
+        }
     </style>
 </head>
 <body>
     <jsp:include page="../header1.jsp" />
 
-    <!-- Movie Cards -->
     <div class="container mt-4">
         <div>
-            <ul style="display: flex; gap: 20px; padding: 0; margin-top: 20px; justify-content: flex-end; list-style-type: none;">
+            <ul class="nav-links">
                 <li class="nav-link h5">
-                    <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/movieList.mp">전체목록 </a>
+                    <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/movieList.mp">전체목록</a>
                 </li>
                 <li class="nav-link h5">
                     <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/upcomingMovies.mp">상영예정작</a>
@@ -116,7 +121,7 @@
                     <select name="genreCode">
                         <option value="">장르</option>
                         <c:forEach var="cg" items="${requestScope.cgList}">
-                            <option value="${cg.category_code}">${cg.category}</option>
+                            <option value="${cg.category_code}" ${cg.category_code == selectedGenre ? "selected" : ""}>${cg.category}</option>
                         </c:forEach>
                     </select>
                     <button type="button" class="round gray" onclick="submitGenreForm()">
@@ -128,32 +133,36 @@
 
         <div class="container mt-4">
             <div class="row">
-                <!-- 데이터가 있는 경우 -->
                 <c:if test="${movies != null && not empty movies}">
                     <c:forEach var="movie" items="${movies}" varStatus="status">
-                        <div class="col-md-4 mb-4 <%--${status.index >= 15 ? 'movie-hidden hidden' : ''}--%>">
-                            <a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}">
-                                <div class="movie-card position-relative">
-                                    <div class="rank">No. ${status.index + 1}</div>
-                                    <div class="poster">
-                                        <img src="${movie.poster_file}" alt="${movie.movie_title}">
-                                    </div>
-                                    <div class="movie-details">
-                                        <p>예매율: ${movie.bookingRate}</p>
-                                        <p>개봉일: ${movie.start_date} </p>
-                                         <button class="reservation-btn">
-                                         <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie.seq_movie_no}">예매하기</a>
-                                         </button>
-                                    </div>
+                        <div class="col-md-4 mb-4 movie-card-container ${status.index >= 15 ? 'hidden' : ''}">
+                            <div class="movie-card position-relative">
+                                <div class="rank">No. ${status.index + 1}</div>
+                                <div class="poster">
+                                    <a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}&bookingRate=${movie.bookingRate}">
+                                        <img src="${movie.poster_file}">
+                                    </a>
                                 </div>
-                            </a>
+                                <div class="movie-details">
+                                    <div class="movie-title">
+                                        <img src="<%= ctxPath %>/images/admin/movie_grade/${movie.movie_grade}.png" 
+                                             alt="${movie.movie_grade}" 
+                                             style="width: 30px; height: 30px; margin-right: 10px;">
+                                        ${movie.movie_title}
+                                    </div>
+                                    <p>예매율: ${movie.bookingRate}</p>
+                                    <p>개봉일: ${movie.start_date}</p>
+                                    <button class="reservation-btn">
+                                        <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie.seq_movie_no}" style="color: white; text-decoration: none;">예매하기</a>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </c:forEach>
                 </c:if>
 
-                <!-- 데이터가 없는 경우 -->
                 <c:if test="${movies == null || empty movies}">
-                    <p class="no-data">상영중인 영화가 없습니다..</p>
+                    <p class="no-data">상영 중인 영화가 없습니다.</p>
                 </c:if>
             </div>
         </div>
@@ -165,6 +174,22 @@
         function submitGenreForm() {
             const form = document.getElementById('genreSearchForm');
             form.submit();
+        }
+
+        function showMoreMovies() {
+            const hiddenMovies = document.querySelectorAll('.movie-card-container.hidden');
+            const maxToShow = 15;
+            let count = 0;
+            hiddenMovies.forEach(movie => {
+                if (count < maxToShow) {
+                    movie.classList.remove('hidden');
+                    count++;
+                }
+            });
+
+            if (document.querySelectorAll('.movie-card-container.hidden').length === 0) {
+                document.querySelector('.show-more').style.display = 'none';
+            }
         }
     </script>
 </body>

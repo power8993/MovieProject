@@ -343,6 +343,8 @@ public class MemberDAO_imple implements MemberDAO {
 		int result = 0;
 		try {
 			conn = ds.getConnection();
+			//System.out.println(paraMap.get("new_pwd"));
+			//System.out.println(paraMap.get("userid"));
 			String sql = " update tbl_member set pwd = ?, PWD_CHANGE_DATE = sysdate " 
 					   + " where user_id = ? ";
 			pstmt = conn.prepareStatement(sql);

@@ -28,7 +28,7 @@ public class MovieDelete extends AbstractController {
 				int n = mvdao.deleteMovie(seq);
 
 				if (n == 1) {
-					String message = "영화가 삭제되었습니다.";
+					String message = "영화가 비활성화 되었습니다.";
 					String loc = "movieRegisteredList.mp";
 
 					request.setAttribute("message", message);

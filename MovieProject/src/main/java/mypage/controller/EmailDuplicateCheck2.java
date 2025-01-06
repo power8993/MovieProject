@@ -8,8 +8,7 @@ import org.json.JSONObject;
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import member.model.MemberDAO;
-import member.model.MemberDAO_imple;
+import member.model.*;
 import mypage.model.MypageDAO;
 import mypage.model.MypageDAO_imple;
 

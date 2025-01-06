@@ -3,10 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <% String ctxPath = request.getContextPath(); %>
 
+<jsp:include page="/WEB-INF/admin_header1.jsp" />
+
 <%-- 직접 만든 CSS --%>
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/admin/admin.css" >
 
-<jsp:include page="/WEB-INF/admin_header1.jsp" />
 	
 	
 

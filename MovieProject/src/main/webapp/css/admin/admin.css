@@ -104,10 +104,18 @@ section#mysidebar li a {
 section#mysidebar a.active,
 section#mysidebar a:hover {
 	background-color: #eb5e28; 
+	border-radius: 5px;
     padding-left: 13px; 
     color: #fff; 
 }
 
+/* 메뉴 선택시 해당하는 목록도 함께 색상 변경 */
+.parent_active {
+	background-color: #403D39;
+	border-radius: 5px;
+	padding-left: 13px; 
+	color: white !important;
+}
 
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 

@@ -25,6 +25,9 @@ public class GetScreenTime extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		String input_date = request.getParameter("input_date");
+		if(input_date != null) {
+			input_date = String.join("", input_date.split("-"));
+		}
 		String seq_movie_no = request.getParameter("seq_movie_no");
 		
 		Map<String, String> paraMap = new HashMap<>();

@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>영화차트</title>
+    <title>상영 예정작</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,30 +37,20 @@
             font-weight: bold;
             margin-top: 1rem;
             font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .movie-title img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
         }
         .movie-details {
             text-align: left;
             font-size: 0.9rem;
             color: #555;
             margin-top: 1rem;
-        }
-        .reservation-btn {
-            background-color: #e63b4c;
-            color: #fff;
-            font-weight: bold;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            border: none;
-            margin-top: 0.5rem;
-            transition: background-color 0.2s ease-in-out;
-        }
-        .reservation-btn:hover {
-            background-color: #c23041;
-        }
-        .rating {
-            font-size: 0.9rem;
-            color: #555;
-            margin-top: 0.3rem;
         }
         .rank {
             background-color: #333;
@@ -71,25 +61,6 @@
             position: absolute;
             top: 10px;
             left: 10px;
-        }
-        .hidden {
-            display: none;
-        }
-        .show-more {
-            text-align: center;
-            margin: 2rem 0;
-        }
-        .show-more button {
-            padding: 0.5rem 1.5rem;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f8f8f8;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .show-more button:hover {
-            background-color: #e8e8e8;
         }
         .no-data {
             text-align: center;
@@ -102,21 +73,20 @@
 <body>
     <jsp:include page="../header1.jsp" />
 
-    <!-- Movie Cards -->
     <div class="container mt-4">
         <div>
             <ul style="display: flex; gap: 20px; padding: 0; margin-top: 20px; justify-content: flex-end; list-style-type: none;">
                 <li class="nav-link h5">
-                    <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/movieList.mp">전체목록 </a>
+                    <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/movieList.mp">전체목록</a>
                 </li>
                 <li class="nav-link h5">
-                    <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/runningMovies.mp">상영중인영화 </a>
+                    <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/runningMovies.mp">상영중인영화</a>
                 </li>
                 <form id="genreSearchForm" action="<%= ctxPath %>/movie/ucfilterByGenre.mp" method="get">
                     <select name="genreCode">
                         <option value="">장르</option>
-                        <c:forEach var="cg" items="${requestScope.cgList}">
-                            <option value="${cg.category_code}">${cg.category}</option>
+                        <c:forEach var="cg" items="${cgList}">
+                            <option value="${cg.category_code}" ${cg.category_code == selectedGenre ? "selected" : ""}>${cg.category}</option>
                         </c:forEach>
                     </select>
                     <button type="button" class="round gray" onclick="submitGenreForm()">
@@ -131,29 +101,32 @@
                 <!-- 데이터가 있는 경우 -->
                 <c:if test="${movies != null && not empty movies}">
                     <c:forEach var="movie" items="${movies}" varStatus="status">
-                        <div class="col-md-4 mb-4 <%--${status.index >= 15 ? 'movie-hidden hidden' : ''}--%>">
-                            <a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}">
-                                <div class="movie-card position-relative">
-                                    <div class="rank">No. ${status.index + 1}</div>
-                                    <div class="poster">
+                        <div class="col-md-4 mb-4">
+                            <div class="movie-card position-relative">
+                                <div class="rank">No. ${status.index + 1}</div>
+                                <div class="poster">
+                                    <a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}&bookingRate=${movie.bookingRate}">
                                         <img src="${movie.poster_file}" alt="${movie.movie_title}">
-                                    </div>
-                                    <div class="movie-details">
-                                        <p>예매율: ${movie.bookingRate}</p>
-                                        <p>개봉일: ${movie.start_date}</p>
-                                         <button class="reservation-btn">
-                                         <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie.seq_movie_no}">예매하기</a>
-                                         </button>
-                                    </div>
+                                    </a>
                                 </div>
-                            </a>
+                                <div class="movie-details">
+                                    <div class="movie-title">
+                                        <img src="<%= ctxPath %>/images/admin/movie_grade/${movie.movie_grade}.png" 
+                                             alt="${movie.movie_grade}" 
+                                             title="${movie.movie_grade}">
+                                        ${movie.movie_title}
+                                    </div>
+                                    <p>예매율: ${movie.bookingRate}</p>
+                                    <p>개봉일: ${movie.start_date}</p>
+                                </div>
+                            </div>
                         </div>
                     </c:forEach>
                 </c:if>
 
                 <!-- 데이터가 없는 경우 -->
                 <c:if test="${movies == null || empty movies}">
-                    <p class="no-data"> 상영예정인 영화가 없습니다.</p>
+                    <p class="no-data">상영 예정 영화가 없습니다.</p>
                 </c:if>
             </div>
         </div>

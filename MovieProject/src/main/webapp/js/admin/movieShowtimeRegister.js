@@ -88,7 +88,7 @@ $(document).ready(function(){
 		
 		start_time_dom.setCustomValidity("");  // 오류 메시지 제거
 		
-		if(start_time == "") {
+		if(start_time == "" || end_time == "") {
 			start_time_dom.setCustomValidity("상영시간 입력 후 조회 가능합니다!");
 			start_time_dom.reportValidity();  // 유효성 검사 메시지 표시
 			return;
@@ -119,7 +119,7 @@ $(document).ready(function(){
 					                            <div class="modal-content">
 					                                <!-- Modal Header -->
 					                                <div class="modal-header">
-					                                    <h5 class="modal-title" id="movie_find">상영시간 조회 결과</h5>	
+					                                    <h5 class="modal-title" id="movie_find"><i class="fa-regular fa-calendar-days" style="color: #252422;"></i>&nbsp;상영 일정 조회</h5>	
 					                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					                                        <span aria-hidden="true">&times;</span>
 					                                    </button>
@@ -130,15 +130,15 @@ $(document).ready(function(){
 													
 													<!-- 검색 결과 -->
 							                        <div id="search_result" style="display:none;">
-							                            <table class="table">
+							                            <table class="table" id="modal_table">
 							                                <thead>
 							                                    <tr>
-							                                        <th>영화제목</th>
-							                                        <th>상영등급</th>
-							                                        <th>상영관</th>
-																	<th>러닝타임</th>
-																	<th>상영시작시간</th>
-																	<th>상영종료시간</th>
+							                                        <th style="width: 40%;">영화제목</th>
+							                                        <th style="width: 10%;">상영등급</th>
+							                                        <th style="width: 10%;">상영관</th>
+																	<th style="width: 10%;">러닝타임</th>
+																	<th style="width: 15%;">상영시작시간</th>
+																	<th style="width: 15%;">상영종료시간</th>
 							                                    </tr>
 							                                </thead>
 							                                <tbody id="movie_table"></tbody>
@@ -156,7 +156,7 @@ $(document).ready(function(){
 													<div style="color: gray; text-align: left;">
 												    	※ 클리닝 타임(10분)을 고려하여 실제 상영시간의 ±10분을 더한 결과입니다.<br>&nbsp;&nbsp;&nbsp;&nbsp;즉, 조회된 결과가 있을 시 상영일정 등록을 할 수 없습니다.
 												    </div>
-							                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 							                    </div>
 							                </div>
 							            </div>
@@ -190,13 +190,13 @@ $(document).ready(function(){
 							$('div#search_result').show();      // 검색 결과 테이블 표시
 							$('div#no_movies_message').hide();  // 검색된 영화가 없다는 메시지 숨기기
 							
-							const movie_result_list = `<tr>
-													   		<td><img src="${ctxPath}/images/admin/poster_file/${movie.poster_file}" alt="${movie.movie_title}" style="width:50px; height:auto;"> ${movie.movie_title}</td>
-															<td><img src="${ctxPath}/images/admin/movie_grade/${movie.movie_grade}.png" alt="${movie.movie_grade}" style="width:30px; height:auto;"></td>
+							const movie_result_list = `<tr id="research_schedule">
+													   		<td><img src="${ctxPath}/images/admin/poster_file/${movie.poster_file}" alt="${movie.movie_title}" style="width:90px; height:auto;"> ${movie.movie_title}</td>
+															<td><img src="${ctxPath}/images/admin/movie_grade/${movie.movie_grade}.png" alt="${movie.movie_grade}" style="width:40px; height:auto;"></td>
 															<td>${movie.screen_no}관</td>
 															<td>${movie.running_time}분</td>
-															<td>${movie.start_time.substring(0,16)}</td>
-															<td>${movie.end_time.substring(0,16)}</td>
+															<td>${movie.start_time.substring(0,10)}<br>${movie.start_time.substring(11,16)}</td>
+															<td>${movie.end_time.substring(0,10)}<br>${movie.end_time.substring(11,16)}</td>
 													   </tr>`;
 							search_result.append(movie_result_list);  // 테이블에 영화 데이터 추가
 							
