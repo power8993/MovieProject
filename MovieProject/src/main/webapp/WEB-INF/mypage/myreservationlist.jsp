@@ -105,7 +105,7 @@ String ctxPath = request.getContextPath();
 							</div>
 							<!-- 버튼 -->
 							<div class="reservation_actions">
-								<button type="button" class="Receipt_Printing">영수증 출력</button>
+								<a href="javascript:Receipt_Printing('${(sessionScope.loginuser).userid}','<%=ctxPath%>')">영수증 출력</a>
 								<button type="button" class="Cancel_Reservation" onclick="myreservation_cancel()">예매 취소</button>
 								<div id="myreservation_cancel_modal"></div>  <!-- 모달을 삽입할 위치 -->
 							</div>	

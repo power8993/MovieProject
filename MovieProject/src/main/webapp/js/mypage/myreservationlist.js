@@ -1,3 +1,25 @@
+/* 예매내역 영수증 출력 */
+function Receipt_Printing(userid,ctx_Path){
+
+		const width = 800;
+		const height = 680;
+	 
+		 const left = Math.ceil( (window.screen.width - width)/2 ); // 정수로 만듬
+		 const top = Math.ceil( (window.screen.height - height)/2 ); // 정수로 만듬
+		 
+		 const url = `${ctx_Path}/mypage/myreservationReceipt.mp?userid=${userid}`;      
+	 
+		 window.open(url, "Receipt_Printing",
+					`left=${left}, top=${top}, width=${width}, height=${height}`);
+}//end of function Receipt_Printing(ctxPath, userid)---
+
+
+
+
+
+
+
+/* 예매취소 */
 function myreservation_cancel() {
 
 	if (confirm(`예매를 취소하시겠습니까? \n\n ※ 예매 취소는 상영시간 20분 전까지 가능하며, \n 예매 가능은 상영시간 30분 전까지 가능합니다.`)) {
@@ -22,6 +44,8 @@ function myreservation_cancel() {
 	}
 }
 
+
+/* 예매취소 후 모달창 */
 function myreservation_cancel_Modal(){
 
 	const myreservation = $("div#myreservation_cancel_modal"); // 모달을 넣을 위치

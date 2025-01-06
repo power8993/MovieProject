@@ -1,9 +1,7 @@
 package mypage.controller;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
