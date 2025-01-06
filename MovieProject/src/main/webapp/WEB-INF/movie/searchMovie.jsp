@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%
     String ctxPath = request.getContextPath();
@@ -80,6 +81,10 @@
             padding: 5px 10px;
             margin-right: 10px;
         }
+        .movie-count {
+	    font-weight: bold; /* 굵은 글씨체 */
+	    font-size: 2rem; /* 더 큰 글씨 크기 */
+	}
     </style>
 </head>
 <body>
@@ -93,8 +98,7 @@
                 history.back();
             </script>
         </c:if>
-	<h5>영화검색결과 ?건</h5>
-      
+	<h5>영화 검색 결과 <span class="movie-count"><c:out value="${fn:length(movies)}"/></span>건</h5>    
         <div class="row" id="movie-list">
         
             <!-- 데이터가 있는 경우 -->

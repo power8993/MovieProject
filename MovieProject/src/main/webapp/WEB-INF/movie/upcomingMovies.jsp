@@ -66,17 +66,20 @@
             margin: 2rem 0;
         }
         .show-more button {
-            padding: 0.5rem 1.5rem;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f8f8f8;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .show-more button:hover {
-            background-color: #e8e8e8;
-        }
+		    padding: 0.5rem 1.5rem;
+		    font-size: 1rem;
+		    border: 2px solid #EB5E28; 
+		    border-radius: 5px;
+		    background-color: #FFFCF2; 
+		    cursor: pointer;
+		    transition: background-color 0.2s, border-color 0.2s;
+		    color: #495057;;
+		}
+
+		.show-more button:hover {
+		    background-color: #EB5E28; 
+		    color: #FFFCF2; 
+		}
         .no-data {
             text-align: center;
             font-size: 1.2rem;
@@ -92,7 +95,28 @@
         .genre-filter select {
             padding: 5px 10px;
             margin-right: 10px;
+            background-color: #FFFCF2; 
+		    color: #495057;; 
+		    border: 1px solid #EB5E28; 
+		    border-radius: 5px;
+		    -webkit-appearance: none; 
+		    -moz-appearance: none;
+		    appearance: none; 
         }
+        .genre-filter button {
+		    background-color: #FFFCF2; 
+		    color: #EB5E28; 
+		    border: 1px solid #EB5E28; 
+		    padding: 0.5rem 1rem;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+		}
+		
+		.genre-filter button:hover {
+		    background-color: #EB5E28; 
+		    color: white; 
+		}
         
     </style>
 </head>
@@ -102,8 +126,8 @@
      <div class="container mt-4">
      <h2>상영예정작</h2> 
         <div class="genre-filter">
-            <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/movieList.mp" style="margin-right: 20px;">전체영화</a>
-            <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/upcomingMovies.mp" style="margin-right: 20px;">상영 예정작</a>
+            <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/movieList.mp" style="margin-right: 20px; color: #EB5E28;">전체영화</a>
+            <a class="nav-link menufont_size" href="<%= ctxPath %>/movie/runningMovies.mp" style="margin-right: 20px; color: #EB5E28;">상영중인영화</a>
             <form id="genreSearchForm" action="<%= ctxPath %>/movie/allfilterByGenre.mp" method="get">
                 <select name="genreCode">
                     <option value="">장르</option>

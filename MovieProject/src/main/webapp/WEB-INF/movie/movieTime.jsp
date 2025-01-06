@@ -22,26 +22,221 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>영화 상영 시간표</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <style>
-        /* 동일한 스타일 유지 */
-        body { font-family: Arial, sans-serif; background-color: #f8f8f8; }
-        .date-selector { display: flex; justify-content: center; margin-bottom: 20px; }
-        .date-button { margin: 0 5px; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f8f8; cursor: pointer; font-size: 16px; transition: background-color 0.3s ease; }
-        .date-button.active { background-color: #007bff; color: white; border-color: #007bff; }
-        .date-button:hover { background-color: #0056b3; color: white; }
-        .movie-section { background: #fff; padding: 1rem; margin-bottom: 1.5rem; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
-        .movie-title { font-weight: bold; font-size: 1.2rem; margin-bottom: 10px; color: #333; }
-        .showtime-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
-        .showtime-button { padding: 10px 15px; background-color: #444; color: #fff; border-radius: 5px; cursor: pointer; text-decoration: none; white-space: nowrap; transition: background-color 0.3s ease; }
-        .showtime-button:hover { background-color: #222; }
-        .showtime-button.disabled { pointer-events: none; background-color: #ccc; color: #666; }
-        .screen-title { font-weight: bold; margin-top: 10px; font-size: 1rem; color: #555; }
-        .pagination-buttons { display: flex; justify-content: center; margin-top: 20px; }
-        .pagination-button { margin: 0 5px; padding: 10px 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f8f8f8; cursor: pointer; font-size: 16px; transition: background-color 0.3s ease; }
-        .pagination-button.disabled { background-color: #e9ecef; color: #6c757d; cursor: not-allowed; }
-        .pagination-button:hover:not(.disabled) { background-color: #007bff; color: white; }
-        .no-data { text-align: center; color: #999; font-size: 1rem; margin-top: 20px; }
+   <style>
+    /* 전체 페이지의 기본 글꼴과 배경 색상 설정 */
+    body { 
+        font-family: Arial, sans-serif; /* 글꼴을 Arial로 설정 */
+        background-color: #f8f8f8; /* 배경 색상을 연한 회색으로 설정 */
+    }
+
+    /* 날짜 선택 버튼 컨테이너 스타일 */
+    .date-selector { 
+        display: flex; /* 버튼들을 가로로 정렬 */
+        justify-content: center; /* 버튼들을 컨테이너 중앙에 정렬 */
+        margin-bottom: 20px; /* 아래쪽 여백 추가 */
+    }
+
+    /* 개별 날짜 버튼 스타일 */
+    .date-button { 
+        margin: 0 5px; /* 좌우 여백 설정 */
+        padding: 10px 20px; /* 버튼 안쪽 여백 설정 */
+        border: 1px solid #EB5E28; /* 테두리를 회색으로 설정 */
+        border-radius: 5px; /* 버튼의 모서리를 둥글게 설정 */
+        background-color: #FFFCF2; /* 버튼 배경 색상을 연한 회색으로 설정 */
+        cursor: pointer; /* 커서를 포인터로 변경 */
+        font-size: 16px; /* 버튼 텍스트 크기 설정 */
+        transition: background-color 0.3s ease; /* 배경 색상 변화에 부드러운 전환 효과 추가 */
+    }
+
+    /* 선택된 날짜 버튼 스타일 */
+    .date-button.active { 
+        background-color: #FFFCF2; /* 활성화된 버튼의 배경 색상 설정 (파란색) */
+        color: EB5E28; /* 텍스트 색상을 흰색으로 변경 */
+        border-color: #EB5E28; /* 테두리 색상도 파란색으로 설정 */
+    }
+
+    /* 날짜 버튼에 마우스를 올릴 때 스타일 */
+    .date-button:hover { 
+        background-color: #EB5E28; /* 더 진한 파란색 배경 */
+        color: EB5E28; /* 텍스트를 흰색으로 변경 */
+    }
+
+    /* 영화 섹션 박스 스타일 */
+    .movie-section { 
+        background: #FFFCF2; /* 흰색 배경 */
+        padding: 1rem; /* 안쪽 여백 설정 */
+        margin-bottom: 1.5rem; /* 아래쪽 여백 추가 */
+        border-radius: 5px; /* 모서리를 둥글게 설정 */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 추가 */
+    }
+
+    /* 영화 제목 스타일 */
+    .movie-title { 
+        font-weight: bold; /* 텍스트를 굵게 설정 */
+        font-size: 1.2rem; /* 텍스트 크기 설정 */
+        margin-bottom: 10px; /* 아래쪽 여백 추가 */
+        color: #333; /* 짙은 회색 텍스트 색상 */
+    }
+
+    /* 상영 시간 버튼 컨테이너 스타일 */
+    .showtime-row { 
+        display: flex; /* 버튼들을 가로로 정렬 */
+        gap: 10px; /* 버튼 간의 간격 설정 */
+        flex-wrap: wrap; /* 버튼이 줄바꿈될 수 있도록 설정 */
+        margin-top: 10px; /* 위쪽 여백 추가 */
+    }
+
+    /* 상영 시간 버튼 스타일 */
+    .showtime-button { 
+        padding: 10px 15px; /* 버튼 안쪽 여백 설정 */
+        background-color: #FFFCF2; /* 어두운 회색 배경 */
+        color: #EB5E28; /* 텍스트 색상을 흰색으로 설정 */
+        border-radius: 5px; /* 모서리를 둥글게 설정 */
+        cursor: pointer; /* 커서를 포인터로 변경 */
+        text-decoration: none; /* 텍스트 밑줄 제거 */
+        white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
+        transition: background-color 0.3s ease; /* 배경 색상 변화에 부드러운 전환 효과 추가 */
+    }
+
+    /* 상영 시간 버튼에 마우스를 올릴 때 스타일 */
+    .showtime-button:hover { 
+        background-color: #EB5E28; /* 더 진한 회색 배경 */
+    }
+
+    /* 예약 불가 버튼 스타일 */
+    .showtime-button.disabled { 
+        pointer-events: none; /* 버튼 클릭을 비활성화 */
+        background-color: #ccc; /* 버튼 배경 색상을 연한 회색으로 설정 */
+        color: #666; /* 텍스트 색상을 어두운 회색으로 설정 */
+    }
+
+    /* 상영관 제목 스타일 */
+    .screen-title { 
+        font-weight: bold; /* 텍스트를 굵게 설정 */
+        margin-top: 10px; /* 위쪽 여백 추가 */
+        font-size: 1rem; /* 텍스트 크기 설정 */
+        color: #555; /* 짙은 회색 텍스트 색상 */
+    }
+
+    /* 페이지 이동 버튼 컨테이너 스타일 */
+    .pagination-buttons { 
+        display: flex; /* 버튼들을 가로로 정렬 */
+        justify-content: center; /* 버튼들을 컨테이너 중앙에 정렬 */
+        margin-top: 20px; /* 위쪽 여백 추가 */
+    }
+
+    /* 개별 페이지 이동 버튼 스타일 */
+    .pagination-button { 
+        margin: 0 5px; /* 좌우 여백 설정 */
+        padding: 10px 20px; /* 버튼 안쪽 여백 설정 */
+        border: 1px solid #EB5E28; /* 테두리를 회색으로 설정 */
+        border-radius: 5px; /* 버튼의 모서리를 둥글게 설정 */
+        background-color: #FFFCF2; /* 버튼 배경 색상을 연한 회색으로 설정 */
+        cursor: pointer; /* 커서를 포인터로 변경 */
+        font-size: 16px; /* 버튼 텍스트 크기 설정 */
+        transition: background-color 0.3s ease; /* 배경 색상 변화에 부드러운 전환 효과 추가 */
+    }
+
+    /* 비활성화된 페이지 이동 버튼 스타일 */
+    .pagination-button.disabled { 
+        background-color: #FFFCF2; /* 연한 회색 배경 */
+        color: #FFFCF2; /* 텍스트 색상을 더 연한 회색으로 설정 */
+        cursor: not-allowed; /* 커서를 비활성화 상태로 변경 */
+    }
+
+    /* 페이지 이동 버튼에 마우스를 올릴 때 스타일 */
+    .pagination-button:hover:not(.disabled) { 
+        background-color: #EB5E28; /* 파란색 배경 */
+        color: white; /* 텍스트를 흰색으로 변경 */
+    }
+
+    /* 데이터가 없을 때 메시지 스타일 */
+    .no-data { 
+        text-align: center; /* 텍스트를 중앙 정렬 */
+        color: #EB5E28; /* 텍스트 색상을 연한 회색으로 설정 */
+        font-size: 1rem; /* 텍스트 크기 설정 */
+        margin-top: 20px; /* 위쪽 여백 추가 */
+    }
+
+    /* 영화 제목 외 세부 정보 텍스트 스타일 */
+    .details { 
+        font-size: 0.8rem; /* 글자 크기를 작게 설정 */
+        font-weight: normal; /* 텍스트 굵기를 일반적으로 설정 */
+        color: #FFFCF2; /* 텍스트 색상을 어두운 회색으로 설정 */
+        margin-right: 10px; /* 오른쪽 여백 추가 */
+    }.info-btn {
+            background-color: transparent;
+            border: none;
+            color: #007bff;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        /* 모달 스타일 */
+        .modal {
+            display: none; /* 기본적으로 보이지 않음 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .close-btn {
+            background-color: transparent;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            margin-top: 20px;
+        }
+
+        .modal-body table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .modal-body th, .modal-body td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .modal-body th {
+            background-color: #f4f4f4;
+        }
+
+        .modal-body td:first-child {
+            font-weight: bold;
+        }
     </style>
+
 </head>
 <body>
 
@@ -51,7 +246,7 @@
     <!-- 날짜 버튼 선택 UI -->
     <div class="date-selector">
         <% if (pageIndex > 0) { %>
-            <button type="button" class="pagination-button" onclick="changePage(<%= pageIndex - 1 %>)">&lt; 이전</button>
+            <button type="button" class="pagination-button" onclick="changePage(<%= pageIndex - 1 %>)">&lt;</button>
         <% } %>
         <% 
         for (int day = startDay; day <= endDay && day <= daysInMonth; day++) {
@@ -68,7 +263,7 @@
             </button>
         <% } %>
         <% if (endDay < daysInMonth) { %>
-            <button type="button" the class="pagination-button" onclick="changePage(<%= pageIndex + 1 %>)">다음 &gt;</button>
+            <button type="button" the class="pagination-button" onclick="changePage(<%= pageIndex + 1 %>)">&gt;</button>
         <% } %>
     </div>
 
@@ -76,6 +271,55 @@
         <input type="hidden" id="selectedDate" name="selectedDate" value="<%= selectedDate %>">
         <input type="hidden" id="pageIndex" name="pageIndex" value="<%= pageIndex %>">
     </form>
+    
+    
+    <!-- 관람 등급 안내 버튼 추가 -->
+<div class="container my-4">
+    <button class="info-btn" onclick="openModal()">관람등급 안내</button>
+</div>
+
+<!-- 관람 등급 안내 모달 추가 -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>관람 등급 안내</h2>
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <table>
+                <thead>
+                    <tr>
+                        <th>구분</th>
+                        <th>설명</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>전체 관람가</td>
+                        <td>모든 연령의 고객님께서 관람하실 수 있습니다.</td>
+                    </tr>
+                    <tr>
+                        <td>12세 관람가</td>
+                        <td>만 12세 미만의 고객님은 보호자를 동반하여야 관람하실 수 있습니다.</td>
+                    </tr>
+                    <tr>
+                        <td>15세 관람가</td>
+                        <td>만 15세 미만의 고객님은 보호자를 동반하여야 관람하실 수 있습니다.</td>
+                    </tr>
+                    <tr>
+                        <td>청소년 관람불가</td>
+                        <td>만 19세 미만은 관람이 불가능합니다. 신분증을 지참하시기 바랍니다.</td>
+                    </tr>
+                    <tr>
+                        <td>미정</td>
+                        <td>등급 미정 영화입니다.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+    
 
     <!-- 상영 시간표 표시 -->
     <c:if test="${not empty movieTimeList}">
@@ -83,7 +327,10 @@
         <c:forEach var="movie" items="${movieTimeList}">
             <c:if test="${lastTitle != movie.movie_title}">
                 <div class="movie-section">
-                    <div class="movie-title">${movie.movie_title} | ${movie.running_time}분 | ${movie.start_date} 개봉</div>
+                    <div class="movie-title">  
+                    	<img src="<%= ctxPath %>/images/admin/movie_grade/${movie.movie_grade}.png" 
+                             alt="${movie.movie_grade}" 
+                             style="width: 30px; height: 30px; margin-right: 10px;"> ${movie.movie_title} |${movie.cg.category} | ${movie.running_time}분 | ${movie.start_date} 개봉 </p></div>
                     <!-- 1관 -->
                     <c:if test="${not empty movieTimeList_o}">
                         <div class="screen-title">1관</div>
@@ -102,7 +349,7 @@
                     <!-- 2관 -->
                     <c:if test="${not empty movieTimeList_t}">
                         <div class="screen-title">2관</div>
-                        <div class="showtime-row">
+                        <div class="showtime-row">                        
                             <c:forEach var="movie2" items="${movieTimeList_t}">
                                 <c:if test="${movie2.movie_title == movie.movie_title}">
                                     <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie2.seq_movie_no}&start_time=${movie2.svo.start_time}&start_date=${movie2.start_date}&screen_no=${movie2.svo.fk_screenNO}"
@@ -114,7 +361,11 @@
                             </c:forEach>
                         </div>
                     </c:if>
+                    <c:if test="${empty movieTimeList_t}">
+                    
+                    </c:if>
                 </div>
+                 <hr>
                 <c:set var="lastTitle" value="${movie.movie_title}" />
             </c:if>
         </c:forEach>
@@ -122,6 +373,7 @@
 
     <!-- 데이터가 없을 때 메시지 표시 -->
     <c:if test="${movieTimeList == null || empty movieTimeList}">
+    
         <p class="no-data">현재 선택한 날짜에 상영 중인 영화가 없습니다.</p>
     </c:if>
 </div>
@@ -138,6 +390,23 @@ function changePage(page) {
     document.getElementById('pageIndex').value = page;
     document.getElementById('dateForm'). submit();
 }
+// 모달 열기
+function openModal() {
+    document.getElementById('modal').style.display = 'flex';
+}
+
+// 모달 닫기
+function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+}
+
+// 모달 외부 클릭 시 닫기
+window.onclick = function(event) {
+    const modal = document.getElementById('modal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+};
 </script>
 
 </body>

@@ -311,6 +311,7 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 	// 특정 장르의 영화 가져오기(전체)
 	@Override
 	public List<MovieVO_yeo> allgetMoviesByGenre(String genreCode) throws SQLException {
+		
 	    List<MovieVO_yeo> movieList = new ArrayList<>();
 
 	    String sql = "WITH movie_payment AS ( " +
@@ -491,7 +492,7 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 	                movie.setStart_date(rs.getString("start_date"));
 	                movie.setEnd_date(rs.getString("end_date"));
 	                movie.setPoster_file(rs.getString("POSTER_FILE"));
-	                movie.setMovie_grade(rs.getString("MOVIE_GRADE")); // 영화 등급 추가
+	                movie.setMovie_grade(rs.getString("MOVIE_GRADE")); 
 
 	                // 카테고리 매핑
 	                category.setCategory(rs.getString("CATEGORY"));
@@ -522,17 +523,20 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 	        conn = ds.getConnection(); // DB 연결 초기화
 
 	        // SQL 쿼리 작성
-	        String sql = "SELECT m.seq_movie_no, " +  // 쉼표 추가
+	        String sql = "SELECT m.seq_movie_no, " +
 	                     "m.movie_title, " +
-	                     "TO_CHAR(m.start_date, 'yyyy-MM-dd') AS start_date, " + // 날짜 형식 수정
+	                     "TO_CHAR(m.start_date, 'yyyy-MM-dd') AS start_date, " +
 	                     "m.running_time, " +
-	                     "TO_CHAR(s.start_time, 'HH24:mi') AS start_time, " + // 시간 형식 수정
+	                     "m.movie_grade, " + // 영화 등급
+	                     "c.CATEGORY, " + // 장르
+	                     "TO_CHAR(s.start_time, 'HH24:mi') AS start_time, " +
 	                     "s.unused_seat, " +
 	                     "sc.screen_no " +
 	                     "FROM tbl_showtime s " +
 	                     "JOIN tbl_movie m ON s.fk_seq_movie_no = m.seq_movie_no " +
-	                     "JOIN tbl_screen sc ON s.fk_screen_no = sc.screen_no " +
-	                     "WHERE TO_CHAR(s.start_time, 'yyyy-MM-dd') = ? " + // WHERE 절 날짜 형식 수정
+	                     "JOIN tbl_category c ON m.fk_category_code = c.category_code " + // 장르 조인
+	                     "JOIN tbl_screen sc ON s.fk_screen_no = sc.screen_no " + // 상영관 테이블 조인 추가
+	                     "WHERE TO_CHAR(s.start_time, 'yyyy-MM-dd') = ? " +
 	                     "ORDER BY s.start_time ASC";
 
 	        pstmt = conn.prepareStatement(sql); // PreparedStatement 생성
@@ -543,12 +547,18 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 	        while (rs.next()) {
 	            MovieVO_yeo movie = new MovieVO_yeo();     // 영화 객체 생성
 	            ShowTimeVO_yeo svo = new ShowTimeVO_yeo(); // 상영 시간 객체 생성
-
+	            CategoryVO_yeo category = new CategoryVO_yeo(); //장르 객체 생성 
+	            
 	            // 영화 정보 설정
 	            movie.setSeq_movie_no(rs.getInt("seq_movie_no"));     // 영화 번호  
 	            movie.setMovie_title(rs.getString("movie_title"));    // 영화 제목
 	            movie.setStart_date(rs.getString("start_date"));      // 개봉 날짜
 	            movie.setRunning_time(rs.getString("running_time"));  // 러닝 타임
+	            movie.setMovie_grade(rs.getString("movie_grade"));    // 영화 등급
+	            
+	            // 장르정보 설정 
+	            category.setCategory(rs.getString("CATEGORY"));
+	            movie.setCg(category);            
 
 	            // 상영 정보 설정
 	            svo.setStart_time(rs.getString("start_time"));        // 상영 시작 시간
@@ -568,7 +578,10 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 	    }
 
 	    return movieTimeList; // 결과 반환
-	} // end of 선택한 날짜 영화 시간표 가져오기 ---------------------------------------------------------
+	}
+
+ // end of 선택한 날짜 영화 시간표 가져오기
+
 
 
 	// 선택한 날짜 영화 시간표 가져오기 (1관수 순)	
