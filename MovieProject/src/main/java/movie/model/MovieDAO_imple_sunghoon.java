@@ -62,7 +62,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select case when length(movie_title) < 13 then movie_title else substr(movie_title, 0, 10) || '...' end as movie_title, seq_movie_no, movie_grade "
+			String sql = " select case when length(movie_title) < 20 then movie_title else substr(movie_title, 0, 17) || '...' end as movie_title, seq_movie_no, movie_grade "
 					   + " from tbl_movie "
 					   + " where sysdate >= start_date and sysdate <= end_date + 1 ";
 			

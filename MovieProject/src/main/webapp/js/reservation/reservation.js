@@ -44,14 +44,20 @@ $(document).ready(function(){
 	
 	// 예약페이지에서 영화를 선택했을 때
 	$("tr.movie-list").click(e => {
-		$("tr.movie-list").css({'background-color':'','color':''});
-		$(e.target).parent().css({'background-color':'black','color':'white'});
+		$("tr.movie-list").removeClass("selected");
+		if($(e.target).attr('class') == 'movie-title') {
+			$(e.target).parent().addClass("selected");
+			seq_movie_no = $(e.target).parent().find("td#seq_movie_no").text();
+		}
+		else if($(e.target).attr('class') == 'movie_grade_img') {
+			$(e.target).parent().parent().addClass("selected");
+			seq_movie_no = $(e.target).parent().parent().find("td#seq_movie_no").text();
+		}
 		
 		$("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
 		
-		seq_movie_no = $(e.target).parent().find("td#seq_movie_no").text();
 		
-		movie_grade = $(e.target).parent().find("td.movie-grade").text();
+		movie_grade = $(e.target).parent().find("span").text();
 		
 		if($("div#time-choice").text() == "시간선택") {
 			return;
@@ -63,9 +69,9 @@ $(document).ready(function(){
 	});
 	
 	// 예약페이지에서 날짜를 선택했을 때
-	$("li#day").find("span").click(e => {
-		$("li#day").css({'background-color':'','color':''});
-        $(e.target).parent().css({'background-color':'black','color':'white'});
+	$("li.day").find("span").click(e => {
+		$("li.day").removeClass("selected");
+        $(e.target).parent().addClass("selected");
         $("div#date-choice").html($(e.target).parent().find("span.input_date").text());
         $("div#time-choice").empty();
         
@@ -189,10 +195,10 @@ function getScreenTime(seq_movie_no1, input_date1, start_time1, fk_screen_no1) {
 					
 					if(screen_no != item.fk_screen_no) {
 						screen_no = item.fk_screen_no;
-						v_html += `<tr class='screen_no'><td class='screen_no_data'>${screen_no}관</td></tr>`;
+						v_html += `<tr class='screen_no'><td class='screen_no_data'>${screen_no}관 (총 40석)</td></tr>`;
 					}
 					if(start_time1 == (item.start_time).substr(0,2) + ':' + (item.start_time).substr(2,2) && fk_screen_no1 == item.fk_screen_no) {
-						v_html += `<tr class='time-choice' style='background: black; color: white;'><td class='time_data' 
+						v_html += `<tr class='time-choice selected'><td class='time_data' 
 											onclick='onScreenClick(this, ${item.start_time},${item.seq_showtime_no},${item.fk_screen_no},"${item.seat_arr}")'>
 											${(item.start_time).substr(0,2)}:${(item.start_time).substr(2,2)}</td><td>${item.unused_seat}석</td></tr>`;
 								
@@ -497,8 +503,8 @@ function onScreenClick(element, start_time, seq_showtime_no, fk_screen_no1, seat
 	seat_str = seat_str1;
 	fk_screen_no = fk_screen_no1;
 	
-	$("tr.time-choice").css({'background-color':'white','color':'black'});
-	$(element).parent().css({'background-color':'black','color':'white'});
+	$("tr.time-choice").removeClass("selected");
+	$(element).parent().addClass("selected");
 	
 	$("div#time-choice").html(String(start_time).substr(0,2) + ":" + String(start_time).substr(2,2));
 	

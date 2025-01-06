@@ -20,10 +20,11 @@
 
 <%
 	Calendar currentDate = Calendar.getInstance();
+	currentDate.add(Calendar.DATE, -1);
 	
-	int year_current = currentDate.get(Calendar.YEAR);
+	int year_current = 0;
 	
-	int month_current = (currentDate.get(Calendar.MONTH) + 1);
+	int month_current = 0;
 	
 	String[] dayname = {"일", "월", "화", "수", "목", "금", "토"};
 	
@@ -44,7 +45,7 @@ $(document).ready(function(){
 		cnt++; // 처음 페이지에 들어왔을 때만 실행되도록
 		$("td#seq_movie_no").each(function(index, elmt) {
 			if($(this).text() == <%= seq_movie_no%>) {
-				$(this).parent().css({'background-color':'black','color':'white'});
+				$(this).parent().addClass("selected");
 				$("div#movie-choice").text($(this).parent().find("td.movie-title").text());
 				return false;
 			}
@@ -53,7 +54,7 @@ $(document).ready(function(){
 		if(<%= start_date%> != null && '<%= start_time%>' != null) {
 			$("span.input_date").each(function(index, elmt) {
 				if($(this).text() == '<%= start_date%>') {
-					$(this).parent().css({'background-color':'black','color':'white'});
+					$(this).parent().addClass("selected");
 					$("div#date-choice").text($(this).parent().find("span.input_date").text());
 					$("div#screen-date-info").text('<%= start_date%>');
 					
@@ -94,9 +95,10 @@ $(document).ready(function(){
 							<tbody>
 			      				<c:forEach var="movievo" items="${requestScope.movieList}" varStatus="status">
 									<tr class="movie-list">
-										<td class="movie-grade">
-											<img src="<%= ctxPath %>/images/admin/movie_grade/${movievo.movie_grade}.png" alt="${movievo.movie_grade}" style="width: 30px; height: 25px; vertical-align: middle; margin-right: 10px;">
-                                         </td>
+										<td class="movie-grade ml-2 align-self-center">
+											<span style="display: none;">${movievo.movie_grade}</span>
+											<img class="movie_grade_img align-middle" src="<%= ctxPath %>/images/admin/movie_grade/${movievo.movie_grade}.png" alt="${movievo.movie_grade}" style="width: 30px; height: 25px; vertical-align: middle; margin-right: 10px;">
+										</td>
 										<td class="movie-title">${movievo.movie_title}</td>
 										<td id="seq_movie_no" style="display: none">${movievo.seq_movie_no}</td>
 									</tr>
@@ -104,7 +106,7 @@ $(document).ready(function(){
 		      				</tbody>
 		     			</table>
 					</c:if>
-		    		<c:if test="${empty requestScope.movieList }">
+		    		<c:if test="${empty requestScope.movieList}">
 		      			<p>상영중인 영화가없습니다.</p>
 		      		</c:if>
 				</div>
@@ -118,38 +120,25 @@ $(document).ready(function(){
 
 				<div class="col-body">
 					<ul>
-						<li>
-							<div>
-								<span class="year"><%= year_current %></span>
-								<span class="month"><%= month_current %></span>
-							</div>
-						</li>
-						<li class="day" id="day" data-index="0">
-							<span class="dayweek" name="dd"><%= dayname[currentDate.get(Calendar.DAY_OF_WEEK)-1]%>&nbsp;&nbsp;</span>
-							<span class="date"><%= currentDate.get(Calendar.DATE) %></span>
-							<span class="input_date" style="display: none"><%= sdf.format(currentDate.getTime())%></span>
-						</li>
 						<% 
-							for(int i=0; i<20; i++) {
+							for(int i=0; i<40; i++) {
 								currentDate.add(Calendar.DATE, 1); %>
 								<% 
 									if(month_current != (currentDate.get(Calendar.MONTH) + 1)) {
 										month_current = (currentDate.get(Calendar.MONTH) + 1);
 										year_current = currentDate.get(Calendar.YEAR);
 										%>
-										
 										<li>
 											<div>
 												<span class="year"><%= year_current %></span>
 												<span class="month"><%= month_current %></span>
 											</div>
 										</li>
-										
 										<%
 									}
 								%>
 								
-								<li class="day" id="day">
+								<li class="day">
 									<span class="dayweek"><%= dayname[currentDate.get(Calendar.DAY_OF_WEEK)-1] %>&nbsp;&nbsp;</span>
 									<span class="date"><%= currentDate.get(Calendar.DATE) %></span>
 									<span class="input_date" style="display: none"><%= sdf.format(currentDate.getTime())%></span>
@@ -169,7 +158,7 @@ $(document).ready(function(){
 				</div>
 
 				<div class="col-body">
-					<table>
+					<table class="mt-3 ml-4 time-tab">
 						<tbody class="time-table">
 							<tr class="time-choice">
 								<td class="time_data" style="display: none"></td>

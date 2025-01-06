@@ -45,7 +45,7 @@ table#movie-list {
 
 tr.movie-list {
 	font-size: 13pt;
-	line-height: 40px;
+	line-height: 45px;
 }
 
 td.movie-grade {
@@ -54,7 +54,7 @@ td.movie-grade {
 }
 
 td.movie-title {
-	min-width: 250px;
+	min-width: 300px;
 	font-weight: bold;
 }
 
@@ -163,5 +163,22 @@ div#numberOfPeople label {
 }
 
 .selected {
-	background-color: red;
+	background-color: black;
+	color: white;
+	border-style: double;
+}
+
+img.movie_grade_img {
+	display: inline-block;
+}
+
+td.time_data {
+	border: solid 1px #d6d3ce;
+	padding: 1px;
+	font-weight: bold;
+}
+
+table.time-tab {
+	border-collapse: separate;
+	border-spacing: 0 1rem;
 }
