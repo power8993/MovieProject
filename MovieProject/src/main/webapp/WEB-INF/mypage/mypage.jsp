@@ -18,235 +18,284 @@ String ctxPath = request.getContextPath();
 
 <%-- 전체 창 --%>
 <div class="my_container">
-	<%-- 마이페이지 나의 프로필장 --%>
-	<div class="myprofile">
-		<div class="profile-container">
-			<i class="fa-solid fa-circle-user" style="color: #252422;"></i>
-			<%-- 사용자 정보 --%>
-			<div class="profile-info">
-				<h2>${(sessionScope.loginuser).name}님</h2>
-				<p>
-					나의 영화 랭킹 <strong>50</strong> 순위
-				</p>
-				<p>
-					사용 가능 포인트: <strong>${(sessionScope.loginuser).point}pt</strong>
-				</p>
-				<p>
-					사용한 포인트: <strong>0pt</strong>
-				</p>
-			</div>
-			<%-- 사용자 정보 끝 --%>
-		</div>
-	</div>
-	<%-- 마이페이지 나의 프로필장 끝 --%>
-<%-- 마이페이지 사이드바 & 매안 창 --%>
-<div class="my_main">
 
-	<%-- 마이페이지 사이드바 --%>
-	<div class="my_hside">
-		<ul>
-			<li><a href="<%=ctxPath%>/mypage/mypage.mp" class="active">MyPage
-					HOME</a></li>
+	<jsp:include page="mypageProfile.jsp" />
 
-			<li><a href="<%=ctxPath%>/mypage/myreservationlist.mp">나의
-					예매내역</a>
-				<ul>
-					<li><a href="<%=ctxPath%>/mypage/myreservationpoint.mp">포인트
-							적립/사용 내역</a></li>
-				</ul></li>
+	<%-- 마이페이지 사이드바 & 매안 창 --%>
+	<div class="my_main">
 
-			<li><a href="<%=ctxPath%>/mypage/mymoviewatched.mp">영화</a>
+		<%-- 마이페이지 사이드바 --%>
+		<div class="my_hside">
+			<ul>
+				<li><a href="<%=ctxPath%>/mypage/mypage.mp" class="active">MyPage
+						HOME</a></li>
+
+				<li><a href="<%=ctxPath%>/mypage/myreservationlist.mp">나의
+						예매내역</a>
+					<ul>
+						<li><a href="<%=ctxPath%>/mypage/myreservationpoint.mp">포인트
+								적립/사용 내역</a></li>
+					</ul></li>
+
+				<li><a href="<%=ctxPath%>/mypage/mymoviewatched.mp">영화</a>
 					<ul>
 						<li><a href="<%=ctxPath%>/mypage/mymoviewatched.mp">내가 본
 								영화</a></li>
-						<li><a href="<%=ctxPath%>/mypage/mymoviereview.mp">내가 쓴 평점</a></li>
-					<li><a href="<%=ctxPath%>/mypage/mymovielike.mp">기대되는 영화</a></li>
-				</ul></li>
+						<li><a href="<%=ctxPath%>/mypage/mymoviereview.mp">내가 쓴
+								평점</a></li>
+						<li><a href="<%=ctxPath%>/mypage/mymovielike.mp">기대되는 영화</a></li>
+					</ul></li>
 
-			<li><a href="<%=ctxPath%>/mypage/myupcheckPwd.mp">회원정보</a>
-				<ul>
-					<li><a href="<%=ctxPath%>/mypage/myupcheckPwd.mp">회원정보수정</a></li>
-					<li><a href="<%=ctxPath%>/mypage/mydelete.mp">회원탈퇴</a></li>
-				</ul></li>
-		</ul>
-	</div>
-	<%-- 마이페이지 사이드바 끝 --%>
-
-	<!-- 메인 콘텐츠 -->
-	<div class="mypage_main_content">
-
-		<!-- 나의 예매내역 -->
-		<div class="mypage_box_css">
-			<h3>
-				<a href="<%=ctxPath%>/mypage/myreservationlist.mp"
-					class="my_section_title">나의 예매내역</a> <a
-					href="<%=ctxPath%>/mypage/myreservationlist.mp"><i
-					class="fa-solid fa-square-plus"
-					style="color: #ccc5b9; margin-right: 8px;"> </i></a>
-			</h3>
-			
-			<div class="my_box_list">
-				<c:if test="${not empty requestScope.reservationList}">
-					<c:forEach var="reservation"
-						items="${requestScope.reservationList}">
-						<div class="reservation-item">
-							<div class="poster">포스터</div>
-							<div class="details">
-								<p>예매번호: ${reservation.id}</p>
-								<p>${reservation.movieTitle}|${reservation.date}</p>
-								<p>${reservation.theater}</p>
-							</div>
-						</div>
-					</c:forEach>
-				</c:if>
-				<c:if test="${empty requestScope.reservationList}">
-					<p>예매내역이 없습니다.</p>
-				</c:if>
-			</div>
-		</div>
-
-
-
-		<!-- 내가 본 영화 -->
-		<div class="mypage_box_css">
-			<h3>
-				<a href="<%=ctxPath%>/mypage/mywatchedmovie.mp"
-					class="my_section_title">내가 본 영화</a> <a
-					href="<%=ctxPath%>/mypage/mywatchedmovie.mp"><i
-					class="fa-solid fa-square-plus"
-					style="color: #ccc5b9; margin-right: 8px;"> </i></a>
-			</h3>
-			
-			<div class="my_box_list">
-				<c:if test="${not empty requestScope.watchedMovies}">
+				<li><a href="<%=ctxPath%>/mypage/myupcheckPwd.mp">회원정보</a>
 					<ul>
-						<c:forEach var="movie" items="${requestScope.watchedMovies}">
-							<li>${movies.POSTER_FILE}</li>
-							<li>영화:${movies.MOVIE_TITLE}</li>
-						</c:forEach>
-					</ul>
-				</c:if>
-				<c:if test="${empty requestScope.watchedMovies}">
-					<p>본 영화가 없습니다.</p>
-				</c:if>
-			</div>
+						<li><a href="<%=ctxPath%>/mypage/myupcheckPwd.mp">회원정보수정</a></li>
+						<li><a href="<%=ctxPath%>/mypage/mydelete.mp">회원탈퇴</a></li>
+					</ul></li>
+			</ul>
 		</div>
+		<%-- 마이페이지 사이드바 끝 --%>
+
+		<!-- 메인 콘텐츠 -->
+		<div class="mypage_main_content">
+
+			<!-- 나의 예매내역 -->
+			<div class="mypage_box_css">
+				<h3>
+					<a href="<%=ctxPath%>/mypage/myreservationlist.mp"
+						class="my_section_title">나의 예매내역</a> <a
+						href="<%=ctxPath%>/mypage/myreservationlist.mp"><i
+						class="fa-solid fa-square-plus"
+						style="color: #ccc5b9; margin-right: 8px;"> </i></a>
+				</h3>
+
+				<div class="my_box_list">
+					<c:if
+						test="${not empty requestScope.main_mypage_Myreservationlist}">
+						<ul class="mypage_main_List">
+							<c:forEach var="reservation"
+								items="${requestScope.main_mypage_Myreservationlist}">
+								<li class="mypage_main_List_card">
+
+									<div class="sect-viw-rated">
+
+										<!-- 예매번호 -->
+										<p class="reservation_number">예매번호: ${reservation.imp_uid}
+											(${reservation.pay_success_date})</p>
+
+										<!-- 포스터 이미지 -->
+										<div class="mypage_main_List_poster">
+											<a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${reservation.svo.fk_seq_movie_no}">
+												<img
+												src="${pageContext.request.contextPath}/images/admin/poster_file/${reservation.svo.mvo.poster_file}"
+												alt="${reservation.svo.mvo.movie_title}" />
+											</a>
+										</div>
+
+										<!-- 영화제목, 영화총가격, 관람일자, 관람좌석 -->
+										<div class="reservation_details">
+											<p class="reservation_id">
+												${reservation.svo.mvo.movie_title}
+												${reservation.pay_amount}원</p>
+											<p class="movie_info">관람일시 ${reservation.svo.start_time}</p>
+											<p class="theater_info">관람좌석
+												${reservation.tvo.seat_no_list}</p>
+										</div>
+
+										<!-- 버튼 -->
+										<div class="reservation_actions">
+											<button type="button" class="btn">예매 취소</button>
+										</div>
+
+									</div>
+								</li>
+							</c:forEach>
+						</ul>
+					</c:if>
+					
+					<c:if test="${empty requestScope.main_mypage_Myreservationlist}">
+						<p>예매내역이 없습니다.</p>
+					</c:if>
+					
+				</div>
+			</div>
 
 
 
-		<!-- 내가 쓴 평점 -->
-		<div class="mypage_box_css">
-		<h3>
-				<a href="<%=ctxPath%>/mypage/mymoviereview.mp" class="my_section_title">내가
-					쓴 평점</a> <a href="<%=ctxPath%>/mypage/mymoviereview.mp"><i
-					class="fa-solid fa-square-plus"
-					style="color: #ccc5b9; margin-right: 8px;"> </i></a>
-			</h3>
-			<div class="my_box_list">
-			
-			<c:if test="${not empty requestScope.main_mypage_MovieReviewList}">
-					<ul class="mypage_main_List">
-						<c:forEach var="mrvo" items="${requestScope.main_mypage_MovieReviewList}"
-							varStatus="status">
-							<li class="mypage_main_List_card">
+			<!-- 내가 본 영화 -->
+			<div class="mypage_box_css">
+				<h3>
+					<a href="<%=ctxPath%>/mypage/mymoviewatched.mp"
+						class="my_section_title">내가 본 영화</a> <a
+						href="<%=ctxPath%>/mypage/mymoviewatched.mp"><i
+						class="fa-solid fa-square-plus"
+						style="color: #ccc5b9; margin-right: 8px;"> </i></a>
+				</h3>
+
+				<div class="my_box_list">
+					<c:if test="${not empty requestScope.main_mypage_MovieWatchedList}">
+						<ul class="mypage_main_List">
+							<c:forEach var="watched" items="${requestScope.main_mypage_MovieWatchedList}">
 							
-							<div class = "sect-viw-rated">
+							<li class="mypage_main_List_card">
+
+									<div class="sect-viw-rated">
+							
 							
 							<!-- 포스터 이미지 -->
-								<div class="mypage_main_List_poster">
-								<a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${mrvo.fk_seq_movie_no}" >
-									<img 
-										src="${pageContext.request.contextPath}/images/admin/poster_file/${mrvo.mvo.poster_file}"
-										alt="${mrvo.mvo.movie_title}"/>
-								</a>					
-								</div>
-								
-								 <!-- 리뷰 정보 -->
-									<div class="mypage_main_List_moviereview_box">
-									
-									<div class="mypage_main_List_movieReview_title">
-										<strong>${mrvo.mvo.movie_title}</strong>
+							<div class="mypage_main_List_poster">
+								<a
+									href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${watched.svo.fk_seq_movie_no}">
+									<img
+									src="${pageContext.request.contextPath}/images/admin/poster_file/${watched.svo.mvo.poster_file}"
+									alt="${watched.svo.mvo.movie_title}" />
+								</a>
+							</div>
+							
+							<!-- 영화제목, 영화총가격, 관람인원, 관람일자, 관람좌석, 상영관, 매수 -->
+							<div class="moviewatched_details">
+								<p>${watched.svo.mvo.movie_title}</p>
+								<ul>
+								<li>${watched.svo.start_time}~${watched.svo.end_time}</li>
+								<li>${watched.svo.fk_screen_no}관/ ${watched.tvo.seat_no_list}</li>
+								<li> ${watched.tvo.seat_count}명</li>
+							</ul>
+							</div>
+							</div>
+								</li>
+							</c:forEach>
+						</ul>
+					</c:if>
+					<c:if test="${empty requestScope.main_mypage_MovieWatchedList}" >
+						<p class="empty">본 영화가 없습니다.</p>
+					</c:if>
+				</div>
+			</div>
+
+
+
+			<!-- 내가 쓴 평점 -->
+			<div class="mypage_box_css">
+				<h3>
+					<a href="<%=ctxPath%>/mypage/mymoviereview.mp"
+						class="my_section_title">내가 쓴 평점</a> <a
+						href="<%=ctxPath%>/mypage/mymoviereview.mp"><i
+						class="fa-solid fa-square-plus"
+						style="color: #ccc5b9; margin-right: 8px;"> </i></a>
+				</h3>
+				<div class="my_box_list">
+
+					<c:if test="${not empty requestScope.main_mypage_MovieReviewList}">
+						<ul class="mypage_main_List">
+							<c:forEach var="mrvo"
+								items="${requestScope.main_mypage_MovieReviewList}"
+								varStatus="status">
+								<li class="mypage_main_List_card">
+
+									<div class="sect-viw-rated">
+
+										<!-- 포스터 이미지 -->
+										<div class="mypage_main_List_poster">
+											<a
+												href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${mrvo.fk_seq_movie_no}">
+												<img
+												src="${pageContext.request.contextPath}/images/admin/poster_file/${mrvo.mvo.poster_file}"
+												alt="${mrvo.mvo.movie_title}" />
+											</a>
+										</div>
+
+										<!-- 리뷰 정보 -->
+										<div class="mypage_main_List_moviereview_box">
+
+											<div class="mypage_main_List_movieReview_title">
+												<strong>${mrvo.mvo.movie_title}</strong>
+											</div>
+											<ul>
+												<li>${mrvo.fk_user_id}|</li>
+												<li>${mrvo.review_write_date}</li>
+											</ul>
+											<p class="review_date">평점:${mrvo.movie_rating}
+												${mrvo.review_content}</p>
+
+										</div>
 									</div>
-										<ul>
-										<li>${mrvo.fk_user_id} |</li>
-										<li> ${mrvo.review_write_date} </li>
-										</ul>
-									<p class="review_date">평점:${mrvo.movie_rating} ${mrvo.review_content}</p>
-									
-									</div>
-								</div>
-									
-							</li>
-						</c:forEach>
-					</ul>
-				</c:if>
+
+								</li>
+							</c:forEach>
+						</ul>
+					</c:if>
 					<c:if test="${empty requestScope.main_mypage_MovieReviewList}">
 						<p class="empty">작성한 평점이 없습니다.</p>
 					</c:if>
-		</div>
-	</div>
-
-		<!-- 기대되는 영화 -->
-		<div class="mypage_box_css">
-			<h3>
-				<a href="<%=ctxPath%>/mypage/mymovielike.mp"
-					class="my_section_title">기대되는 영화</a> <a
-					href="<%=ctxPath%>/mypage/mymovielike.mp"><i
-					class="fa-solid fa-square-plus"
-					style="color: #ccc5b9; margin-right: 8px;"> </i></a>
-			</h3>
-			
-			<div class="my_box_list">
-			
-				<c:if test="${not empty requestScope.main_mypage_MovieLikeList}">
-					<ul class="mypage_main_List">
-						<c:forEach var="mlvo" items="${requestScope.main_mypage_MovieLikeList}"
-							varStatus="status">
-							<li class="mypage_main_List_card">
-							
-							<div class = "sect-viw-rated">
-							
-							<!-- 포스터 이미지 -->
-								<div class="mypage_main_List_poster">
-								<a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${mlvo.FK_SEQ_MOVIE_NO}" >
-									<img 
-										src="${pageContext.request.contextPath}/images/admin/poster_file/${mlvo.mvo.poster_file}"
-										alt="${mlvo.mvo.movie_title}"/>
-								</a>					
-								</div>
-								
-								 <!-- 영화 정보 -->
-									<div class="mypage_main_List_movieLike_title">
-										<strong>${mlvo.mvo.movie_title}</strong>
-										<p>${mlvo.mvo.start_date}</p>
-										 <div class="text-center">
-					                            <a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${item.FK_SEQ_MOVIE_NO}" 
-					                                class="btn stretched-link mybtnlike" role="button">예매하기</a>
-					                        </div>
-									</div>
-									
-								</div>
-							</li>
-						</c:forEach>
-					</ul>
-				</c:if>
-				<c:if test="${empty requestScope.main_mypage_MovieLikeList}">
-					<p>기대되는 영화가 없습니다.</p>
-				</c:if>
+				</div>
 			</div>
+
+
+
+
+			<!-- 기대되는 영화 -->
+			<div class="mypage_box_css">
+				<h3>
+					<a href="<%=ctxPath%>/mypage/mymovielike.mp"
+						class="my_section_title">기대되는 영화</a> <a
+						href="<%=ctxPath%>/mypage/mymovielike.mp"><i
+						class="fa-solid fa-square-plus"
+						style="color: #ccc5b9; margin-right: 8px;"> </i></a>
+				</h3>
+
+				<div class="my_box_list">
+
+					<c:if test="${not empty requestScope.main_mypage_MovieLikeList}">
+						<ul class="mypage_main_List">
+							<c:forEach var="mlvo"
+								items="${requestScope.main_mypage_MovieLikeList}"
+								varStatus="status">
+								<li class="mypage_main_List_card">
+
+									<div class="sect-viw-rated">
+
+										<!-- 포스터 이미지 -->
+										<div class="mypage_main_List_poster">
+											<a
+												href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${mlvo.FK_SEQ_MOVIE_NO}">
+												<img
+												src="${pageContext.request.contextPath}/images/admin/poster_file/${mlvo.mvo.poster_file}"
+												alt="${mlvo.mvo.movie_title}" />
+											</a>
+										</div>
+
+										<!-- 영화 정보 -->
+										<div class="mypage_main_List_movieLike_title">
+											<strong>${mlvo.mvo.movie_title}</strong>
+											<p>${mlvo.mvo.start_date}</p>
+											<div class="text-center">
+												<a
+													href="/MovieProject/reservation/reservation.mp?seq_movie_no?seq_movie_no=${mlvo.FK_SEQ_MOVIE_NO}"
+													class="btn mybtnlike" role="button">예매하기</a>
+											</div>
+										</div>
+
+									</div>
+								</li>
+							</c:forEach>
+						</ul>
+					</c:if>
+					<c:if test="${empty requestScope.main_mypage_MovieLikeList}">
+						<p>기대되는 영화가 없습니다.</p>
+					</c:if>
+				</div>
+			</div>
+
+
+
+
+
+
+
 		</div>
-
-
-
-
-
-
+		<!-- 메인 콘텐츠 끝 -->
 
 	</div>
-	<!-- 메인 콘텐츠 끝 -->
-
-</div>
-<%-- 마이페이지 사이드바 & 매안 창 끝 --%>
+	<%-- 마이페이지 사이드바 & 매안 창 끝 --%>
 
 </div>
 <%-- 전체 창 끝 --%>
