@@ -1,7 +1,6 @@
 package movie.controller;
 
 import org.json.JSONObject;
-
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,11 +20,12 @@ public class MovieDetail extends AbstractController {
     	
         HttpSession session = request.getSession();
         MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
-        
+
         String seq_movie_no = request.getParameter("seq_movie_no"); 
         
-        if("POST".equalsIgnoreCase(method)) {
-        	String json = "";
+        String json = "";
+        
+        if("POST".equalsIgnoreCase(method)) {       	
 	        // 로그인 체크
 	        if (loginuser != null) {           
 	            boolean isLiked = mdao.checkMovieLike(loginuser, Integer.parseInt(seq_movie_no));
@@ -33,7 +33,7 @@ public class MovieDetail extends AbstractController {
 	            JSONObject jsonObj = new JSONObject();
 				jsonObj.put("isLiked", isLiked);
 	
-				json = jsonObj.toString();	            				
+				json = jsonObj.toString();
 	        }
 	        else {
 	            // 로그인하지 않은 경우에는 기본값을 반환 (isLiked = false)
@@ -42,7 +42,7 @@ public class MovieDetail extends AbstractController {
 
 	            json = jsonObj.toString();
 	        }
-	        
+  
 	        request.setAttribute("json", json);
 	        
 	        super.setRedirect(false);
@@ -50,8 +50,8 @@ public class MovieDetail extends AbstractController {
         }
         else {       	
         	// DB에서 해당 영화 정보를 가져옴
-	        MovieVO_wonjae mvo = mdao.movieDetail(Integer.parseInt(seq_movie_no));
-  	
+	        MovieVO_wonjae mvo = mdao.movieDetail(Integer.parseInt(seq_movie_no));       	        
+	        
         	if(mvo == null) {
         		String message = "잘못된 접근입니다.";
             	String loc = "javascript:history.back()";
