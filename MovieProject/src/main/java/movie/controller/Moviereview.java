@@ -25,96 +25,50 @@ public class Moviereview extends AbstractController {
         MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 
         if ("POST".equalsIgnoreCase(method)) {
-        	
-        	// 로그인 여부 확인
-            if (loginuser == null) {
-            	JSONObject jsobj = new JSONObject();
-                jsobj.put("n", 2);  // 로그인되지 않은 경우
-                
-                String json = jsobj.toString();
-                
-                request.setAttribute("json", json);
 
-    			super.setRedirect(false);
-    			super.setViewPage("/WEB-INF/jsonview.jsp");
-                return;
-            }
+            boolean isPaid = mdao.checkuserpay(loginuser, Integer.parseInt(seq_movie_no));
+
+            JSONObject jsobj = new JSONObject();
+
+            if (isPaid) {
+            	// 리뷰 관련 파라미터 받기
+                String rating = request.getParameter("rating");  // 별점
+                String review = request.getParameter("review");  // 리뷰 내용
+       
+                // 리뷰 데이터 DB에 저장하고, MovieReviewVO 객체 반환
+                MovieReviewVO mrvo = mdao.submitReview(Integer.parseInt(seq_movie_no), loginuser, Integer.parseInt(rating), review);
+
+                if (mrvo != null) {
+                	jsobj.put("n", 1);  // 리뷰 저장 성공  
+                	
+                	// 리뷰 정보를 JSON으로 구성
+                    JSONObject reviewObj = new JSONObject();
+                    reviewObj.put("user_id", mrvo.getFk_user_id());
+                    reviewObj.put("movie_rating", mrvo.getMovie_rating());
+                    reviewObj.put("review_content", mrvo.getReview_content());
+                    reviewObj.put("review_write_date", mrvo.getReview_write_date());
+
+                    jsobj.put("review", reviewObj);  // review 정보를 포함
+                    
+                    String json = jsobj.toString();
+                    
+                    request.setAttribute("review", json);
+                } 
+                else {
+                    jsobj.put("n", 0);  // 리뷰 저장 실패
+                }              
+            } 
             else {
-	            boolean isPaid = mdao.checkuserpay(loginuser, Integer.parseInt(seq_movie_no));
-	
-	            JSONObject jsobj = new JSONObject();
-	
-	            if (!isPaid) {
-	                jsobj.put("n", 3);  // 결제되지 않은 경우
-	            } 
-	            else {
-	                // 리뷰 관련 파라미터 받기
-	                String rating = request.getParameter("rating");  // 별점
-	                String review = request.getParameter("review");  // 리뷰 내용
-	                
-	                // 별점 유효성 검사
-	                int rating1 = 0;
-	                
-	                try {
-	                	
-	                	rating1 = Integer.parseInt(rating);
-	                	
-	                } catch (NumberFormatException e) {
-	                    jsobj.put("n", 4);  // 잘못된 별점 형식
-	                    String json = jsobj.toString();
-	                    request.setAttribute("json", json);
-	                    super.setRedirect(false);
-	                    super.setViewPage("/WEB-INF/jsonview.jsp");
-	                    return;
-	                }
-	
-	                // 후기 내용 유효성 검사
-	                if (review == null || review.trim().isEmpty() || rating1 < 1 || rating1 > 5) {
-	                    jsobj.put("n", 4);
-	                    String json = jsobj.toString();
-	                    request.setAttribute("json", json);
-	                    super.setRedirect(false);
-	                    super.setViewPage("/WEB-INF/jsonview.jsp");
-	                    return;
-	                }
-	
-	                // 후기 내용이 너무 짧거나 너무 긴 경우
-	                if (review.length() < 1 || review.length() > 50) {
-	                    jsobj.put("n", 5);  // 후기 내용 길이 오류
-	                    String json = jsobj.toString();
-	                    request.setAttribute("json", json);
-	                    super.setRedirect(false);
-	                    super.setViewPage("/WEB-INF/jsonview.jsp");
-	                    return;
-	                }
-	                
-	                // 리뷰 데이터 DB에 저장하고, MovieReviewVO 객체 반환
-	                MovieReviewVO mrvo = mdao.submitReview(Integer.parseInt(seq_movie_no), loginuser, Integer.parseInt(rating), review);
-	
-	                if (mrvo != null) {
-	                	jsobj.put("n", 1);  // 리뷰 저장 성공  
-	                	
-	                	// 리뷰 정보를 JSON으로 구성
-	                    JSONObject reviewObj = new JSONObject();
-	                    reviewObj.put("user_id", mrvo.getFk_user_id());
-	                    reviewObj.put("movie_rating", mrvo.getMovie_rating());
-	                    reviewObj.put("review_content", mrvo.getReview_content());
-	                    reviewObj.put("review_write_date", mrvo.getReview_write_date());
-	
-	                    jsobj.put("review", reviewObj);  // review 정보를 포함
-	                } 
-	                else {
-	                    jsobj.put("n", 0);  // 리뷰 저장 실패
-	                }
-	            }
-	
-	            String json = jsobj.toString();
-	
-	            request.setAttribute("json", json);
-	
-				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/jsonview.jsp");
-            }	
+            	 jsobj.put("n", 2);  // 결제되지 않은 경우
+            }
+
+            String json = jsobj.toString();
+
+            request.setAttribute("json", json);            
+            
+			super.setRedirect(false);
+			super.setViewPage("/WEB-INF/jsonview.jsp");
+            	
         } else {
             String message = "잘못된 접근입니다.";
             String loc = "javascript:history.back()";
