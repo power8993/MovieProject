@@ -95,9 +95,9 @@ $(document).ready(function(){
 							<tbody>
 			      				<c:forEach var="movievo" items="${requestScope.movieList}" varStatus="status">
 									<tr class="movie-list">
-										<td class="movie-grade ml-2 align-self-center">
+										<td class="movie-grade ml-2" style="vertical-align: middle;">
 											<span style="display: none;">${movievo.movie_grade}</span>
-											<img class="movie_grade_img align-middle" src="<%= ctxPath %>/images/admin/movie_grade/${movievo.movie_grade}.png" alt="${movievo.movie_grade}" style="width: 30px; height: 25px; vertical-align: middle; margin-right: 10px;">
+											<img class="movie_grade_img" src="<%= ctxPath %>/images/admin/movie_grade/${movievo.movie_grade}.png" alt="${movievo.movie_grade}">
 										</td>
 										<td class="movie-title">${movievo.movie_title}</td>
 										<td id="seq_movie_no" style="display: none">${movievo.seq_movie_no}</td>

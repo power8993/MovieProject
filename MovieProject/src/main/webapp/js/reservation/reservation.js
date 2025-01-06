@@ -45,21 +45,20 @@ $(document).ready(function(){
 	// 예약페이지에서 영화를 선택했을 때
 	$("tr.movie-list").click(e => {
 		$("tr.movie-list").removeClass("selected");
-		if($(e.target).hasClass('movie-title')) {
+		if($(e.target).hasClass('movie-title') || $(e.target).hasClass('movie-grade')) {
 			$(e.target).parent().addClass("selected");
 			seq_movie_no = $(e.target).parent().find("td#seq_movie_no").text();
+			$("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
 		}
 		else if($(e.target).hasClass('movie_grade_img')) {
 			$(e.target).parent().parent().addClass("selected");
 			seq_movie_no = $(e.target).parent().parent().find("td#seq_movie_no").text();
+			$("div#movie-choice").html($(e.target).parent().parent().find("td.movie-title").html());
 		}
-		
-		$("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
-		
 		
 		movie_grade = $(e.target).parent().find("span").text();
 		
-		if($("div#time-choice").text() == "시간선택") {
+		if($("div#date-choice").text() == "시간선택") {
 			return;
 		}
 		
@@ -117,6 +116,32 @@ $(document).ready(function(){
 		else {
 			$("div#seat-screen").removeClass('mouse_block');
 		}
+		let html = ``;
+		if(selected_seat_cnt == 0) {
+			$("div#pay-choice").html(html);
+			return;
+		}
+		else if(selected_seat_cnt <= adult_cnt) {
+			html += `<div>${adult_ticket_price} 원 X ${selected_seat_cnt} 명</div>`;
+			total_price = adult_ticket_price * selected_seat_cnt;
+		}
+		else if(selected_seat_cnt <= adult_cnt + adolescent_cnt) {
+			html += `<div>${adult_ticket_price} 원 X ${adult_cnt} 명</div>`;
+			html += `<div>${adolescent_ticket_price} 원 X ${selected_seat_cnt - adult_cnt}</div>`;
+			total_price = adult_ticket_price * adult_cnt + adolescent_ticket_price * (selected_seat_cnt - adult_cnt);
+		}
+		else {
+			html += `<div>${adult_ticket_price} 원 X ${adult_cnt} 명</div>`;
+			html += `<div>${adolescent_ticket_price} 원 X ${adolescent_cnt}</div>`;
+			html += `<div>${youth_ticket_price} 원 X ${selected_seat_cnt - adult_cnt - adolescent_cnt}</div>`;
+			total_price = adult_ticket_price * adult_cnt
+						+ adolescent_ticket_price * adolescent_cnt 	
+						+ youth_ticket_price * (selected_seat_cnt - adult_cnt - adolescent_cnt);
+		}
+
+		html += `<div>총금액 ${total_price}</div>`
+
+		$("div#pay-choice").html(html);
 	});
 	
 	$("div#adolescent").find("button").click(e => {
@@ -139,6 +164,32 @@ $(document).ready(function(){
 		else {
 			$("div#seat-screen").removeClass('mouse_block');
 		}
+		let html = ``;
+		if(selected_seat_cnt == 0) {
+			$("div#pay-choice").html(html);
+			return;
+		}
+		else if(selected_seat_cnt <= adult_cnt) {
+			html += `<div>${adult_ticket_price} 원 X ${selected_seat_cnt} 명</div>`;
+			total_price = adult_ticket_price * selected_seat_cnt;
+		}
+		else if(selected_seat_cnt <= adult_cnt + adolescent_cnt) {
+			html += `<div>${adult_ticket_price} 원 X ${adult_cnt} 명</div>`;
+			html += `<div>${adolescent_ticket_price} 원 X ${selected_seat_cnt - adult_cnt}</div>`;
+			total_price = adult_ticket_price * adult_cnt + adolescent_ticket_price * (selected_seat_cnt - adult_cnt);
+		}
+		else {
+			html += `<div>${adult_ticket_price} 원 X ${adult_cnt} 명</div>`;
+			html += `<div>${adolescent_ticket_price} 원 X ${adolescent_cnt}</div>`;
+			html += `<div>${youth_ticket_price} 원 X ${selected_seat_cnt - adult_cnt - adolescent_cnt}</div>`;
+			total_price = adult_ticket_price * adult_cnt
+						+ adolescent_ticket_price * adolescent_cnt 	
+						+ youth_ticket_price * (selected_seat_cnt - adult_cnt - adolescent_cnt);
+		}
+
+		html += `<div>총금액 ${total_price}</div>`
+
+		$("div#pay-choice").html(html);
 	});
 	
 	$("div#youth").find("button").click(e => {
@@ -161,10 +212,42 @@ $(document).ready(function(){
 		else {
 			$("div#seat-screen").removeClass('mouse_block');
 		}
+		
+		let html = ``;
+		if(selected_seat_cnt == 0) {
+			$("div#pay-choice").html(html);
+			return;
+		}
+		else if(selected_seat_cnt <= adult_cnt) {
+			html += `<div>${adult_ticket_price} 원 X ${selected_seat_cnt} 명</div>`;
+			total_price = adult_ticket_price * selected_seat_cnt;
+		}
+		else if(selected_seat_cnt <= adult_cnt + adolescent_cnt) {
+			html += `<div>${adult_ticket_price} 원 X ${adult_cnt} 명</div>`;
+			html += `<div>${adolescent_ticket_price} 원 X ${selected_seat_cnt - adult_cnt}</div>`;
+			total_price = adult_ticket_price * adult_cnt + adolescent_ticket_price * (selected_seat_cnt - adult_cnt);
+		}
+		else {
+			html += `<div>${adult_ticket_price} 원 X ${adult_cnt} 명</div>`;
+			html += `<div>${adolescent_ticket_price} 원 X ${adolescent_cnt}</div>`;
+			html += `<div>${youth_ticket_price} 원 X ${selected_seat_cnt - adult_cnt - adolescent_cnt}</div>`;
+			total_price = adult_ticket_price * adult_cnt
+						+ adolescent_ticket_price * adolescent_cnt 	
+						+ youth_ticket_price * (selected_seat_cnt - adult_cnt - adolescent_cnt);
+		}
+		
+		html += `<div>총금액 ${total_price}</div>`
+		
+		$("div#pay-choice").html(html);
 	});
 	
 
 }); // end of $(document).ready(function() {});;--------------------------------------------
+
+
+function showTotalPrice() {
+	
+}
 
 
 // 영화와 날짜를 선택했을 때 상영 시간 보여주기
@@ -195,12 +278,12 @@ function getScreenTime(seq_movie_no1, input_date1, start_time1, fk_screen_no1) {
 					
 					if(screen_no != item.fk_screen_no) {
 						screen_no = item.fk_screen_no;
-						v_html += `<tr class='screen_no'><td class='screen_no_data'>${screen_no}관 (총 40석)</td></tr>`;
+						v_html += `<tr class='screen_no'><td class='screen_no_data'>${screen_no}관</td><td>(총 40석)</td></tr>`;
 					}
 					if(start_time1 == (item.start_time).substr(0,2) + ':' + (item.start_time).substr(2,2) && fk_screen_no1 == item.fk_screen_no) {
 						v_html += `<tr class='time-choice selected'><td class='time_data' 
 											onclick='onScreenClick(this, ${item.start_time},${item.seq_showtime_no},${item.fk_screen_no},"${item.seat_arr}")'>
-											${(item.start_time).substr(0,2)}:${(item.start_time).substr(2,2)}</td><td>${item.unused_seat}석</td></tr>`;
+											${(item.start_time).substr(0,2)}:${(item.start_time).substr(2,2)}</td><td class='unused_seat'>${item.unused_seat}석</td></tr>`;
 								
 						$("div#time-choice").html(start_time1);
 					    $("div#screen-time-info").html(start_time1);
@@ -212,7 +295,7 @@ function getScreenTime(seq_movie_no1, input_date1, start_time1, fk_screen_no1) {
 					else {
 						v_html += `<tr class='time-choice'><td class='time_data' 
 									onclick='onScreenClick(this, ${item.start_time},${item.seq_showtime_no},${item.fk_screen_no},"${item.seat_arr}")'>
-									${(item.start_time).substr(0,2)}:${(item.start_time).substr(2,2)}</td><td>${item.unused_seat}석</td></tr>`;
+									${(item.start_time).substr(0,2)}:${(item.start_time).substr(2,2)}</td><td class='unused_seat'>${item.unused_seat}석</td></tr>`;
 					}
 					
 						
@@ -285,8 +368,11 @@ function goSeatChoice(userid, birthday) {
 				$("div#selected_seat_cnt").text(selected_seat_cnt);
 				
 				let html = ``;
-								
-				if(selected_seat_cnt <= adult_cnt) {
+				if(selected_seat_cnt == 0) {
+					$("div#pay-choice").html(html);
+					return;
+				}
+				else if(selected_seat_cnt <= adult_cnt) {
 					html += `<div>${adult_ticket_price} 원 X ${selected_seat_cnt} 명</div>`;
 					total_price = adult_ticket_price * selected_seat_cnt;
 				}
@@ -318,8 +404,11 @@ function goSeatChoice(userid, birthday) {
 				$("div#selected_seat_cnt").text(selected_seat_cnt);
 				
 				let html = ``;
-				
-				if(selected_seat_cnt <= adult_cnt) {
+				if(selected_seat_cnt == 0) {
+					$("div#pay-choice").html(html);
+					return;
+				}
+				else if(selected_seat_cnt <= adult_cnt) {
 					html += `<div>${adult_ticket_price} 원 X ${selected_seat_cnt} 명</div>`;
 					total_price = adult_ticket_price * selected_seat_cnt;
 				}
@@ -451,7 +540,7 @@ function goPay(ctxPath, userid) {
 	}
 }
 
-// 좌석을 
+// 좌석 배열 만들기
 function makeSeatArray() {
 	
 	let seat_arr = seat_str.split(",");
@@ -469,7 +558,7 @@ function makeSeatArray() {
 	let chars = 'ABCDEFGD';
 	let charArr = chars.split('');
 	
-	html = ``;
+	html = `<br><div style='background:gray; color: white; font-weight:bold; font-size:14pt; width:60%; height:30px; margin: 0 auto;'>screen</div><br>`;
 	
 	seat_arr.forEach((item, index) => {
 		
@@ -503,8 +592,8 @@ function onScreenClick(element, start_time, seq_showtime_no, fk_screen_no1, seat
 	seat_str = seat_str1;
 	fk_screen_no = fk_screen_no1;
 	
-	$("tr.time-choice").removeClass("selected");
-	$(element).parent().addClass("selected");
+	$("td.time_data").removeClass("selected");
+	$(element).addClass("selected");
 	
 	$("div#time-choice").html(String(start_time).substr(0,2) + ":" + String(start_time).substr(2,2));
 	

@@ -30,7 +30,7 @@ public class SendReservationSMS extends AbstractController {
 			String ticketPrice = request.getParameter("ticketPrice");
 			String mobile = request.getParameter("mobile");
 			
-			String content = "안녕하세요 " + name + " 님\n" + ticketInfo + " 예매가 완료되었습니다.\n" + ticketPrice + " 원 결제가 완료되었습니다. "; 
+			String content = "[HCV] 안녕하세요 " + name + " 님\n영화 예매가 완료되었습니다.\n결제금액:" + ticketPrice + " 원\n감사합니다."; 
 			
 			// String api_key = "발급받은 본인의 API Key";  // 발급받은 본인 API Key
 			String api_key = "NCSREYS1NVVZCGOU"; // 김성훈꺼
