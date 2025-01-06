@@ -33,6 +33,115 @@ div.my_box_list strong {
 	color: #eb5e28;
 }
 
+/* 예매내역 리스트 */
+div.reservation_box {
+	border: 2px solid #ddd;
+	padding: 16px;
+	margin-bottom: 20px;
+}
+/*///////////////////////////////////////////////////////////////////////////////////*/
+/* 포스터 */
+div.my_main_reservationlist_poster {
+	float: left;
+	width: 110px;
+	height: 158px;
+	margin-right: 20px;
+}
+
+div.my_main_reservationlist_poster  img {
+	width: 110px;
+	height: 154px;
+}
+
+/* 본문 */
+div.reservation_details {
+	overflow: hidden;
+}
+
+/* 영화제목, 가격 */
+h2.reservation_h2 {
+	font-size: 14px;
+	padding-bottom: 10px;
+	border-bottom: 2px solid #eee;
+	margin-bottom: 8px;
+}
+
+/* 영화제목 */
+h2.reservation_h2 a {
+	color: black;
+}
+
+/* 가격 */
+h2.reservation_h2 span {
+	float: right;
+	padding-right: 30px;
+}
+
+/* 본문 */
+div.reservation_details {
+	padding: 0;
+	font-size: 14px;
+	line-height: 1.8;
+}
+
+div.reservation_details li {
+	list-style-type: none;
+}
+
+div.reservation_details>ul>li>dl>dd.start_time {
+	color: #eb5e28;
+	font-weight: bold;
+}
+
+div.reservation_details>ul>li>dl {
+	display: flex;
+	margin: 0;
+	padding: 4px 0;
+}
+
+div.reservation_details>ul>li>dl>dt {
+	font-weight: bold;
+	width: 80px;
+	color: #555;
+}
+
+div.reservation_details>ul>li>dl>dt>dd {
+	margin: 0;
+	color: #333;
+}
+
+div.reservation_actions {
+	margin-top: 16px;
+	text-align: right;
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+}
+
+div.reservation_actions>button {
+	border: none;
+	padding: 8px 12px;
+	cursor: pointer;
+	font-size: 14px;
+	border-radius: 4px;
+}
+
+div.reservation_actions>button.Receipt_Printing {
+	background-color: #403d39;
+	color: white;
+}
+
+div.reservation_actions>button.Receipt_Printing:hover {
+	background-color: #ccc5b9;
+	color: black;
+}
+
+div.reservation_actions>button.Cancel_Reservation {
+	background-color: #eee;
+	color: #403d39;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /* 취소내역 테이블 스타일 */
 div.movie_status table {
 	width: 100%;
@@ -75,49 +184,7 @@ div.title p {
 	font-size: 12px;
 }
 
-/* 예매내역 리스트 */
-.btn {
-	padding: 5px 10px;
-	border: 1px solid #ddd;
-	background-color: #fff;
-	cursor: pointer;
-	transition: background-color 0.3s ease;
-}
-
-.btn:hover {
-	background-color: #eb5e28;
-	color: white;
-}
-
-.reservation_item, .cancel_item {
-	display: flex;
-	border: 1px solid #ddd;
-	border-radius: 8px;
-	margin-bottom: 15px;
-	padding: 10px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	transition: box-shadow 0.3s ease;
-}
-
-.reservation-item:hover, .cancel-item:hover {
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.poster {
-	width: 100px;
-	height: 150px;
-}
-
-.details {
-	flex: 1;
-}
-
-.details p {
-	margin: 5px 0;
-	color: #333;
-}
-
-.empty-message {
+p.empty-message {
 	text-align: center;
 	font-size: 16px;
 	color: #888;

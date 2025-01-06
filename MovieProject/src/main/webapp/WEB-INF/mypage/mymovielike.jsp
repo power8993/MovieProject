@@ -22,28 +22,8 @@
 
 <%-- 전체 창 --%>
 <div class="my_container">
-	<%-- 마이페이지 나의 프로필장 --%>
-	<div class="myprofile">
-		<div class="profile-container">
-			<i class="fa-solid fa-circle-user" style="color: #252422;"></i>
-			<%-- 사용자 정보 --%>
-			<div class="profile-info">
-				<h2>${(sessionScope.loginuser).name}님</h2>
-				<p>
-					나의 영화 랭킹 <strong>50</strong> 순위
-				</p>
-				<p>
-					사용 가능 포인트: <strong>${(sessionScope.loginuser).point}pt</strong>
-				</p>
-				<p>
-					사용한 포인트: <strong>0pt</strong>
-				</p>
-			</div>
-			<%-- 사용자 정보 끝 --%>
-		</div>
-	</div>
-	<%-- 마이페이지 나의 프로필장 끝 --%>
 
+	<jsp:include page="mypageProfile.jsp" />
 
 	<%-- 마이페이지 사이드바 & 매안 창 --%>
 	<div class="my_main">
@@ -95,7 +75,8 @@
 
 			<!-- 기대되는 영화 -->
     <div>
-      <div class="row" id="mymovielikeHIT" ></div>
+      <div class="row" id="mymovielikeHIT" ></div> <%-- 기대되는 영화가 있을 때 --%>
+       <p class="empty"></p> <%-- 기대되는 영화가 없을 때 --%>
         <input type="hidden" name="userid" id="userid"
 					value="${sessionScope.loginuser.userid}" />
 					
@@ -103,9 +84,10 @@
 			<div class="col-12 mt-4">
             <p class="text-center">
                 <span id="end" class="end-message" style="display:block; margin:20px; font-size: 14pt; font-weight: bold; color: red;"></span>
-                <button type="button" class="btn-load-more btn btn-secondary btn-lg" id="btnmymovielike" value="">더보기...</button>
-                <span id="totalmymovielike">${requestScope.totalmymovielike}</span>
+                <button type="button" class="mymovielikebutton" id="btnmymovielike" value="">↓더보기
                 <span id="mymovielikecount">0</span>
+                <span id="totalmymovielike">${requestScope.totalmymovielike}</span>
+                </button>
             </p>
         </div>
 </div>

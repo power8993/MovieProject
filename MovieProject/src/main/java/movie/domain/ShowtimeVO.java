@@ -13,8 +13,12 @@ public class ShowtimeVO {
 	private int unused_seat;     	// 남은 좌석 수
 	
 	
+	// === Join Field === // 
+	private ScreenVO scvo;
+	private MovieVO mvo;
 	
-	
+
+
 	// === Method === //
 	public int getSeq_showtime_no() {
 		return seq_showtime_no;
@@ -80,6 +84,23 @@ public class ShowtimeVO {
 		this.unused_seat = unused_seat;
 	}
 	
+	
+	
+	public ScreenVO getScvo() {
+		return scvo;
+	}
+
+	public void setScvo(ScreenVO scvo) {
+		this.scvo = scvo;
+	}
+
+	public MovieVO getMvo() {
+		return mvo;
+	}
+
+	public void setMvo(MovieVO mvo) {
+		this.mvo = mvo;
+	}
 
 }
 

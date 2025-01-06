@@ -1,9 +1,7 @@
 package mypage.controller;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,14 +28,8 @@ public class Mymoviereview extends AbstractController {
             super.setViewPage("/WEB-INF/msg.jsp");
             return;
          }
-
-         String userid = loginuser.getUserid();
-            
-            Map<String, String> paraMap = new HashMap<>();
-            paraMap.put("userid", userid);
-
             try {
-            List<MovieReviewVO> mymoviereviewList = mydao.mymoviereviewList(paraMap);
+            List<MovieReviewVO> mymoviereviewList = mydao.mymoviereviewList(loginuser.getUserid());
                request.setAttribute("mymoviereviewList", mymoviereviewList);
                
                super.setRedirect(false);
