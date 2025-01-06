@@ -30,14 +30,8 @@ public class Mymoviereview extends AbstractController {
             super.setViewPage("/WEB-INF/msg.jsp");
             return;
          }
-
-         String userid = loginuser.getUserid();
-            
-            Map<String, String> paraMap = new HashMap<>();
-            paraMap.put("userid", userid);
-
             try {
-            List<MovieReviewVO> mymoviereviewList = mydao.mymoviereviewList(paraMap);
+            List<MovieReviewVO> mymoviereviewList = mydao.mymoviereviewList(loginuser.getUserid());
                request.setAttribute("mymoviereviewList", mymoviereviewList);
                
                super.setRedirect(false);

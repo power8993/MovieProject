@@ -1,20 +1,20 @@
-function lastpwdchangedate() {	
+function lastpwdchangedate() {
 
 	$.ajax({
 		url: "mylastpwdchangedateJSON.mp",
-		data: { "userid": $("input#userid").val()},	
+		data: { "userid": $("input#userid").val() },
 		dataType: "json",
 		success: function(json) {
 			console.log("~~ 확인용 json =>", json);
-			
-			                $("div#lastpwdchangedate").text(json.pwdChangeDate); // 서버에서 받은 값 표시
-			           
-		 },
-		 		error: function(request, status, error) {
-		 			alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
-		 		}
-		 	
-		 });
+
+			$("div#lastpwdchangedate").text(json.pwdChangeDate); // 서버에서 받은 값 표시
+
+		},
+		error: function(request, status, error) {
+			alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+		}
+
+	});
 
 };
 
@@ -193,6 +193,41 @@ function goEdit() {
 	frm.action = "myupEditEnd.mp";
 	frm.method = "post";
 	frm.submit();
+}
+
+
+function mypasswdFind_update() {
+	const mypasswdFind = $("div#passwdFind_modal"); // 모달을 넣을 위치	
+
+	const modal_popup = `
+	<div class="modal fade" id="passwdFind" tabindex="-1" aria-labelledby="passwdFindLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <!-- Modal header -->
+	            <div class="modal-header">
+	                <h4 class="modal-title" id="passwdFindLabel">비밀번호 변경</h4>
+	                <button type="button" class="close passwdFindClose" data-dismiss="modal" aria-label="Close">
+	                    <span aria-hidden="true">&times;</span>
+	                </button>
+	            </div>
+	            <!-- Modal body -->
+	            <div class="modal-body">
+	                <div id="pwFind">
+	                    <iframe style="border: none; width: 100%; height: 350px;" src="/MovieProject/mypage/myuppwdEdit.mp"></iframe>
+	                </div>
+	            </div>
+	            <!-- Modal footer -->
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-danger passwdFindClose" data-dismiss="modal">Close</button>
+	            </div>
+	        </div>
+	    </div>
+	</div>`;
+
+	mypasswdFind.html(modal_popup); // 모달 HTML 삽입
+
+	// 모달을 표시
+	$('#passwdFind').modal('show'); // 모달 띄우기
 }
 
 

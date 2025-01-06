@@ -21,34 +21,10 @@ String ctxPath = request.getContextPath();
 <script src="https://kit.fontawesome.com/0c69fdf2c0.js"
 	crossorigin="anonymous"></script>
 
-
-
 <%-- 전체 창 --%>
 <div class="my_container">
 
-
-
-	<%-- 마이페이지 나의 프로필장 --%>
-	<div class="myprofile">
-		<div class="profile-container">
-			<i class="fa-solid fa-circle-user" style="color: #252422;"></i>
-			<%-- 사용자 정보 --%>
-			<div class="profile-info">
-				<h2>${(sessionScope.loginuser).name}님</h2>
-				<p>
-					나의 영화 랭킹 <strong>50</strong> 순위
-				</p>
-				<p>
-					사용 가능 포인트: <strong>${(sessionScope.loginuser).point}pt</strong>
-				</p>
-				<p>
-					사용한 포인트: <strong>0pt</strong>
-				</p>
-			</div>
-			<%-- 사용자 정보 끝 --%>
-		</div>
-	</div>
-	<%-- 마이페이지 나의 프로필장 끝 --%>
+<jsp:include page="mypageProfile.jsp" />
 
 	<%-- 마이페이지 사이드바 & 매안 창 --%>
 	<div class="my_main">
@@ -125,24 +101,26 @@ String ctxPath = request.getContextPath();
 									<div class="my_main_moviereview_box">
 									
 									<div class="my_moviereview_title">
-										<strong>${mrvo.mvo.movie_title}</strong>
+										<strong class="movie_title">${mrvo.mvo.movie_title}</strong>
 									</div>
 										<ul>
-										<li>${mrvo.fk_user_id} |</li>
+										<li >${mrvo.fk_user_id} |</li>
 										<li> ${mrvo.review_write_date} </li>
 										</ul>
 											 <!-- 삭제 버튼 -->
 								<button type="button" class="mymoviereview_delete_btn"
-									onclick="mymoviereview_delete(${mrvo.seq_review_no})">×</button>
+									onclick="mymoviereview_delete(event, seq_review_no)">×</button>
 									
 										
-									<p class="review_date">평점:${mrvo.movie_rating} ${mrvo.review_content}</p>
+									<p class="review_date movie_rating">${mrvo.movie_rating}</p>
+									<p class="review_date review_content">${mrvo.review_content}</p>
 									
 									</div>
 									
 									<!-- 수정 버튼 -->
 									<button type="button" class="mymoviereview_update_btn"
 										onclick="mymoviereview_update(${mrvo.seq_review_no})">수정하기</button>
+										<div id="mymoviereview_update_modal"></div>  <!-- 모달을 삽입할 위치 -->
 								</div>
 									
 							</li>
