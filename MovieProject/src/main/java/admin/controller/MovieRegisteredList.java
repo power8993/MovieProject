@@ -23,9 +23,11 @@ public class MovieRegisteredList extends AbstractController {
 		String search_type = request.getParameter("search_type");
 		String search_word = request.getParameter("search_word");
 		String search_orderby = request.getParameter("search_orderby");
+		String invalid_movie = request.getParameter("invalid_movie");
 		String size_per_page = request.getParameter("size_per_page");
 		String current_showpage_no = request.getParameter("current_showpage_no"); // 현재 내가 보고자하는 페이지
 		
+
 		// ===== 입력하지 않았을 경우에 대한 NULL 처리 ===== //
 		if(search_category == null ||
 		   (!"액션".equals(search_category)) && (!"코미디".equals(search_category)) && (!"드라마".equals(search_category)) &&
@@ -47,6 +49,11 @@ public class MovieRegisteredList extends AbstractController {
 		if(search_orderby == null ||
 		  (!"asc".equals(search_orderby)) && (!"desc".equals(search_orderby))) {
 			search_orderby = "desc";
+		}
+		
+		if(invalid_movie == null ||
+		  (!"상영작".equals(invalid_movie)) && (!"미상영작".equals(invalid_movie))) {
+			invalid_movie = "상영작";
 		}
 	
 		if(size_per_page == null||
@@ -72,6 +79,7 @@ public class MovieRegisteredList extends AbstractController {
 		paraMap.put("search_type", search_type);
 		paraMap.put("search_word", search_word);
 		paraMap.put("search_orderby", search_orderby);
+		paraMap.put("invalid_movie", invalid_movie);
 		paraMap.put("size_per_page", size_per_page); 			  // 한 페이지당 보여줄 행의 개수
 		paraMap.put("current_showpage_no", current_showpage_no);  // 현재 내가 보고자하는 페이지
 		
@@ -106,10 +114,10 @@ public class MovieRegisteredList extends AbstractController {
 		int page_no = ( (Integer.parseInt(current_showpage_no) - 1)/block_size ) * block_size + 1; 
 		
 		// [맨처음][이전] 만들기
-		page_bar += "<li class='page-item'><a class='page-link' href='movieRegisteredList.mp?search_category="+search_category+"&search_type="+search_type+"&search_word="+search_word+"&size_per_page="+size_per_page+"&current_showpage_no=1'>[맨처음]</a></li>";
+		page_bar += "<li class='page-item'><a class='page-link' href='movieRegisteredList.mp?search_category="+search_category+"&search_type="+search_type+"&search_word="+search_word+"&invalid_movie="+invalid_movie+"&size_per_page="+size_per_page+"&current_showpage_no=1'>[맨처음]</a></li>";
 		
 		if(page_no != 1) {
-			page_bar += "<li class='page-item'><a class='page-link' href='movieRegisteredList.mp?search_category="+search_category+"&search_type="+search_type+"&search_word="+search_word+"&size_per_page="+size_per_page+"&current_showpage_no="+(page_no-1)+"'>[맨처음]</a></li>";
+			page_bar += "<li class='page-item'><a class='page-link' href='movieRegisteredList.mp?search_category="+search_category+"&search_type="+search_type+"&search_word="+search_word+"&invalid_movie="+invalid_movie+"&size_per_page="+size_per_page+"&current_showpage_no="+(page_no-1)+"'>[맨처음]</a></li>";
         }
 		
 		while( !(loop > block_size || page_no > total_page)) {
@@ -118,7 +126,7 @@ public class MovieRegisteredList extends AbstractController {
 	       		page_bar += "<li class='page-item active'><a class='page-link' href='#'>"+page_no+"</a></li>";
 	       	}
 	       	else {
-	       		page_bar += "<li class='page-item'><a class='page-link' href='movieRegisteredList.mp?search_category="+search_category+"&search_type="+search_type+"&search_word="+search_word+"&size_per_page="+size_per_page+"&current_showpage_no="+page_no+"&search_orderby="+search_orderby+"'>"+page_no+"</a></li>";
+	       		page_bar += "<li class='page-item'><a class='page-link' href='movieRegisteredList.mp?search_category="+search_category+"&search_type="+search_type+"&search_word="+search_word+"&invalid_movie="+invalid_movie+"&size_per_page="+size_per_page+"&current_showpage_no="+page_no+"&search_orderby="+search_orderby+"'>"+page_no+"</a></li>";
 	       	}
 	       	loop++;
 	       	
@@ -128,10 +136,10 @@ public class MovieRegisteredList extends AbstractController {
 		
 		// [다음][마지막] 만들기
 		if(page_no <= total_page) {	
-			page_bar += "<li class='page-item'><a class='page-link' href='movieRegisteredList.mp?search_category="+search_category+"&search_type="+search_type+"&search_word="+search_word+"&size_per_page="+size_per_page+"&current_showpage_no="+page_no+"'>[다음]</a></li>";
+			page_bar += "<li class='page-item'><a class='page-link' href='movieRegisteredList.mp?search_category="+search_category+"&search_type="+search_type+"&search_word="+search_word+"&invalid_movie="+invalid_movie+"&size_per_page="+size_per_page+"&current_showpage_no="+page_no+"'>[다음]</a></li>";
         }
         
-		page_bar += "<li class='page-item'><a class='page-link' href='movieRegisteredList.mp?search_category="+search_category+"&search_type="+search_type+"&search_word="+search_word+"&size_per_page="+size_per_page+"&current_showpage_no="+total_page+"'>[마지막]</a></li>";
+		page_bar += "<li class='page-item'><a class='page-link' href='movieRegisteredList.mp?search_category="+search_category+"&search_type="+search_type+"&search_word="+search_word+"&invalid_movie="+invalid_movie+"&size_per_page="+size_per_page+"&current_showpage_no="+total_page+"'>[마지막]</a></li>";
 		
 		try {
 			// 페이징 처리를 한 모든 등록된 영화 리스트 보여주기 (select)
@@ -143,6 +151,7 @@ public class MovieRegisteredList extends AbstractController {
 			request.setAttribute("search_type", search_type);
 			request.setAttribute("search_word", search_word);
 			request.setAttribute("search_orderby", search_orderby);
+			request.setAttribute("invalid_movie", invalid_movie);
 			
 			request.setAttribute("size_per_page", size_per_page);
 			request.setAttribute("page_bar", page_bar);

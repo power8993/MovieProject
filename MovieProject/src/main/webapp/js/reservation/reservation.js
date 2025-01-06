@@ -363,7 +363,7 @@ function onScreenClick(element, start_time, seq_showtime_no, fk_screen_no, seat_
 
         if((index + 1) % 10 == division) {
             // html += `통로`;
-            html += `<span></span>`;
+            html += `<span>&nbsp;&nbsp;</span>`;
         }
 
         if((index + 1) % 10 == 0) {

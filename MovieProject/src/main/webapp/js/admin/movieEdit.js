@@ -259,17 +259,6 @@ $(document).ready(function() {
 			if(start_date && end_date) {
 				// 상영시작일과 상영종료일이 둘 다 비어있지 않을 경우
 			
-/*				if(today > start_date_obj) {
-					start_date_dom.setCustomValidity("상영시작일은 오늘보다 이후여야 합니다.");
-					start_date_dom.reportValidity();  // 유효성 검사 메시지 표시
-					
-					// 각 값을 비우기
-					$("input[name='start_date']").val("");
-					$("input[name='end_date']").val("");
-					
-					is_empty = true;
-				}
-				else */
 				if(start_date_obj > end_date_obj) {
 					start_date_dom.setCustomValidity("상영시작일이 상영종료일보다 나중일 수 없습니다.");
 					start_date_dom.reportValidity();  // 유효성 검사 메시지 표시
@@ -297,6 +286,36 @@ $(document).ready(function() {
 		        return;  // 나머지 검사 생략
 		    }
 			// ===== 상영시작일 / 상영종료일 유효성검사 끝 ===== //
+			
+			
+			// ===== 상영일정에 등록된 영화라면, 상영시작일 / 상영종료일이 상영기간에 포함되는지 검사 시작 ===== //
+			const seq = $("input[name='seq']").val();
+			
+			$.ajax({
+				url:  'isScreeningDateValid.mp',
+				type: 'get',
+				dataType: 'json',
+				data: {"start_date":start_date
+					  ,"end_date":end_date
+					  ,"seq":seq
+					  },
+				 async: false,  // 동기적 처리하여 AJAX 요청이 완료될 때까지 기다린 후, 폼 제출을 진행하도록한다.
+				
+				success: function(json) {
+					if(!json.isDateValid) {
+						alert("선택한 날짜는 해당 영화의 상영 일정 일부에 포함되지 않습니다.");
+			            is_empty = true;
+			            e.preventDefault();  // 폼 제출 막기
+					}
+				},
+				error: function() {
+	                alert("영화 수정에 실패했습니다.");
+					is_empty = true;
+			       	e.preventDefault();  // 폼 제출 막기
+	            }
+			});// end of $.ajax({})------------------------------------
+			// ===== 상영일정에 등록된 영화라면, 상영시작일 / 상영종료일이 상영기간에 포함되는지 검사 끝  ===== //
+			
 			
 			// ===== 모든 검사 후 폼 제출 여부 확인 ===== //
 			if(is_empty){
@@ -328,62 +347,60 @@ function checkDuplicate() {
 
     // 모달 HTML 구조
     const modal_popup = `
-        <div class="modal fade" id="movie_find" tabindex="-1" aria-labelledby="movie_find" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="movie_find">등록된 영화 조회</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-
-                    <!-- Modal Body -->
-                    <div class="modal-body">
-                        <!-- 검색창 -->
-                        <form id="movie_search_frm">
-                            <div class="form-group">
-                                <label for="movie_search">영화 제목 검색</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="movie_search" placeholder="영화 제목을 입력하세요">
-                                    <div class="input-group-append">
-                                        <button type="button" class="btn btn-primary" id="search_button">검색하기</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-
-                        <!-- 검색 결과 -->
-                        <div id="search_result" style="display:none;">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>영화제목</th>
-                                        <th>장르</th>
-                                        <th>상영등급</th>
-                                        <th>등록일</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="movie_table"></tbody>
-                            </table>
-                        </div>
-
-                        <!-- 검색된 영화가 없을 때 -->
-                        <div id="no_movies_message" style="display:none;">
-                            <p>검색된 영화가 없습니다.</p>
-                        </div>
-                    </div>
-
-                    <!-- Modal Footer -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
+						<div class="modal fade" id="movie_find" tabindex="-1" aria-labelledby="movie_find" aria-hidden="true">
+				            <div class="modal-dialog modal-lg">
+				                <div class="modal-content">
+			
+				                    <!-- Modal Header -->
+				                    <div class="modal-header">
+				                        <h5 class="modal-title" id="movie_find"><i class="fa-solid fa-magnifying-glass" style="color: #252422;"></i>&nbsp;영화 조회</h5>
+				                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				                            <span aria-hidden="true">&times;</span>
+				                        </button>
+				                    </div>
+			
+				                    <!-- Modal Body -->
+				                    <div class="modal-body">
+				                        <!-- 검색창 -->
+				                        <form id="movie_search_frm">
+				                            <div class="form-group">
+				                                <div class="input-group">
+				                                    <input type="text" class="form-control" id="movie_search" placeholder="영화 제목을 입력하세요">
+				                                    <div class="input-group-append">
+				                                        <button type="button" class="btn btn-primary" id="search_button">검색하기</button>
+				                                    </div>
+				                                </div>
+				                            </div>
+				                        </form>
+			
+				                        <!-- 검색 결과 -->
+				                        <div id="search_result" style="display:none;">
+				                            <table class="table" id="modal_table">
+				                                <thead>
+				                                    <tr>
+				                                        <th>영화제목</th>
+				                                        <th>장르</th>
+				                                        <th>상영등급</th>
+				                                        <th>등록일</th>
+				                                    </tr>
+				                                </thead>
+				                                <tbody id="movie_table"></tbody>
+				                            </table>
+				                        </div>
+			
+				                        <!-- 검색된 영화가 없을 때 -->
+				                        <div id="no_movies_message" style="display:none;">
+				                            <p>검색된 영화가 없습니다.</p>
+				                        </div>
+				                    </div>
+			
+				                    <!-- Modal Footer -->
+				                    <div class="modal-footer">
+				                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+				                    </div>
+				                </div>
+				            </div>
+				        </div>`;
 
     container.html(modal_popup); // 모달 HTML 삽입
 

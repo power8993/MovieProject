@@ -33,7 +33,7 @@ public class ShowtimeConflictMovie extends AbstractController {
 			paraMap.put("start_time", start_time);
 			paraMap.put("end_time", end_time);
 			paraMap.put("screen_no", screen_no);
-			
+
 			// **** [상영시간 조회하기] 선택한 상영 시간과 상영관에 중첩된 상영이 있는지 확인하는 메소드 (select) **** //
 			List<MovieVO> movieList =  mvdao.selectShowtimeConflict(paraMap);
 			

@@ -4,11 +4,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <% String ctxPath = request.getContextPath(); %>
 
+<jsp:include page="/WEB-INF/admin_header1.jsp" />
+
 <%-- 직접 만든 CSS --%>
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/admin/admin.css" >
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/member/admin/memberList.css" >
-
-<jsp:include page="/WEB-INF/admin_header1.jsp" />
 
 <%-- 직접 만든 Javascript --%>
 <script type="text/javascript" src="<%= ctxPath%>/js/member/admin/memberList.js"></script>
@@ -32,7 +32,7 @@ $(document).ready(function(){
 
 	<div class="member_list_container">
 		<h2>회원 목록</h2>
-		<form name="member_search_frm" class="form-row">
+		<form name="member_search_frm" id="member_list" class="form-row">
 		  	<div class="col-2">
 		    	<select name="search_type" class="form-control">
 		      		<option value="">검색유형</option>
@@ -41,7 +41,7 @@ $(document).ready(function(){
 		   	 	</select>
 		  	</div>
 		
-		  	<div class="col-4">
+		  	<div class="col-6">
 		    	<input type="text" name="search_word" class="form-control" placeholder="검색 내용을 입력하세요">
 		  	</div>
 		
@@ -86,9 +86,26 @@ $(document).ready(function(){
 								<td>${membervo.name}</td>
 								<td>${membervo.birthday}</td>
 								<td>${membervo.gender}</td>
-								<td>${membervo.registerday}</td>		
-								<td>${membervo.idle}</td>
-								<td>${membervo.status}</td>
+								<td>${membervo.registerday}</td>	
+								
+								<c:choose>
+									<c:when test="${membervo.idle eq '1'}">
+										<td class="member_status"><span style="background-color: #74b2b7; color: white;">활성</span></td>
+									</c:when>
+									<c:when test="${membervo.idle eq '0'}">
+										<td class="member_status"><span style="background-color: #CCC5B9; color: white;">휴면</span></td>
+									</c:when>
+								</c:choose>	
+								
+								<c:choose>
+									<c:when test="${membervo.status eq '1'}">
+										<td class="member_status"><span style="background-color: #62A87C; color: white;">가입</span></td>
+									</c:when>
+									<c:when test="${membervo.status eq '0'}">
+										<td class="member_status"><span style="background-color: #CCC5B9; color: white;">탈퇴</span></td>
+									</c:when>
+								</c:choose>	
+
 							</tr>
 						</c:forEach>
 						<div id="member_detail_modal"></div>  <!-- 모달 사용할 경우 모달 위치 -->

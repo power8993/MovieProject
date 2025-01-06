@@ -4,11 +4,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <% String ctxPath = request.getContextPath(); %>
 
+<jsp:include page="/WEB-INF/admin_header1.jsp" />
+
 <%-- 직접 만든 CSS --%>
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/admin/admin.css" >
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/admin/movieRegisteredList.css" >
-
-<jsp:include page="/WEB-INF/admin_header1.jsp" />
 
 <%-- 직접 만든 Javascript --%>
 <script type="text/javascript" src="<%= ctxPath%>/js/admin/movieRegisteredList.js"></script>
@@ -19,6 +19,7 @@ $(document).ready(function(){
 	$("select[name='search_type']").val("${requestScope.search_type}");
 	$("input[name='search_word']").val("${requestScope.search_word}");
 	$("input[name='search_orderby']").val("${requestScope.search_orderby}");
+	$("input[name='invalid_movie']").val("${requestScope.invalid_movie}");
 	
 	$("select[name='size_per_page']").val("${requestScope.size_per_page}");
 	
@@ -58,12 +59,12 @@ $(document).ready(function(){
 		// frm.action = "movieRegisteredList.mp";
 		// frm.method = "get";
 		
-		frm.submit()
+		frm.submit();
 		
 	});// end of $("span#re_desc").click(function(){})------------------	
 	
 	
-	// === 서버에서 전달된 값에 따라 활성화된 버튼을 설정 === //
+	// === 최신순/등록순 선택 후 서버에서 전달된 값에 따라 활성화된 버튼을 설정 === //
     var search_orderby = $("input[name='search_orderby']").val();
 
     // 페이지 로딩 시 활성화된 버튼에 css 부여
@@ -74,6 +75,21 @@ $(document).ready(function(){
         $('#re_asc').addClass('active'); 
         $('#re_desc').removeClass('active');
     }
+
+    
+	// === 상영작/미상영작 선택 후 서버에서 전달된 값에 따라 활성화된 버튼을 설정 === //
+    var invalid_movie = $("input[name='invalid_movie']").val();
+	
+    // 페이지 로딩 시 활성화된 버튼에 css 부여
+    if (invalid_movie == '상영작') {
+    	$("span#invalid_movie").text("상영작");
+        $('span#invalid_movie').css({ 'background-color': '#403D39' });
+    } else if (invalid_movie == '미상영작') {
+    	$("span#invalid_movie").text("미상영작");
+        $('span#invalid_movie').css({ 'background-color': '#CCC5B9' });
+    }
+    
+
 
 });
 </script>
@@ -125,12 +141,16 @@ $(document).ready(function(){
 			</div>
 			
 			<input type="hidden" name="search_orderby"/>
+			<input type="hidden" name="invalid_movie"/>
 
 		</form>
 		
 		
 		<div id="search_result">
-			<span class="re_orderby" id="re_desc">최신순</span>&nbsp;<span class="re_orderby" id="re_asc">등록순</span>
+			<div class="btn_container">
+				<span class="re_orderby" id="re_desc">최신순</span>&nbsp;<span class="re_orderby" id="re_asc">등록순</span>
+				<span id="invalid_movie" onclick="toggleMovieInvalidStatus()">상영작</span>
+			</div>
 			<table class="table table-bordered" id="movie_table">
 				<thead>
 					<tr>
@@ -139,7 +159,7 @@ $(document).ready(function(){
 						<th>장르</th>
 						<th>영화</th>
 						<th>상영등급</th>
-						<th>개봉일자</th>
+						<th>개봉일자<br>종영일자</th>
 					</tr>
 				</thead>
 				
@@ -156,7 +176,7 @@ $(document).ready(function(){
 								<td>${movievo.catevo.category}</td>
 								<td><img src="<%= ctxPath%>/images/admin/poster_file/${movievo.poster_file}" alt="${movievo.movie_title}" style="width:60px; height:auto;">&nbsp;${movievo.movie_title}</td>
 								<td><img src="<%= ctxPath%>/images/admin/movie_grade/${movievo.movie_grade}.png" alt="${movievo.movie_grade}" style="width:30px; height:auto;"></td>
-								<td>${movievo.start_date}</td>	
+								<td>${movievo.start_date}<br>${movievo.end_date}</td>	
 							</tr>
 						</c:forEach>
 						<div id="movie_detail_modal"></div>
