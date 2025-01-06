@@ -94,7 +94,9 @@ $(document).ready(function(){
 							<tbody>
 			      				<c:forEach var="movievo" items="${requestScope.movieList}" varStatus="status">
 									<tr class="movie-list">
-										<td class="movie-grade">${movievo.movie_grade}</td>
+										<td class="movie-grade">
+											<img src="<%= ctxPath %>/images/admin/movie_grade/${movievo.movie_grade}.png" alt="${movievo.movie_grade}" style="width: 30px; height: 25px; vertical-align: middle; margin-right: 10px;">
+                                         </td>
 										<td class="movie-title">${movievo.movie_title}</td>
 										<td id="seq_movie_no" style="display: none">${movievo.seq_movie_no}</td>
 									</tr>
@@ -164,6 +166,9 @@ $(document).ready(function(){
 				
 				<div class="col-head">
 					<h3 class="title">시간</h3>
+				</div>
+
+				<div class="col-body">
 					<table>
 						<tbody class="time-table">
 							<tr class="time-choice">
@@ -171,9 +176,6 @@ $(document).ready(function(){
 							</tr>
 						</tbody>
 					</table>
-				</div>
-
-				<div class="col-body">
 				</div>
 			</div>
 			

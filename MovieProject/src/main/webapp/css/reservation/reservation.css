@@ -50,11 +50,12 @@ tr.movie-list {
 
 td.movie-grade {
 	display: inline-block;
-	width: 100px;
+	width: 35px;
 }
 
 td.movie-title {
 	min-width: 250px;
+	font-weight: bold;
 }
 
 div#col-body li {
