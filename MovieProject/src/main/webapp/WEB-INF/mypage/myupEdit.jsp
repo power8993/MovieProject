@@ -25,27 +25,8 @@ String ctxPath = request.getContextPath();
 
 <%-- 전체 창 --%>
 <div class="my_container">
-	<%-- 마이페이지 나의 프로필장 --%>
-	<div class="myprofile">
-		<div class="profile-container">
-			<i class="fa-solid fa-circle-user" style="color: #252422;"></i>
-			<%-- 사용자 정보 --%>
-			<div class="profile-info">
-				<h2>${(sessionScope.loginuser).name}님</h2>
-				<p>
-					나의 영화 랭킹 <strong>50</strong> 순위
-				</p>
-				<p>
-					사용 가능 포인트: <strong>${(sessionScope.loginuser).point}pt</strong>
-				</p>
-				<p>
-					사용한 포인트: <strong>0pt</strong>
-				</p>
-			</div>
-			<%-- 사용자 정보 끝 --%>
-		</div>
-	</div>
-	<%-- 마이페이지 나의 프로필장 끝 --%>
+
+	<jsp:include page="mypageProfile.jsp" />
 
 	<%-- 마이페이지 사이드바 & 매안 창 --%>
 	<div class="my_main">
@@ -115,42 +96,10 @@ String ctxPath = request.getContextPath();
 
 							<tr>
 								<td id="tblEditcss">비밀번호</td>
-								<td><button type="button" class="mypagepwdcss" data-toggle="modal"
-									data-target="#passwdFind" data-dismiss="modal"
-									data-backdrop="static">비밀번호 변경</button>
-									<div id="lastpwdchangedate"></div>
-									
-									<div class="modal fade" id="passwdFind">
-										<div class="modal-dialog">
-											<div class="modal-content">
-
-												<!-- Modal header -->
-												<div class="modal-header">
-													<h4 class="modal-title">비밀번호 변경</h4>
-													<button type="button" class="close passwdFindClose"
-														data-dismiss="modal">&times;</button>
-												</div>
-
-												<!-- Modal body -->
-												<div class="modal-body">
-													<div id="pwFind">
-														<iframe style="border: none; width: 100%; height: 350px;"
-															src="<%=ctxPath%>/mypage/myuppwdEdit.mp"> </iframe>
-													</div>
-												</div>
-
-												<!-- Modal footer -->
-												<div class="modal-footer">
-													<button type="button"
-														class="btn btn-danger passwdFindClose"
-														data-dismiss="modal">Close</button>
-												</div>
-											</div>
-
-										</div>
-									</div></td>
-									
-									
+								<td><button type="button" class="mypagepwdcss"  onclick="mypasswdFind_update()">비밀번호 변경</button>
+									<div id="passwdFind_modal"></div> <%-- 비번변경 모달창 --%>
+									<div id="lastpwdchangedate"></div> <%-- 비번변경날짜 모달창 --%>
+									 </td>	
 							</tr>
 
 							<tr>

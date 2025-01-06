@@ -5,17 +5,62 @@ import java.util.List;
 import java.util.Map;
 
 import member.domain.MemberVO;
-import member.model.MemberDAO;
 import movie.domain.MovieLikeVO;
 import movie.domain.MovieReviewVO;
+import reservation.domain.PaymentVO;
 
 public interface MypageDAO {
 	
+	//마이페이지 메인 리스트 = 나의 예매내역
+	List<PaymentVO> main_mypage_Myreservationlist(String userid)throws SQLException;
+	
+	//마이페이지 메인 리스트 = 내가 본 영화
+	List<PaymentVO> main_mypage_MovieWatchedList(String userid)throws SQLException;
+
 	//마이페이지 메인 리스트 = 내가 쓴 리뷰
-	List<MovieReviewVO> main_mypage_MovieReviewList(Map<String, String> paraMap)throws SQLException;
+	List<MovieReviewVO> main_mypage_MovieReviewList(String userid)throws SQLException;
 	
 	//마이페이지 메인 리스트 = 기대되는 영화
-	List<MovieLikeVO> main_mypage_MovieLikeList(Map<String, String> paraMap)throws SQLException;
+	List<MovieLikeVO> main_mypage_MovieLikeList(String userid)throws SQLException;
+	
+	
+	
+	//마이페이지 나의 예매내역 목록 전체
+	List<PaymentVO> myreservationList(String userid)throws SQLException;
+	
+	//마이페이지 나의 예매<취소>내역 목록 전체
+	List<PaymentVO> myreservationList_cancel(String userid)throws SQLException;
+	
+	
+	//마이페이지 내가 본 영화 목록 전체
+	List<PaymentVO> mymoviewatchedList(String userid)throws SQLException;
+	
+	
+	
+	//마이페이지 기대되는 영화 좋아요 목록 전체 합계
+	int totalmymovielike(String userid)throws SQLException;
+
+	//마이페이지 기대되는 영화 좋아요 목록 리스트
+	List<MovieLikeVO> selectBymymovielike(Map<String, String> paraMap)throws SQLException;
+	
+	//마이페이지 기대되는 영화 좋아요 특정 수정하기
+	int mymoivereviewUpdate(MovieReviewVO mrvo)throws SQLException;
+	
+	//마이페이지 기대되는 영화 좋아요 특정 삭제하기
+	int movielikeDelete(String fK_SEQ_MOVIE_NO)throws SQLException;
+	
+	
+	
+	//마이페이지 내가 쓴 평점 목록 전체 합계
+	int totalmymoviereview(String userid)throws SQLException;
+	
+	//마이페이지 내가 쓴 평점 목록 리스트
+	List<MovieReviewVO> mymoviereviewList(String userid)throws SQLException;
+
+	//마이페이지 내가 쓴 평점 특정 삭제하기
+	int mymoviereviewDelete(String seq_review_no)throws SQLException;
+	
+	
 
 	//마이페이지 회원수정 비밀번호 체크
 	boolean checkPassword(Map<String, String> paraMap) throws SQLException;
@@ -28,23 +73,21 @@ public interface MypageDAO {
 
 	//마이페이지 회원정보수정 비밀번호 변경
 	int mypwdUdate(Map<String, String> paraMap)throws SQLException;
+	
+	//마이페이지 회원정보수정에서 비밀번호 변경 날짜 가져오기
+	List<MemberVO> Mylastpwdchangedate(Map<String, String> paraMap)throws SQLException;
+	
+	
 
 	//마이페이지 회원탈퇴
 	boolean deletePassword(String userid)throws SQLException;
 
-	//마이페이지 기대되는 영화 좋아요 목록 전체 합계
-	int totalmymovielike(String userid)throws SQLException;
 
-	//마이페이지 기대되는 영화 좋아요 목록 리스트
-	List<MovieLikeVO> selectBymymovielike(Map<String, String> paraMap)throws SQLException;
-	
-	//마이페이지 내가 쓴 평점 목록 전체 합계
-	int totalmymoviereview(String userid)throws SQLException;
-	
-	//마이페이지 내가 쓴 평점 목록 리스트
-	List<MovieReviewVO> mymoviereviewList(Map<String, String> paraMap)throws SQLException;
 
-	//마이페이지 회원정보수정에서 비밀번호 변경 날짜 가져오기
-	List<MemberVO> Mylastpwdchangedate(Map<String, String> paraMap)throws SQLException;
+
+
+
+
+	
 
 }

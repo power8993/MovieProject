@@ -21,27 +21,8 @@ String ctxPath = request.getContextPath();
 
 <%-- 전체 창 --%>
 <div class="my_container">
-	<%-- 마이페이지 나의 프로필장 --%>
-	<div class="myprofile">
-		<div class="profile-container">
-			<i class="fa-solid fa-circle-user" style="color: #252422;"></i>
-			<%-- 사용자 정보 --%>
-			<div class="profile-info">
-				<h2>${(sessionScope.loginuser).name}님</h2>
-				<p>
-					나의 영화 랭킹 <strong>50</strong> 순위
-				</p>
-				<p>
-					사용 가능 포인트: <strong>${(sessionScope.loginuser).point}pt</strong>
-				</p>
-				<p>
-					사용한 포인트: <strong>0pt</strong>
-				</p>
-			</div>
-			<%-- 사용자 정보 끝 --%>
-		</div>
-	</div>
-	<%-- 마이페이지 나의 프로필장 끝 --%>
+
+	<jsp:include page="mypageProfile.jsp" />
 	
 	<%-- 마이페이지 사이드바 & 매안 창 --%>
 	<div class="my_main">
@@ -95,15 +76,32 @@ String ctxPath = request.getContextPath();
 			<!-- 내가 본 영화  -->
 			<div class="my_main_movie">
 			<div class="my_mywatchedmovie_list">
-					<c:if test="${not empty requestScope.watchedMovies}">
+					<c:if test="${not empty requestScope.mymoviewatchedList}">
 						<ul>
-							<c:forEach var="movie" items="${requestScope.watchedMovies}">
-							<li>${movies.POSTER_FILE}</li>
-								<li>영화:${movies.MOVIE_TITLE}</li>
+							<c:forEach var="watched" items="${requestScope.mymoviewatchedList}">
+							<!-- 포스터 이미지 -->
+							<div class="my_main_moviewatchedList_poster">
+								<a
+									href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${watched.svo.fk_seq_movie_no}">
+									<img
+									src="${pageContext.request.contextPath}/images/admin/poster_file/${watched.svo.mvo.poster_file}"
+									alt="${watched.svo.mvo.movie_title}" />
+								</a>
+							</div>
+							
+							<!-- 영화제목, 영화총가격, 관람인원, 관람일자, 관람좌석, 상영관, 매수 -->
+							<div class="moviewatched_details">
+								<h2 class="moviewatched_h2"><a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${watched.svo.fk_seq_movie_no}">${watched.svo.mvo.movie_title}</a> </h2>
+								<ul>
+								<li>${watched.svo.start_time}~${watched.svo.end_time}</li>
+								<li>${watched.svo.fk_screen_no}관/ ${watched.tvo.seat_no_list}</li>
+								<li> ${watched.tvo.seat_count}명</li>
+							</ul>
+							</div>
 							</c:forEach>
 						</ul>
 					</c:if>
-					<c:if test="${empty requestScope.watchedMovies}" >
+					<c:if test="${empty requestScope.mymoviewatchedList}" >
 						<p class="empty">본 영화가 없습니다.</p>
 					</c:if>
 				</div>
