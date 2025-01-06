@@ -186,6 +186,11 @@ function getScreenTime(seq_movie_no1, input_date1, start_time1, fk_screen_no1) {
 				let screen_no = 0;
 				
 				$.each(json, function(index, item){
+					
+					if(screen_no != item.fk_screen_no) {
+						screen_no = item.fk_screen_no;
+						v_html += `<tr class='screen_no'><td class='screen_no_data'>${screen_no}관</td></tr>`;
+					}
 					if(start_time1 == (item.start_time).substr(0,2) + ':' + (item.start_time).substr(2,2) && fk_screen_no1 == item.fk_screen_no) {
 						v_html += `<tr class='time-choice' style='background: black; color: white;'><td class='time_data' 
 											onclick='onScreenClick(this, ${item.start_time},${item.seq_showtime_no},${item.fk_screen_no},"${item.seat_arr}")'>
@@ -199,16 +204,12 @@ function getScreenTime(seq_movie_no1, input_date1, start_time1, fk_screen_no1) {
 						fk_screen_no = item.fk_screen_no;
 					}
 					else {
-						if(screen_no != item.fk_screen_no) {
-							screen_no = item.fk_screen_no;
-							v_html += `<tr class='screen_no'><td class='screen_no_data'>${screen_no}관</td></tr>`;
-						}
-						
 						v_html += `<tr class='time-choice'><td class='time_data' 
 									onclick='onScreenClick(this, ${item.start_time},${item.seq_showtime_no},${item.fk_screen_no},"${item.seat_arr}")'>
 									${(item.start_time).substr(0,2)}:${(item.start_time).substr(2,2)}</td><td>${item.unused_seat}석</td></tr>`;
-						
 					}
+					
+						
 				}); // end of $.each(json, function(index, item)--------------------------------------------------
 				
 						
