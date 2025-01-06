@@ -6,6 +6,9 @@
 <%
 String ctxPath = request.getContextPath();
 %>
+
+<% String userid = (String) session.getAttribute("userid"); %>
+
 <jsp:include page="../header1.jsp" />
 
 <%-- 직접 만든 CSS --%>
@@ -95,18 +98,19 @@ String ctxPath = request.getContextPath();
 							
 							<!-- 영화제목, 영화총가격, 관람인원, 관람일자, 관람좌석, 상영관, 매수 -->
 							<div class="reservation_details">
-								<h2 class="reservation_h2"><a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${reservation.svo.fk_seq_movie_no}">${reservation.svo.mvo.movie_title}</a> <span>${reservation.pay_amount}원</span> </h2>
+								<h2 class="reservation_h2"><a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${reservation.svo.fk_seq_movie_no}" > ${reservation.svo.mvo.movie_title}</a> <span>${reservation.pay_amount}원</span> </h2>
 								<ul>
 								<li><dl><dt>관람일시</dt> <dd class="start_time">${reservation.svo.start_time}</dd></dl></li>
-								<li><dl><dt>관람좌석</dt> <dd> ${reservation.tvo.seat_no_list}</dd></dl></li>
-								<li><dl><dt>상영관</dt> <dd> ${reservation.svo.fk_screen_no}관</dd></dl></li>
-								<li><dl><dt>매수</dt> <dd> ${reservation.tvo.seat_count}매</dd></dl></li>
+								<li><dl><dt>관람좌석</dt> <dd class="seat_no_list"> ${reservation.tvo.seat_no_list}</dd></dl></li>
+								<li><dl><dt>상영관</dt> <dd class="fk_screen_no"> ${reservation.svo.fk_screen_no}관</dd></dl></li>
+								<li><dl><dt>매수</dt> <dd class="seat_count"> ${reservation.tvo.seat_count}매</dd></dl></li>
 							</ul>
 							</div>
 							<!-- 버튼 -->
 							<div class="reservation_actions">
-								<a href="javascript:Receipt_Printing('${(sessionScope.loginuser).userid}','<%=ctxPath%>')">영수증 출력</a>
-								<button type="button" class="Cancel_Reservation" onclick="myreservation_cancel()">예매 취소</button>
+								<button type="button" class="Receipt_Printing"  onclick="Receipt_Printing('${reservation.imp_uid}')">영수증 출력</button>
+								<div id="Receipt_Printing_model"></div>
+								<button type="button" class="Cancel_Reservation" onclick="myreservation_cancel('${reservation.imp_uid}','${reservation.svo.fk_seq_movie_no}', '${sessionScope.loginuser.userid}')">예매 취소</button>
 								<div id="myreservation_cancel_modal"></div>  <!-- 모달을 삽입할 위치 -->
 							</div>	
 									
