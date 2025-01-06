@@ -45,11 +45,11 @@ $(document).ready(function(){
 	// 예약페이지에서 영화를 선택했을 때
 	$("tr.movie-list").click(e => {
 		$("tr.movie-list").removeClass("selected");
-		if($(e.target).attr('class') == 'movie-title') {
+		if($(e.target).hasClass('movie-title')) {
 			$(e.target).parent().addClass("selected");
 			seq_movie_no = $(e.target).parent().find("td#seq_movie_no").text();
 		}
-		else if($(e.target).attr('class') == 'movie_grade_img') {
+		else if($(e.target).hasClass('movie_grade_img')) {
 			$(e.target).parent().parent().addClass("selected");
 			seq_movie_no = $(e.target).parent().parent().find("td#seq_movie_no").text();
 		}

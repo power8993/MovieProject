@@ -32,7 +32,7 @@ div.time {
 }
 
 h3.title {
-	background-color: black;
+	background-color: #333;
 	color: white;
 	text-align: center;
 	padding-top: 10px;
@@ -163,7 +163,7 @@ div#numberOfPeople label {
 }
 
 .selected {
-	background-color: black;
+	background-color: #333;
 	color: white;
 	border-style: double;
 }
@@ -174,7 +174,7 @@ img.movie_grade_img {
 
 td.time_data {
 	border: solid 1px #d6d3ce;
-	padding: 1px;
+	padding: 3px;
 	font-weight: bold;
 }
 
