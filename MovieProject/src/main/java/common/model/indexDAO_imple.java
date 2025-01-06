@@ -125,12 +125,13 @@ public class indexDAO_imple implements indexDAO{
 		try {
 			conn = ds.getConnection();
 
-			String sql = " SELECT SEQ_SHOWTIME_NO, SEQ_MOVIE_NO, MOVIE_TITLE, POSTER_FILE "
+			String sql = " SELECT SEQ_SHOWTIME_NO, SEQ_MOVIE_NO, MOVIE_TITLE, POSTER_FILE,MOVIE_GRADE "
 					+ " FROM ( "
 					+ "    SELECT DISTINCT S.SEQ_SHOWTIME_NO, "
 					+ "           M.SEQ_MOVIE_NO, "
 					+ "           M.MOVIE_TITLE, "
-					+ "           M.POSTER_FILE, "
+					+ "           M.POSTER_FILE,"
+					+ "			  M.MOVIE_GRADE, "
 					+ "           COUNT(P.IMP_UID) AS BOOKING_COUNT, "
 					+ "           ROW_NUMBER() OVER (ORDER BY COUNT(P.IMP_UID) DESC) AS RN "
 					+ "    FROM TBL_MOVIE M "
@@ -138,7 +139,7 @@ public class indexDAO_imple implements indexDAO{
 					+ "      ON M.SEQ_MOVIE_NO = S.FK_SEQ_MOVIE_NO "
 					+ "    LEFT JOIN TBL_PAYMENT P "
 					+ "      ON S.SEQ_SHOWTIME_NO = P.FK_SEQ_SHOWTIME_NO "
-					+ "    GROUP BY S.SEQ_SHOWTIME_NO, M.SEQ_MOVIE_NO, M.MOVIE_TITLE, M.POSTER_FILE "
+					+ "    GROUP BY S.SEQ_SHOWTIME_NO, M.SEQ_MOVIE_NO, M.MOVIE_TITLE, M.POSTER_FILE,M.MOVIE_GRADE "
 					+ " ) "
 					+ " WHERE RN > 0 AND RN <= 5 ";
 
@@ -151,6 +152,7 @@ public class indexDAO_imple implements indexDAO{
 				MovieVO.setSeq_movie_no(rs.getInt("seq_movie_no"));
 				MovieVO.setMovie_title(rs.getString("MOVIE_TITLE"));
 				MovieVO.setPoster_file(rs.getString("POSTER_FILE"));
+				MovieVO.setMovie_grade(rs.getString("MOVIE_GRADE"));
 				
 				ShowtimeVO ShowtimeVO = new ShowtimeVO();
 				ShowtimeVO.setSeq_showtime_no(rs.getInt("SEQ_SHOWTIME_NO")); //ShowtimeVO에 '상영중인영화번호'를 삽입

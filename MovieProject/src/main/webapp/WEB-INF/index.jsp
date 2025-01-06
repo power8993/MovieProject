@@ -68,7 +68,7 @@
 										</div>
 									</form>
                                 </div>
-								<p class="movieTitle">${movie.movie_title}</p>
+								<p class="movieTitle">${movie.movie_title}${movie.movie_grade}</p>
                             </div>
 							</c:forEach>
                             
