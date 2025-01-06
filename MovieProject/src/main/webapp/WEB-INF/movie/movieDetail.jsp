@@ -409,7 +409,7 @@
         <div class="movie-details" style="margin: 0 15px">
             <div class="movie-title" style="color:#eb5e28;"><img src="<%= ctxPath%>/images/admin/movie_grade/${mvo.movie_grade}.png" alt="${mvo.movie_grade}" style="width:35px; height:auto; margin-right: 10px; margin-bottom: 10px;">${mvo.movie_title} </div>
             <div class="movie-info">
-                <div style="border-bottom: solid 2px #ccc5b9; padding-bottom: 10px; width: 100%;"><strong>예매율:</strong> 0%</div>             
+                <div style="border-bottom: solid 2px #ccc5b9; padding-bottom: 10px; width: 100%;"><strong>예매율:</strong> <%= request.getParameter("bookingRate")%>%</div>             
                 <div style="width: 20%;"><strong>감독:</strong> ${mvo.director}</div>
                 <div style="width: 75%;"><strong>배우:</strong> ${mvo.actor}</div>
                 <div style="width: 20%;"><strong>장르:</strong> ${mvo.cvo.category}</div>         
