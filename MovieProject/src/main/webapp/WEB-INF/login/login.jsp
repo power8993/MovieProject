@@ -40,36 +40,38 @@
 
 	<%-- === 로그인을 하기 위한 폼을 생성 === --%>
 	<div id="form_container">
-		<form name="loginFrm" ><%--action="<%=ctx_Path%>/login/login.mp" method="post" --%>
-	
-			<div id="inputIdPW">
-				<div id="logo">LOGO</div>
-	
-				<table id="loginTbl">
-					<tr>
-						<td>아이디</td>
-						<td><input type="text" name="userid" class="inputIdPw" id="loginUserid"  placeholder="아이디를 입력하세요" autocomplete="off" />
-						</td>
-					</tr>
-					<tr >
-						<td style="padding-top:20px;">비밀번호</td>
-						<td style="padding-top:20px;">
-							<input type="password" name="pwd" class="inputIdPw" id="loginPwd" placeholder="비밀번호를 입력하세요" />
-					</td>
-					</tr>
-					<tr>
-						<td style="text-align:left; border:none;"><input type="checkbox" id="saveid"/>&nbsp;<label for="saveid">아이디저장</label> </td>
-						
-					</tr>
-				</table>
-					
-				<div id="login_error" style="color:red; font-size:14px;"></div>
-			
-			
+	<form name="loginFrm">
+		<%--action="<%=ctx_Path%>/login/login.mp" method="post" --%>
+
+		<div id="inputIdPW">
+			<div id="semiLogo"><a href="<%= ctx_Path%>/"><img src="<%= ctx_Path%>/images/index/logo.png"/></a></div>
+
+			<div class="form-group">
+				<div class="form-floating-label">
+					<input type="text" class="form-control" id="loginUserid" name="userid" placeholder=" " autocomplete="off" /> 
+					<label for="loginUserid">아이디</label>
+				</div>
+				<div id="idErrorMsg"></div>
+			</div>
+
+			<div class="form-group">
+				<div class="form-floating-label">
+					<input type="password" class="form-control" id="loginPwd" name="pwd" placeholder=" " /> 
+					<label for="loginPwd">비밀번호</label>
+				</div>
+				<div id="pwdErrorMsg"></div>
+				<div id="login_error"></div>
+			</div>
+
+			<div class="form-check custom-checkbox">
+				<input type="checkbox" id="saveid" /> 
+				<label class="form-check-label" for="saveid">아이디 저장</label>
+			</div>
+
 			<button type="button" class="loginjspBtn" id="btnSubmit">로그인</button>
-		</form>
-		
-		<div style="width: 350px; margin: 0 auto;">
+	</form>
+
+	<div style="width: 350px; margin: 0 auto;">
 		    <div id="buttonContainer">
 				<form action="<%=request.getContextPath()%>/login/idpwFind.mp" method="get">
 					<button type="submit" class="loginjspBtn" id="findIdBtn" name="action" value="findId">아이디 찾기</button>

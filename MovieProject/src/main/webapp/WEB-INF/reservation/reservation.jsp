@@ -8,7 +8,7 @@
 	String seq_movie_no = request.getParameter("seq_movie_no");
 	String start_date = request.getParameter("start_date");
 	String start_time = request.getParameter("start_time");
-	String fk_screen_no = request.getParameter("fk_screen_no");
+	String fk_screen_no = request.getParameter("screen_no");
 %>
 
 

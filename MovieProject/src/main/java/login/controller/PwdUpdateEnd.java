@@ -33,6 +33,7 @@ public class PwdUpdateEnd extends AbstractController {
 			
 			Map<String, String> paraMap = new HashMap<>();
 			paraMap.put("userid", userid);
+			System.out.println(userid);
 			paraMap.put("new_pwd", new_pwd);
 			
 			n = 0;
