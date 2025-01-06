@@ -11,6 +11,7 @@ label.info_text {
 	font-weight: bold;
 }
 
+/* 상단에서 필수기재사항과 한 라인에 위치하도록  */
 div.movie_header {
 	display: flex;
 	justify-content: space-between; 
@@ -55,6 +56,7 @@ span.star {
   	/* align-items: center; */
   	margin-bottom: 5px;
 }
+
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*#################*/
 /*   감독/배우 태그   */
@@ -123,7 +125,7 @@ input:disabled {
 /*#################*/
 /*   등록/취소 버튼   */
 /*#################*/
-button#resister_btn {
+button#edit_btn {
     background-color: #EB5E28;
     color: white;
    	border: none;
@@ -135,7 +137,7 @@ button#resister_btn {
 }
 
 button#reset_btn {
-    background-color: #CCC5B9;
+    background-color: #403D39;
     color: white;
    	border: none;
    	margin-right: 2%;

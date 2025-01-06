@@ -105,7 +105,7 @@
                             <div class="movie-card position-relative">
                                 <div class="rank">No. ${status.index + 1}</div>
                                 <div class="poster">
-                                    <a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}">
+                                    <a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}&bookingRate=${movie.bookingRate}">
                                         <img src="${movie.poster_file}" alt="${movie.movie_title}">
                                     </a>
                                 </div>

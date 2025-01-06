@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -12,6 +15,7 @@ import javax.sql.DataSource;
 
 import member.domain.MemberVO;
 import movie.domain.CategoryVO;
+import movie.domain.MovieReviewVO;
 import movie.domain.MovieVO_wonjae;
 
 public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
@@ -66,10 +70,10 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 			conn = ds.getConnection();
 
 			// 공지사항 번호(seq_notice_no)를 기준으로 상세 정보를 조회
-			String sql = " select seq_movie_no, movie_title, director, actor, running_time, start_date, content, category, poster_file "
+			String sql = " select seq_movie_no, movie_title, director, actor, running_time, start_date, content, category, poster_file, movie_grade, video_url "
 					+ " from "
 					+ " ( "
-					+ " select movie_title, director, actor, running_time, start_date, content, poster_file, seq_movie_no "
+					+ " select movie_title, director, actor, running_time, start_date, content, poster_file, seq_movie_no, movie_grade, video_url "
 					+ " from tbl_movie "
 					+ " ) m, "
 					+ " ( "
@@ -93,6 +97,8 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 				mvo.setStart_date(rs.getString("start_date"));
 				mvo.setContent(rs.getString("content").replace("\r\n","<br>"));		
 				mvo.setPoster_file(rs.getString("poster_file"));
+				mvo.setMovie_grade(rs.getString("movie_grade"));
+				mvo.setVideo_url(rs.getString("video_url"));
 				
 				CategoryVO cvo = new CategoryVO();
 				cvo.setCategory(rs.getString("category"));
@@ -105,6 +111,7 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 		return mvo;
 	} // end of movieDetail
 
+	// 영화에 좋아요 추가
 	@Override
 	public boolean insertMovieLike(MemberVO loginuser, int seq_movie_no) throws SQLException {
 	    boolean result = false;
@@ -129,6 +136,7 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 	    return result;
 	}
 
+	// 좋아요가 이미 체크되어있는지확인
 	@Override
 	public boolean removeMovieLike(MemberVO loginuser, int seq_movie_no) throws SQLException {
 	    boolean result = false;
@@ -151,6 +159,7 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 	    return result;
 	}
 
+	// 현재 영화에 대해 사용자가 좋아요를 눌렀는지 확인
 	@Override
 	public boolean checkMovieLike(MemberVO loginuser, int seq_movie_no) throws SQLException {
 	    boolean isLiked = false;
@@ -178,13 +187,222 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 	    return isLiked;
 	}
 
+	// 로그인된 사용자라면 결제 여부를 확인
+	@Override
+	public boolean checkuserpay(MemberVO loginuser, int seq_movie_no) throws SQLException {
+		boolean isPaid = false;
+
+		try {
+			conn = ds.getConnection();
+
+			String sql = " select p.pay_status, m.user_id, s.fk_seq_movie_no "
+					   + " from "
+					   + " tbl_member m join tbl_payment p on p.fk_user_id = m.user_id "
+					   + " join "
+					   + " tbl_showtime s on p.fk_seq_showtime_no = s.seq_showtime_no "
+					   + " where s.fk_seq_movie_no = ? and m.user_id = ? and p.pay_status = '결제 완료' ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, seq_movie_no);
+			pstmt.setString(2, loginuser.getUserid());
+
+			rs = pstmt.executeQuery();
+			
+			// 결과가 있으면 결제 완료 상태이므로 isPaid = true
+            if (rs.next()) {
+                isPaid = true;
+            }
+			
+		} finally {
+			close();
+		}
+
+		return isPaid;
+	} // end of checkuserpay
+
+	@Override
+	public MovieReviewVO submitReview(int seq_movie_no, MemberVO loginuser, int rating, String review) throws SQLException {
+	    MovieReviewVO mrvo = null; // 결과를 담을 변수
+
+	    try {
+	        conn = ds.getConnection();
+
+	        String sql = "insert into tbl_review (seq_review_no, fk_seq_movie_no, fk_user_id, movie_rating, review_content, review_write_date) "
+	                   + "values (seq_review_no.nextval, ?, ?, ?, ?, sysdate)";
+
+	        pstmt = conn.prepareStatement(sql);
+
+	        pstmt.setInt(1, seq_movie_no);  // FK_SEQ_MOVIE_NO: 영화 번호
+	        pstmt.setString(2, loginuser.getUserid());  // FK_USER_ID: 사용자 ID
+	        pstmt.setInt(3, rating);  // MOVIE_RATING: 별점
+	        pstmt.setString(4, review);  // REVIEW_CONTENT: 리뷰 내용
+
+	        int n = pstmt.executeUpdate(); // 리뷰 저장
+
+	        if (n == 1) {
+	            // 리뷰가 성공적으로 저장되었으면, MovieReviewVO 객체를 생성하여 값 세팅
+	        	sql = " select fk_seq_movie_no, fk_user_id, movie_rating, review_content, review_write_date "
+						   + " from tbl_review "
+						   + " where fk_seq_movie_no = ? "
+						   + " order by review_write_date desc ";
+	            pstmt = conn.prepareStatement(sql);
+	            pstmt.setInt(1, seq_movie_no);
+	            rs = pstmt.executeQuery();
+
+	            if (rs.next()) {
+	                mrvo = new MovieReviewVO();
+	                mrvo.setFk_seq_movie_no(rs.getInt("fk_seq_movie_no"));
+	                mrvo.setFk_user_id(rs.getString("fk_user_id"));
+	                mrvo.setMovie_rating(rs.getInt("movie_rating"));
+	                mrvo.setReview_content(rs.getString("review_content"));
+	                mrvo.setReview_write_date(rs.getString("review_write_date"));
+	            }
+	        }
+	    } finally {
+	        close();
+	    }
+
+	    return mrvo;  // 저장한 리뷰를 반환
+	}
+
+
+	// 리뷰조회
+	@Override
+	public List<MovieReviewVO> reviewDetail(int seq_movie_no) throws SQLException {
+		List<MovieReviewVO> mrList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+
+			// 공지사항 번호(seq_notice_no)를 기준으로 상세 정보를 조회
+			String sql = " select fk_seq_movie_no, fk_user_id, movie_rating, review_content, review_write_date "
+					   + " from tbl_review "
+					   + " where fk_seq_movie_no = ? "
+					   + " order by review_write_date desc ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, seq_movie_no);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				MovieReviewVO mrvo = new MovieReviewVO();
+				mrvo.setFk_seq_movie_no(rs.getInt("fk_seq_movie_no"));
+				mrvo.setFk_user_id(rs.getString("fk_user_id"));
+				mrvo.setMovie_rating(rs.getInt("movie_rating"));
+				mrvo.setReview_content(rs.getString("review_content"));
+				mrvo.setReview_write_date(rs.getString("review_write_date"));
+				
+				mrList.add(mrvo);
+			}			
+		} finally {
+			close();
+		}
+		return mrList;
+	}
+
+	// 전체 페이지 수 계산 (리뷰 개수 기반)
+	@Override
+	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+	    int totalPage = 0;
+	    
+	    try {
+	        conn = ds.getConnection();
+	        
+	        String sql = "SELECT CEIL(COUNT(*)/?) FROM tbl_review WHERE fk_seq_movie_no = ? ";
+	        
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage")));  // 한 페이지에 표시할 리뷰 수
+	        pstmt.setString(2, paraMap.get("fk_seq_movie_no"));  // 영화 번호
+	        
+	        rs = pstmt.executeQuery();
+	        
+	        rs.next();
+			
+			totalPage = rs.getInt(1);
+			
+	    } finally {
+	        close();
+	    }
+	    
+	    return totalPage;
+	}
+
+	// 리뷰 개수 반환 (영화별)
+	@Override
+	public int getTotalMovieReviewsCount(Map<String, String> paraMap) throws SQLException {
+	    int totalMovieCount = 0;
+
+	    try {
+	        conn = ds.getConnection();
+
+	        String sql = " select count(*) "
+	        		   + " from tbl_review "
+	        		   + " where fk_seq_movie_no = ? "; // 영화 번호로 필터링
+	        
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, paraMap.get("fk_seq_movie_no"));  // 영화 번호
+
+	        rs = pstmt.executeQuery();
+
+	        rs.next();
+
+	        totalMovieCount = rs.getInt(1);
+	        
+	    } finally {
+	        close();
+	    }
+
+	    return totalMovieCount;
+	}
+
+	// 리뷰 목록보여주는 함수
+	@Override
+	public List<MovieReviewVO> selectReview(Map<String, String> paraMap) throws SQLException {
+		List<MovieReviewVO> reviews = new ArrayList<>();
+	    
+	    try {
+	        conn = ds.getConnection();
+	                	        	        
+	        // 영화 리뷰를 가져오는 SQL 쿼리
+	        String sql = " select rno, seq_review_no, review_content, review_write_date "
+	        		   + " from  (select rownum as rno, seq_review_no, review_content, review_write_date "
+	        		   + " from (select seq_review_no, review_content, review_write_date "
+	        		   + " from tbl_review "
+	        		   + " where fk_seq_movie_no = ? "
+	        		   + " order by seq_review_no desc) v ) t "
+	        		   + " where t.rno between ? and ? ";
+	        
+	        pstmt = conn.prepareStatement(sql);
+	       
+	        int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
+			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
+	        
+			pstmt.setString(1, paraMap.get("fk_seq_movie_no"));
+			pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage -1));
+			pstmt.setInt(3, (currentShowPageNo * sizePerPage));
+			
+	        rs = pstmt.executeQuery();
+	        
+	        while(rs.next()) {
+	        	
+	        	MovieReviewVO mrvo = new MovieReviewVO();
+	        	mrvo.setSeq_review_no(rs.getInt("seq_review_no"));  // 리뷰 번호
+	            mrvo.setReview_content(rs.getString("review_content"));  // 리뷰 내용
+	            mrvo.setReview_write_date(rs.getString("review_write_date"));  // 작성일
+	            
+	            reviews.add(mrvo);
+	        }
+	    } finally {
+	        close();
+	    }
+	    return reviews;
+	}
+
 	
 
 	
-	
 
-	
-	
 	
 }
 

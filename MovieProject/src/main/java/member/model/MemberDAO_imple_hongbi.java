@@ -148,7 +148,7 @@ public class MemberDAO_imple_hongbi implements MemberDAO_hongbi {
 			if("email".equals(search_type)) {
 				search_word = aes.encrypt(search_word);
 			}
-			
+
 			if(!search_type.isBlank() && !search_word.isBlank()) {
 				// 검색유형 + 검색어
 				sql += " and "+ search_type +" like '%'||?||'%' ";

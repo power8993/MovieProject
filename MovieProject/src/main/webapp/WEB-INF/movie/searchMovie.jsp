@@ -119,7 +119,7 @@
             <c:if test="${movies != null && not empty movies}">
                 <c:forEach var="movie" items="${movies}" varStatus="status">
                     <div class="col-md-4 mb-4 movie-card-container ${status.index >= 15 ? 'hidden' : ''}">
-                        <a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}">
+                        <a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}&bookingRate=${movie.bookingRate}">
                             <div class="movie-card position-relative">                                    
                                 <div class="poster">
                                     <img src="${movie.poster_file}" alt="${movie.movie_title}">                                   

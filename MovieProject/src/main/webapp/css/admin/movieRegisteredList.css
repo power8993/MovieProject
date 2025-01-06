@@ -39,11 +39,15 @@ form#movie_list {
 	margin-bottom: 4%;
 }
 
+/* 버튼 공통 */
+div.btn_container {
+	display: flex;
+}
+
 /* 최신순/등록순 */
 span.re_orderby {
 	border: solid 0px red;
 	border-radius: 10%;
-	height: 10px;
 	padding: 4px;
 	
 	background-color: #CCC5B9;
@@ -66,15 +70,52 @@ span.re_orderby:hover {
     background-color: #403D39;  
     color: white;
 }
-        
+
+/* 상영작/미상영작 */
+span#invalid_movie {
+	border: solid 0px red;
+	margin-left: auto;
+	border-radius: 10%;
+	padding-top: 4px;
+	padding-right: 5px;
+	padding-left: 5px;	
+	width: 75px;
+	text-align: center;
+	
+	background-color: #403D39;
+	color: white;
+}
+
+span#invalid_movie:hover {
+	cursor: pointer;
+}
+
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*############*/
 /*   검색결과   */
 /*############*/
 
+/* 테이블 공통 */
 table#movie_table {
 	margin-top: 10px;
+	border-radius: 10%;
+	
+	border-collapse: separate; /* 테이블 셀 사이를 분리하도록 설정 */
+    border-spacing: 0; /* 셀 간의 간격을 0으로 설정 */
+    border-radius: 5px; /* 테이블의 둥근 모서리 설정 */
+    overflow: hidden; /* 둥근 모서리가 잘리지 않도록 */
 }
+
+table#movie_table td, 
+table#movie_table th {
+    border-left: none;  /* 왼쪽 세로선 제거 */
+    border-right: none; /* 오른쪽 세로선 제거 */
+}
+
+table#movie_table th {
+    border: none;
+}
+
 
 /* 테이블 헤더 */
 div#search_result > table > thead > tr {
@@ -82,6 +123,10 @@ div#search_result > table > thead > tr {
 	background-color: #403D39;
 	color: white;
 	font-size: 10pt;
+}
+
+div#search_result > table > thead > tr > th{ 
+	vertical-align: middle;
 }
 
 /* 테이블 바디 */

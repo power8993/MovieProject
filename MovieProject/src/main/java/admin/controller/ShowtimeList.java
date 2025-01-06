@@ -27,6 +27,7 @@ public class ShowtimeList extends AbstractController {
 			String search_time = request.getParameter("search_time");
 			String search_movie_title = request.getParameter("search_movie_title");
 			String search_orderby = request.getParameter("search_orderby");
+			String invalid_showtime = request.getParameter("invalid_showtime");
 			String size_per_page = request.getParameter("size_per_page");
 			String current_showpage_no = request.getParameter("current_showpage_no"); // 현재 내가 보고자하는 페이지
 			
@@ -47,6 +48,11 @@ public class ShowtimeList extends AbstractController {
 			if(search_orderby == null ||
 			  (!"asc".equals(search_orderby)) && (!"desc".equals(search_orderby))) {
 				search_orderby = "asc";
+			}
+			
+			if(invalid_showtime == null ||
+			  (!"상영예정작".equals(invalid_showtime)) && (!"상영종료작".equals(invalid_showtime))) {
+				invalid_showtime = "상영예정작";
 			}
 			
 			if(size_per_page == null||
@@ -88,6 +94,7 @@ public class ShowtimeList extends AbstractController {
 			paraMap.put("search_time_2", search_time_2);
 			paraMap.put("search_movie_title", search_movie_title);
 			paraMap.put("search_orderby", search_orderby);
+			paraMap.put("invalid_showtime", invalid_showtime);
 			paraMap.put("size_per_page", size_per_page); 			  // 한 페이지당 보여줄 행의 개수
 			paraMap.put("current_showpage_no", current_showpage_no);  // 현재 내가 보고자하는 페이지
 			
@@ -122,10 +129,10 @@ public class ShowtimeList extends AbstractController {
 			int page_no = ( (Integer.parseInt(current_showpage_no) - 1)/block_size ) * block_size + 1; 
 			
 			// [맨처음][이전] 만들기
-			page_bar += "<li class='page-item'><a class='page-link' href='showtimeList.mp?search_date="+search_date+"&search_time="+search_time+"&search_movie_title="+search_movie_title+"&size_per_page="+size_per_page+"&current_showpage_no=1'>[맨처음]</a></li>";
+			page_bar += "<li class='page-item'><a class='page-link' href='showtimeList.mp?search_date="+search_date+"&search_time="+search_time+"&search_movie_title="+search_movie_title+"&invalid_showtime="+invalid_showtime+"&size_per_page="+size_per_page+"&current_showpage_no=1'>[맨처음]</a></li>";
 			
 			if(page_no != 1) {
-				page_bar += "<li class='page-item'><a class='page-link' href='showtimeList.mp?search_date="+search_date+"&search_time="+search_time+"&search_movie_title="+search_movie_title+"&size_per_page="+size_per_page+"&current_showpage_no="+(page_no-1)+"'>[맨처음]</a></li>";
+				page_bar += "<li class='page-item'><a class='page-link' href='showtimeList.mp?search_date="+search_date+"&search_time="+search_time+"&search_movie_title="+search_movie_title+"&invalid_showtime="+invalid_showtime+"&size_per_page="+size_per_page+"&current_showpage_no="+(page_no-1)+"'>[맨처음]</a></li>";
 	        }
 			
 			while( !(loop > block_size || page_no > total_page)) {
@@ -133,7 +140,7 @@ public class ShowtimeList extends AbstractController {
 		       		page_bar += "<li class='page-item active'><a class='page-link' href='#'>"+page_no+"</a></li>";
 		       	}
 		       	else {
-		       		page_bar += "<li class='page-item'><a class='page-link' href='showtimeList.mp?search_date="+search_date+"&search_time="+search_time+"&search_movie_title="+search_movie_title+"&size_per_page="+size_per_page+"&current_showpage_no="+page_no+"&search_orderby="+search_orderby+"'>"+page_no+"</a></li>";
+		       		page_bar += "<li class='page-item'><a class='page-link' href='showtimeList.mp?search_date="+search_date+"&search_time="+search_time+"&search_movie_title="+search_movie_title+"&invalid_showtime="+invalid_showtime+"&size_per_page="+size_per_page+"&current_showpage_no="+page_no+"&search_orderby="+search_orderby+"'>"+page_no+"</a></li>";
 		       	}
 		       	loop++;
 		       	
@@ -142,10 +149,10 @@ public class ShowtimeList extends AbstractController {
 	       
 			// [다음][마지막] 만들기
 			if(page_no <= total_page) {	
-				page_bar += "<li class='page-item'><a class='page-link' href='showtimeList.mp?search_date="+search_date+"&search_time="+search_time+"&search_movie_title="+search_movie_title+"&size_per_page="+size_per_page+"&current_showpage_no="+page_no+"'>[다음]</a></li>";
+				page_bar += "<li class='page-item'><a class='page-link' href='showtimeList.mp?search_date="+search_date+"&search_time="+search_time+"&search_movie_title="+search_movie_title+"&invalid_showtime="+invalid_showtime+"&size_per_page="+size_per_page+"&current_showpage_no="+page_no+"'>[다음]</a></li>";
 	        }
 	        
-			page_bar += "<li class='page-item'><a class='page-link' href='showtimeList.mp?search_date="+search_date+"&search_time="+search_time+"&search_movie_title="+search_movie_title+"&size_per_page="+size_per_page+"&current_showpage_no="+total_page+"'>[마지막]</a></li>";
+			page_bar += "<li class='page-item'><a class='page-link' href='showtimeList.mp?search_date="+search_date+"&search_time="+search_time+"&search_movie_title="+search_movie_title+"&invalid_showtime="+invalid_showtime+"&size_per_page="+size_per_page+"&current_showpage_no="+total_page+"'>[마지막]</a></li>";
 			
 			
 			try {
@@ -158,6 +165,7 @@ public class ShowtimeList extends AbstractController {
 				request.setAttribute("search_time", search_time);
 				request.setAttribute("search_movie_title", search_movie_title);
 				request.setAttribute("search_orderby", search_orderby);
+				request.setAttribute("invalid_showtime", invalid_showtime);
 				
 				request.setAttribute("size_per_page", size_per_page);
 				request.setAttribute("page_bar", page_bar);

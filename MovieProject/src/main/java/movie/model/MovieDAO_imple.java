@@ -102,10 +102,11 @@ public class MovieDAO_imple implements MovieDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select poster_file, movie_title, c.category, movie_grade, to_char(register_date, 'yyyy-mm-dd') as register_date "
+			String sql = " select poster_file, case when length(movie_title) > 23 then substr(movie_title,1,20) || ' ...' else movie_title end as movie_title, c.category, movie_grade, to_char(register_date, 'yyyy-mm-dd') as register_date "
 					   + " from tbl_movie m join tbl_category c "
 					   + " on(m.fk_category_code = c.category_code) "
-					   + " where movie_title like ? ";
+					   + " where movie_status = 1 "
+					   + " and movie_title like ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -275,7 +276,7 @@ public class MovieDAO_imple implements MovieDAO {
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, seq);
-			
+
 			rs = pstmt.executeQuery();
 			
 			if(rs.next()) {
@@ -364,7 +365,8 @@ public class MovieDAO_imple implements MovieDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " delete from tbl_movie where seq_movie_no = ? ";
+			String sql = " update tbl_movie set movie_status = 0 "
+					   + " where seq_movie_no = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -378,7 +380,7 @@ public class MovieDAO_imple implements MovieDAO {
 		
 		return result;
 	}// end of public int deleteMovie(String seq) throws SQLException {}-----------------------------
-
+	
 
 	
 	// 상영일정을 등록해주는 메소드(tbl_showtime 테이블에 insert)
@@ -386,7 +388,7 @@ public class MovieDAO_imple implements MovieDAO {
 	public int registerShowtime(MovieVO mvvo) throws SQLException {
 		int result = 0;
 		
-		String seat_arr = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
+		String seat_arr = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0";
 		
 		try {
 			conn = ds.getConnection();
@@ -428,67 +430,62 @@ public class MovieDAO_imple implements MovieDAO {
 			conn = ds.getConnection();
 			
 			String sql = " with "
-	                   + " m as ( "
-	                   + "     select seq_movie_no, "
-	                   + "            c.category, "
-	                   + "            movie_title, "
-	                   + "            movie_grade, "
-	                   + "            running_time, "
-	                   + "            to_char(start_date, 'yyyy-mm-dd') as start_date, "
-	                   + "            to_char(end_date, 'yyyy-mm-dd') as end_date, "
-	                   + "            poster_file "
-	                   + "     from tbl_movie m "
-	                   + "     join tbl_category c on m.fk_category_code = c.category_code "
-	                   + " ), "
-	                   + " s as ( "
-	                   + "     select fk_seq_movie_no, "
-	                   + "            seq_showtime_no, "
-	                   + "            sc.screen_no, "
-	                   + "            to_char(start_time, 'yyyy-mm-dd hh24:mi:ss') as start_time, "
-	                   + "            to_char(end_time, 'yyyy-mm-dd hh24:mi:ss') as end_time "
-	                   + "     from tbl_showtime s "
-	                   + "     join tbl_screen sc on s.fk_screen_no = sc.screen_no "
-	                   + " ) "
-	                   + " select m.poster_file, "
-	                   + "        m.movie_title, "
-	                   + "        m.movie_grade, "
-	                   + "        m.category, "
-	                   + "        s.screen_no, "
-	                   + "        m.running_time, "
-	                   + "        s.start_time, "
-	                   + "        s.end_time "
-	                   + " from m "
-	                   + " join s on m.seq_movie_no = s.fk_seq_movie_no "
-	                   + " where s.screen_no = ? "
-	                   + " and ( "
-	                   + "    -- 시작 시간과 종료 시간이 입력 시간에 10분 간격을 더한 범위에 포함 "
-	                   + "    (s.start_time <= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') + INTERVAL '9' MINUTE "
-	                   + "     and s.end_time >= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') - INTERVAL '9' MINUTE) "
-	                   + "    or "
-	                   + "    -- 상영이 입력된 시간 범위 내에서 시작하는지 여부 "
-	                   + "    (s.start_time >= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') - INTERVAL '9' MINUTE "
-	                   + "     and s.start_time <= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') + INTERVAL '9' MINUTE) "
-	                   + "    or "
-	                   + "    -- 상영이 입력된 시간 범위 내에서 종료하는지 여부 "
-	                   + "    (s.end_time >= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') - INTERVAL '9' MINUTE "
-	                   + "     and s.end_time <= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') + INTERVAL '9' MINUTE) "
-	                   + ") ";	
+		               + " m as ( "
+		               + "     select seq_movie_no, "
+		               + "            c.category, "
+		               + "            movie_title, "
+		               + "            movie_grade, "
+		               + "            running_time, "
+		               + "            to_char(start_date, 'yyyy-mm-dd') as start_date, "
+		               + "            to_char(end_date, 'yyyy-mm-dd') as end_date, "
+		               + "            poster_file "
+		               + "     from tbl_movie m "
+		               + "     join tbl_category c on m.fk_category_code = c.category_code "
+		               + " ), "
+		               + " s as ( "
+		               + "     select fk_seq_movie_no, "
+		               + "            seq_showtime_no, "
+		               + "            sc.screen_no, "
+		               + "            to_char(start_time, 'yyyy-mm-dd hh24:mi:ss') as start_time, "
+		               + "            to_char(end_time, 'yyyy-mm-dd hh24:mi:ss') as end_time "
+		               + "     from tbl_showtime s "
+		               + "     join tbl_screen sc on s.fk_screen_no = sc.screen_no "
+		               + " ) "
+		               + " select m.poster_file, "
+		               + "        case when length(m.movie_title) > 23 then substr(m.movie_title,1,20) || ' ...' else movie_title end as movie_title, "
+		               + "        m.movie_grade, "
+		               + "        m.category, "
+		               + "        s.screen_no, "
+		               + "        m.running_time, "
+		               + "        s.start_time, "
+		               + "        s.end_time "
+		               + " from m "
+		               + " join s on m.seq_movie_no = s.fk_seq_movie_no "
+		               + " where s.screen_no = ? "
+		               + " and ( "
+		               + "    (s.start_time <= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') + INTERVAL '9' MINUTE "
+		               + "     and s.end_time >= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') - INTERVAL '9' MINUTE) "
+		               + "    or "
+		               + "    (s.start_time >= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') - INTERVAL '9' MINUTE "
+		               + "     and s.start_time <= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') + INTERVAL '9' MINUTE) "
+		               + "    or "
+		               + "    (s.end_time >= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') - INTERVAL '9' MINUTE "
+		               + "     and s.end_time <= to_timestamp(replace(?, 'T', ' '), 'yyyy-mm-dd hh24:mi:ss') + INTERVAL '9' MINUTE) "
+		               + ") ";
 
-	        pstmt = conn.prepareStatement(sql);
-	        
-	        // 시간값을 적절히 포맷
-	        String start_time_str = paraMap.get("start_time").replace("T", " "); // T를 공백으로 변경
-	        String end_time_str = paraMap.get("end_time").replace("T", " "); // T를 공백으로 변경
-	        
-
-			pstmt.setString(1, paraMap.get("screen_no"));
-			pstmt.setString(2, start_time_str); 
+			pstmt = conn.prepareStatement(sql);
+	
+			String start_time_str = paraMap.get("start_time").replace("T", " ") + ":00"; // T를 공백으로 변경
+			String end_time_str = paraMap.get("end_time").replace("T", " ") + ":00"; // T를 공백으로 변경
+	
+			pstmt.setString(1, paraMap.get("screen_no")); 
+			pstmt.setString(2, start_time_str);
 			pstmt.setString(3, end_time_str);
-			pstmt.setString(4, start_time_str); 
-			pstmt.setString(5, end_time_str); 
-			pstmt.setString(6, start_time_str); 
-			pstmt.setString(7, end_time_str); 
-			
+			pstmt.setString(4, start_time_str);
+			pstmt.setString(5, end_time_str);
+			pstmt.setString(6, start_time_str);
+			pstmt.setString(7, end_time_str);
+
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -599,6 +596,7 @@ public class MovieDAO_imple implements MovieDAO {
 			String search_category = paraMap.get("search_category");
 			String search_type = paraMap.get("search_type");
 			String search_word = paraMap.get("search_word");
+			String invalid_movie = paraMap.get("invalid_movie");
 			
 			if(!search_category.isBlank() && search_type.isBlank() && search_word.isBlank()) {
 				// 장르
@@ -614,6 +612,27 @@ public class MovieDAO_imple implements MovieDAO {
 					 + " and " + search_type + " like '%'|| ? ||'%'";
 			}
 			
+			if(search_category.isBlank() && search_type.isBlank() && search_word.isBlank()) {
+				// 처음 보이는 페이지와 같이 모두 빈 값이라면
+				
+				if("상영작".equals(invalid_movie)) {
+					sql += " where start_date <= current_date and end_date >= current_date ";
+				}
+				else if ("미상영작".equals(invalid_movie)){
+					sql += " where (end_date < current_date or start_date > current_date or start_date is null or end_date is null) ";
+				}
+			}
+			else {
+				// 값이 비어있지 않다면
+				if("상영작".equals(invalid_movie)) {
+					sql += " and start_date <= current_date and end_date >= current_date ";
+				}
+				else if ("미상영작".equals(invalid_movie)){
+					sql += " and (end_date < current_date or start_date > current_date or start_date is null or end_date is null) ";
+				}
+				
+			}
+
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setInt(1, Integer.parseInt(paraMap.get("size_per_page")));
@@ -644,7 +663,7 @@ public class MovieDAO_imple implements MovieDAO {
 		}
 		
 		return total_page;
-	}// end of public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+	}// end of public int getTotalPage(Map<String, String> paraMap) throws SQLException {}---------------------------------------------------
 
 
 	
@@ -659,7 +678,7 @@ public class MovieDAO_imple implements MovieDAO {
 			
 			String search_orderby = paraMap.get("search_orderby");
 			
-			String sql = " select rno, seq_movie_no, register_date, category, poster_file, case when length(movie_title) > 14 then substr(movie_title,1,11) || ' ...' else movie_title end as movie_title , movie_grade, start_date "
+			String sql = " select rno, seq_movie_no, register_date, category, poster_file, case when length(movie_title) > 14 then substr(movie_title,1,11) || ' ...' else movie_title end as movie_title , movie_grade, start_date, end_date "
 					   + " from "
 					   + "  (select row_number() over (order by register_date "+search_orderby+" ) as rno "
 					   + "         , seq_movie_no "
@@ -669,12 +688,14 @@ public class MovieDAO_imple implements MovieDAO {
 					   + "         , movie_title "
 					   + "         , movie_grade "
 					   + "         , to_char(start_date, 'yyyy-mm-dd') as start_date "
+					   + "         , to_char(end_date, 'yyyy-mm-dd') as end_date "
 					   + " from tbl_movie m join tbl_category c "
 					   + " on(m.fk_category_code = c.category_code) ";
 					   
 			String search_category = paraMap.get("search_category");
 			String search_type = paraMap.get("search_type");
 			String search_word = paraMap.get("search_word");
+			String invalid_movie = paraMap.get("invalid_movie");
 			
 			
 			if(!search_category.isBlank() && search_type.isBlank() && search_word.isBlank()) {
@@ -689,6 +710,27 @@ public class MovieDAO_imple implements MovieDAO {
 				// 장르 + 검색어 + 검색타입
 				sql += " where fk_category_code = (select category_code from tbl_category where category = ? ) "
 					 + " and " + search_type + " like '%'|| ? ||'%'";
+			}
+			
+			if(search_category.isBlank() && search_type.isBlank() && search_word.isBlank()) {
+				// 처음 보이는 페이지와 같이 모두 빈 값이라면
+				
+				if("상영작".equals(invalid_movie)) {
+					sql += " where start_date <= current_date and end_date >= current_date ";
+				}
+				else if ("미상영작".equals(invalid_movie)){
+					sql += " where (end_date < current_date or start_date > current_date or start_date is null or end_date is null) ";
+				}
+			}
+			else {
+				// 값이 비어있지 않다면
+				if("상영작".equals(invalid_movie)) {
+					sql += " and start_date <= current_date and end_date >= current_date ";
+				}
+				else if ("미상영작".equals(invalid_movie)){
+					sql += " and (end_date < current_date or start_date > current_date or start_date is null or end_date is null) ";
+				}
+				
 			}
 			
 			sql += " ) "
@@ -741,6 +783,7 @@ public class MovieDAO_imple implements MovieDAO {
 				mvvo.setMovie_title(rs.getString("movie_title"));		
 				mvvo.setMovie_grade(rs.getString("movie_grade"));
 				mvvo.setStart_date(rs.getString("start_date"));
+				mvvo.setEnd_date(rs.getString("end_date"));
 				
 				movieList.add(mvvo);
 				
@@ -768,6 +811,7 @@ public class MovieDAO_imple implements MovieDAO {
 			String search_category = paraMap.get("search_category");
 			String search_type = paraMap.get("search_type");
 			String search_word = paraMap.get("search_word");
+			String invalid_movie = paraMap.get("invalid_movie");
 			
 			if(!search_category.isBlank() && search_type.isBlank() && search_word.isBlank()) {
 				// 장르
@@ -781,6 +825,27 @@ public class MovieDAO_imple implements MovieDAO {
 				// 장르 + 검색어 + 검색타입
 				sql += " where fk_category_code = (select category_code from tbl_category where category = ? ) "
 					 + " and " + search_type + " like '%'|| ? ||'%'";
+			}
+			
+			if(search_category.isBlank() && search_type.isBlank() && search_word.isBlank()) {
+				// 처음 보이는 페이지와 같이 모두 빈 값이라면
+				
+				if("상영작".equals(invalid_movie)) {
+					sql += " where start_date <= current_date and end_date >= current_date ";
+				}
+				else if ("미상영작".equals(invalid_movie)){
+					sql += " where (end_date < current_date or start_date > current_date or start_date is null or end_date is null) ";
+				}
+			}
+			else {
+				// 값이 비어있지 않다면
+				if("상영작".equals(invalid_movie)) {
+					sql += " and start_date <= current_date and end_date >= current_date ";
+				}
+				else if ("미상영작".equals(invalid_movie)){
+					sql += " and (end_date < current_date or start_date > current_date or start_date is null or end_date is null) ";
+				}
+				
 			}
 			
 			pstmt = conn.prepareStatement(sql);
@@ -830,6 +895,7 @@ public class MovieDAO_imple implements MovieDAO {
 			String search_time_1 = paraMap.get("search_time_1");
 			String search_time_2 = paraMap.get("search_time_2");
 			String search_movie_title = paraMap.get("search_movie_title");
+			String invalid_showtime = paraMap.get("invalid_showtime");
 			
 			if(!search_date.isBlank() && search_time_1.isBlank() && search_movie_title.isBlank()) {
 				// 날짜
@@ -863,6 +929,27 @@ public class MovieDAO_imple implements MovieDAO {
 				sql += " where to_char(s.start_time, 'yyyy-mm-dd') = ? "
 					 + " and to_char(s.start_time, 'HH24:MI') between ? and ? "
 					 + " and m.movie_title like '%'|| ? ||'%' ";
+			}
+			
+			if(search_date.isBlank() && search_time_1.isBlank() && search_movie_title.isBlank()) {
+				// 처음 보이는 페이지와 같이 모두 빈 값이라면
+				
+				if("상영예정작".equals(invalid_showtime)) {
+					sql += " where start_time >= current_date ";
+				}
+				else if ("상영종료작".equals(invalid_showtime)){
+					sql += " where start_time < current_date ";
+				}
+			}
+			else {
+				// 값이 비어있지 않다면
+				if("상영예정작".equals(invalid_showtime)) {
+					sql += " and start_time >= current_date ";
+				}
+				else if ("상영종료작".equals(invalid_showtime)){
+					sql += " and start_time < current_date ";
+				}
+				
 			}
 			
 			pstmt = conn.prepareStatement(sql);
@@ -933,7 +1020,7 @@ public class MovieDAO_imple implements MovieDAO {
 			
 			String search_orderby = paraMap.get("search_orderby");
 			
-			String sql = " select rno, seq_showtime_no, start_time, end_time, fk_screen_no, poster_file, case when length(movie_title) > 14 then substr(movie_title,1,11) || ' ...' else movie_title end as movie_title , unused_seat "
+			String sql = " select rno, seq_showtime_no, start_time, end_time, fk_screen_no, poster_file, case when length(movie_title) > 14 then substr(movie_title,1,11) || ' ...' else movie_title end as movie_title , seat_cnt, unused_seat, seat_arr "
 					   + " from "
 					   + " (select row_number() over (order by start_time "+search_orderby+" ) as rno "
 					   + "       , s.seq_showtime_no "
@@ -942,15 +1029,19 @@ public class MovieDAO_imple implements MovieDAO {
 					   + " 	     , s.fk_screen_no "
 					   + " 	     , m.poster_file "
 					   + " 	     , m.movie_title "
-					   + "       , s.unused_seat "
+					   + "       , sc.seat_cnt "
+					   + "       , s.unused_seat"
+					   + "       , s.seat_arr "
 					   + " from tbl_showtime s join tbl_movie m "
-					   + " on(s.fk_seq_movie_no = m.seq_movie_no) ";
+					   + " on(s.fk_seq_movie_no = m.seq_movie_no) "
+					   + " join tbl_screen sc "
+					   + " on(sc.screen_no = s.fk_screen_no) ";
 			
 			String search_date = paraMap.get("search_date");
 			String search_time_1 = paraMap.get("search_time_1");
 			String search_time_2 = paraMap.get("search_time_2");
 			String search_movie_title = paraMap.get("search_movie_title");
-			
+			String invalid_showtime = paraMap.get("invalid_showtime");
 			
 			if(!search_date.isBlank() && search_time_1.isBlank() && search_movie_title.isBlank()) {
 				// 날짜
@@ -984,6 +1075,27 @@ public class MovieDAO_imple implements MovieDAO {
 				sql += " where to_char(s.start_time, 'yyyy-mm-dd') = ? "
 					 + " and to_char(s.start_time, 'HH24:MI') between ? and ? "
 					 + " and m.movie_title like '%'|| ? ||'%' ";
+			}
+			
+			if(search_date.isBlank() && search_time_1.isBlank() && search_movie_title.isBlank()) {
+				// 처음 보이는 페이지와 같이 모두 빈 값이라면
+				
+				if("상영예정작".equals(invalid_showtime)) {
+					sql += " where start_time >= current_date ";
+				}
+				else if ("상영종료작".equals(invalid_showtime)){
+					sql += " where start_time < current_date ";
+				}
+			}
+			else {
+				// 값이 비어있지 않다면
+				if("상영예정작".equals(invalid_showtime)) {
+					sql += " and start_time >= current_date ";
+				}
+				else if ("상영종료작".equals(invalid_showtime)){
+					sql += " and start_time < current_date ";
+				}
+				
 			}
 			
 			sql += " ) "
@@ -1063,7 +1175,12 @@ public class MovieDAO_imple implements MovieDAO {
 				showvo.setFk_screen_no(rs.getInt("fk_screen_no"));
 				showvo.setUnused_seat(rs.getInt("unused_seat"));
 				showvo.setSeq_showtime_no(rs.getInt("seq_showtime_no"));
+				showvo.setSeat_arr(rs.getString("seat_arr"));
 				mvvo.setShowvo(showvo);
+				
+				ScreenVO scvo = new ScreenVO();
+				scvo.setSeat_cnt(rs.getInt("seat_cnt"));
+				mvvo.setScvo(scvo);
 				
 				mvvo.setPoster_file(rs.getString("poster_file"));
 				mvvo.setMovie_title(rs.getString("movie_title"));
@@ -1096,6 +1213,8 @@ public class MovieDAO_imple implements MovieDAO {
 			String search_time_1 = paraMap.get("search_time_1");
 			String search_time_2 = paraMap.get("search_time_2");
 			String search_movie_title = paraMap.get("search_movie_title");
+			String invalid_showtime = paraMap.get("invalid_showtime");
+			
 			
 			if(!search_date.isBlank() && search_time_1.isBlank() && search_movie_title.isBlank()) {
 				// 날짜
@@ -1129,6 +1248,27 @@ public class MovieDAO_imple implements MovieDAO {
 				sql += " where to_char(s.start_time, 'yyyy-mm-dd') = ? "
 					 + " and to_char(s.start_time, 'HH24:MI') between ? and ? "
 					 + " and m.movie_title like '%'|| ? ||'%' ";
+			}
+			
+			if(search_date.isBlank() && search_time_1.isBlank() && search_movie_title.isBlank()) {
+				// 처음 보이는 페이지와 같이 모두 빈 값이라면
+				
+				if("상영예정작".equals(invalid_showtime)) {
+					sql += " where start_time >= current_date ";
+				}
+				else if ("상영종료작".equals(invalid_showtime)){
+					sql += " where start_time < current_date ";
+				}
+			}
+			else {
+				// 값이 비어있지 않다면
+				if("상영예정작".equals(invalid_showtime)) {
+					sql += " and start_time >= current_date ";
+				}
+				else if ("상영종료작".equals(invalid_showtime)){
+					sql += " and start_time < current_date ";
+				}
+				
 			}
 			
 			pstmt = conn.prepareStatement(sql);
@@ -1183,6 +1323,52 @@ public class MovieDAO_imple implements MovieDAO {
 		
 		return total_showtime_count;
 	}// end of public int getTotalShowtimeCount(Map<String, String> paraMap) throws SQLException {}------------------------------------
+
+
+
+	// 입력한 상영시작일과 상영종료일이 해당 영화의 상영 일정들에 모두 포함되는지 확인하는 메소드
+	@Override
+	public boolean isDateValidCheck(Map<String, String> paraMap) throws SQLException {
+
+		boolean isDateValid = false;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select "
+					   + "     count(case when start_time between to_timestamp(? || ' 00:00:00', 'yyyy-mm-dd hh24:mi:ss') "
+					   + "                                    and to_timestamp(? || ' 23:59:59', 'yyyy-mm-dd hh24:mi:ss') "
+					   + "           then 1 end) "
+					   + "    - count(*) as result "
+					   + " from tbl_showtime "
+					   + " where fk_seq_movie_no = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("start_date"));
+			pstmt.setString(2, paraMap.get("end_date"));
+			pstmt.setString(3, paraMap.get("seq"));
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+		        int result = rs.getInt("result");
+		        
+		        if(result == 0) {
+		            isDateValid = true;  // boolean 반환 --> 입력한 기간 안에 상영일정이 모두 포함되어있으면 true
+										 //             --> 입력한 기간 안에 상영일정이 일부라도 포함되어있지 않으면 false
+		        } 
+		    } 
+			
+		} finally {
+			close();
+		}
+		
+		return isDateValid;
+	}// end of public boolean isDateValidCheck(Map<String, String> paraMap) throws SQLException {}------------------------------
+
+
 
 
 

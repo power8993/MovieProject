@@ -327,7 +327,7 @@ function checkDuplicate() {
 
                     <!-- Modal Header -->
                     <div class="modal-header">
-                        <h5 class="modal-title" id="movie_find">등록된 영화 조회</h5>
+                        <h5 class="modal-title" id="movie_find"><i class="fa-solid fa-magnifying-glass" style="color: #252422;"></i>&nbsp;영화 조회</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -338,7 +338,6 @@ function checkDuplicate() {
                         <!-- 검색창 -->
                         <form id="movie_search_frm">
                             <div class="form-group">
-                                <label for="movie_search">영화 제목 검색</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="movie_search" placeholder="영화 제목을 입력하세요">
                                     <div class="input-group-append">
@@ -350,7 +349,7 @@ function checkDuplicate() {
 
                         <!-- 검색 결과 -->
                         <div id="search_result" style="display:none;">
-                            <table class="table" id="modal_table>
+                            <table class="table" id="modal_table">
                                 <thead>
                                     <tr>
                                         <th>영화제목</th>
@@ -447,9 +446,9 @@ function searchMovies(e) {
                     movieArray.forEach(movie => {
                         const movie_result_list = `
 										<tr>
-						                    <td><img src="${ctxPath}/images/admin/poster_file/${movie.poster_file}" alt="${movie.movie_title}" style="width:50px; height:auto;"> ${movie.movie_title}</td>
+						                    <td><img src="${ctxPath}/images/admin/poster_file/${movie.poster_file}" alt="${movie.movie_title}" style="width:70px; height:auto;"> ${movie.movie_title}</td>
 						                    <td>${movie.fk_category_code}</td>
-						                    <td><img src="${ctxPath}/images/admin/movie_grade/${movie.movie_grade}.png" alt="${movie.movie_grade}" style="width:30px; height:auto;"></td>
+						                    <td><img src="${ctxPath}/images/admin/movie_grade/${movie.movie_grade}.png" alt="${movie.movie_grade}" style="width:40px; height:auto;"></td>
 						                    <td>${movie.register_date}</td>
 						                </tr>`;
                         search_result.append(movie_result_list);  // 테이블에 영화 데이터 추가
