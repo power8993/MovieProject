@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%
     String ctxPath = request.getContextPath();   
 %>
@@ -204,51 +207,62 @@
             }
         });
     	
-    	// 페이지로드 됬을 때 후기 목록보여주기
-    	$.ajax({
-    		url: "/MovieProject/movie/reviwDetail.mp",
-    		type: "POST",
-    		dataType: "json",
-    		data: {
-    			"seq_movie_no": ${mvo.seq_movie_no}
-    		},
-    		success: function(json) {
-				const mrList = json.mrList;
-
-				var reviewList = $("#reviewsList");
-
-    			if(mrList.length > 0) {  
-    				
-    				mrList.forEach(reivew => {
-    					
-    					var stars = "";
-    	                
-    	                // review.movie_rating 값에 맞는 별을 생성하고 색상 변경
-    	                for (var i = 1; i <= 5; i++) {
-    	                    if (i <= reivew.movie_rating) {
-    	                        stars += '<span class="star filled">★</span>';  // 채워진 별, 색상 변경
-    	                    } else {
-    	                        stars += '<span class="star">★</span>';  // 빈 별
-    	                    }
-    	                }
-    					
-    					 var reviewHtml = `<li>
-					                             <div class="reviewuser">
-					                                 <span class="author">작성자: \${reivew.userid} 별점: \${stars}점</span><br>
-					                                 <p class="content">\${reivew.review_content}</p><br>
-					                                 <span class="date">작성날짜: \${reivew.review_write_date}</span><br>
-					                             </div>
-					                         </li>`;
-    					reviewList.append(reviewHtml);
-    				}) // end of forEach
-    				
-    			} // end of if
-            },
-            error: function(request, status, error){
-                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-            }
-    	});
+    	// 초기 로드 시 페이지 1을 요청
+		loadReviews(1);  // 첫 번째 페이지 로드
     	
+    	// 페이지 바에서 특정 페이지를 클릭하면 해당 페이지 로드
+		$(document).on("click", ".page-link", function(event) {
+		    event.preventDefault();
+		    var pageNo = $(this).data("page");  // data-page 속성에서 페이지 번호를 가져옴
+		    loadReviews(pageNo);  // 해당 페이지 번호로 리뷰 목록 로드
+		});
+
+    	function loadReviews(pageNo) {
+    	    $.ajax({
+    	        url: "/MovieProject/movie/reviwDetail.mp",
+    	        type: "POST",
+    	        dataType: "json",
+    	        data: {
+    	            "seq_movie_no": ${mvo.seq_movie_no},
+    	            "currentShowPageNo": pageNo  // 페이지 번호를 추가
+    	        },
+    	        success: function(json) {
+    	        	console.log(json);
+    	            const mrList = json.mrList;
+    	            var reviewList = $("#reviewsList");
+    	            reviewList.empty();  // 이전 리뷰 목록을 초기화
+
+    	            if (mrList.length > 0) {
+    	                mrList.forEach(mrList => {
+    	                    var stars = "";
+    	                    for (var i = 1; i <= 5; i++) {
+    	                        if (i <= mrList.movie_rating) {
+    	                            stars += '<span class="star filled">★</span>';
+    	                        } else {
+    	                            stars += '<span class="star">★</span>';
+    	                        }
+    	                    }
+
+    	                    var reviewHtml = `<li>
+					                             <div class="reviewuser">
+					                                 <span class="author">작성자: \${mrList.userid} 별점: \${stars}점</span><br>
+					                                 <p class="content">\${mrList.review_content}</p><br>
+					                                 <span class="date">작성날짜: \${mrList.review_write_date}</span><br>
+					                             </div>
+						                      </li>`;
+    	                    reviewList.append(reviewHtml);
+    	                });
+    	            }
+
+    	            // 페이지 바 업데이트
+    	            $("#pageBar").html(json.pageBar);   	            
+    	        },
+    	        error: function(request, status, error){
+    	            alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+    	        }
+    	    });
+    	}
+	
         var genderCtx = document.getElementById('genderChart').getContext('2d');
         var genderChart = new Chart(genderCtx, {
             type: 'pie',
@@ -480,19 +494,17 @@
 
     <!-- 작성된 후기들 -->
     <div class="reviews-list" style="width: 95%; margin: 0 auto;">
-        <ul id="reviewsList" >
+        <ul id="reviewsList">        	
             <!-- 후기가 추가될 곳 -->
         </ul>
     </div>
 
     <!-- 페이지네이션 추가 -->
-	<div id="pageBar" style="text-align: center; margin-top: 20px;">
-	    <nav>
-	        <ul class="pagination" id="pagination">
-	            <!-- 페이지 버튼이 동적으로 삽입될 곳 -->
-	        </ul>
-	    </nav>
-	</div>
+	<div>
+       <nav>
+          <ul id="pageBar" class="pagination"></ul>
+       </nav>
+   </div>
 </div>
 
 <jsp:include page="/WEB-INF/footer1.jsp" />
