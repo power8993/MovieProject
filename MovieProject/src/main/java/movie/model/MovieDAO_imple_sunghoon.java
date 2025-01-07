@@ -410,7 +410,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 					   + " order by substr(seat_no, 1, 1), to_number(substr(seat_no, 2)) ";
 			
 			pstmt = conn.prepareStatement(str);
-			pstmt.setString(1, "imp_813179710438");
+			pstmt.setString(1, imp_uid);
 			
 			rs = pstmt.executeQuery();
 			
@@ -451,7 +451,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 					   + " where p.imp_uid = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, "imp_813179710438");
+			pstmt.setString(1, imp_uid);
 			
 			rs = pstmt.executeQuery();
 			
