@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+body {
+	user-select: none;
+}
+
 div.steps {
 	height: 600px;
 }
@@ -32,7 +36,7 @@ div.time {
 }
 
 h3.title {
-	background-color: black;
+	background-color: #333;
 	color: white;
 	text-align: center;
 	padding-top: 10px;
@@ -45,7 +49,7 @@ table#movie-list {
 
 tr.movie-list {
 	font-size: 13pt;
-	line-height: 40px;
+	line-height: 45px;
 }
 
 td.movie-grade {
@@ -54,13 +58,21 @@ td.movie-grade {
 }
 
 td.movie-title {
-	min-width: 250px;
+	min-width: 300px;
 	font-weight: bold;
 }
 
 div#col-body li {
-	width: 80%;
 	list-style-type: none;
+}
+
+li.day {
+	width: 100px;
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	height: 45px;
+	line-height: 45px;
 }
 
 li.day > span.date,
@@ -93,11 +105,61 @@ span.date {
 	font-weight: bold;
 }
 
-.date ul {
-	padding: 0;
+.mouse_block {
+	pointer-events: none;
+	opacity: 0.5;
 }
 
-.ticket-info-container {
+.selected {
+	background-color: #333;
+	color: white;
+	border-style: double;
+}
+
+img.movie_grade_img {
+	width: 30px;
+	height: 30px;
+}
+
+td.time_data {
+	border: solid 1px #d6d3ce;
+	font-weight: bold;
+	margin-left: 10px;
+	padding: 3px;
+}
+
+td.unused_seat {
+	text-align: center;
+}
+
+td.screen_no_data {
+	font-weight: bold;
+	text-align: center;
+}
+
+table.time-tab {
+	border-collapse: separate;
+	border-spacing: 0 1rem;
+}
+
+td.time_data:hover,
+li.day:hover,
+tr.movie-list:hover {
+	cursor: pointer;
+	background-color: #EB5E28;
+	color: black;
+}
+
+tr.movie-list > td {
+	height: 50px;
+}
+
+.date ul {
+	padding: 0;
+	text-align: center;
+}
+
+div.ticket-info-container {
 	width: 100vw;
 	position: relative;
 	left: calc(-50vw + 50%);
@@ -106,7 +168,7 @@ span.date {
 	background-color: black;
 }
 
-.ticket-info {
+div.ticket-info {
 	color: white;
 	min-height: 100px;
 	max-height: 100px;
@@ -115,8 +177,14 @@ span.date {
 div.ticket-info > div {
 	width: 18%;
 	display: inline-block;
-	font-size: 20pt;
+	font-size: 15pt;
 	text-align: center;
+	vertical-align: middle;
+	margin: auto 0;
+}
+
+div#pay-choice > div {
+	font-size: 10pt;
 }
 
 div#time-choice {
@@ -157,11 +225,13 @@ div#numberOfPeople label {
 	width: 80px;
 }
 
-.mouse_block {
-	pointer-events: none;
-	opacity: 0.5;
+div#numberOfPeople button {
+	border: solid 1px #d6d3ce;
+	margin-right: 6px;
+	font-weight: bold;
+	font-size: 12pt;
 }
 
-.selected {
-	background-color: red;
+div.btn-group {
+	margin-bottom: 5px;
 }
