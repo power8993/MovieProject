@@ -7,14 +7,10 @@ import org.json.simple.JSONObject;
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import movie.model.MovieDAO_imple_sunghoon;
-import movie.model.MovieDAO_sunghoon;
 import net.nurigo.java_sdk.api.Message;
 
 public class SendReservationSMS extends AbstractController {
 
-	private MovieDAO_sunghoon mdao = new MovieDAO_imple_sunghoon();
-	
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -24,9 +20,9 @@ public class SendReservationSMS extends AbstractController {
 		String loc = "";
 	    
 		if("POST".equalsIgnoreCase(method)) {
-			// POST 방식이라면
+			// POST 방식이면
+			
 			String name = request.getParameter("name");
-			String ticketInfo = request.getParameter("ticketInfo");
 			String ticketPrice = request.getParameter("ticketPrice");
 			String mobile = request.getParameter("mobile");
 			
@@ -59,7 +55,8 @@ public class SendReservationSMS extends AbstractController {
 			super.setViewPage("/WEB-INF/jsonview.jsp");
 		}
 		else {
-			// POST 방식이 아니라면
+			// GET 방식이면
+			
 			message = "비정상적인 경로로 들어왔습니다.";
 			loc = "javascript:history.back()";
 

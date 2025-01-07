@@ -254,6 +254,9 @@ $(document).ready(function(){
 	</div>
 
 </div>
-
+<form name="payment">
+	<input type="hidden" name="imp_uid"/>
+	<input type="hidden" name="userid"/>
+</form>
 
 <jsp:include page="../footer1.jsp" />

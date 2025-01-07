@@ -21,7 +21,6 @@ public class MakeTicket extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		String method = request.getMethod(); // "GET" 또는 "POST"
-		int n = 0;
 	    
 		String message = "";
 		String loc = "";
@@ -42,6 +41,8 @@ public class MakeTicket extends AbstractController {
 			String seat_arr_str = request.getParameter("seat_arr");
 			String[] seat_arr = seat_arr_str.split(",");
 			
+			int sum = 1;
+			
 			for (int i = 0; i < seat_arr.length; i++) {
 				TicketVO_hoon ticket = new TicketVO_hoon();
 				ticket.setFk_imp_uid(imp_uid);
@@ -60,29 +61,38 @@ public class MakeTicket extends AbstractController {
 				}
 				
 				try {
-					n = mdao.makeTicket(ticket);
+					int n = mdao.makeTicket(ticket);
+					sum *= n;
 				} catch(SQLException e) {
 					message = "영화 티켓 결제가 DB오류로 인해 실패되었습니다.";
 					loc = "javascript:history.back()";
 				}
+				
+				
 			}
+			
+			JSONObject jsonObj = new JSONObject();
+			jsonObj.put("sum", sum);
+			
+			String json = jsonObj.toString();
+			request.setAttribute("json", json);
+			
+			super.setRedirect(false);
+			super.setViewPage("/WEB-INF/jsonview.jsp");
 			
 		}
 		else {
-			// POST 방식이 아니라면
+			// GET 방식이면
+			
 			message = "비정상적인 경로로 들어왔습니다.";
 			loc = "javascript:history.back()";
+			
+			request.setAttribute("message", message);
+			request.setAttribute("loc", loc);
+              
+			super.setRedirect(false);   
+			super.setViewPage("/WEB-INF/msg.jsp");
 		}
-		
-		JSONObject jsonObj = new JSONObject(); // {}
-		jsonObj.put("n", n);             // {"n":1} 또는 {"n":0}
-//		jsonObj.put("message", message); // {"n":1, "message":"김성훈님의 300,000원 결제가 완료되었습니다."} 
-//		jsonObj.put("loc", loc);         // {"n":1, "message":"김성훈님의 300,000원 결제가 완료되었습니다.", "loc":"/MyMVC/index.up"}   
-		String json = jsonObj.toString();  // "{"n":1, "message":"김성훈님의 300,000원 결제가 완료되었습니다.", "loc":"/MyMVC/index.up"}"
-		request.setAttribute("json", json);
-		super.setRedirect(false);
-		super.setViewPage("/WEB-INF/jsonview.jsp");
-		
 		
 	}
 

@@ -24,17 +24,16 @@ div.movie_info label {
 			<div class="mt-5"><label>예매번호</label>${requestScope.imp_uid}</div>
 			<div><label>영화</label>${requestScope.movie_title}</div>
 			<div><label>일시</label>${requestScope.start_time}</div>
-			<div><label>예매번호</label>${requestScope.imp_uid}</div>
 			<div><label>좌석</label>${requestScope.seat_str}</div>
 			<div><label>결제금액</label>${requestScope.ticketPrice}</div>
 		</div>
 	</div>
 	<hr>
 	<div>
-		<span>
+		<span class="mr-3" style="font-size: 12pt;">
 			예매유의사항
 		</span>
-		<span>
+		<span class="mb-5">
 			포인트는 상영 종료 시간이 지난 후에 적립됩니다.
 			영화 상영 스케쥴은 영화관사정에 의해 변경될 수 있습니다.
 		</span>

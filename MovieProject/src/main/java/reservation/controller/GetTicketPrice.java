@@ -22,7 +22,7 @@ public class GetTicketPrice extends AbstractController {
 		
 		JSONObject jsonObj = new JSONObject();
 			
-		jsonObj.put("adult_ticket_price", ticketPriceList.get(0));
+		jsonObj.put("adult_ticket_price", ticketPriceList.get(0));		// 가격순으로 정렬해서 제일 비싼 순으로 성인, 청소년, 어린이
 		jsonObj.put("adolescent_ticket_price", ticketPriceList.get(1));
 		jsonObj.put("youth_ticket_price", ticketPriceList.get(2));
 		

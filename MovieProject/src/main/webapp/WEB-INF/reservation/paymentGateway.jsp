@@ -72,18 +72,20 @@ $(document).ready(function() {
 	 		/* 포인트 적립 or 사용 하기 */
 	 		window.opener.makePoint('<%= ctxPath%>','${requestScope.userid}','${requestScope.using_point}','${requestScope.ticketPrice}', rsp.imp_uid);
 	 		/* 결제 완료 문자 보내기 */
-	 		<%-- window.opener.sendReservationSMS('<%= ctxPath%>','${requestScope.name}','${requestScope.ticketInfo}','${requestScope.ticketPrice}', '${requestScope.mobile}'); --%>
+	 		<%-- window.opener.sendReservationSMS('<%= ctxPath%>','${requestScope.name}','${requestScope.ticketPrice}', '${requestScope.mobile}'); --%>
 	 		/* 결제 완료 메일 보내기 */
 	 		window.opener.sendReservationMail('<%= ctxPath%>', '${requestScope.userid}', '${requestScope.name}', rsp.imp_uid);
+	 		/* 결제 완료 화면 띄우기 */
+	 		window.opener.reservationEnd('<%= ctxPath%>', '${requestScope.userid}', rsp.imp_uid, '${requestScope.name}');
 	 		
 	 		alert("결제에 성공하였습니다.");
-			self.close();
+			// self.close();
 			
         } else {
-	 		/* 결제 완료 화면 띄우기 */
-	 		window.opener.reservationEnd('<%= ctxPath%>');
+        	opener.location.href = "javascript:history.go(0)";
             alert("결제에 실패하였습니다.");
             self.close();
+            
        }
 
    }); // end of IMP.request_pay()----------------------------
