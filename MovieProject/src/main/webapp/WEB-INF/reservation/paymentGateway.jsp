@@ -75,13 +75,13 @@ $(document).ready(function() {
 	 		<%-- window.opener.sendReservationSMS('<%= ctxPath%>','${requestScope.name}','${requestScope.ticketInfo}','${requestScope.ticketPrice}', '${requestScope.mobile}'); --%>
 	 		/* 결제 완료 메일 보내기 */
 	 		window.opener.sendReservationMail('<%= ctxPath%>', '${requestScope.userid}', '${requestScope.name}', rsp.imp_uid);
-	 		/* 결제 완료 화면 띄우기 */
-	 		window.opener.reservationEnd('<%= ctxPath%>');
 	 		
 	 		alert("결제에 성공하였습니다.");
 			self.close();
 			
         } else {
+	 		/* 결제 완료 화면 띄우기 */
+	 		window.opener.reservationEnd('<%= ctxPath%>');
             alert("결제에 실패하였습니다.");
             self.close();
        }

@@ -66,7 +66,7 @@ public class SendReservationMail extends AbstractController {
 			sb.append("<hr style='width:90%; border:0px; border-top:5px solid black;'><div style='font-size:15pt; font-weight:bold;'>" + map.get("movie_title") + "</div><hr style='width:90%; border:0px; border-top:5px solid black;'>");
 			sb.append(map.get("fk_screen_no") + "관<br><div style='font-size:15pt; font-weight:bold;'>" + seat_str + "</div>" + map.get("start_time") + "<br>결제한비용<br>" + String.format("%,d", ticketPrice) + "원<br><br>");
 			sb.append("HGV");
-			sb.append("<img src='http://127.0.0.1:9090/MovieProject/images/바코드.png'/>");
+			sb.append("<img src='/MovieProject/images/바코드.png'/>");
 			
 			
 			sb.append("</div>");

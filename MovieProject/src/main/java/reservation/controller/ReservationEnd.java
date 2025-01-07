@@ -35,13 +35,28 @@ public class ReservationEnd extends AbstractController {
 			
 			Map<String, String> map = mdao.getMovieTitle(imp_uid);
 			
-			request.setAttribute("imp_uid", imp_uid);
-			request.setAttribute("imp_uid", imp_uid);
-			request.setAttribute("imp_uid", imp_uid);
-			request.setAttribute("imp_uid", imp_uid);
-			request.setAttribute("imp_uid", imp_uid);
+			int ticketPrice = 0;
+			String seat_str = "";
+			for(int i = 0; i < ticketlist.size(); i++) {
+				if(i == 0) {
+					seat_str += ticketlist.get(i).getSeat_no();
+				}
+				else {
+					seat_str += "," + ticketlist.get(i).getSeat_no();
+				}
+				ticketPrice += ticketlist.get(i).getTicket_price();
+			}
 			
-		
+			request.setAttribute("imp_uid", imp_uid);
+			request.setAttribute("seat_str", seat_str);
+			request.setAttribute("ticketPrice", ticketPrice);
+			request.setAttribute("movie_grade", map.get("movie_grade"));
+			request.setAttribute("start_time", map.get("start_time"));
+			request.setAttribute("fk_screen_no", map.get("fk_screen_no"));
+			request.setAttribute("poster_file", map.get("poster_file"));
+			request.setAttribute("movie_title", map.get("movie_title"));
+			
+			
 			super.setViewPage("/WEB-INF/reservation/reservationEnd.jsp");
 			
 		}
