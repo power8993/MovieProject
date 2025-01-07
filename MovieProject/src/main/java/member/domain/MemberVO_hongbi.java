@@ -1,5 +1,7 @@
 package member.domain;
 
+import movie.domain.MovieVO;
+
 public class MemberVO_hongbi {
 	
 	// === Field === //
@@ -25,6 +27,7 @@ public class MemberVO_hongbi {
 	
 	private int reserved_cnt;		   // 예매 횟수
 	private int pay_sum;			   // 총결제액
+	private String paydate; 		   // 결제일자
 	private int point_sum;			   // 포인트 총액
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -39,10 +42,8 @@ public class MemberVO_hongbi {
 	// === Join Field === // 
 	private PointVO_hongbi ptvo;
 	private PaymentVO_hongbi pvo;
+	private MovieVO mvvo;
 	
-
-	
-
 
 	// === Method === //
 	public String getUserid() {
@@ -221,8 +222,21 @@ public class MemberVO_hongbi {
 		this.pvo = pvo;
 	}
 	
-	
+	public String getPaydate() {
+		return paydate;
+	}
+
+	public void setPaydate(String paydate) {
+		this.paydate = paydate;
+	}
    
+	public MovieVO getMvvo() {
+		return mvvo;
+	}
+
+	public void setMvvo(MovieVO mvvo) {
+		this.mvvo = mvvo;
+	}
     //////////////////////////////////////////////////////////////
 	
 	public boolean isRequirePwdChange() {

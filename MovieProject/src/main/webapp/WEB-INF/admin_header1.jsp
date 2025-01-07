@@ -144,7 +144,9 @@ $(document).ready(function(){
 		
 		<div class="mybody">
 			<section id="mysidebar">
-				<li><a href="<%=ctxPath%>/admin/admin.mp">AdminPage Home</a></li>
+				<ul>
+					<li id="admin_header"><a href="<%=ctxPath%>/admin/admin.mp">AdminPage Home</a></li>
+				</ul>
 				<li>영화관리</li>
 					<ul>
 						<li><a href="<%= ctxPath %>/admin/movieRegister.mp">영화 등록</a></li>

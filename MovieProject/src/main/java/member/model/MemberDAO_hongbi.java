@@ -22,4 +22,19 @@ public interface MemberDAO_hongbi {
 	
 	// 회원 목록을 보여주는 페이지에서 회원 클릭 시, 해당 회원 상세 정보 보여주기(select)
 	MemberVO_hongbi selectMemberDetail(String user_id) throws SQLException;
+	
+	// 회원 목록을 보여주는 페이지에서 회원 클릭 시, 해당 회원의 일주일 간 예매내역 차트로 보여주기(select)
+	List<MemberVO_hongbi> selectMemberReservedWeek(String user_id) throws SQLException;
+	
+	// [관리자 메인페이지] 오늘의 영화 예매 현황을 차트로 보여주기(select)
+	List<MemberVO_hongbi> todayReservedChart() throws SQLException;
+
+	// [관리자 메인페이지] (일간/월간/연간) 전체 예매 현황을 차트로 보여주기(select)
+	List<Map<String,Object>> totalDayReservedChart() throws SQLException;
+
+	// [관리자 메인페이지] 한 달간 전체 예매 현황을 차트로 보여주기(select)
+	List<Map<String, Object>> totalMonthReservedChart() throws SQLException;
+
+	// [관리자 메인페이지] 연간 전체 예매 현황을 차트로 보여주기(select)
+	List<Map<String, Object>> totalYearReservedChart() throws SQLException;
 }
