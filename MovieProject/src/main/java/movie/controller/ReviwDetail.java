@@ -84,7 +84,6 @@ public class ReviwDetail extends AbstractController {
             // 마지막 버튼 생성
             pageBar += "<li class='page-item'><a class='page-link' href='#' data-page='" + totalPage + "'>[마지막]</a></li>";
 
-
             // 리뷰 목록 가져오기
             List<MovieReviewVO> reviews = mdao.selectReview(paraMap, Integer.parseInt(seq_movie_no));  // 영화 번호로 리뷰 목록 조회
 
