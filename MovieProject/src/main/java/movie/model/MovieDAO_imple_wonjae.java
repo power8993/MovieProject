@@ -303,7 +303,7 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 
 	// 전체 페이지 수 계산 (리뷰 개수 기반)
 	@Override
-	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
+	public int getTotalPage(Map<String, String> paraMap, int seq_movie_no) throws SQLException {
 	    int totalPage = 0;
 	    
 	    try {
@@ -313,7 +313,7 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 	        
 	        pstmt = conn.prepareStatement(sql);
 	        pstmt.setInt(1, Integer.parseInt(paraMap.get("sizePerPage")));  // 한 페이지에 표시할 리뷰 수
-	        pstmt.setString(2, paraMap.get("fk_seq_movie_no"));  // 영화 번호
+	        pstmt.setInt(2, seq_movie_no);  // 영화 번호
 	        
 	        rs = pstmt.executeQuery();
 	        
@@ -326,59 +326,31 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 	    }
 	    
 	    return totalPage;
-	}
-
-	// 리뷰 개수 반환 (영화별)
-	@Override
-	public int getTotalMovieReviewsCount(Map<String, String> paraMap) throws SQLException {
-	    int totalMovieCount = 0;
-
-	    try {
-	        conn = ds.getConnection();
-
-	        String sql = " select count(*) "
-	        		   + " from tbl_review "
-	        		   + " where fk_seq_movie_no = ? "; // 영화 번호로 필터링
-	        
-	        pstmt = conn.prepareStatement(sql);
-	        pstmt.setString(1, paraMap.get("fk_seq_movie_no"));  // 영화 번호
-
-	        rs = pstmt.executeQuery();
-
-	        rs.next();
-
-	        totalMovieCount = rs.getInt(1);
-	        
-	    } finally {
-	        close();
-	    }
-
-	    return totalMovieCount;
-	}
+	}	
 
 	// 리뷰 목록보여주는 함수
 	@Override
-	public List<MovieReviewVO> selectReview(Map<String, String> paraMap) throws SQLException {
+	public List<MovieReviewVO> selectReview(Map<String, String> paraMap, int seq_movie_no) throws SQLException {
 		List<MovieReviewVO> reviews = new ArrayList<>();
 	    
 	    try {
 	        conn = ds.getConnection();
 	                	        	        
 	        // 영화 리뷰를 가져오는 SQL 쿼리
-	        String sql = " select rno, seq_review_no, review_content, review_write_date "
-	        		   + " from  (select rownum as rno, seq_review_no, review_content, review_write_date "
-	        		   + " from (select seq_review_no, review_content, review_write_date "
+	        String sql = " select rno, seq_review_no, review_content, review_write_date, fk_user_id, movie_rating "
+	        		   + " from  (select rownum as rno, seq_review_no, review_content, review_write_date, fk_user_id, movie_rating "
+	        		   + " from (select seq_review_no, review_content, review_write_date, fk_user_id, movie_rating "
 	        		   + " from tbl_review "
 	        		   + " where fk_seq_movie_no = ? "
 	        		   + " order by seq_review_no desc) v ) t "
-	        		   + " where t.rno between ? and ? ";
+	        		   + " where t.rno between ? and ? " ;
 	        
 	        pstmt = conn.prepareStatement(sql);
 	       
 	        int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));
 			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));
 	        
-			pstmt.setString(1, paraMap.get("fk_seq_movie_no"));
+			pstmt.setInt(1, seq_movie_no);
 			pstmt.setInt(2, (currentShowPageNo * sizePerPage) - (sizePerPage -1));
 			pstmt.setInt(3, (currentShowPageNo * sizePerPage));
 			
@@ -390,7 +362,9 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 	        	mrvo.setSeq_review_no(rs.getInt("seq_review_no"));  // 리뷰 번호
 	            mrvo.setReview_content(rs.getString("review_content"));  // 리뷰 내용
 	            mrvo.setReview_write_date(rs.getString("review_write_date"));  // 작성일
-	            
+				mrvo.setFk_user_id(rs.getString("fk_user_id"));
+				mrvo.setMovie_rating(rs.getInt("movie_rating"));
+				
 	            reviews.add(mrvo);
 	        }
 	    } finally {

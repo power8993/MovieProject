@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%
     String ctxPath = request.getContextPath();   
 %>
@@ -80,31 +83,46 @@
             border: 1px solid;
         }
         .review-section button {
-            padding: 10px 20px;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }       
-        .reviews-list {
-            margin-top: 20px;
+		    text-decoration: none;
+		    border-radius: 2px;
+		    border: 1px solid #ddd;
+		    color: #403D39;
+		    background-color: #fff;
         }
+        
+        .review-section button:hover {
+        	background-color: #eb5e28;
+		    color: #403D39;
+        }
+          
+        .reviews-list {
+		    width: 95%;
+		    margin: 0 auto;
+		    margin-top: 10px;
+        }
+        
         .reviews-list ul {
             list-style-type: none;
-            padding: 0;
+		    padding: 0;
+		    margin: 0;
+		    display: flex;
+		    flex-wrap: wrap;  /* 항목을 여러 줄로 배치 */		    
         }
+        
         .reviews-list li {
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
+            width: 48%;  /* 각 항목의 너비를 48%로 설정 */
+		    padding: 15px;
+		    border-radius: 5px;
+		    border: 1px solid #ddd;
+		    margin: 0 auto;
+		    margin-bottom: 15px;
         }
         .review-item {
             margin-bottom: 10px;
         }
         .review-item .author {
             font-weight: bold;
-            font-size: 14px;
+            font-size: 14px;           
         }
         .review-item .timestamp {
             font-size: 12px;
@@ -152,8 +170,31 @@
 		 left: 50%;
 		 position: absolute;
 		}
-        
-        
+
+		.pagination {
+		    display: flex;  
+		    justify-content: center;  /* 수평 중앙 정렬 */
+		    margin-top: 20px;  /* 상단 여백 추가 */
+		}
+		.pagination a {
+		    padding: 10px 20px;
+		    margin: 0 3px;  /* 각 페이지 링크 사이에 간격을 추가 */
+		    text-decoration: none;
+		    border-radius: 5px;
+		    border: 1px solid #ddd;
+		    color: #403D39;
+		}
+		
+		.pagination a:hover {
+		    background-color: #eb5e28;
+		    color: #403D39;
+		}
+		
+		.pagination .page-item.active .page-link {
+		    background-color: #eb5e28;
+		    border-color: #EB5E28;
+		    color: white;
+		}
     </style>
 
 </head>
@@ -204,51 +245,62 @@
             }
         });
     	
-    	// 페이지로드 됬을 때 후기 목록보여주기
-    	$.ajax({
-    		url: "/MovieProject/movie/reviwDetail.mp",
-    		type: "POST",
-    		dataType: "json",
-    		data: {
-    			"seq_movie_no": ${mvo.seq_movie_no}
-    		},
-    		success: function(json) {
-				const mrList = json.mrList;
-
-				var reviewList = $("#reviewsList");
-
-    			if(mrList.length > 0) {  
-    				
-    				mrList.forEach(reivew => {
-    					
-    					var stars = "";
-    	                
-    	                // review.movie_rating 값에 맞는 별을 생성하고 색상 변경
-    	                for (var i = 1; i <= 5; i++) {
-    	                    if (i <= reivew.movie_rating) {
-    	                        stars += '<span class="star filled">★</span>';  // 채워진 별, 색상 변경
-    	                    } else {
-    	                        stars += '<span class="star">★</span>';  // 빈 별
-    	                    }
-    	                }
-    					
-    					 var reviewHtml = `<li>
-					                             <div class="reviewuser">
-					                                 <span class="author">작성자: \${reivew.userid} 별점: \${stars}점</span><br>
-					                                 <p class="content">\${reivew.review_content}</p><br>
-					                                 <span class="date">작성날짜: \${reivew.review_write_date}</span><br>
-					                             </div>
-					                         </li>`;
-    					reviewList.append(reviewHtml);
-    				}) // end of forEach
-    				
-    			} // end of if
-            },
-            error: function(request, status, error){
-                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-            }
-    	});
+    	// 초기 로드 시 페이지 1을 요청
+		loadReviews(1);  // 첫 번째 페이지 로드
     	
+    	// 페이지 바에서 특정 페이지를 클릭하면 해당 페이지 로드
+		$(document).on("click", ".page-link", function(event) {
+		    event.preventDefault();
+		    var pageNo = $(this).data("page");  // data-page 속성에서 페이지 번호를 가져옴
+		    loadReviews(pageNo);  // 해당 페이지 번호로 리뷰 목록 로드
+		});
+
+    	function loadReviews(pageNo) {
+    	    $.ajax({
+    	        url: "/MovieProject/movie/reviwDetail.mp",
+    	        type: "POST",
+    	        dataType: "json",
+    	        data: {
+    	            "seq_movie_no": ${mvo.seq_movie_no},
+    	            "currentShowPageNo": pageNo  // 페이지 번호를 추가
+    	        },
+    	        success: function(json) {
+    	        	console.log(json);
+    	            const mrList = json.mrList;
+    	            var reviewList = $("#reviewsList");
+    	            reviewList.empty();  // 이전 리뷰 목록을 초기화
+
+    	            if (mrList.length > 0) {
+    	                mrList.forEach(mrList => {
+    	                    var stars = "";
+    	                    for (var i = 1; i <= 5; i++) {
+    	                        if (i <= mrList.movie_rating) {
+    	                            stars += '<span class="star filled">★</span>';
+    	                        } else {
+    	                            stars += '<span class="star">★</span>';
+    	                        }
+    	                    }
+
+    	                    var reviewHtml = `<li>
+					                             <div class="reviewuser">
+					                                 <span class="author"> 별점: \${stars}</span><br>
+					                                 <p class="content"> \${mrList.review_content}</p><br>
+					                                 <span class="date"> 작성자: \${mrList.userid} \${mrList.review_write_date}</span><br>
+					                             </div>
+						                      </li>`;
+    	                    reviewList.append(reviewHtml);
+    	                });
+    	            }
+
+    	            // 페이지 바 업데이트
+    	            $("#pageBar").html(json.pageBar);   	            
+    	        },
+    	        error: function(request, status, error){
+    	            alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+    	        }
+    	    });
+    	}
+	
         var genderCtx = document.getElementById('genderChart').getContext('2d');
         var genderChart = new Chart(genderCtx, {
             type: 'pie',
@@ -367,9 +419,9 @@
 	                    
 	                    var reviewHtml = `<li>
 	                                         <div class="reviewuser">
-	                                         	 <span class="author">작성자: \${json.review.user_id} 별점: \${stars}점</span><br>
-	                                             <p class="content">\${json.review.review_content}</p><br>
-	                                             <span class="date">작성날짜: \${json.review.review_write_date}</span><br>
+	                                         	 <span class="author">별점: \${stars}</span><br>
+	                                             <p class="content"> \${json.review.review_content}</p><br>
+	                                             <span class="date"> 작성자: \${json.review.user_id} \${json.review.review_write_date}</span><br>
 	                                         </div>
 	                                     </li>`;
 	                    
@@ -409,7 +461,7 @@
         <div class="movie-details" style="margin: 0 15px">
             <div class="movie-title" style="color:#eb5e28;"><img src="<%= ctxPath%>/images/admin/movie_grade/${mvo.movie_grade}.png" alt="${mvo.movie_grade}" style="width:35px; height:auto; margin-right: 10px; margin-bottom: 10px;">${mvo.movie_title} </div>
             <div class="movie-info">
-                <div style="border-bottom: solid 2px #ccc5b9; padding-bottom: 10px; width: 100%;"><strong>예매율:</strong> 0%</div>             
+                <div style="border-bottom: solid 2px #ccc5b9; padding-bottom: 10px; width: 100%;"><strong>예매율:</strong> <%= request.getParameter("bookingRate")%>%</div>             
                 <div style="width: 20%;"><strong>감독:</strong> ${mvo.director}</div>
                 <div style="width: 75%;"><strong>배우:</strong> ${mvo.actor}</div>
                 <div style="width: 20%;"><strong>장르:</strong> ${mvo.cvo.category}</div>         
@@ -461,7 +513,7 @@
     <div class="review-section" style="margin-top: 20px; width: 95%; margin: 0 auto;">       
         <!-- 별점 선택 -->
         <div class="rating-stars">
-            <label for="reviewText"><i class="fa-solid fa-circle-user" style="color: #252422;" aria-hidden="true"></i></label>
+            <label for="reviewText"><i class="fa-solid fa-circle-user" style="color: #252422;" aria-hidden="true"> 별점을 선택해주세요.</i></label>
             <span data-value="1">&#9733;</span>
             <span data-value="2">&#9733;</span>
             <span data-value="3">&#9733;</span>
@@ -473,26 +525,24 @@
         <!-- 별점값을 가져오기 위함 -->
         <input type="hidden" id="rating" name="rating" value="">
         
-        <button onclick="submitReview()">후기 제출</button>
+        <button onclick="submitReview()" style="margin-top: 20px; width: 100%; margin: 0 auto;">등록 하기</button>
     </div>
 
-    <hr style="width: 95%; border: 1.5px solid #ccc5b9; margin-bottom: 30px;">
+    <hr style="width: 95%; border: 1.5px solid #ccc5b9;">
 
     <!-- 작성된 후기들 -->
-    <div class="reviews-list" style="width: 95%; margin: 0 auto;">
-        <ul id="reviewsList" >
+    <div class="reviews-list" style="width: 95%;">
+        <ul id="reviewsList">        	
             <!-- 후기가 추가될 곳 -->
         </ul>
     </div>
 
     <!-- 페이지네이션 추가 -->
-	<div id="pageBar" style="text-align: center; margin-top: 20px;">
-	    <nav>
-	        <ul class="pagination" id="pagination">
-	            <!-- 페이지 버튼이 동적으로 삽입될 곳 -->
-	        </ul>
-	    </nav>
-	</div>
+	<div>
+       <nav>
+          <ul id="pageBar" class="pagination"></ul>
+       </nav>
+   </div>
 </div>
 
 <jsp:include page="/WEB-INF/footer1.jsp" />
