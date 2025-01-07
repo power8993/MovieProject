@@ -195,6 +195,13 @@
 		    border-color: #EB5E28;
 		    color: white;
 		}
+		
+		.no-reviews {
+		    text-align: center;
+		    font-size: 16px;     
+		    color: #888;         
+		    padding: 20px 0;
+		}
     </style>
 
 </head>
@@ -207,6 +214,16 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+    	
+    	// 초기 로드 시 페이지 1을 요청
+		loadReviews(1);  // 첫 번째 페이지 로드
+    	
+    	// 페이지 바에서 특정 페이지를 클릭하면 해당 페이지 로드
+		$(document).on("click", ".page-link", function(event) {
+		    event.preventDefault();
+		    var pageNo = $(this).data("page");  // data-page 속성에서 페이지 번호를 가져옴
+		    loadReviews(pageNo);  // 해당 페이지 번호로 리뷰 목록 로드
+		});
     	
     	// 별점 클릭 이벤트
         $(".rating-stars span").click(function() {
@@ -244,138 +261,128 @@
                 alert("에러 발생: " + error);  // 에러 메시지를 더 자세히 표시
             }
         });
-    	
-    	// 초기 로드 시 페이지 1을 요청
-		loadReviews(1);  // 첫 번째 페이지 로드
-    	
-    	// 페이지 바에서 특정 페이지를 클릭하면 해당 페이지 로드
-		$(document).on("click", ".page-link", function(event) {
-		    event.preventDefault();
-		    var pageNo = $(this).data("page");  // data-page 속성에서 페이지 번호를 가져옴
-		    loadReviews(pageNo);  // 해당 페이지 번호로 리뷰 목록 로드
+
+        // 성별 예매 그래프에 값을 넣기 위함 ajax
+		$.ajax({
+		    url: "/MovieProject/movie/moviegender.mp",
+		    type: "GET",
+		    dataType: "json",
+		    data: {
+                "seq_movie_no": ${mvo.seq_movie_no}
+            },
+		    success: function(json) {
+		        var maleCount = json.gender.male; // 남자
+        		var femaleCount = json.gender.female; // 여자
+        		
+        		var totalCount = maleCount + femaleCount;  // 전체 예매자 수
+        		
+        		var malePercentage = Math.floor((maleCount / totalCount) * 100);  // 남성 비율
+        		var femalePercentage = Math.floor((femaleCount / totalCount) * 100);  // 여성 비율
+		        
+        		var genderCtx = document.getElementById('genderChart').getContext('2d');
+                var genderChart = new Chart(genderCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['남성', '여성'],
+                        datasets: [{
+                            label: '성별 예매 분포',
+                            data: [malePercentage, femalePercentage],
+                            backgroundColor: ['#36A2EB', '#FF6384'],
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+		    },
+		    error: function(request, status, error){
+                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+            }
 		});
+        
+        // 연령별 예매 그래프에 값을 넣기 위함 ajax
+		 $.ajax({
+		        url: '/MovieProject/movie/movieage.mp',
+		        type: 'GET',
+				dataType: 'json',
+				data: {
+	                "seq_movie_no": ${mvo.seq_movie_no}
+	            },
+		        success: function(json) {
+		            var ageGroups = ['10대', '20대', '30대', '40대', '그 이외'];
+		            var counts = [
+		            	json.age['10대'] || 0,  // '10대'에 해당하는 예매 수, 없으면 0
+		            	json.age['20대'] || 0,  // '20대'에 해당하는 예매 수, 없으면 0
+		            	json.age['30대'] || 0,  // '30대'에 해당하는 예매 수, 없으면 0
+		            	json.age['40대'] || 0,  // '40대'에 해당하는 예매 수, 없으면 0
+		            	json.age['그 이외'] || 0  // '50대 이상'에 해당하는 예매 수, 없으면 0
+		            ];	
+		            // 차트 생성
+		            var ageCtx = document.getElementById('ageChart').getContext('2d');
+		            var ageChart = new Chart(ageCtx, {
+		                type: 'bar',
+		                data: {
+		                    labels: ageGroups,  // 연령대
+		                    datasets: [{
+		                        label: '연령별 예매 분포',
+		                        data: counts,  // 예매 수
+		                        backgroundColor: 'Navy',
+		                        borderColor: 'Navy',
+		                        borderWidth: 1
+		                    }]
+		                },
+		                options: {
+		                    responsive: true,
+		                    scales: {
+		                        x: {
+		                            beginAtZero: true
+		                        },
+		                        y: {
+		                            beginAtZero: true
+		                        }
+		                    },
+		                    plugins: {
+		                        legend: {
+		                            display: false
+		                        },
+		                        tooltip: {
+		                            callbacks: {
+		                                label: function(tooltipItem) {
+		                                    return tooltipItem.label + ': ' + tooltipItem.raw + '명';
+		                                }
+		                            }
+		                        }
+		                    }
+		                }
+		            });
+		        },
+		        error: function(request, status, error){
+	                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	            }
+		    });
+		
+    }); // end of ready
 
-    	function loadReviews(pageNo) {
-    	    $.ajax({
-    	        url: "/MovieProject/movie/reviwDetail.mp",
-    	        type: "POST",
-    	        dataType: "json",
-    	        data: {
-    	            "seq_movie_no": ${mvo.seq_movie_no},
-    	            "currentShowPageNo": pageNo  // 페이지 번호를 추가
-    	        },
-    	        success: function(json) {
-    	        	console.log(json);
-    	            const mrList = json.mrList;
-    	            var reviewList = $("#reviewsList");
-    	            reviewList.empty();  // 이전 리뷰 목록을 초기화
-
-    	            if (mrList.length > 0) {
-    	                mrList.forEach(mrList => {
-    	                    var stars = "";
-    	                    for (var i = 1; i <= 5; i++) {
-    	                        if (i <= mrList.movie_rating) {
-    	                            stars += '<span class="star filled">★</span>';
-    	                        } else {
-    	                            stars += '<span class="star">★</span>';
-    	                        }
-    	                    }
-
-    	                    var reviewHtml = `<li>
-					                             <div class="reviewuser">
-					                                 <span class="author"> 별점: \${stars}</span><br>
-					                                 <p class="content"> \${mrList.review_content}</p><br>
-					                                 <span class="date"> 작성자: \${mrList.userid} \${mrList.review_write_date}</span><br>
-					                             </div>
-						                      </li>`;
-    	                    reviewList.append(reviewHtml);
-    	                });
-    	            }
-
-    	            // 페이지 바 업데이트
-    	            $("#pageBar").html(json.pageBar);   	            
-    	        },
-    	        error: function(request, status, error){
-    	            alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
-    	        }
-    	    });
-    	}
-	
-        var genderCtx = document.getElementById('genderChart').getContext('2d');
-        var genderChart = new Chart(genderCtx, {
-            type: 'pie',
-            data: {
-                labels: ['남성', '여성'],
-                datasets: [{
-                    label: '성별 예매 분포',
-                    data: [60, 40],
-                    backgroundColor: ['#36A2EB', '#FF6384'],
-                    hoverOffset: 4
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                    	 display: false,
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(tooltipItem) {
-                                return tooltipItem.label + ': ' + tooltipItem.raw + '%';
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        var ageCtx = document.getElementById('ageChart').getContext('2d');
-        var ageChart = new Chart(ageCtx, {
-            type: 'bar',
-            data: {
-                labels: ['10대', '20대', '30대', '40대', '50대 이상'],
-                datasets: [{
-                    label: '',
-                    data: [15, 40, 25, 10, 10],
-                    backgroundColor: 'Navy',
-                    borderColor: 'Navy',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    x: {
-                        beginAtZero: true
-                    },
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-                plugins: {
-                	 legend: {
-                         display: false
-                     },
-                    tooltip: {
-                        callbacks: {
-                            label: function(tooltipItem) {
-                                return tooltipItem.label + ': ' + tooltipItem.raw + '명';
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-    });
-
-    // 후기 작성하는 json
+    // 후기 작성하는 함수
     function submitReview() {
     	
     	var rating = $("#rating").val();  // 선택된 별점
         var review = $("#reviewText").val().trim();  // 리뷰 내용
-		
+        var currentPageNo = $("#currentPage").val();
+        
         if(${not empty sessionScope.loginuser}) {
         	
         	// 1. 리뷰 내용이 비어 있거나 별점이 선택되지 않았을 경우
@@ -400,7 +407,7 @@
 	                "rating": rating,  // 별점
 	                "review": review  // 리뷰 내용
 	            },
-	            success: function(json) {
+	            success: function(json) {	            	
 	            	if (json.n == 1) {
 	            		
 	                    alert("리뷰가 성공적으로 제출되었습니다.");  // 리뷰 제출 성공 메시지
@@ -432,6 +439,10 @@
 	                    $("#reviewText").val("");  // 후기 내용 초기화
 	                    
 	                    $(".rating-stars span").removeClass("selected");
+	                    
+	                    // 페이지 재로딩
+	                    loadReviews(currentPageNo); // 추가할 때 페이징 처리 기준유지하기 위함
+	                    
 	                } 
 	                else if (json.n == 2) {
 	                    alert("결제된 회원만 후기를 작성할 수 있습니다.");
@@ -448,8 +459,60 @@
         else {
         	alert("로그인 후 리뷰를 작성할 수 있습니다.");
         }
-    }
+    } // end of submitReview()
+	
+    // 영화 후기 조회하는 함수
+    function loadReviews(pageNo) {
+		
+		$("#currentPageNo").val(pageNo);  // 페이지 번호 업데이트
+		
+	    $.ajax({
+	        url: "/MovieProject/movie/reviwDetail.mp",
+	        type: "POST",
+	        dataType: "json",
+	        data: {
+	            "seq_movie_no": ${mvo.seq_movie_no},
+	            "currentShowPageNo": pageNo  // 페이지 번호를 추가
+	        },
+	        success: function(json) {
+	            const mrList = json.mrList;
+	            var reviewList = $("#reviewsList");
+	            reviewList.empty();  // 이전 리뷰 목록을 초기화
+				console.log(mrList);
 
+            	if (mrList.length === 0) {
+                    reviewList.append('<li class="no-reviews">후기가 없습니다.</li>');
+            	}
+            	else {
+	                mrList.forEach(mrList => {
+	                    var stars = "";
+	                    for (var i = 1; i <= 5; i++) {
+	                        if (i <= mrList.movie_rating) {
+	                            stars += '<span class="star filled">★</span>';
+	                        } else {
+	                            stars += '<span class="star">★</span>';
+	                        }
+	                    }
+
+	                    var reviewHtml = `<li>
+				                             <div class="reviewuser">
+				                                 <span class="author"> 별점: \${stars}</span><br>
+				                                 <p class="content"> \${mrList.review_content}</p><br>
+				                                 <span class="date"> 작성자: \${mrList.userid} \${mrList.review_write_date}</span><br>
+				                             </div>
+					                      </li>`;
+	                    reviewList.append(reviewHtml);
+	                });		                
+            	}
+	            // 페이지 바 업데이트
+	            $("#pageBar").html(json.pageBar);   	            
+	        },
+	        error: function(request, status, error){
+	            alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+	        }
+	    });
+	} // end of loadReviews(pageNo)
+    
 </script>
 
 <div class="container">
@@ -541,6 +604,8 @@
 	<div>
        <nav>
           <ul id="pageBar" class="pagination"></ul>
+          <!-- 숨겨진 필드로 currentPageNo 추가 -->
+		  <input type="hidden" id="currentPageNo" value="1"> <!-- 기본값은 1로 설정 -->
        </nav>
    </div>
 </div>

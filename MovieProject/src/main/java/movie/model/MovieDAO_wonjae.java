@@ -37,6 +37,12 @@ public interface MovieDAO_wonjae {
 	// 리뷰 목록보여주는 함수 
 	List<MovieReviewVO> selectReview(Map<String, String> paraMap, int seq_movie_no) throws SQLException;
 
+	// 영화별 예매 성비 비율
+	Map<String, Integer> getGender(int seq_movie_no) throws SQLException;
+
+	// 영화별 예매 나이 비율
+	Map<String, Integer> getAge(int seq_movie_no) throws SQLException;
+
 
 
 
