@@ -16,17 +16,7 @@ public class SearchDate extends AbstractController {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String method = request.getMethod(); // GET 또는 POST 요청 확인
 
-        if ("GET".equalsIgnoreCase(method)) {
-            // GET 요청 처리: 잘못된 접근 처리
-            String message = "잘못된 접근입니다.";
-            String loc = "javascript:history.back()";
-
-            request.setAttribute("message", message);
-            request.setAttribute("loc", loc);
-
-            super.setRedirect(false);
-            super.setViewPage("/WEB-INF/msg.jsp");
-        } else if ("POST".equalsIgnoreCase(method)) {
+        
             // POST 요청 처리: 선택된 날짜 기반 영화 시간표 검색
             String selectedDate = request.getParameter("selectedDate");
 
@@ -55,4 +45,4 @@ public class SearchDate extends AbstractController {
             }
         }
     }
-}
+

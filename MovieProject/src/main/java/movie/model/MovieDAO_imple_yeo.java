@@ -607,8 +607,7 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 	                     " to_char(start_time, 'yyyy-MM-dd') as start_date," + 
 	                     " fk_screen_no " +
 	                     " FROM tbl_showtime s " +
-	                     " JOIN tbl_movie m ON s.fk_seq_movie_no = m.seq_movie_no " +
-	                     
+	                     " JOIN tbl_movie m ON s.fk_seq_movie_no = m.seq_movie_no " +	                     
 	                     " WHERE TO_CHAR(s.start_time, 'yyyy-MM-dd') = ? AND s.fk_screen_no = 1 " +
 	                     " ORDER BY s.start_time ASC ";
 
@@ -669,8 +668,7 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 		                     " to_char(start_time, 'yyyy-MM-dd') as start_date," + 
 		                     " fk_screen_no " +
 		                     " FROM tbl_showtime s " +
-		                     " JOIN tbl_movie m ON s.fk_seq_movie_no = m.seq_movie_no " +
-		                     
+		                     " JOIN tbl_movie m ON s.fk_seq_movie_no = m.seq_movie_no " +		                     
 		                     " WHERE TO_CHAR(s.start_time, 'yyyy-MM-dd') = ? AND s.fk_screen_no = 2 " +
 		                     " ORDER BY s.start_time ASC ";
 

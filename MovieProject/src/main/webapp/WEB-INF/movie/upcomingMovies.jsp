@@ -73,7 +73,7 @@
 		    background-color: #FFFCF2; 
 		    cursor: pointer;
 		    transition: background-color 0.2s, border-color 0.2s;
-		    color: #495057;;
+		    color: #EB5E28;
 		}
 
 		.show-more button:hover {

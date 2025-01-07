@@ -46,28 +46,30 @@
         cursor: pointer; /* 커서를 포인터로 변경 */
         font-size: 16px; /* 버튼 텍스트 크기 설정 */
         transition: background-color 0.3s ease; /* 배경 색상 변화에 부드러운 전환 효과 추가 */
+        color: #EB5E28;
     }
 
     /* 선택된 날짜 버튼 스타일 */
     .date-button.active { 
-        background-color: #FFFCF2; /* 활성화된 버튼의 배경 색상 설정 (파란색) */
-        color: EB5E28; /* 텍스트 색상을 흰색으로 변경 */
-        border-color: #EB5E28; /* 테두리 색상도 파란색으로 설정 */
+        background-color: #EB5E28; /* 활성화된 버튼의 배경 색상 설정 (파란색) */
+        color: #FFFCF2; /* 텍스트 색상을 흰색으로 변경 */
+        border-color: #FFFCF2; /* 테두리 색상도 파란색으로 설정 */
     }
 
     /* 날짜 버튼에 마우스를 올릴 때 스타일 */
     .date-button:hover { 
         background-color: #EB5E28; /* 더 진한 파란색 배경 */
-        color: EB5E28; /* 텍스트를 흰색으로 변경 */
+        color: #FFFCF2; /* 텍스트를 흰색으로 변경 */
+        transform: translateY(-5px);
     }
 
     /* 영화 섹션 박스 스타일 */
     .movie-section { 
         background: #FFFCF2; /* 흰색 배경 */
-        padding: 1rem; /* 안쪽 여백 설정 */
-        margin-bottom: 1.5rem; /* 아래쪽 여백 추가 */
+        /* padding: 1rem; /* 안쪽 여백 설정 */
+        margin-bottom: 1.5rem; /* 아래쪽 여백 추가 */ */
         border-radius: 5px; /* 모서리를 둥글게 설정 */
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 추가 */
+       /*  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 가벼운 그림자 효과 추가 */ */
     }
 
     /* 영화 제목 스타일 */
@@ -101,6 +103,7 @@
     /* 상영 시간 버튼에 마우스를 올릴 때 스타일 */
     .showtime-button:hover { 
         background-color: #EB5E28; /* 더 진한 회색 배경 */
+        color: #FFFCF2;
     }
 
     /* 예약 불가 버튼 스타일 */
@@ -164,13 +167,18 @@
         font-weight: normal; /* 텍스트 굵기를 일반적으로 설정 */
         color: #FFFCF2; /* 텍스트 색상을 어두운 회색으로 설정 */
         margin-right: 10px; /* 오른쪽 여백 추가 */
-    }.info-btn {
+    }
+    .info-btn {
             background-color: transparent;
-            border: none;
-            color: #007bff;
-            text-decoration: underline;
+            border: 1px solid #FFFCF2;          
             cursor: pointer;
             font-size: 1rem;
+            color : #EB5E28;
+        }
+        .info-btn:hover {            
+            border: 1px solid #EB5E28;          
+            cursor: pointer;
+            font-size: 1rem;     
         }
 
         /* 모달 스타일 */
@@ -184,14 +192,14 @@
             background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
             justify-content: center;
             align-items: center;
+            color: #EB5E28;
         }
 
         .modal-content {
-            background-color: white;
-            border-radius: 10px;
+            background-color: #FFFCF2;
+            /* border-radius: 10px; */
             width: 90%;
             max-width: 500px;
-            padding: 20px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
@@ -199,11 +207,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            color: #EB5E28;
+            background-color: #FFFCF2;
         }
 
         .modal-header h2 {
-            margin: 0;
+            margin: 20px;
             font-size: 1.5rem;
+            color: #EB5E28;
+            background-color: #FFFCF2;
         }
 
         .close-btn {
@@ -213,27 +225,20 @@
             cursor: pointer;
         }
 
-        .modal-body {
-            margin-top: 20px;
-        }
-
+     
         .modal-body table {
             width: 100%;
             border-collapse: collapse;
         }
 
-        .modal-body th, .modal-body td {
-            padding: 10px;
+         .modal-body th, .modal-body td {
+            padding: 15.4px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            background-color: #FFFCF2;
+            color: #EB5E28;    
         }
-
-        .modal-body th {
-            background-color: #f4f4f4;
-        }
-
-        .modal-body td:first-child {
-            font-weight: bold;
+        .modal-body tr:first-child {
+            font-weight: bold;         
         }
     </style>
 
@@ -244,6 +249,7 @@
 
 <div class="container my-4">
     <!-- 날짜 버튼 선택 UI -->
+    <hr>
     <div class="date-selector">
         <% if (pageIndex > 0) { %>
             <button type="button" class="pagination-button" onclick="changePage(<%= pageIndex - 1 %>)">&lt;</button>
@@ -271,7 +277,7 @@
         <input type="hidden" id="selectedDate" name="selectedDate" value="<%= selectedDate %>">
         <input type="hidden" id="pageIndex" name="pageIndex" value="<%= pageIndex %>">
     </form>
-    
+     <hr>
     
     <!-- 관람 등급 안내 버튼 추가 -->
 <div class="container my-4">
@@ -295,25 +301,22 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>전체 관람가</td>
+                        <td><img src="<%= ctxPath %>/images/admin/movie_grade/전체.png" style="width: 30px; height: 30px; margin-right: 10px; align-items: center;"></td>
                         <td>모든 연령의 고객님께서 관람하실 수 있습니다.</td>
                     </tr>
                     <tr>
-                        <td>12세 관람가</td>
+                        <td><img src="<%= ctxPath %>/images/admin/movie_grade/12세.png" style="width: 30px; height: 30px; margin-right: 10px;"></td>
                         <td>만 12세 미만의 고객님은 보호자를 동반하여야 관람하실 수 있습니다.</td>
                     </tr>
                     <tr>
-                        <td>15세 관람가</td>
+                        <td><img src="<%= ctxPath %>/images/admin/movie_grade/15세.png" style="width: 30px; height: 30px; margin-right: 10px;"></td>
                         <td>만 15세 미만의 고객님은 보호자를 동반하여야 관람하실 수 있습니다.</td>
                     </tr>
                     <tr>
-                        <td>청소년 관람불가</td>
+                        <td><img src="<%= ctxPath %>/images/admin/movie_grade/19세.png" style="width: 30px; height: 30px; margin-right: 10px;"></td>
                         <td>만 19세 미만은 관람이 불가능합니다. 신분증을 지참하시기 바랍니다.</td>
                     </tr>
-                    <tr>
-                        <td>미정</td>
-                        <td>등급 미정 영화입니다.</td>
-                    </tr>
+                    
                 </tbody>
             </table>
         </div>
@@ -321,6 +324,8 @@
 </div>
     
 
+    
+	<hr>
     <!-- 상영 시간표 표시 -->
     <c:if test="${not empty movieTimeList}">
         <c:set var="lastTitle" value="" />
@@ -331,39 +336,37 @@
                     	<img src="<%= ctxPath %>/images/admin/movie_grade/${movie.movie_grade}.png" 
                              alt="${movie.movie_grade}" 
                              style="width: 30px; height: 30px; margin-right: 10px;"> ${movie.movie_title} |${movie.cg.category} | ${movie.running_time}분 | ${movie.start_date} 개봉 </p></div>
-                    <!-- 1관 -->
-                    <c:if test="${not empty movieTimeList_o}">
-                        <div class="screen-title">1관</div>
-                        <div class="showtime-row">
-                            <c:forEach var="movie1" items="${movieTimeList_o}">
-                                <c:if test="${movie1.movie_title == movie.movie_title}">
-                                    <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie1.seq_movie_no}&start_time=${movie1.svo.start_time}&start_date=${movie1.start_date}&screen_no=${movie1.svo.fk_screenNO}"
-                                        class="showtime-button ${movie1.svo.unused_seat == 0 ? 'disabled' : ''}"
-                                        ${movie1.svo.unused_seat == 0 ? 'onclick="return false;"' : ''}>
-                                        ${movie1.svo.start_time} <br> ${movie1.svo.unused_seat}석
-                                    </a>
-                                </c:if>
-                            </c:forEach>
-                        </div>
-                    </c:if>
-                    <!-- 2관 -->
-                    <c:if test="${not empty movieTimeList_t}">
-                        <div class="screen-title">2관</div>
-                        <div class="showtime-row">                        
-                            <c:forEach var="movie2" items="${movieTimeList_t}">
-                                <c:if test="${movie2.movie_title == movie.movie_title}">
-                                    <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie2.seq_movie_no}&start_time=${movie2.svo.start_time}&start_date=${movie2.start_date}&screen_no=${movie2.svo.fk_screenNO}"
-                                        class="showtime-button ${movie2.svo.unused_seat == 0 ? 'disabled' : ''}"
-                                        ${movie2.svo.unused_seat == 0 ? 'onclick="return false;"' : ''}>
-                                        ${movie2.svo.start_time} <br> ${movie2.svo.unused_seat}석
-                                    </a>
-                                </c:if>
-                            </c:forEach>
-                        </div>
-                    </c:if>
-                    <c:if test="${empty movieTimeList_t}">
-                    
-                    </c:if>
+                   <!-- 1관 -->
+                   
+                   <div class="screen-title">▶ 1관 | 총 40좌석 </div>
+                   <div class="showtime-row">
+                       <c:forEach var="movie1" items="${movieTimeList_o}">
+                           <c:if test="${movie1.movie_title == movie.movie_title}">
+                               <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie1.seq_movie_no}&start_time=${movie1.svo.start_time}&start_date=${movie1.start_date}&screen_no=${movie1.svo.fk_screenNO}"
+                                   class="showtime-button ${movie1.svo.unused_seat == 0 ? 'disabled' : ''}"
+                                   ${movie1.svo.unused_seat == 0 ? 'onclick="return false;"' : ''}>
+                                   ${movie1.svo.start_time} <br> ${movie1.svo.unused_seat}석
+                               </a>
+                           </c:if>
+                       </c:forEach>
+                   </div>
+             
+	               <!-- 2관 -->
+	               
+	               
+                   <div class="screen-title">▶ 2관 | 총 40좌석 </div>
+                   <div class="showtime-row">                        
+                       <c:forEach var="movie2" items="${movieTimeList_t}">
+                           <c:if test="${movie2.movie_title == movie.movie_title}">
+                               <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie2.seq_movie_no}&start_time=${movie2.svo.start_time}&start_date=${movie2.start_date}&screen_no=${movie2.svo.fk_screenNO}"
+                                   class="showtime-button ${movie2.svo.unused_seat == 0 ? 'disabled' : ''}"
+                                   ${movie2.svo.unused_seat == 0 ? 'onclick="return false;"' : ''}>
+                                   ${movie2.svo.start_time} <br> ${movie2.svo.unused_seat}석
+                               </a>
+                           </c:if>
+                       </c:forEach>
+                   </div>
+                   
                 </div>
                  <hr>
                 <c:set var="lastTitle" value="${movie.movie_title}" />
@@ -371,14 +374,17 @@
         </c:forEach>
     </c:if>
 
+
     <!-- 데이터가 없을 때 메시지 표시 -->
     <c:if test="${movieTimeList == null || empty movieTimeList}">
-    
-        <p class="no-data">현재 선택한 날짜에 상영 중인 영화가 없습니다.</p>
+         
+          <p class="no-data" style="color: #EB5E28;  font-weight: bold; font-size: 2rem; /* 더 큰 글씨 크기 */"> 현재 선택한 날짜에 상영 중인 영화가 없습니다.<br><img src="<%= ctxPath %>/images/index/logo.png"></p>
+        
     </c:if>
 </div>
 
 <jsp:include page="/WEB-INF/footer1.jsp" />
+
 
 <script>
 function selectDate(date) {

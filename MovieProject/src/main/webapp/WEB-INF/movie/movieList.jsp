@@ -20,8 +20,7 @@
         .movie-card {
             text-align: center;
             background: #FFFCF2;
-            border-radius: 10px;
-           
+            border-radius: 10px;          
             padding: 1rem;
             margin: 0.5rem;
             transition: transform 0.2s ease-in-out;
@@ -82,7 +81,7 @@
 		    background-color: #FFFCF2;
 		    cursor: pointer;
 		    transition: background-color 0.2s, border-color 0.2s;
-		    color: #495057;;
+		    color: #EB5E28;;
 		}
 
 		.show-more button:hover {

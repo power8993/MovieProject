@@ -82,7 +82,7 @@
 		    background-color: #FFFCF2; 
 		    cursor: pointer;
 		    transition: background-color 0.2s, border-color 0.2s;
-		    color: #495057;;
+		    color: #EB5E28;;
 		}
 
 		.show-more button:hover {
@@ -125,8 +125,7 @@
 		.genre-filter button:hover {
 		    background-color: #EB5E28; 
 		    color: white; 
-		}
-    </style>
+		} </style>
 </head>
 <body>
     <jsp:include page="../header1.jsp" />

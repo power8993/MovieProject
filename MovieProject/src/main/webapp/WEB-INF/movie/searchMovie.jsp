@@ -55,12 +55,13 @@
         }
         .show-more button {
             padding: 0.5rem 1.5rem;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f8f8f8;
-            cursor: pointer;
-            transition: background-color 0.2s;
+		    font-size: 1rem;
+		    border: 2px solid #EB5E28; 
+		    border-radius: 5px;
+		    background-color: #FFFCF2; 
+		    cursor: pointer;
+		    transition: background-color 0.2s, border-color 0.2s;
+		    color: #EB5E28;
         }
         .show-more button:hover {
             background-color: #e8e8e8;
