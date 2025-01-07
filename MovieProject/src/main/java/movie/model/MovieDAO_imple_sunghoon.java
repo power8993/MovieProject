@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import javax.sql.DataSource;
 import movie.domain.MovieVO;
 import movie.domain.ShowTimeVO_sunghoon;
 import reservation.controller.TicketVO_hoon;
+import reservation.domain.TicketVO;
 
 public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 	
@@ -390,6 +392,83 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		return n;
 		
 	} // end of public int makePoint(Map<String, String> paraMap) throws SQLException----------------------
+
+
+	// 티켓 정보 가져오기
+	@Override
+	public List<TicketVO> getTickets(String userid, String imp_uid) throws SQLException {
+		
+		List<TicketVO> ticketlist = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String str = " select ticket_price, ticket_age_group, seat_no "
+					   + " from tbl_ticket "
+					   + " where fk_imp_uid = ? "
+					   + " order by substr(seat_no, 1, 1), to_number(substr(seat_no, 2)) ";
+			
+			pstmt = conn.prepareStatement(str);
+			pstmt.setString(1, "imp_813179710438");
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				TicketVO ticket = new TicketVO();
+				
+				ticket.setTicket_price(rs.getInt("ticket_price"));
+				ticket.setTicket_age_group(rs.getString("ticket_age_group"));
+				ticket.setSeat_no(rs.getString("seat_no"));
+				
+				ticketlist.add(ticket);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return ticketlist;
+		
+	} // end of public Map<String, String> getTickets() throws SQLException----------------
+
+
+	
+	// 결제 번호로 영화 이름 가져오기
+	@Override
+	public Map<String, String> getMovieTitle(String imp_uid) throws SQLException {
+		
+		Map<String, String> map = new HashMap<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select movie_title, to_char(start_time, 'yyyy.mm.dd hh24:mi') as start_time, to_char(fk_screen_no) as fk_screen_no, movie_grade, poster_file "
+					   + " from tbl_payment p join tbl_showtime s "
+					   + " on s.seq_showtime_no = p.fk_seq_showtime_no "
+					   + " join tbl_movie m "
+					   + " on m.seq_movie_no = s.fk_seq_movie_no "
+					   + " where p.imp_uid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "imp_813179710438");
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				map.put("movie_title", rs.getString("movie_title"));
+				map.put("start_time", rs.getString("start_time"));
+				map.put("fk_screen_no", rs.getString("fk_screen_no"));
+				map.put("movie_grade", rs.getString("movie_grade"));
+				map.put("poster_file", rs.getString("poster_file"));
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return map;
+	}
 	
 
 	

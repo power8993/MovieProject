@@ -97,7 +97,6 @@ $(document).ready(function(){
 	
 	$("div#adult").find("button").click(e => {
 		total_cnt = Number($(e.target).val()) + adolescent_cnt + youth_cnt;
-		console.log($("btn.adult").val);
 		if(total_cnt > 5) {
 			alert("예매는 5명까지 가능합니다.");
 			return false;
@@ -347,7 +346,6 @@ function goSeatChoice(userid, birthday) {
 		
 	// 좌석 선택
 	$("button.seat").click(e => {
-		console.log($(e.target).text());
 		const total_seat_cnt = Number($("div#total_seat_cnt").text());
 		let selected_seat_cnt = Number($("div#selected_seat_cnt").text());
 		
@@ -481,10 +479,6 @@ function goPointChoice(ctxPath, userid) {
 					console.log("포인트 가져오기 성공");
 					$("label#having-point").text(json.havingPoint);
 					havingPoint = json.havingPoint;
-					console.log(havingPoint);
-					console.log(typeof havingPoint);
-					console.log(json.havingPoint);
-					console.log(typeof json.havingPoint);
 				}
 				else {
 					console.log("포인트 가져오기 실패")
@@ -734,6 +728,44 @@ function sendReservationSMS(ctxPath, name, ticketInfo, ticketPrice, mobile) {
 		dataType:"json",
         success: function(json){
 			console.log("문자 보내기 성공");
+		},
+		error: function() {
+			alert("request error!");
+		}
+	}); // end of $.ajax({})---------------------------------------------------------------------
+}
+
+function sendReservationMail(ctxPath, userid, name, imp_uid) {
+	$.ajax({
+		url:ctxPath + "/reservation/sendReservationMail.mp",
+		data: {
+			"userid":userid,
+			"imp_uid":imp_uid,
+			"name":name
+        },
+		type:"post",
+		dataType:"json",
+        success: function(json){
+			console.log("메일 보내기 성공");
+		},
+		error: function() {
+			alert("request error!");
+		}
+	}); // end of $.ajax({})---------------------------------------------------------------------
+}
+
+function reservationEnd(ctxPath) {
+	$.ajax({
+		url:ctxPath + "/reservation/reservationEnd.mp",
+		data: {
+			"userid":userid,
+			"imp_uid":imp_uid,
+			"name":name
+        },
+		type:"post",
+		dataType:"json",
+        success: function(json){
+			console.log("메일 보내기 성공");
 		},
 		error: function() {
 			alert("request error!");

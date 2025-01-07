@@ -146,7 +146,7 @@ td.time_data:hover,
 li.day:hover,
 tr.movie-list:hover {
 	cursor: pointer;
-	background-color: yellow;
+	background-color: #EB5E28;
 	color: black;
 }
 
