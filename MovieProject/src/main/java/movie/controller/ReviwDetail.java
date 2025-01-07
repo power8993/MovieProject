@@ -27,7 +27,7 @@ public class ReviwDetail extends AbstractController {
 
         // POST 요청일 때만 처리
         if ("POST".equalsIgnoreCase(method)) {
-            String sizePerPage = "5";  // 한 페이지에 표시할 리뷰 수
+            String sizePerPage = "6";  // 한 페이지에 표시할 리뷰 수
             String currentShowPageNo = request.getParameter("currentShowPageNo");  // 현재 페이지 번호
             
             // 파라미터 맵 설정

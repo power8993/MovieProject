@@ -83,31 +83,46 @@
             border: 1px solid;
         }
         .review-section button {
-            padding: 10px 20px;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }       
-        .reviews-list {
-            margin-top: 20px;
+		    text-decoration: none;
+		    border-radius: 2px;
+		    border: 1px solid #ddd;
+		    color: #403D39;
+		    background-color: #fff;
         }
+        
+        .review-section button:hover {
+        	background-color: #eb5e28;
+		    color: #403D39;
+        }
+          
+        .reviews-list {
+		    width: 95%;
+		    margin: 0 auto;
+		    margin-top: 10px;
+        }
+        
         .reviews-list ul {
             list-style-type: none;
-            padding: 0;
+		    padding: 0;
+		    margin: 0;
+		    display: flex;
+		    flex-wrap: wrap;  /* 항목을 여러 줄로 배치 */		    
         }
+        
         .reviews-list li {
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
+            width: 48%;  /* 각 항목의 너비를 48%로 설정 */
+		    padding: 15px;
+		    border-radius: 5px;
+		    border: 1px solid #ddd;
+		    margin: 0 auto;
+		    margin-bottom: 15px;
         }
         .review-item {
             margin-bottom: 10px;
         }
         .review-item .author {
             font-weight: bold;
-            font-size: 14px;
+            font-size: 14px;           
         }
         .review-item .timestamp {
             font-size: 12px;
@@ -155,8 +170,31 @@
 		 left: 50%;
 		 position: absolute;
 		}
-        
-        
+
+		.pagination {
+		    display: flex;  
+		    justify-content: center;  /* 수평 중앙 정렬 */
+		    margin-top: 20px;  /* 상단 여백 추가 */
+		}
+		.pagination a {
+		    padding: 10px 20px;
+		    margin: 0 3px;  /* 각 페이지 링크 사이에 간격을 추가 */
+		    text-decoration: none;
+		    border-radius: 5px;
+		    border: 1px solid #ddd;
+		    color: #403D39;
+		}
+		
+		.pagination a:hover {
+		    background-color: #eb5e28;
+		    color: #403D39;
+		}
+		
+		.pagination .page-item.active .page-link {
+		    background-color: #eb5e28;
+		    border-color: #EB5E28;
+		    color: white;
+		}
     </style>
 
 </head>
@@ -245,9 +283,9 @@
 
     	                    var reviewHtml = `<li>
 					                             <div class="reviewuser">
-					                                 <span class="author">작성자: \${mrList.userid} 별점: \${stars}점</span><br>
-					                                 <p class="content">\${mrList.review_content}</p><br>
-					                                 <span class="date">작성날짜: \${mrList.review_write_date}</span><br>
+					                                 <span class="author"> 별점: \${stars}</span><br>
+					                                 <p class="content"> \${mrList.review_content}</p><br>
+					                                 <span class="date"> 작성자: \${mrList.userid} \${mrList.review_write_date}</span><br>
 					                             </div>
 						                      </li>`;
     	                    reviewList.append(reviewHtml);
@@ -381,9 +419,9 @@
 	                    
 	                    var reviewHtml = `<li>
 	                                         <div class="reviewuser">
-	                                         	 <span class="author">작성자: \${json.review.user_id} 별점: \${stars}점</span><br>
-	                                             <p class="content">\${json.review.review_content}</p><br>
-	                                             <span class="date">작성날짜: \${json.review.review_write_date}</span><br>
+	                                         	 <span class="author">별점: \${stars}</span><br>
+	                                             <p class="content"> \${json.review.review_content}</p><br>
+	                                             <span class="date"> 작성자: \${json.review.user_id} \${json.review.review_write_date}</span><br>
 	                                         </div>
 	                                     </li>`;
 	                    
@@ -475,7 +513,7 @@
     <div class="review-section" style="margin-top: 20px; width: 95%; margin: 0 auto;">       
         <!-- 별점 선택 -->
         <div class="rating-stars">
-            <label for="reviewText"><i class="fa-solid fa-circle-user" style="color: #252422;" aria-hidden="true"></i></label>
+            <label for="reviewText"><i class="fa-solid fa-circle-user" style="color: #252422;" aria-hidden="true"> 별점을 선택해주세요.</i></label>
             <span data-value="1">&#9733;</span>
             <span data-value="2">&#9733;</span>
             <span data-value="3">&#9733;</span>
@@ -487,13 +525,13 @@
         <!-- 별점값을 가져오기 위함 -->
         <input type="hidden" id="rating" name="rating" value="">
         
-        <button onclick="submitReview()">후기 제출</button>
+        <button onclick="submitReview()" style="margin-top: 20px; width: 100%; margin: 0 auto;">등록 하기</button>
     </div>
 
-    <hr style="width: 95%; border: 1.5px solid #ccc5b9; margin-bottom: 30px;">
+    <hr style="width: 95%; border: 1.5px solid #ccc5b9;">
 
     <!-- 작성된 후기들 -->
-    <div class="reviews-list" style="width: 95%; margin: 0 auto;">
+    <div class="reviews-list" style="width: 95%;">
         <ul id="reviewsList">        	
             <!-- 후기가 추가될 곳 -->
         </ul>
