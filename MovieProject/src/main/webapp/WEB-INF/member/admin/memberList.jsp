@@ -10,6 +10,9 @@
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/admin/admin.css" >
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/member/admin/memberList.css" >
 
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <%-- 직접 만든 Javascript --%>
 <script type="text/javascript" src="<%= ctxPath%>/js/member/admin/memberList.js"></script>
 <script type="text/javascript">

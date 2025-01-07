@@ -3,7 +3,7 @@
 @charset "UTF-8";
 
 div.mycontainer {
-	border: solid 1px gray;
+	border: solid 0px gray;
 	width: 90%;
 	
     max-width: 980px;
@@ -32,7 +32,7 @@ div.myheader {
  
 /* 중단(사이드바 + 본문) */
 div.mybody {
-	border: solid 1px blue;
+	border: solid 0px blue;
 	display: flex;
   	flex-wrap: wrap;
 	
@@ -44,10 +44,12 @@ div.mybody {
 /*   본문   */
 /*#########*/
 section#mycontent {
- 	border: solid 1px black; 
+ 	border: solid 1px #CCC5B9; 
+ 	border-radius: 5px;
 	float: right;
 	width: 79%; 
     padding: 10px; 
+    margin-bottom: 1%;
 }
 
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
@@ -55,7 +57,7 @@ section#mycontent {
 /*   사이드바   */
 /*############*/
 section#mysidebar {
-	border: solid 1px purple;
+	border: solid 0px purple;
 	float: left;
 	width: 21%; 
     height: 100%; 
@@ -63,11 +65,17 @@ section#mysidebar {
     box-sizing: border-box; 
 }
 
+/* AdminPage Home */
+li#admin_header > a {
+	font-size: 13pt !important; 
+	font-weight: bold;
+}
+
 /* 상위 메뉴 스타일 */
 section#mysidebar > li {
     text-decoration: none;
     color: black;
-    font-size: 16px; 
+    font-size: 13pt; 
     font-weight: bold; 
     display: block; 
     padding: 10px;
@@ -88,7 +96,7 @@ section#mysidebar ul li {
 }
 
 section#mysidebar ul li a {
-	font-size: 15px; 
+	font-size: 12pt; 
 }
 
 
@@ -116,6 +124,8 @@ section#mysidebar a:hover {
 	padding-left: 13px; 
 	color: white !important;
 }
+
+
 
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 

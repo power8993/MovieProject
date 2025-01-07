@@ -9,8 +9,7 @@ $(document).ready(function() {
         let seat_arr = seat_arr_elmt.split(",");
 		
 		// 관 가져오기
-		const fk_screen_no = $("#showtime_table > tbody tr > td.fk_screen_no").text().substring(0,1);
-		console.log(fk_screen_no);
+		const fk_screen_no = $(e.target).prev().prev().text().substring(0,1);
 
 		let division = 10;
 			
@@ -26,6 +25,9 @@ $(document).ready(function() {
 		
 		html = ``;
 			
+		html += `<span style='display: inline-block; background-color:#CCC5B9; color:white; height: 10px; width: 205px;'>SCREEN</span>
+		         <br>`;
+		
 		seat_arr.forEach((item, index) => {
 			
 	        if(item == 0){
