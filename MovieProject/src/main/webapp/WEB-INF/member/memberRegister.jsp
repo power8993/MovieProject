@@ -3,7 +3,6 @@
 
 <%
 	String ctxPath = request.getContextPath();
-    //     /MyMVC
 %>
 
 <jsp:include page="../header1.jsp" /> 
@@ -48,10 +47,21 @@
 	                       <span id="emailCheckResult"></span>
 	      
 	      <label class="labelName" >전화번호</label>
-		  <input type="text" name="hp1" id="hp1" size="6" maxlength="3" value="010" readonly />&nbsp;-&nbsp; 
-	      <input type="text" name="hp2" id="hp2" size="6" maxlength="4" class="requiredInfo" placeholder="1234"/>&nbsp;-&nbsp;
-	      <input type="text" name="hp3" id="hp3" size="6" maxlength="4" class="requiredInfo" placeholder="5678"/>    
-	      					<span class="error" id="hp_error" style="display:block;">•전화번호를 입력해 주세요.</span> 
+	      <div style="widht:100%;">
+		  <input type="text" name="hp1" id="hp1" size="6" maxlength="3" value="010" readonly  style="width:85px;"/>&nbsp;-&nbsp; 
+	      <input type="text" name="hp2" id="hp2" size="6" maxlength="4" class="requiredInfo" placeholder="1234" style="width:85px;"/>&nbsp;-&nbsp;
+	      <input type="text" name="hp3" id="hp3" size="6" maxlength="4" class="requiredInfo" placeholder="5678" style="width:85px;"/>   
+	      <button  type="button" id="phoneCheckandAuth" class="btn btn-info" style="width: 92.81px;margin-left: 8px;">인증</button>
+	      </div>
+	      <span class="error" id="hp_error" style="display:block;">•전화번호를 입력해 주세요.</span>  
+	      <div id="errortest"></div>
+	      <%-- 인증 버튼을 클릭하면 나오는 요소. 밑의 인증하는 요소들은 페이지가 로드되면 hide() 됨. 즉, 전화번호가 DB 상에 존재하지 않는다면 show()됨. --%>
+	      <div id="authPassElmt" style="display:flex; margin-top:10px;" >
+		      <input type="text" name="" id="authPassValue"  maxlength="3"/> 
+		      <button id="authPassBtn" type="button" style="margin-left: 15px;  ">인증하기</button>
+	      </div>
+	      
+	      
 	     
 	     <div style="display:flex; justify-content: space-between;">
 		     <div>

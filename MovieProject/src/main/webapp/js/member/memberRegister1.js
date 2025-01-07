@@ -6,6 +6,7 @@ let b_emailcheck_click = false;
 
 $(document).ready(function(){
 	
+	$("#authPassElmt").hide();
 	
 	/* --------------- 생년월일 선택하기 시작 ---------------- */
 	// '출생 연도', '출생 월', '출생 일' 엘리먼트 가져오기
@@ -238,20 +239,13 @@ $(document).ready(function(){
 			
 		//	$(e.target).next().show();
 		//	또는
-			$(e.target).next().next().hide();
+			$("#hp_error").hide();
 		}
 		
 	}); // 아이디가 hp2 인 것이 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
 
 	
 	$("input#hp3").blur((e) => {
-							
-	//	const regExp_hp3 = /^[0-9]{4}$/;
-	//	또는
-	//	const regExp_hp3 = /^\d{4}$/; // d는 decimal(숫자)
-	//	또는
-	//	const regExp_hp3 = new RegExp(/^[0-9]{4}$/);
-	//	또는
 		const regExp_hp3 = new RegExp(/^\d{4}$/); 
 		// 연락처 국번( 숫자 4자리인데 첫번째 숫자는 1-9 이고 나머지는 0-9) 정규표현식 객체 생성
 		
@@ -259,11 +253,7 @@ $(document).ready(function(){
 		
 		if(!bool) {
 			// 연락처 마지막 4자리가 정규표현식에 위배된 경우
-			
-		//	$(e.target).next().show();
-		//	또는
-		//	$(e.target).parent().find("span.error").show();
-			$(e.target).next().show();
+			$("#hp_error").show();
 		}
 		else {
 			if($("input#hp2").val()==""){
@@ -271,10 +261,7 @@ $(document).ready(function(){
 					return;
 				}
 			// 연락처 마지막 4자리가 정규표현식에 부합하는 경우
-		//	$(e.target).next().show();
-		//	또는
-		//	$(e.target).parent().find("span.error").hide();
-		$(e.target).next().hide();
+		$("#hp_error").hide();
 		}
 		
 	}); // 아이디가 hp3 인 것이 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
@@ -503,11 +490,51 @@ $(document).ready(function(){
 		b_emailcheck_click = false;
 	});
 	
+	
+	b_phoneCheck_click = false; // "인증" 버튼을 클릭했는지 클릭 하지 않았는지 여부를 알아오기 위한 용도(전화번호 중복확인 체크용)
+	// === 전화번호 인증 버튼 클릭 시 시작 === //
+	$("#phoneCheckandAuth").click(function(){
+		
+				
+				const phoneNumber = $("input#hp1").val() + $("input#hp2").val() + $("input#hp3").val(); 
+				
+				$.ajax({
+					url: "phDuplicateCheck.mp",
+					data: {"phoneNumber":phoneNumber},  
+					type: "post",	
+					dataType: "json",		
+					success:function(json){
+						
+						if(json.isExists) { //전화번호를 사용 중인 경우
+							b_phoneCheck_click = false; 
+							$("#errortest").html("사용 중인 전화번호입니다.");
+						}
+						else{// 전화번호가 중복되지 않은 경우
+							b_phoneCheck_click = true; 
+							$("#errortest").html("사용 가능한 전화번호이므로 인증을 진행해 주세요.");
+							$("#authPassElmt").show();
+						}
+					},
+					error: function(request, status, error){
+		                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		            }
+				});
+	});// end of $("button#emailcheck").click(function(){
+	// === 전화번호 인증 버튼 클릭 시 끝 === //
+	
 }); // end of $(document).ready(function(){})---------------------------------------------------------------
 
 
 
 // function declaration
+
+////////////////// 전화번호 중복 통과 후 생기는 인증하기 버튼 클릭 시 //////////////////
+$(document).on('click', '#authPassBtn', function() {
+		//location.href = json.ctxPath + "/member/smsSend.mp?authType="+"registerMobileAuth";
+		alert("인증하기 버튼 클릭 됨.");
+	});
+
+
 // "가입하기" 버튼 클릭시 호출되는 함수
 function goRegister() {
 
@@ -602,6 +629,13 @@ function goRegister() {
 	
 	// **** "이메일 중복확인"을 클릭했는지 검사하기 끝 **** //
 	
+	// **** "인증버튼"을 클릭했는지 검사하기 시작 **** //
+	if(!b_phoneCheck_click) {
+		// "전화번호 인증"을 클릭 하지 않았을 경우
+		alert("인증 버튼을 클릭하셔야합니다.");
+		return; 
+	}
+	// **** "인증버튼"을 클릭했는지 검사하기 끝 **** //
 	
 	const frm = document.registerFrm;
 	frm.aciton = "memberRegister.mp";

@@ -577,6 +577,37 @@ public class MemberDAO_imple implements MemberDAO {
 		return result;
 	}
 
+	
+	//인증하고자 하는 전화번호가 존재하는지 확인. DB에 존재하지않으면 false 존재하면 true
+	@Override
+	public boolean PhoneDuplicateCheck(String phoneNumber) throws SQLException {
+		
+		boolean isExists = false;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select * "
+					   + " from tbl_member "
+					   + " where MOBILE = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, aes.encrypt(phoneNumber));
+			
+			rs = pstmt.executeQuery();
+			
+			isExists = rs.next();	// 행이 있으면(중복된 MOBILE) true,
+									// 행이 없으면(사용가능한 MOBILE) false
+			
+		}catch(GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+		return isExists;
+	}
+
 }
 
 
