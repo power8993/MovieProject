@@ -227,7 +227,7 @@ String ctxPath = request.getContextPath();
 											<div class="movie-rating">
 												<c:forEach var="i" begin="1" end="5">
 													<span
-														style="color: ${i <= mrvo.movie_rating ? '#FFD700' : '#E0E0E0'};">&#9733;</span>
+														style="color: ${i <= mrvo.movie_rating ? '#eb5e28' : '#E0E0E0'};">&#9733;</span>
 													<%-- 평점 별점 --%>
 												</c:forEach>
 											</div>
