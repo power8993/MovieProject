@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <%
 String ctxPath = request.getContextPath();
@@ -89,7 +90,7 @@ String ctxPath = request.getContextPath();
 								</a>
 							</div>
 							
-							<!-- 영화제목, 영화총가격, 관람인원, 관람일자, 관람좌석, 상영관, 매수 -->
+							<!-- 영화제목, 관람인원, 관람일자, 관람좌석, 상영관, 매수 -->
 							<div class="moviewatched_details">
 								<h2 class="moviewatched_h2"><a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${watched.svo.fk_seq_movie_no}">${watched.svo.mvo.movie_title}</a> </h2>
 								<ul>

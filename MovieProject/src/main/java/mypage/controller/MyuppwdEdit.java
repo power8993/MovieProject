@@ -55,7 +55,9 @@ public class MyuppwdEdit extends AbstractController {
 			request.setAttribute("method", method);
 
 			super.setRedirect(false);
-			super.setViewPage("/WEB-INF/mypage/myuppwdEdit.jsp");
+			super.setViewPage("/WEB-INF/mypage/myupEdit.jsp");
+			
+			
 
 		} else {
 			request.setAttribute("message", "로그인이 필요합니다.");

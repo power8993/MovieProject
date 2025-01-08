@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <%
 String ctxPath = request.getContextPath();
@@ -54,9 +55,16 @@ String ctxPath = request.getContextPath();
 			</ul>
 		</div>
 		<%-- 마이페이지 사이드바 끝 --%>
+		
+		
+		
+		
 
 		<!-- 메인 콘텐츠 -->
 		<div class="mypage_main_content">
+		
+		
+		
 
 			<!-- 나의 예매내역 -->
 			<div class="mypage_box_css">
@@ -95,7 +103,7 @@ String ctxPath = request.getContextPath();
 										<div class="reservation_details">
 											<p class="reservation_id">
 												${reservation.svo.mvo.movie_title}
-												${reservation.pay_amount}원</p>
+												<fmt:formatNumber value="${reservation.pay_amount}" pattern="#,###" />원</p>
 											<p class="movie_info">관람일시 ${reservation.svo.start_time}</p>
 											<p class="theater_info">관람좌석
 												${reservation.tvo.seat_no_list}</p>
@@ -173,6 +181,9 @@ String ctxPath = request.getContextPath();
 
 
 
+
+
+
 			<!-- 내가 쓴 평점 -->
 			<div class="mypage_box_css">
 				<h3>
@@ -210,11 +221,17 @@ String ctxPath = request.getContextPath();
 												<strong>${mrvo.mvo.movie_title}</strong>
 											</div>
 											<ul>
-												<li>${mrvo.fk_user_id}|</li>
+												<li>${mrvo.fk_user_id}</li>
 												<li>${mrvo.review_write_date}</li>
 											</ul>
-											<p class="review_date">평점:${mrvo.movie_rating}
-												${mrvo.review_content}</p>
+											<div class="movie-rating">
+												<c:forEach var="i" begin="1" end="5">
+													<span
+														style="color: ${i <= mrvo.movie_rating ? '#FFD700' : '#E0E0E0'};">&#9733;</span>
+													<%-- 평점 별점 --%>
+												</c:forEach>
+											</div>
+											<p class="review_date">${mrvo.review_content}</p>
 
 										</div>
 									</div>
@@ -228,6 +245,9 @@ String ctxPath = request.getContextPath();
 					</c:if>
 				</div>
 			</div>
+
+
+
 
 
 

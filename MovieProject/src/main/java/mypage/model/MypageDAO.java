@@ -8,8 +8,17 @@ import member.domain.MemberVO;
 import movie.domain.MovieLikeVO;
 import movie.domain.MovieReviewVO;
 import reservation.domain.PaymentVO;
+import reservation.domain.PointVO;
 
 public interface MypageDAO {
+	
+	//마이페이지 프로필 포인트 내역
+	List<Map<String, Object>> myreservationprofile(String userid)throws SQLException;
+	
+	//나의 영화 랭킹 
+	List<Map<String, String>> myranking(String userid)throws SQLException;
+	
+	
 	
 	//마이페이지 메인 리스트 = 나의 예매내역
 	List<PaymentVO> main_mypage_Myreservationlist(String userid)throws SQLException;
@@ -24,12 +33,21 @@ public interface MypageDAO {
 	List<MovieLikeVO> main_mypage_MovieLikeList(String userid)throws SQLException;
 	
 	
+	//마이페이지 포인트 적립/사용내역 합계 목록
+	List<Map<String, Object>> myreservationpoint(String userid)throws SQLException;
+	
+	//마이페이지 포인트 적립/사용내역 목록 리스트
+	List<PointVO> myreservationpointList(String userid)throws SQLException;
+	
 	
 	//마이페이지 나의 예매내역 목록 전체
 	List<PaymentVO> myreservationList(String userid)throws SQLException;
 	
 	//마이페이지 나의 예매<취소>내역 목록 전체
 	List<PaymentVO> myreservationList_cancel(String userid)throws SQLException;
+	
+	//마이페이지 나의 예매내역 특정 보기(영수증 출력)
+	List<PaymentVO> myreservationList_impUid(String impUid)throws SQLException;
 	
 	
 	//마이페이지 내가 본 영화 목록 전체
@@ -75,12 +93,28 @@ public interface MypageDAO {
 	int mypwdUdate(Map<String, String> paraMap)throws SQLException;
 	
 	//마이페이지 회원정보수정에서 비밀번호 변경 날짜 가져오기
-	List<MemberVO> Mylastpwdchangedate(Map<String, String> paraMap)throws SQLException;
+	MemberVO Mylastpwdchangedate(Map<String, String> paraMap)throws SQLException;
 	
 	
 
 	//마이페이지 회원탈퇴
 	boolean deletePassword(String userid)throws SQLException;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

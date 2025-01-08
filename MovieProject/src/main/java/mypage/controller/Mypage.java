@@ -2,6 +2,7 @@ package mypage.controller;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,7 +50,17 @@ public class Mypage extends AbstractController {
 				//마이페이지 메인 리스트 = 기대되는 영화
 				List<MovieLikeVO> main_mypage_MovieLikeList = mydao.main_mypage_MovieLikeList(loginuser.getUserid());
 				request.setAttribute("main_mypage_MovieLikeList", main_mypage_MovieLikeList);
-
+				
+				
+				// ★★★ 마이 프로필--나의 포인트 목록 ★★★ //
+				List<Map<String, Object>> myreservationprofile = mydao.myreservationprofile(loginuser.getUserid());
+				request.setAttribute("myreservationprofile", myreservationprofile);
+				
+				// ★★★ 마이 프로필--나의 영화 랭킹 ★★★ //
+				List<Map<String, String>> myranking = mydao.myranking(loginuser.getUserid());
+				request.setAttribute("myranking", myranking);
+				
+				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/mypage/mypage.jsp");
 
