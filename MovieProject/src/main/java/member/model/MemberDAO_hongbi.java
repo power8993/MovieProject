@@ -29,12 +29,18 @@ public interface MemberDAO_hongbi {
 	// [관리자 메인페이지] 오늘의 영화 예매 현황을 차트로 보여주기(select)
 	List<MemberVO_hongbi> todayReservedChart() throws SQLException;
 
-	// [관리자 메인페이지] (일간/월간/연간) 전체 예매 현황을 차트로 보여주기(select)
+	// [관리자 메인페이지] 7일간 전체 예매 현황을 차트로 보여주기(select)
 	List<Map<String,Object>> totalDayReservedChart() throws SQLException;
 
-	// [관리자 메인페이지] 한 달간 전체 예매 현황을 차트로 보여주기(select)
+	// [관리자 메인페이지] 30일간 전체 예매 현황을 차트로 보여주기(select)
 	List<Map<String, Object>> totalMonthReservedChart() throws SQLException;
 
 	// [관리자 메인페이지] 연간 전체 예매 현황을 차트로 보여주기(select)
 	List<Map<String, Object>> totalYearReservedChart() throws SQLException;
+
+	// [관리자 메인페이지] 7일간 접속자 수를 차트로 보여주기(select)
+	List<Map<String, Object>> totalVisitedCountChart() throws SQLException;
+	
+	// [관리자 메인페이지] 금일 및 누적 매출과 방문자 수 보여주기(select)
+	Map<String, Integer> statisticalAnalysis() throws SQLException;
 }

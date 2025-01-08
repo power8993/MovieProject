@@ -22,122 +22,107 @@ public class AdminChart extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		String data = request.getParameter("data");
+		String range = request.getParameter("range");  // 'range' 값 처리
 
-		//System.out.println("Pie Chart: " + pie_chart);
-		//System.out.println("Line Chart: " + line_chart);
-		
-		
-		if("pie".equals(data)) {
-			// === 오늘의 영화 예매 현황 === //
-
-			try {
-				// [관리자 메인페이지] 오늘의 영화 예매 현황을 차트로 보여주기(select)
-				List<MemberVO_hongbi> reservedList = mdao.todayReservedChart();
-				
-				// movieList 를 JOSN 배열로 변환
-				JSONArray reservedArray = new JSONArray();
-				
-				for (MemberVO_hongbi reserved : reservedList) {
-
+	    try {
+	        JSONArray jsonArray = new JSONArray();
+	        
+	        // Pie 차트 처리
+	        if ("pie".equals(data)) {
+	            List<MemberVO_hongbi> reservedList = mdao.todayReservedChart();
+	            for (MemberVO_hongbi reserved : reservedList) {
+	                JSONObject jsonObj = new JSONObject();
+	                jsonObj.put("reserved_cnt", reserved.getReserved_cnt());
+	                jsonObj.put("movie_title", reserved.getMvvo().getMovie_title());
+	                jsonArray.put(jsonObj);
+	            }
+	        }
+	        // Line 차트 처리
+	        else if ("line".equals(data)) {
+	            if ("day".equals(range)) {
+	                List<Map<String, Object>> reservedDayList = mdao.totalDayReservedChart();
+	                for (Map<String, Object> reserved : reservedDayList) {
+	                    JSONObject jsonObj = new JSONObject();
+	                    jsonObj.put("day_pay_date", reserved.get("day_pay_date"));
+	                    jsonObj.put("day_pay_sum", reserved.get("day_pay_sum"));
+	                    jsonObj.put("day_reserved_cnt", reserved.get("day_reserved_cnt"));
+	                    jsonArray.put(jsonObj);
+	                }
+	            } else if ("month".equals(range)) {
+	                List<Map<String, Object>> reservedMonthList = mdao.totalMonthReservedChart();
+	                for (Map<String, Object> reserved : reservedMonthList) {
+	                    JSONObject jsonObj = new JSONObject();
+	                    jsonObj.put("month_pay_date", reserved.get("month_pay_date"));
+	                    jsonObj.put("month_pay_sum", reserved.get("month_pay_sum"));
+	                    jsonObj.put("month_reserved_cnt", reserved.get("month_reserved_cnt"));
+	                    jsonArray.put(jsonObj);
+	                }
+	            }
+	            // Year 차트 처리
+	            else if ("year".equals(range)) {
+	                List<Map<String, Object>> reservedYearList = mdao.totalYearReservedChart();
+	                for (Map<String, Object> reserved : reservedYearList) {
+	                    JSONObject jsonObj = new JSONObject();
+	                    jsonObj.put("year_pay_date", reserved.get("year_pay_date"));
+	                    jsonObj.put("year_pay_sum", reserved.get("year_pay_sum"));
+	                    jsonObj.put("year_reserved_cnt", reserved.get("year_reserved_cnt"));
+	                    jsonArray.put(jsonObj);
+	                }
+	            }
+	        }
+	        // Area 차트 처리
+	        else if ("area".equals(data)) {
+	            List<Map<String, Object>> visitedCntList = mdao.totalVisitedCountChart();
+	            for (Map<String, Object> visited : visitedCntList) {
+	                JSONObject jsonObj = new JSONObject();
+	                jsonObj.put("visit_date", visited.get("visit_date"));
+	                jsonObj.put("visited_cnt", visited.get("visited_cnt"));
+	                jsonArray.put(jsonObj);
+	            }
+	        }
+	        // Bar 차트 처리
+	        else if ("bar".equals(data)) {
+	            List<Map<String, Object>> total_payment_amount = mdao.totalDayReservedChart();
+	            for (Map<String, Object> payment : total_payment_amount) {
+	                JSONObject jsonObj = new JSONObject();
+	                jsonObj.put("pay_date", payment.get("day_pay_date"));
+	                jsonObj.put("pay_sum", payment.get("day_pay_sum"));
+	                jsonArray.put(jsonObj);
+	            }
+	        }
+	        else if ("statistics".equals(data)) {
+	        	// [관리자 메인페이지] 금일 및 누적 매출과 방문자 수 보여주기(select)
+	        	Map<String, Integer> map = mdao.statisticalAnalysis();
+	        	
+	        	if(map != null) {
 					JSONObject jsonObj = new JSONObject();
-					jsonObj.put("reserved_cnt", reserved.getReserved_cnt());
-					jsonObj.put("movie_title", reserved.getMvvo().getMovie_title());
-					
-					reservedArray.put(jsonObj);
-				}// end of for-------------------------------
-				
-				// JSONArray 객체를 json 으로 변환 후 보내기
-				response.setContentType("application/json"); // json 형태로 보내준다.
-				response.getWriter().write(reservedArray.toString());
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-				
-				String message = "오늘의 영화 예매 현황 조회 실패";
-				String loc = "javascript:history.back()";
-				
-				request.setAttribute("message", message);
-				request.setAttribute("loc", loc);
-				
-				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/msg.jsp");	
-			}
-			
-		}
-		else if("line".equals(data)) {
-			// === 전체 영화 예매 추이 === //
-			
-			String range = request.getParameter("range");
 
-			try {
-				
-				// movieList 를 JOSN 배열로 변환
-				JSONArray reservedArray = new JSONArray();
-				
-				if("day".equals(range)) {
-					// [관리자 메인페이지] 일주일간 전체 예매 현황을 차트로 보여주기(select)
-					List<Map<String,Object>> reservedDayList = mdao.totalDayReservedChart();
-					
-					// Day 데이터 처리
-				    for (Map<String, Object> reserved : reservedDayList) {
-				        JSONObject jsonObj = new JSONObject();
-				        jsonObj.put("day_pay_date", reserved.get("day_pay_date"));
-				        jsonObj.put("day_pay_sum", reserved.get("day_pay_sum"));
-				        jsonObj.put("day_reserved_cnt", reserved.get("day_reserved_cnt"));
-				        reservedArray.put(jsonObj);  // Day 데이터 추가
-				    }// end of for---------------------------------------------------------
-				    
-				}
-				else if("month".equals(range)) {
-					// [관리자 메인페이지] 한 달간 전체 예매 현황을 차트로 보여주기(select)
-					List<Map<String,Object>> reservedMonthList = mdao.totalMonthReservedChart();
-					
-					 // Month 데이터 처리
-				    for (Map<String, Object> reserved : reservedMonthList) {
-				        JSONObject jsonObj = new JSONObject();
-				        jsonObj.put("month_pay_date", reserved.get("month_pay_date"));
-				        jsonObj.put("month_pay_sum", reserved.get("month_pay_sum"));
-				        jsonObj.put("month_reserved_cnt", reserved.get("month_reserved_cnt"));
-				        reservedArray.put(jsonObj);  // Month 데이터 추가
-				    }// end of for---------------------------------------------------------
-				    
-				}
-				else if("year".equals(range)) {
-					// [관리자 메인페이지] 연간 전체 예매 현황을 차트로 보여주기(select)
-					List<Map<String,Object>> reservedYearList = mdao.totalYearReservedChart();
+					// SONObject의 mvvo 속성으로 포함되어 전달
+					jsonObj.put("today_visit_cnt", map.get("today_visit_cnt"));
+					jsonObj.put("total_visit_cnt", map.get("total_visit_cnt"));
+					jsonObj.put("today_pay_sum", map.get("today_pay_sum"));
+					jsonObj.put("total_pay_sum", map.get("total_pay_sum"));
 
-				    // Year 데이터 처리
-				    for (Map<String, Object> reserved : reservedYearList) {
-				        JSONObject jsonObj = new JSONObject();
-				        jsonObj.put("year_pay_date", reserved.get("year_pay_date"));
-				        jsonObj.put("year_pay_sum", reserved.get("year_pay_sum"));
-				        jsonObj.put("year_reserved_cnt", reserved.get("year_reserved_cnt"));
-				        reservedArray.put(jsonObj);  // Year 데이터 추가
-				    }// end of for---------------------------------------------------------
+					response.setContentType("application/json"); // json 형태로 보내준다.
+					response.getWriter().write(jsonObj.toString());
 					
+					return;  // 응답을 보낸 후 메소드 종료(map 으로 보낼 것이기 때문에)
 				}
-			    			
-				// JSONArray 객체를 json 으로 변환 후 보내기
-				response.setContentType("application/json"); // json 형태로 보내준다.
-				response.getWriter().write(reservedArray.toString());
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-				
-				String message = "일주일 간 전체 예매 현황 조회 실패";
-				String loc = "javascript:history.back()";
-				
-				request.setAttribute("message", message);
-				request.setAttribute("loc", loc);
-				
-				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/msg.jsp");	
-			}
-		}
-		//else if("area".equals(data)) {
-		//	// === 방문자 수 추이 === // 
-		//}
-		
-	}// end of public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {}---------------------
+	        	
+	        }
 
+	        // 결과를 클라이언트로 반환
+	        response.setContentType("application/json");
+	        response.getWriter().write(jsonArray.toString());
+	        
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        String message = "데이터 조회 중 오류가 발생했습니다.";
+	        String loc = "javascript:history.back()";
+	        request.setAttribute("message", message);
+	        request.setAttribute("loc", loc);
+	        super.setRedirect(false);
+	        super.setViewPage("/WEB-INF/msg.jsp");
+	    }
+	}
 }

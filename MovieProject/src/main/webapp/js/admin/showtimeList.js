@@ -2,6 +2,9 @@
 
 $(document).ready(function() {
 	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 툴팁이벤트
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
     $("td.seat_status").hover(function(e) {
 		
         // 좌석 배열을 가져오기
@@ -87,6 +90,58 @@ $(document).ready(function() {
         $(this).find(".tooltip").remove();
 		
     });// end of $("td.seat_status").hover(function(e) {})-------------------------
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
+	// === 아무도 예매하지 않은 상영일정이 등록된 영화 삭제 이벤트 시작 === //
+	$("tbody").on("click", "tr", function(e) {
+		var unused_seat = $(this).find("td.seat_status > span#seat_text").text().substring(0,2);
+		var seat_cnt = $(this).find("td.seat_status > span#seat_text").text().substring(5);
+		var movie_title = $(this).find("td#movie_title_text").text().substring(1);
+		var showdate = $(this).find("td#show_date_text").text().substring(2); 
+		var showtime = $(this).find("td#show_time_text").text();
+		
+		var seq_showtime_no = $(this).find("span#seq_showtime_no").text(); // ajax 로 넘길 seq 번호
+		/*console.log(seq_showtime_no);
+		console.log(unused_seat);
+		console.log(seat_cnt);
+		console.log(movie_title);
+		console.log(showdate);
+		console.log(showtime);*/
+		
+		const user_confirm = confirm(`[영화] ${movie_title}\n[상영일자] ${showdate} ${showtime}\n\n위의 상영일정을 삭제하시겠습니까?`);
+		
+		if(user_confirm) {
+			
+			if(unused_seat == seat_cnt) {
+				// ajax 호출
+				$.ajax({
+					url: 'showtimeDelete.mp',
+					type: 'post',
+					data: { "seq" : seq_showtime_no },
+					async: true,
+					success: function(json) {
+						alert("상영일정이 삭제되었습니다.");
+					},
+		            error: function() {
+		                alert("상영일정 삭제에 실패했습니다. 다시 시도해주세요.");
+		            }
+				});// end of $.ajax({})------------------------------------
+			}
+			else {
+				// 해당 영화를 예매한 회원이 한 명이라도 있을경우 삭제할 수 없다
+				alert("해당 일정에 대한 예매 이력이 존재하여 삭제가 불가합니다.");
+				return;
+			}
+			
+		}
+		else {
+			alert("상영일정 삭제를 취소하셨습니다");
+		}
+		
+	});// end of 	$("tbody").on("click", "tr", function(e) {})-------------------------
+	// === 아무도 예매하지 않은 상영일정이 등록된 영화 삭제 이벤트 시작 === //		
+	
 	
 	
 });// end of $(document).ready(function() {})--------------------------

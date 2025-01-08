@@ -16,6 +16,7 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
+	
 	$("input[name='search_date']").val("${requestScope.search_date}");
 	$("select[name='search_time']").val("${requestScope.search_time}");
 	$("input[name='search_movie_title']").val("${requestScope.search_movie_title}");
@@ -171,11 +172,11 @@ $(document).ready(function(){
 								<fmt:parseNumber var="size_per_page" value="${requestScope.size_per_page}"/>
 								<td>${(requestScope.total_showtime_count) - (current_showpage_no - 1) * size_per_page - (status.index)}</td>
 								
-								<td><span style="display: none;">${movievo.showvo.seq_showtime_no}</span>${fn:substring(movievo.showvo.start_time,0,10)}</td>
-								<td>${fn:substring(movievo.showvo.start_time,11,16)} ~ ${fn:substring(movievo.showvo.end_time,11,16)}</td>
+								<td id="show_date_text" ><span id="seq_showtime_no" style="display: none;">${movievo.showvo.seq_showtime_no}</span>${fn:substring(movievo.showvo.start_time,0,10)}</td>
+								<td id="show_time_text">${fn:substring(movievo.showvo.start_time,11,16)} ~ ${fn:substring(movievo.showvo.end_time,11,16)}</td>
 								<td class="fk_screen_no">${movievo.showvo.fk_screen_no}관</td>
-								<td><img src="<%= ctxPath%>/images/admin/poster_file/${movievo.poster_file}" alt="${movievo.movie_title}" style="width:60px; height:auto;">&nbsp;${movievo.movie_title}</td>
-								<td class="seat_status"><span id="seat_arr" style="display: none;">${movievo.showvo.seat_arr}</span>${movievo.showvo.unused_seat} / ${movievo.scvo.seat_cnt}</td>
+								<td id="movie_title_text"><img src="<%= ctxPath%>/images/admin/poster_file/${movievo.poster_file}" alt="${movievo.movie_title}" style="width:60px; height:auto;">&nbsp;${movievo.movie_title}</td>
+								<td class="seat_status"><span id="seat_arr" style="display: none;">${movievo.showvo.seat_arr}</span><span id="seat_text">${movievo.showvo.unused_seat} / ${movievo.scvo.seat_cnt}</span></td>
 							</tr>
 						</c:forEach>
 						<div id="movie_detail_modal"></div>  <!-- 모달 사용할 경우 모달 위치 -->
