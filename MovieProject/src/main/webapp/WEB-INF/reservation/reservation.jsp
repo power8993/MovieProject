@@ -47,6 +47,9 @@ $(document).ready(function(){
 			if($(this).text() == <%= seq_movie_no%>) {
 				$(this).parent().addClass("selected");
 				$("div#movie-choice").text($(this).parent().find("td.movie-title").text());
+				let v_html = '<img src="http://localhost:9090/MovieProject/images/admin/poster_file/미니언즈.jpg" style="width:auto; height:110px;">';
+				$("div#movie-choice-poster").html(v_html);
+				$("div#movie-choice-poster").show();
 				return false;
 			}
 		});
@@ -212,6 +215,7 @@ $(document).ready(function(){
 						<div id="screen-time-info"></div>
 						<div id="total_seat_cnt" style="display: none;">0</div>
 						<div id="selected_seat_cnt" style="display: none;">0</div>
+						<div id="totalPrice" style="display: none;"></div>
 					</div>
 					<div id="point">
 						<input id="using-point" type="number" step="100" min="0" value="0" placeholder="point를 입력해주세요" />

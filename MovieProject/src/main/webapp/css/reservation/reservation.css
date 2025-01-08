@@ -159,6 +159,10 @@ tr.movie-list > td {
 	text-align: center;
 }
 
+div.goSeatChoice {
+	margin: 0 0 auto 0;
+}
+
 div.ticket-info-container {
 	width: 100vw;
 	position: relative;
@@ -180,7 +184,6 @@ div.ticket-info > div {
 	font-size: 15pt;
 	text-align: center;
 	vertical-align: middle;
-	margin: auto 0;
 }
 
 div#pay-choice > div {
@@ -272,3 +275,24 @@ div.loader {
 	100% { transform: rotate(360deg); }
 }
 /* -- CSS 로딩화면 구현 끝(bootstrap 에서 가져옴) 끝 -- */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 0 grey;
+  border-radius: 5px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #EB5E28;
+  border-radius: 8px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #ffff00; 
+}

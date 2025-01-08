@@ -125,22 +125,42 @@ public class indexDAO_imple implements indexDAO{
 		try {
 			conn = ds.getConnection();
 
-			String sql = " SELECT SEQ_SHOWTIME_NO, SEQ_MOVIE_NO, MOVIE_TITLE, POSTER_FILE "
-					+ " FROM ( "
-					+ "    SELECT DISTINCT S.SEQ_SHOWTIME_NO, "
-					+ "           M.SEQ_MOVIE_NO, "
-					+ "           M.MOVIE_TITLE, "
-					+ "           M.POSTER_FILE, "
-					+ "           COUNT(P.IMP_UID) AS BOOKING_COUNT, "
-					+ "           ROW_NUMBER() OVER (ORDER BY COUNT(P.IMP_UID) DESC) AS RN "
-					+ "    FROM TBL_MOVIE M "
-					+ "    JOIN TBL_SHOWTIME S "
-					+ "      ON M.SEQ_MOVIE_NO = S.FK_SEQ_MOVIE_NO "
-					+ "    LEFT JOIN TBL_PAYMENT P "
-					+ "      ON S.SEQ_SHOWTIME_NO = P.FK_SEQ_SHOWTIME_NO "
-					+ "    GROUP BY S.SEQ_SHOWTIME_NO, M.SEQ_MOVIE_NO, M.MOVIE_TITLE, M.POSTER_FILE "
-					+ " ) "
-					+ " WHERE RN > 0 AND RN <= 5 ";
+			String sql = " WITH movie_payment AS ( "
+					+ "    SELECT st.FK_SEQ_MOVIE_NO, COUNT(p.IMP_UID) AS movie_payment_count "
+					+ "    FROM TBL_PAYMENT p "
+					+ "    JOIN TBL_SHOWTIME st ON p.FK_SEQ_SHOWTIME_NO = st.SEQ_SHOWTIME_NO "
+					+ "    GROUP BY st.FK_SEQ_MOVIE_NO "
+					+ "), "
+					+ "total_payment AS ( "
+					+ "    SELECT COUNT(p.IMP_UID) AS total_payment_count "
+					+ "    FROM TBL_PAYMENT p "
+					+ ") "
+					+ "SELECT seq_movie_no, MOVIE_TITLE, POSTER_FILE,MOVIE_GRADE,booking_rate "
+					+ "FROM ( "
+					+ "    SELECT m.SEQ_MOVIE_NO, m.FK_CATEGORY_CODE, c.CATEGORY AS category_name, "
+					+ "           CASE "
+					+ "               WHEN LENGTH(movie_title) < 10 THEN movie_title "
+					+ "               ELSE SUBSTR(movie_title, 0, 10) || '...' "
+					+ "           END AS movie_title, "
+					+ "           m.CONTENT, m.DIRECTOR, m.ACTOR, m.MOVIE_GRADE, m.RUNNING_TIME, m.LIKE_COUNT, "
+					+ "           TO_CHAR(m.START_DATE, 'yyyy-MM-dd') AS start_date, "
+					+ "           TO_CHAR(m.END_DATE, 'yyyy-MM-dd') AS end_date, "
+					+ "           m.POSTER_FILE, m.VIDEO_URL, "
+					+ "           COALESCE(mp.movie_payment_count, 0) AS movie_payment_count, "
+					+ "           COALESCE(tp.total_payment_count, 1) AS total_payment_count, "
+					+ "           CASE "
+					+ "               WHEN COALESCE(tp.total_payment_count, 0) > 0 THEN "
+					+ "                   ROUND((COALESCE(mp.movie_payment_count, 0) * 1.0 / COALESCE(tp.total_payment_count, 1)) * 100, 2) "
+					+ "               ELSE 0 "
+					+ "           END AS booking_rate "
+					+ "    FROM TBL_MOVIE m "
+					+ "    LEFT JOIN TBL_CATEGORY c ON m.FK_CATEGORY_CODE = c.CATEGORY_CODE "
+					+ "    LEFT JOIN movie_payment mp ON m.SEQ_MOVIE_NO = mp.FK_SEQ_MOVIE_NO "
+					+ "    CROSS JOIN total_payment tp "
+					+ "    WHERE SYSDATE > m.START_DATE "
+					+ "    ORDER BY booking_rate DESC "
+					+ ") "
+					+ "WHERE ROWNUM <= 5 ";
 
 			pstmt = conn.prepareStatement(sql);
 
@@ -151,11 +171,14 @@ public class indexDAO_imple implements indexDAO{
 				MovieVO.setSeq_movie_no(rs.getInt("seq_movie_no"));
 				MovieVO.setMovie_title(rs.getString("MOVIE_TITLE"));
 				MovieVO.setPoster_file(rs.getString("POSTER_FILE"));
-				
-				ShowtimeVO ShowtimeVO = new ShowtimeVO();
-				ShowtimeVO.setSeq_showtime_no(rs.getInt("SEQ_SHOWTIME_NO")); //ShowtimeVO에 '상영중인영화번호'를 삽입
-				MovieVO.setShowvo(ShowtimeVO); //MovieVO의 setShowvo에 ShowtimeVO를 삽입
-				
+				MovieVO.setMovie_grade(rs.getString("MOVIE_GRADE"));
+				MovieVO.setBookingRate(rs.getDouble("booking_rate"));
+				/*
+				 * ShowtimeVO ShowtimeVO = new ShowtimeVO();
+				 * ShowtimeVO.setSeq_showtime_no(rs.getInt("SEQ_SHOWTIME_NO")); //ShowtimeVO에
+				 * '상영중인영화번호'를 삽입 MovieVO.setShowvo(ShowtimeVO); //MovieVO의 setShowvo에
+				 * ShowtimeVO를 삽입
+				 */				
 				movieShowList.add(MovieVO);
 				
 			} // end of while------------------
@@ -177,21 +200,42 @@ public class indexDAO_imple implements indexDAO{
 		try {
 			conn = ds.getConnection();
 
-			String sql = " SELECT SEQ_SHOWTIME_NO, SEQ_MOVIE_NO, MOVIE_TITLE, POSTER_FILE "
-					+ " FROM (\n"
-					+ "    SELECT DISTINCT S.SEQ_SHOWTIME_NO, "
-					+ "           M.SEQ_MOVIE_NO, "
-					+ "           M.MOVIE_TITLE, "
-					+ "           M.POSTER_FILE, "
-					+ "           COUNT(P.IMP_UID) AS BOOKING_COUNT, "
-					+ "           ROW_NUMBER() OVER (ORDER BY COUNT(P.IMP_UID) DESC) AS RN "
-					+ "    FROM TBL_MOVIE M "
-					+ "    JOIN TBL_SHOWTIME S "
-					+ "      ON M.SEQ_MOVIE_NO = S.FK_SEQ_MOVIE_NO "
-					+ "    LEFT JOIN TBL_PAYMENT P "
-					+ "      ON S.SEQ_SHOWTIME_NO = P.FK_SEQ_SHOWTIME_NO "
-					+ "    GROUP BY S.SEQ_SHOWTIME_NO, M.SEQ_MOVIE_NO, M.MOVIE_TITLE, M.POSTER_FILE "
-					+ " )  "
+			String sql = " WITH movie_payment AS ( "
+					+ "    SELECT st.FK_SEQ_MOVIE_NO, COUNT(p.IMP_UID) AS movie_payment_count "
+					+ "    FROM TBL_PAYMENT p "
+					+ "    JOIN TBL_SHOWTIME st ON p.FK_SEQ_SHOWTIME_NO = st.SEQ_SHOWTIME_NO  "
+					+ "    GROUP BY st.FK_SEQ_MOVIE_NO "
+					+ " ), "
+					+ " total_payment AS ( "
+					+ "    SELECT COUNT(p.IMP_UID) AS total_payment_count "
+					+ "    FROM TBL_PAYMENT p "
+					+ " ) "
+					+ " SELECT seq_movie_no, MOVIE_TITLE, POSTER_FILE,MOVIE_GRADE,booking_rate "
+					+ " FROM ( "
+					+ "    SELECT m.SEQ_MOVIE_NO, m.FK_CATEGORY_CODE, c.CATEGORY AS category_name, "
+					+ "           CASE "
+					+ "               WHEN LENGTH(movie_title) < 10 THEN movie_title "
+					+ "               ELSE SUBSTR(movie_title, 0, 10) || '...' "
+					+ "           END AS movie_title, "
+					+ "           m.CONTENT, m.DIRECTOR, m.ACTOR, m.MOVIE_GRADE, m.RUNNING_TIME, m.LIKE_COUNT, "
+					+ "           TO_CHAR(m.START_DATE, 'yyyy-MM-dd') AS start_date, "
+					+ "           TO_CHAR(m.END_DATE, 'yyyy-MM-dd') AS end_date, "
+					+ "           m.POSTER_FILE, m.VIDEO_URL, "
+					+ "           COALESCE(mp.movie_payment_count, 0) AS movie_payment_count, "
+					+ "           COALESCE(tp.total_payment_count, 1) AS total_payment_count, "
+					+ "           CASE "
+					+ "               WHEN COALESCE(tp.total_payment_count, 0) > 0 THEN "
+					+ "                   ROUND((COALESCE(mp.movie_payment_count, 0) * 1.0 / COALESCE(tp.total_payment_count, 1)) * 100, 2) "
+					+ "               ELSE 0 "
+					+ "           END AS booking_rate, "
+					+ "           ROW_NUMBER() OVER (ORDER BY "
+					+ "               COALESCE(mp.movie_payment_count, 0) DESC) AS RN "
+					+ "    FROM TBL_MOVIE m "
+					+ "    LEFT JOIN TBL_CATEGORY c ON m.FK_CATEGORY_CODE = c.CATEGORY_CODE "
+					+ "    LEFT JOIN movie_payment mp ON m.SEQ_MOVIE_NO = mp.FK_SEQ_MOVIE_NO "
+					+ "    CROSS JOIN total_payment tp "
+					+ "    WHERE SYSDATE > m.START_DATE "
+					+ " ) "
 					+ " WHERE RN > 5 AND RN <= 10 ";
 
 			pstmt = conn.prepareStatement(sql);
@@ -203,10 +247,8 @@ public class indexDAO_imple implements indexDAO{
 				MovieVO2.setSeq_movie_no(rs.getInt("seq_movie_no"));
 				MovieVO2.setMovie_title(rs.getString("MOVIE_TITLE"));
 				MovieVO2.setPoster_file(rs.getString("POSTER_FILE"));
-				
-				ShowtimeVO ShowtimeVO2 = new ShowtimeVO();
-				ShowtimeVO2.setSeq_showtime_no(rs.getInt("SEQ_SHOWTIME_NO")); //ShowtimeVO에 '상영중인영화번호'를 삽입
-				MovieVO2.setShowvo(ShowtimeVO2); //MovieVO의 setShowvo에 ShowtimeVO를 삽입
+				MovieVO2.setMovie_grade(rs.getString("MOVIE_GRADE"));
+				MovieVO2.setBookingRate(rs.getDouble("booking_rate"));
 				
 				movieShowList2.add(MovieVO2);
 				
@@ -230,7 +272,7 @@ public class indexDAO_imple implements indexDAO{
 		try {
 			conn = ds.getConnection();
 
-			String sql = " select  seq_movie_no, MOVIE_TITLE, POSTER_FILE from TBL_MOVIE "
+			String sql = " select  seq_movie_no, MOVIE_TITLE, POSTER_FILE, MOVIE_GRADE,round(start_date-sysdate) as remaining_day from TBL_MOVIE "
 					+ " where start_date>sysdate "
 					+ " and ROWNUM<=5 "
 					+ " order by start_date ";
@@ -244,7 +286,8 @@ public class indexDAO_imple implements indexDAO{
 				MovieVO.setSeq_movie_no(rs.getInt("seq_movie_no"));
 				MovieVO.setMovie_title(rs.getString("MOVIE_TITLE"));
 				MovieVO.setPoster_file(rs.getString("POSTER_FILE"));
-				
+				MovieVO.setRemaining_day(rs.getInt("remaining_day"));
+				MovieVO.setMovie_grade(rs.getString("MOVIE_GRADE"));
 				laterMoviesList.add(MovieVO);
 				
 			} // end of while------------------
@@ -266,9 +309,9 @@ public class indexDAO_imple implements indexDAO{
 		try {
 			conn = ds.getConnection();
 
-			String sql = " SELECT seq_movie_no, MOVIE_TITLE, POSTER_FILE "
+			String sql = " SELECT seq_movie_no, MOVIE_TITLE, POSTER_FILE,MOVIE_GRADE,round(start_date-sysdate) as remaining_day "
 					+ " FROM ( "
-					+ "    SELECT seq_movie_no, MOVIE_TITLE, POSTER_FILE, ROWNUM AS RN "
+					+ "    SELECT seq_movie_no, MOVIE_TITLE, POSTER_FILE,start_date,MOVIE_GRADE, ROWNUM AS RN "
 					+ "    FROM TBL_MOVIE "
 					+ "    WHERE start_date > SYSDATE "
 					+ "    ORDER BY start_date "
@@ -284,6 +327,8 @@ public class indexDAO_imple implements indexDAO{
 				MovieVO.setSeq_movie_no(rs.getInt("seq_movie_no"));
 				MovieVO.setMovie_title(rs.getString("MOVIE_TITLE"));
 				MovieVO.setPoster_file(rs.getString("POSTER_FILE"));
+				MovieVO.setRemaining_day(rs.getInt("remaining_day"));
+				MovieVO.setMovie_grade(rs.getString("MOVIE_GRADE"));
 				
 				laterMoviesList2.add(MovieVO);
 				
