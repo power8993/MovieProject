@@ -83,23 +83,24 @@
             margin-bottom: 10px;
             font-size: 16px;
             border-radius: 8px;
-            border: 1px solid #eb5e28;
-            background-color: inherit;
+            border: 1px solid #ddd;
+            background-color: #fff;
         }
         .review-section button {
 		    text-decoration: none;
 		    border-radius: 5px;
 		    border: 1px solid #ddd;
 		    color: #403D39;
-		    background-color: #fff;
+		    background-color: #FFFCF2;
 		    margin-left: 20px;
 		    font-size: 15px;
-		    padding: 5px 10px; /* 버튼 크기 조정 */
-        	margin-top: 10px; /* 위쪽 여백 */
+		    width: 100%;
+		    margin: 0 auto;
         }
         
         .review-section button:hover {
-        	background-color: #eb5e28;
+        	/* background-color: #eb5e28; */
+        	border: 1px solid #eb5e28;
 		    color: #403D39;
         }
           
@@ -636,13 +637,13 @@
             <span data-value="3">&#9733;</span>
             <span data-value="4">&#9733;</span>
             <span data-value="5">&#9733;</span>
-            <button onclick="submitReview()">등록 하기</button>
         </div>
         <textarea id="reviewText" placeholder="영화에 대한 후기를 작성해주세요..." style="outline: 0; resize: none; margin-top: 10px;"></textarea><br>
         
         <!-- 별점값을 가져오기 위함 -->
         <input type="hidden" id="rating" name="rating" value="">
         
+        <button onclick="submitReview()">등록 하기</button>
         
     </div>
 
