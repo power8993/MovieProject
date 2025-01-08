@@ -25,12 +25,15 @@
    <style>
     /* 전체 페이지의 기본 글꼴과 배경 색상 설정 */
     body { 
+     user-select:none;
+        user-select:none;
         font-family: Arial, sans-serif; /* 글꼴을 Arial로 설정 */
         background-color: #f8f8f8; /* 배경 색상을 연한 회색으로 설정 */
     }
 
     /* 날짜 선택 버튼 컨테이너 스타일 */
     .date-selector { 
+    
         display: flex; /* 버튼들을 가로로 정렬 */
         justify-content: center; /* 버튼들을 컨테이너 중앙에 정렬 */
         margin-bottom: 20px; /* 아래쪽 여백 추가 */
@@ -58,8 +61,8 @@
 
     /* 날짜 버튼에 마우스를 올릴 때 스타일 */
     .date-button:hover { 
-        background-color: #EB5E28; /* 더 진한 파란색 배경 */
-        color: #FFFCF2; /* 텍스트를 흰색으로 변경 */
+        background-color: #EB5E28; 
+        color: #FFFCF2; 
         transform: translateY(-5px);
     }
 
@@ -81,12 +84,12 @@
     }
 
     /* 상영 시간 버튼 컨테이너 스타일 */
-    .showtime-row { 
-        display: flex; /* 버튼들을 가로로 정렬 */
-        gap: 10px; /* 버튼 간의 간격 설정 */
-        flex-wrap: wrap; /* 버튼이 줄바꿈될 수 있도록 설정 */
-        margin-top: 10px; /* 위쪽 여백 추가 */
-    }
+    .showtime-row {
+    display: inline-flex; /* 버튼을 한 줄로 정렬 */
+    gap: 10px; /* 버튼 간 간격 설정 */
+    flex-wrap: wrap; /* 버튼이 줄을 넘어가면 줄바꿈 */
+    margin-top: 10px; /* 위쪽 여백 추가 */
+}
 
     /* 상영 시간 버튼 스타일 */
     .showtime-button { 
@@ -132,7 +135,7 @@
     .pagination-button { 
         margin: 0 5px; /* 좌우 여백 설정 */
         padding: 10px 20px; /* 버튼 안쪽 여백 설정 */
-        border: 1px solid #EB5E28; /* 테두리를 회색으로 설정 */
+        border: 1px solid #FFFCF2; /* 테두리를 회색으로 설정 */
         border-radius: 5px; /* 버튼의 모서리를 둥글게 설정 */
         background-color: #FFFCF2; /* 버튼 배경 색상을 연한 회색으로 설정 */
         cursor: pointer; /* 커서를 포인터로 변경 */
@@ -142,8 +145,8 @@
 
     /* 비활성화된 페이지 이동 버튼 스타일 */
     .pagination-button.disabled { 
-        background-color: #FFFCF2; /* 연한 회색 배경 */
-        color: #FFFCF2; /* 텍스트 색상을 더 연한 회색으로 설정 */
+        background-color: #FFFCF2; 
+        color: #FFFCF2; 
         cursor: not-allowed; /* 커서를 비활성화 상태로 변경 */
     }
 
@@ -181,65 +184,89 @@
             font-size: 1rem;     
         }
 
-        /* 모달 스타일 */
-        .modal {
-            display: none; /* 기본적으로 보이지 않음 */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
-            justify-content: center;
-            align-items: center;
-            color: #EB5E28;
-        }
+	 /* 모달 스타일 */
+	.modal {
+	    display: none;
+	    position: fixed;
+	    top: 0;
+	    left: 0;
+	    width: 100%;
+	    height: 100%;
+	    background-color: rgba(0, 0, 0, 0.5);
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+	}
+	
+	/* 모달 컨텐츠 스타일 */
+	.modal-content {
+	    background-color: #FFFFFF;
+	    width: 80%; /* 모달 크기 줄임 */
+	    max-width: 500px; /* 최대 폭 설정 감소 */
+	    padding: 20px;
+	    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	    border-radius: 8px;
+	    border: 2px solid #EB5E28; /* 전체 테두리 추가 */
+	}
+	
+	/* 모달 헤더 스타일 */
+	.modal-header {
+	    background-color: #EB5E28;
+	    color: white;
+	    padding: 10px 20px; /* 패딩 감소 */
+	    text-align: center;
+	    font-size: 20px; /* 폰트 크기 감소 */
+	    border-bottom: 1px solid #FFFFFF; /* 헤더 아래 흰색 선 추가 */
+	}
+	
+	/* 모달 본문 스타일 */
+	.modal-body {
+	    padding: 20px;
+	    font-size: 16px;
+	    color: #333;
+	    border-top: 2px solid #EB5E28; /* 본문 위에 선 추가 */
+	 
+	}
+	
+	/* 테이블 스타일 */
+	table {
+	    width: 100%;
+	    border-collapse: collapse;
+	    border: 1px solid #EB5E28; /* 테이블 전체 테두리 조정 */
+	}
+	
+	/* 테이블 헤더와 셀 스타일 */
+	th, td {
+	    padding: 12px;
+	    text-align: left;
+	    border-bottom: 1px solid #EB5E28; /* 각 셀 아래에 선 추가 */
+	    border-right: 1px solid #EB5E28; /* 각 셀 오른쪽에 선 추가 */
+	    magin:auto;
+	}
+	
+	/* 첫 행에 추가 선 */
+	thead tr th {
+	    border-bottom: 2px solid #EB5E28; /* 헤더 아래에 더 두꺼운 선 추가 */
+	}
+	
+	/* 닫기 버튼 스타일 */
+	.close-btn {
+	    background-color: transparent;
+	    border: none;
+	    font-size: 20px; /* 버튼 크기 조정 */
+	    color: white;
+	    cursor: pointer;
+	    position: absolute;
+	    top: 10px; /* 위치 조정 */
+	    right: 10px; /* 위치 조정 */
+	    width: 30px; /* 너비 조정 */
+	    height: 30px; /* 높이 조정 */
+	    line-height: 30px; /* 라인 높이 조정 */
+	    text-align: center; /* 텍스트 중앙 정렬 */
+	}
 
-        .modal-content {
-            background-color: #FFFCF2;
-            /* border-radius: 10px; */
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
 
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #EB5E28;
-            background-color: #FFFCF2;
-        }
-
-        .modal-header h2 {
-            margin: 20px;
-            font-size: 1.5rem;
-            color: #EB5E28;
-            background-color: #FFFCF2;
-        }
-
-        .close-btn {
-            background-color: transparent;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-     
-        .modal-body table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-         .modal-body th, .modal-body td {
-            padding: 15.4px;
-            text-align: left;
-            background-color: #FFFCF2;
-            color: #EB5E28;    
-        }
-        .modal-body tr:first-child {
-            font-weight: bold;         
-        }
+          
     </style>
 
 </head>
@@ -252,7 +279,7 @@
     <hr>
     <div class="date-selector">
         <% if (pageIndex > 0) { %>
-            <button type="button" class="pagination-button" onclick="changePage(<%= pageIndex - 1 %>)">&lt;</button>
+            <button type="button" class="pagination-button" onclick="changePage(<%= pageIndex - 1 %>)"><i class="fa-solid fa-star"></i></button>
         <% } %>
         <% 
         for (int day = startDay; day <= endDay && day <= daysInMonth; day++) {
@@ -269,7 +296,7 @@
             </button>
         <% } %>
         <% if (endDay < daysInMonth) { %>
-            <button type="button" the class="pagination-button" onclick="changePage(<%= pageIndex + 1 %>)">&gt;</button>
+            <button type="button" the class="pagination-button" onclick="changePage(<%= pageIndex + 1 %>)"><i class="fa-solid fa-star" ></i></button>
         <% } %>
     </div>
 
@@ -288,7 +315,7 @@
 <div id="modal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h2>관람 등급 안내</h2>
+            <h2>HGV 관람 등급 안내</h2>
             <button class="close-btn" onclick="closeModal()">&times;</button>
         </div>
         <div class="modal-body">
@@ -335,37 +362,44 @@
                     <div class="movie-title">  
                     	<img src="<%= ctxPath %>/images/admin/movie_grade/${movie.movie_grade}.png" 
                              alt="${movie.movie_grade}" 
-                             style="width: 30px; height: 30px; margin-right: 10px;"> ${movie.movie_title} |${movie.cg.category} | ${movie.running_time}분 | ${movie.start_date} 개봉 </p></div>
-                   <!-- 1관 -->
+                             style="width: 30px; height: 30px; margin-right: 10px;"> ${movie.movie_title} | ${movie.cg.category} | ${movie.running_time}분 | ${movie.start_date} 개봉 </p></div>
+                <!-- 1관 -->
+						<c:set var="isFirstScreen1" value="true" />
+						<c:forEach var="movie1" items="${movieTimeList_o}">
+						    <c:if test="${movie1.movie_title == movie.movie_title}">
+						        <c:if test="${isFirstScreen1}">
+						            <div class="screen-title">▶ 1관 | 총 40좌석 </div>
+						            <c:set var="isFirstScreen1" value="false" />
+						        </c:if>
+						        <div class="showtime-row">
+						            <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie1.seq_movie_no}&start_time=${movie1.svo.start_time}&start_date=${movie1.start_date}&screen_no=${movie1.svo.fk_screenNO}"
+						               class="showtime-button ${movie1.svo.unused_seat == 0 ? 'disabled' : ''}"
+						               ${movie1.svo.unused_seat == 0 ? 'onclick="return false;"' : ''}>
+						                ${movie1.svo.start_time} <br> ${movie1.svo.unused_seat}석
+						            </a>
+						        </div>
+						    </c:if>
+						</c:forEach>
+						
+						<!-- 2관 -->
+						<c:set var="isFirstScreen2" value="true" />
+						<c:forEach var="movie2" items="${movieTimeList_t}">
+						    <c:if test="${movie2.movie_title == movie.movie_title}">
+						        <c:if test="${isFirstScreen2}">
+						            <div class="screen-title">▶ 2관 | 총 40좌석 </div>
+						            <c:set var="isFirstScreen2" value="false" />
+						        </c:if>
+						        <div class="showtime-row">
+						            <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie2.seq_movie_no}&start_time=${movie2.svo.start_time}&start_date=${movie2.start_date}&screen_no=${movie2.svo.fk_screenNO}"
+						               class="showtime-button ${movie2.svo.unused_seat == 0 ? 'disabled' : ''}"
+						               ${movie2.svo.unused_seat == 0 ? 'onclick="return false;"' : ''}>
+						                ${movie2.svo.start_time} <br> ${movie2.svo.unused_seat}석
+						            </a>
+						        </div>
+						    </c:if>
+						</c:forEach>
+
                    
-                   <div class="screen-title">▶ 1관 | 총 40좌석 </div>
-                   <div class="showtime-row">
-                       <c:forEach var="movie1" items="${movieTimeList_o}">
-                           <c:if test="${movie1.movie_title == movie.movie_title}">
-                               <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie1.seq_movie_no}&start_time=${movie1.svo.start_time}&start_date=${movie1.start_date}&screen_no=${movie1.svo.fk_screenNO}"
-                                   class="showtime-button ${movie1.svo.unused_seat == 0 ? 'disabled' : ''}"
-                                   ${movie1.svo.unused_seat == 0 ? 'onclick="return false;"' : ''}>
-                                   ${movie1.svo.start_time} <br> ${movie1.svo.unused_seat}석
-                               </a>
-                           </c:if>
-                       </c:forEach>
-                   </div>
-             
-	               <!-- 2관 -->
-	               
-	               
-                   <div class="screen-title">▶ 2관 | 총 40좌석 </div>
-                   <div class="showtime-row">                        
-                       <c:forEach var="movie2" items="${movieTimeList_t}">
-                           <c:if test="${movie2.movie_title == movie.movie_title}">
-                               <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie2.seq_movie_no}&start_time=${movie2.svo.start_time}&start_date=${movie2.start_date}&screen_no=${movie2.svo.fk_screenNO}"
-                                   class="showtime-button ${movie2.svo.unused_seat == 0 ? 'disabled' : ''}"
-                                   ${movie2.svo.unused_seat == 0 ? 'onclick="return false;"' : ''}>
-                                   ${movie2.svo.start_time} <br> ${movie2.svo.unused_seat}석
-                               </a>
-                           </c:if>
-                       </c:forEach>
-                   </div>
                    
                 </div>
                  <hr>
@@ -379,7 +413,7 @@
     <c:if test="${movieTimeList == null || empty movieTimeList}">
          
           <p class="no-data" style="color: #EB5E28;  font-weight: bold; font-size: 2rem; /* 더 큰 글씨 크기 */"> 현재 선택한 날짜에 상영 중인 영화가 없습니다.<br><img src="<%= ctxPath %>/images/index/logo.png"></p>
-        
+         
     </c:if>
 </div>
 

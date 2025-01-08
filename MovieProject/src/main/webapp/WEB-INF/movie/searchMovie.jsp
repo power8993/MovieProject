@@ -13,6 +13,7 @@
     <title>영화차트</title>
     <style>
         body {
+         user-select:none;
             font-family: Arial, sans-serif;
             background-color: #f8f8f8;
             margin: 0;
