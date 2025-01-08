@@ -59,6 +59,7 @@
         .rating-stars {
             font-size: 24px;
             margin-top: 20px;
+            display: flex;
         }
         .rating-stars span {
             cursor: pointer;
@@ -72,6 +73,8 @@
 		}
         .review-section {
             margin-top: 20px;
+            width: 95%; 
+            margin: 0 auto;"
         }
         .review-section textarea {
             width: 100%;
@@ -80,14 +83,19 @@
             margin-bottom: 10px;
             font-size: 16px;
             border-radius: 8px;
-            border: 1px solid;
+            border: 1px solid #eb5e28;
+            background-color: inherit;
         }
         .review-section button {
 		    text-decoration: none;
-		    border-radius: 2px;
+		    border-radius: 5px;
 		    border: 1px solid #ddd;
 		    color: #403D39;
 		    background-color: #fff;
+		    margin-left: 20px;
+		    font-size: 15px;
+		    padding: 5px 10px; /* 버튼 크기 조정 */
+        	margin-top: 10px; /* 위쪽 여백 */
         }
         
         .review-section button:hover {
@@ -109,14 +117,27 @@
 		    flex-wrap: wrap;  /* 항목을 여러 줄로 배치 */		    
         }
         
-        .reviews-list li {
-            width: 48%;  /* 각 항목의 너비를 48%로 설정 */
+        .review1 {
+            width: 49%;  /* 각 항목의 너비를 48%로 설정 */
 		    padding: 15px;
 		    border-radius: 5px;
 		    border: 1px solid #ddd;
 		    margin: 0 auto;
 		    margin-bottom: 15px;
         }
+        
+        .no-reviews {
+		    text-align: center;
+		    font-size: 16px;     
+		    color: #888;         
+		    width: 100%;
+		    border: 1px solid #ddd;
+		    padding: 15px;
+		    border-radius: 5px;
+		    margin: 0 auto;
+		    margin-bottom: 15px;
+		}
+        
         .review-item {
             margin-bottom: 10px;
         }
@@ -151,7 +172,7 @@
         .graph {
             margin-top: 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: space-between;            
         }
 
         .graph li {
@@ -195,13 +216,7 @@
 		    border-color: #EB5E28;
 		    color: white;
 		}
-		
-		.no-reviews {
-		    text-align: center;
-		    font-size: 16px;     
-		    color: #888;         
-		    padding: 20px 0;
-		}
+
     </style>
 
 </head>
@@ -262,24 +277,47 @@
             }
         });
 
-        // 성별 예매 그래프에 값을 넣기 위함 ajax
-		$.ajax({
-		    url: "/MovieProject/movie/moviegender.mp",
-		    type: "GET",
-		    dataType: "json",
-		    data: {
+    	// 성별 예매 그래프에 값을 넣기 위함 ajax
+        $.ajax({
+            url: "/MovieProject/movie/moviegender.mp",
+            type: "GET",
+            dataType: "json",
+            data: {
                 "seq_movie_no": ${mvo.seq_movie_no}
             },
-		    success: function(json) {
-		        var maleCount = json.gender.male; // 남자
-        		var femaleCount = json.gender.female; // 여자
-        		
-        		var totalCount = maleCount + femaleCount;  // 전체 예매자 수
-        		
-        		var malePercentage = Math.floor((maleCount / totalCount) * 100);  // 남성 비율
-        		var femalePercentage = Math.floor((femaleCount / totalCount) * 100);  // 여성 비율
-		        
-        		var genderCtx = document.getElementById('genderChart').getContext('2d');
+            success: function(json) {
+                var maleCount = json.gender.male || 0; // 남자 예매 수, 없으면 0
+                var femaleCount = json.gender.female || 0; // 여자 예매 수, 없으면 0
+                
+                var totalCount = maleCount + femaleCount;  // 전체 예매자 수
+                
+                // 데이터가 없을 경우 기본 비율 설정 (예: 50% / 50%)
+                var malePercentage = totalCount === 0 ? 50 : Math.floor((maleCount / totalCount) * 100);  // 남성 비율
+                var femalePercentage = totalCount === 0 ? 50 : Math.floor((femaleCount / totalCount) * 100);  // 여성 비율
+
+                // 차트가 존재할 경우
+                var genderCanvas = document.getElementById('genderChart');
+                
+                // 데이터가 없을 경우 차트에 블러 처리 및 메시지 표시
+                if (totalCount === 0) {
+                    genderCanvas.style.filter = 'blur(5px)';
+                    // 차트 위에 메시지를 표시할 div 추가
+                    var messageDiv = document.createElement('div');
+                    messageDiv.innerText = "예매한 사람이 없습니다";
+                    messageDiv.style.position = 'absolute';
+                    messageDiv.style.top = '147%';
+                    messageDiv.style.left = '50%';
+                    messageDiv.style.transform = 'translate(-50%, -50%)';
+                    messageDiv.style.fontSize = '18px';
+                    messageDiv.style.color = '#333';
+                    messageDiv.style.fontWeight = 'bold';
+                    messageDiv.style.textAlign = 'center';
+                    genderCanvas.parentNode.appendChild(messageDiv);  // 차트 위에 메시지 추가
+                } else {
+                    genderCanvas.style.filter = 'none'; // 데이터가 있으면 블러 제거
+                }
+
+                var genderCtx = genderCanvas.getContext('2d');
                 var genderChart = new Chart(genderCtx, {
                     type: 'pie',
                     data: {
@@ -298,20 +336,24 @@
                                 display: false,
                             },
                             tooltip: {
+                                enabled: totalCount !== 0, // 데이터가 있을 때만 툴팁 활성화
                                 callbacks: {
                                     label: function(tooltipItem) {
                                         return tooltipItem.label + ': ' + tooltipItem.raw + '%';
                                     }
                                 }
                             }
+                        },
+                        interaction: {
+                            mode: totalCount !== 0 ? 'nearest' : 'none' // 데이터가 없을 경우 hover 효과 비활성화
                         }
                     }
                 });
-		    },
-		    error: function(request, status, error){
+            },
+            error: function(request, status, error){
                 alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
             }
-		});
+        });
         
         // 연령별 예매 그래프에 값을 넣기 위함 ajax
 		 $.ajax({
@@ -330,15 +372,25 @@
 		            	json.age['40대'] || 0,  // '40대'에 해당하는 예매 수, 없으면 0
 		            	json.age['그 이외'] || 0  // '50대 이상'에 해당하는 예매 수, 없으면 0
 		            ];	
+		         // 차트가 존재할 경우
+		            var ageCanvas = document.getElementById('ageChart');
+		            
+		            // 데이터가 없을 경우 차트에 블러 처리
+		            if (counts.every(count => count === 0)) {
+		                ageCanvas.style.filter = 'blur(5px)';
+		            } else {
+		                ageCanvas.style.filter = 'none'; // 데이터가 있으면 블러 제거
+		            }
+
 		            // 차트 생성
-		            var ageCtx = document.getElementById('ageChart').getContext('2d');
+		            var ageCtx = ageCanvas.getContext('2d');
 		            var ageChart = new Chart(ageCtx, {
 		                type: 'bar',
 		                data: {
-		                    labels: ageGroups,  // 연령대
+		                    labels: ageGroups,
 		                    datasets: [{
 		                        label: '연령별 예매 분포',
-		                        data: counts,  // 예매 수
+		                        data: counts,
 		                        backgroundColor: 'Navy',
 		                        borderColor: 'Navy',
 		                        borderWidth: 1
@@ -370,8 +422,9 @@
 		            });
 		        },
 		        error: function(request, status, error){
-	                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-	            }
+		            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		        }
+
 		    });
 		
     }); // end of ready
@@ -424,7 +477,7 @@
 	                        }
 	                    }
 	                    
-	                    var reviewHtml = `<li>
+	                    var reviewHtml = `<li class="review1">
 	                                         <div class="reviewuser">
 	                                         	 <span class="author">별점: \${stars}</span><br>
 	                                             <p class="content"> \${json.review.review_content}</p><br>
@@ -482,6 +535,7 @@
 
             	if (mrList.length === 0) {
                     reviewList.append('<li class="no-reviews">후기가 없습니다.</li>');
+                    $("#pageBar").hide();
             	}
             	else {
 	                mrList.forEach(mrList => {
@@ -494,7 +548,7 @@
 	                        }
 	                    }
 
-	                    var reviewHtml = `<li>
+	                    var reviewHtml = `<li class="review1">
 				                             <div class="reviewuser">
 				                                 <span class="author"> 별점: \${stars}</span><br>
 				                                 <p class="content"> \${mrList.review_content}</p><br>
@@ -557,12 +611,12 @@
     <div id="graphdiv" style="border-top: 1px solid #ccc5b9; border-bottom: 1px solid #ccc5b9; width: 95%; margin: 0 auto;">
 	    <ul class="graph" style="list-style-type: none; padding: 0; margin: 0; display: flex; justify-content: space-between;">
 	        <li style="flex: 1; border-right: 1px solid #ccc5b9; padding-right: 10px; margin-right: 10px; text-align: center;">
-	            <strong style="display: block; border-bottom: 1px solid #ccc5b9; padding: 10px 0 10px 0; margin-bottom: 25px; color: #eb5e28;">성별 예매 분포</strong>
-	            <div class="chart" style="display: flex; justify-content: center; margin-top: 15px; margin-bottom: 15px;">
-	                <canvas id="genderChart" width="380" height="160"></canvas>
-	            </div>
-	        </li>
-	        
+		    	<strong style="display: block; border-bottom: 1px solid #ccc5b9; padding: 10px 0 10px 0; margin-bottom: 25px; color: #eb5e28;">성별 예매 분포</strong>
+		    	<div class="chart" style="display: flex; justify-content: center; margin-top: 15px; margin-bottom: 15px;">
+		        	<canvas id="genderChart" width="380" height="160"></canvas>
+		    	</div>
+			</li>
+
 	        <li style="flex: 1; text-align: center;">
 	            <strong style="display: block; border-bottom: 1px solid #ccc5b9; padding: 10px 0 10px 0; margin-bottom: 25px; color: #eb5e28;">연령별 예매 분포</strong>
 	            <div class="chart" style="display: flex; justify-content: center; margin-top: 15px; margin-bottom: 15px;">
@@ -573,7 +627,7 @@
 	</div>
 
     <!-- 후기 작성 -->
-    <div class="review-section" style="margin-top: 20px; width: 95%; margin: 0 auto;">       
+    <div class="review-section">       
         <!-- 별점 선택 -->
         <div class="rating-stars">
             <label for="reviewText"><i class="fa-solid fa-circle-user" style="color: #252422;" aria-hidden="true"> 별점을 선택해주세요.</i></label>
@@ -582,13 +636,14 @@
             <span data-value="3">&#9733;</span>
             <span data-value="4">&#9733;</span>
             <span data-value="5">&#9733;</span>
+            <button onclick="submitReview()">등록 하기</button>
         </div>
-        <textarea id="reviewText" placeholder="영화에 대한 후기를 작성해주세요..." style="-webkit-border-radius: 0; outline: 0; resize: none;"></textarea><br>
+        <textarea id="reviewText" placeholder="영화에 대한 후기를 작성해주세요..." style="outline: 0; resize: none; margin-top: 10px;"></textarea><br>
         
         <!-- 별점값을 가져오기 위함 -->
         <input type="hidden" id="rating" name="rating" value="">
         
-        <button onclick="submitReview()" style="margin-top: 20px; width: 100%; margin: 0 auto;">등록 하기</button>
+        
     </div>
 
     <hr style="width: 95%; border: 1.5px solid #ccc5b9;">

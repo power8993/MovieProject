@@ -425,7 +425,7 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 	        		   + "        when floor(months_between(current_date, to_date(m.birthday, 'yyyy-mm-dd')) / 12) between 40 and 49 then '40대' "
 	        		   + "        else '그 이외' "
 	        		   + "    end as age_group, "
-	        		   + "    count(distinct m.user_id) as count "
+	        		   + "    count(*) as count "
 	        		   + " from  "
 	        		   + "     tbl_member m join tbl_payment p on m.user_id = p.fk_user_id "
 	        		   + "     join tbl_showtime s on p.fk_seq_showtime_no = s.seq_showtime_no "
