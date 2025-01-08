@@ -20,9 +20,12 @@ public class MemberVO {
 	private int status;                // 회원탈퇴유무   1: 사용가능(가입중) / 0:사용불능(탈퇴) 
 	private int idle;                  // 휴면유무      0 : 활동중  /  1 : 휴면중
 									   // 마지막으로 로그인 한 날짜시간이 현재시각으로 부터 1년이 지났으면 휴면으로 지정
+	private String profile;
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
+	
+
 	private boolean requirePwdChange = false;
 	// 마지막으로 암호를 변경한 날짜가 현재시각으로 부터 3개월이 지났으면 true
 	// 마지막으로 암호를 변경한 날짜가 현재시각으로 부터 3개월이 지나지 않았으면 false
@@ -163,6 +166,14 @@ public class MemberVO {
 	
 	public void setIdle(int idle) {
 		this.idle = idle;
+	}
+	
+	public String getProfile() {
+		return profile;
+	}
+
+	public void setProfile(String profile) {
+		this.profile = profile;
 	}
    
     //////////////////////////////////////////////////////////////
