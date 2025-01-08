@@ -163,19 +163,19 @@ div.ticket-info-container {
 	width: 100vw;
 	position: relative;
 	left: calc(-50vw + 50%);
-	min-height: 100px;
-	max-height: 100px;
+	min-height: 120px;
+	max-height: 120px;
 	background-color: black;
 }
 
 div.ticket-info {
 	color: white;
-	min-height: 100px;
-	max-height: 100px;
+	min-height: 120px;
+	max-height: 120px;
 }
 
 div.ticket-info > div {
-	width: 18%;
+	width: 150px;
 	display: inline-block;
 	font-size: 15pt;
 	text-align: center;
@@ -197,12 +197,20 @@ div#person-screen {
 
 div#numberOfPeople {
 	display: inline-block;
-	width: 500px;
+	width: 400px;
+	height: 140px;
 }
 
 div#screen-info {
 	display: inline-block;
-	width: 400px;
+	width: 200px;
+	height: 140px;
+}
+
+div#point {
+	display: inline-block;
+	width: 200px;
+	height: 140px;
 }
 
 div#seat-screen {
@@ -235,3 +243,32 @@ div#numberOfPeople button {
 div.btn-group {
 	margin-bottom: 5px;
 }
+
+/* -- CSS 로딩화면 구현 시작(bootstrap 에서 가져옴) 시작 -- */    
+div.loader {
+	/* border: 16px solid #f3f3f3; */
+	border: 12px solid #f3f3f3;
+	border-radius: 50%;
+	/* border-top: 16px solid #3498db; */
+	border-top: 12px dotted blue;
+	border-right: 12px dotted green;
+	border-bottom: 12px dotted red;
+	border-left: 12px dotted pink;
+	
+	width: 120px;
+	height: 120px;
+	-webkit-animation: spin 2s linear infinite; /* Safari */
+	animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+	0% { -webkit-transform: rotate(0deg); }
+	100% { -webkit-transform: rotate(360deg); }
+}
+   
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+/* -- CSS 로딩화면 구현 끝(bootstrap 에서 가져옴) 끝 -- */

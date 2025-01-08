@@ -149,6 +149,8 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 					   + " from tbl_movie_price "
 					   + " order by price desc ";
 			
+			// 가격순으로 정렬해서 제일 비싼 순으로 성인, 청소년, 어린이
+			
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
@@ -469,7 +471,135 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		
 		return map;
 	}
-	
+
+	// 결제 번호로 좌석 알아오기
+	@Override
+	public String getSeatList(String imp_uid) throws SQLException {
+		
+		String seatList = "";
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select seat_no "
+					   + " from tbl_ticket "
+					   + " where fk_imp_uid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, imp_uid);
+			
+			rs = pstmt.executeQuery();
+			
+			int cnt = 0;
+			
+			while(rs.next()) {
+				cnt++;
+				if(cnt == 1) {
+					seatList += rs.getString("seat_no");
+				}
+				else {
+					seatList += "," + rs.getString("seat_no");
+				}
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return seatList;
+	}
+
+	// 결제 취소하기
+	@Override
+	public int reservationCancel(Map<String, String> paramap) throws SQLException {
+		
+		int isSuccess = 0;
+		int n1 = 0, n2 = 0, n3 = 0, n4 = 0;
+		
+		String seatList = paramap.get("seatList");
+		String[] seatArr = seatList.split(",");
+		
+		try {
+			conn = ds.getConnection();
+			
+			conn.setAutoCommit(false);
+			
+			// 포인트 내역 삭제
+			String sql = " delete from tbl_point "
+					   + " where fk_imp_uid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paramap.get("imp_uid"));
+			
+			n1 = pstmt.executeUpdate();
+			
+			// 티켓 내역 삭제
+			if(n1 == 1) {
+				
+				sql = " delete from tbl_ticket "
+					+ " where fk_imp_uid = ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, paramap.get("imp_uid"));
+				
+				n2 = pstmt.executeUpdate();
+				
+				if(n2 == seatArr.length) {
+					n2 = 1;
+				}
+			}
+			
+			// 결제 내역 상태 수정
+			if(n2 == 1) {
+				
+				sql = " update tbl_payment set pay_status = '결제 취소' "
+					+ " where imp_uid = ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, paramap.get("imp_uid"));
+				
+				n3 = pstmt.executeUpdate();
+				
+			}
+			
+			// 상영 영화 좌석 배열 수정
+			if(n3 == 1) {
+				
+				sql = " update tbl_showtime set seat_arr = ?, UNUSED_SEAT = UNUSED_SEAT + to_number(?) "
+					+ " where seq_showtime_no = ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, paramap.get("seatArr"));
+				pstmt.setString(2, paramap.get("seatListLength"));
+				pstmt.setInt(3, 60);
+				// pstmt.setInt(3, Integer.parseInt(paramap.get("seq_showtime_no")));
+				
+				n4 = pstmt.executeUpdate();
+				
+			}
+			
+			// 모든처리가 성공되었을시 commit
+			if(n1*n2*n3*n4 == 1) {
+				conn.commit();
+				conn.setAutoCommit(true);
+				
+				isSuccess = 1;
+			}
+			
+		} catch(SQLException e) {
+			
+			// SQL 장애 발생시 rollback
+			conn.rollback();
+			conn.setAutoCommit(true);
+			isSuccess = 0;
+			
+		} finally {
+			close();
+		}
+		
+		
+		return isSuccess;
+	}
 
 	
 }

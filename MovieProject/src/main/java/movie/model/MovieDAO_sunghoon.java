@@ -44,4 +44,11 @@ public interface MovieDAO_sunghoon {
 	// 결제 번호로 영화 정보 가져오기
 	Map<String, String> getMovieTitle(String imp_uid) throws SQLException;
 
+	// 결제 번호로 좌석 알아오기
+	String getSeatList(String imp_uid) throws SQLException;
+	
+	// 결제 취소하기
+	int reservationCancel(Map<String, String> paramap) throws SQLException;
+
+
 }
