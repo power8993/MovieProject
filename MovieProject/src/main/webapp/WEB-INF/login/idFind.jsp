@@ -135,9 +135,10 @@ function goidfind() {
 	  <div class="form-group">
 	    <div class="form-floating-label">
 	      <input type="text" class="form-control" id="nameInput" name="name" autocomplete="off" placeholder=" " />
-	      <label for="nameInput">성명</label>
+	      <label for="nameInput" style= "margin-bottom: 0px;">성명</label>
+	      <div id="nameErrorMsg"></div>
 	    </div>
-	    <div id="nameErrorMsg"></div>
+	    
 	  </div>
 	
 	  <!-- 이메일 입력 -->
@@ -146,26 +147,26 @@ function goidfind() {
 	      <div style="position: relative;">
 	        <input type="text" class="form-control" id="emailInput" name="email" autocomplete="off" placeholder=" " />
 	        <label for="emailInput" style="left: 10px;">이메일</label>
-	        <button type="button" id="findBtn" class="btn btn-primary" onclick="goidfind()" >
+	        <button type="button" id="findBtn"  onclick="goidfind()" >
 	          아이디 찾기
 	        </button>
+	        <div id="emailErrorMsg"></div>
+	    	<div id="div_findResult"></div>
 	      </div>
 	    </div>
-	    <div id="emailErrorMsg"></div>
-	    <div id="div_findResult"></div>
 	  </div>
 	</form>
 
 	 
 	
 	<div style="width: 350px; margin: 0 auto;">
-	    <div id="buttonContainer">
-				<button type="button" class="loginjspBtn" id="loginBtn" onclick="location.href='<%=request.getContextPath()%>/login/login.mp'">로그인</button>
-			<form action="<%=request.getContextPath()%>/login/idpwFind.mp" method="get">
-				<button type="submit" class="loginjspBtn" id="findPwBtn" name="action" value="findPw">비밀번호 찾기</button>
-			</form>
-	    </div>
+		    <div id="buttonContainer">
+					<button type="button" class="loginjspBtn" id="loginBtn" onclick="location.href='<%=request.getContextPath()%>/login/login.mp'">로그인</button>
+				<form action="<%=request.getContextPath()%>/login/idpwFind.mp" method="get">
+					<button type="submit" class="loginjspBtn" id="findPwBtn" name="action" value="findPw">비밀번호 찾기</button>
+				</form>
+		    </div>
+		</div>
 	</div>
-</div>
 	
 <jsp:include page="/WEB-INF/footer1.jsp" />

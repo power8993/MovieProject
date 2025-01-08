@@ -7,23 +7,38 @@
  // === 카드에 마우스를 올렸을 시 상세보기,예매하기 버튼 생성=== //
 $(".movieCard").hover(
     function () {
-        // 마우스를 올렸을 때 실행
+        // 카드에 마우스를 올렸을 때
         const buttonsHtml = `
             <div id="movieDetailElmt" style="position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; gap: 10px;">
                 <button type="submit" id="movieDetailBtn">상세보기</button>
             </div>
             <div id="movieReservationElmt" style="position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; gap: 10px;">
-            	<button type="button" id="movieReservationBtn">예매하기</button>
+                <button type="button" id="movieReservationBtn">예매하기</button>
             </div>
         `;
-        $(this).css("position", "relative").append(buttonsHtml);
-	    },
-	    function () {
-	        // 마우스를 뗐을 때 실행
-	        $(this).find("#movieDetailElmt").remove();
-	        $(this).find("#movieReservationBtn").remove();
-	    }
-	);
+
+        if ($(this).find("#movieDetailElmt").length == 0) {
+            // 버튼이 이미 생성되지 않았다면 추가
+            $(this).css("position", "relative").append(buttonsHtml);
+        }
+        // 카드 이미지 투명도 적용
+        $(this).find(".poster").css("filter", "brightness(50%)");
+        $(this).find(".movieRank").hide();
+        $(this).find(".movieGradeChoose").hide();
+        $(this).find(".remaining_day").hide();
+    },
+    function () {
+        // 카드에서 마우스를 뗐을 때
+        $(this).find("#movieDetailElmt").remove();
+        $(this).find("#movieReservationElmt").remove();
+        // 투명도 원래 상태로 복구
+        $(this).find(".movieRank").show();
+        $(this).find(".movieGradeChoose").show();
+        $(this).find(".remaining_day").show();
+        $(this).find(".poster").css("filter", "");
+    }
+);
+
 	
 	
 });// end of $(document).ready(function(){});---------------------
@@ -67,27 +82,6 @@ document.addEventListener("DOMContentLoaded", function () {
 //////////////////동영상 컨트롤러 커스텀 끝//////////////////
 
  
- //=== 카드의 버튼에 마우스 올릴 시 시작 ===//
-$(document).on("mouseenter", "#movieDetailBtn", function () {
-    // 현재 상세보기 버튼에서 가장 가까운 .poster 요소를 찾아 투명도 적용
-    $(this).closest(".card").find(".poster").css("opacity", "0.5");
-});
-$(document).on("mouseleave", "#movieDetailBtn", function () {
-    // 투명도 원래 상태로 복구
-    $(this).closest(".card").find(".poster").css("opacity", "");
-});
-
-
-$(document).on("mouseenter", "#movieReservationBtn", function () {
-    // 현재 상세보기 버튼에서 가장 가까운 .poster 요소를 찾아 투명도 적용
-    $(this).closest(".card").find(".poster").css("opacity", "0.5");
-});
-$(document).on("mouseleave", "#movieReservationBtn", function () {
-    // 투명도 원래 상태로 복구
-    $(this).closest(".card").find(".poster").css("opacity", "");
-});
-//=== 카드의 버튼에 마우스 올릴 시 끝 ===//
-
 
 //예매하기 버튼 클릭 시
  $(document).on("click", "#movieReservationBtn", function () {
