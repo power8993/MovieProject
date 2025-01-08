@@ -79,7 +79,7 @@ div#search_result > table > tbody > tr > td{
 }
 
 div#search_result > table > tbody > tr > td:nth-child(5) {
-	text-align: left;
+	text-align: center;
 }
 
 /* 영화 호버 효과 */
@@ -145,7 +145,7 @@ tr.info_pay td {
 
 /* 예매차트 */
 div#graph_container {
-	border: solid 1px red;
+	border: solid 0px red;
 }
 
 div#graph_container > div {

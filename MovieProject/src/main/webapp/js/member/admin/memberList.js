@@ -45,6 +45,7 @@ $(document).ready(function(){
 				async: true,
 				
 	            success: function(json) {
+					
 					const mvo = json; // JSON 데이터 처리 (JSON 응답에서 mvvo라는 속성을 추출)
 					
 					//console.log(mvvo);
@@ -95,9 +96,9 @@ $(document).ready(function(){
 																</tbody>
 														</table>
               
-														<!-- 한 달간 예매 추이 차트 -->
+														<!-- 일주일간 예매추이 차트 -->
 														<div id="graph_container">
-															<div><i class="fa-solid fa-chart-simple" style="color: #252422;"></i>&nbsp;한 달간 예매 추이</div>
+															<div><i class="fa-solid fa-chart-simple" style="color: #252422;"></i>&nbsp;일주일간 예매추이</div>
 										                   	<canvas id="reserved_graph"></canvas>
 										                </div>
 
@@ -111,6 +112,93 @@ $(document).ready(function(){
 					                    </div>`;
 										
 					container.html(modal_popup);
+					
+
+					// === AJAX(클릭한 회원 예매차트) === //
+					$.ajax({
+						url: 'memberSelectOneDetail.mp',
+						type: 'get',
+						data: { "userid" : userid },  
+						async: true,
+						
+						success: function(json) {
+							
+							// 라벨(현재 기점으로 7일전까지)
+							const labels = getLast7Days();
+							const pay_sum = [];
+							const reserved_cnt = [];
+							
+							json.forEach(item => {	
+								pay_sum.push(item.pay_sum);
+								reserved_cnt.push(item.reserved_cnt);
+							});
+							
+							// 차트를 넣을 위치
+							const reserved_chart = $("canvas#reserved_graph")[0].getContext('2d');
+							
+							const my_linechart = new Chart(reserved_chart, {
+								type: 'line',
+								data: {
+									labels: labels,
+									datasets: [{
+										label: '예매건수',
+										data: reserved_cnt,
+										borderColor: '#eb5e28',  // 라인 색
+							            fill: false,     		 // 영역 채우기 여부
+							            tension: 0.1  			 // 선의 곡률
+									}]
+								},
+								options: {
+									responsive: true,
+							        scales: {
+							            x: {
+							                title: {
+							                    display: true,
+							                    //text: '날짜'
+							                }
+							            },
+							            y: {
+							                title: {
+							                    display: true,
+							                    //text: '예매 건수'
+							                },
+											min: 0,  // Y축의 최소값을 0으로 설정
+											ticks: {
+								                stepSize: 1, // Y축 값을 정수로 표시 (1씩 증가)
+								                beginAtZero: true,  // Y축이 0부터 시작하도록 설정
+								                callback: function(value) {
+								                    // 값이 정수일 경우에만 표시하고, 소수점은 표시하지 않음
+								                    return Number.isInteger(value) ? value : '';
+								                }
+								            }
+							            }
+							        },
+									plugins: {
+							            tooltip: {
+							                callbacks: {
+							                    title: function(tooltipItem) {
+							                        return tooltipItem[0].label;  // 날짜 (mm-dd)
+							                    },
+							                    label: function(tooltipItem) {
+							                        // 결제 금액 표시
+							                        const dateIndex = tooltipItem.dataIndex;  // 마우스를 올린 날짜의 인덱스
+							                        const payAmount = pay_sum[dateIndex];     // 해당 날짜의 결제 금액
+							                        return '결제 금액: ' + payAmount + ' 원';    // 결제 금액만 툴팁에 표시
+							                    }
+							                }
+							            }
+							        }
+								}
+							});// end of new Chart(reserved_chart, {})--------------------------------
+							
+						},
+						error: function() {
+			                alert("회원 예매 내역 차트를 불러오는데 실패했습니다. 다시 시도해주세요.");
+			            }
+						
+					});// end of $.ajax({})-------------------------------
+					
+					
 					
 					// 모달을 표시
 					$('div#member_find').modal('show');
@@ -173,3 +261,24 @@ function goSearch() {
 	}
 
 }// end of function goSearch() {}-------------------------------------------
+
+
+// 현재 날짜 기준으로 7일 간 날짜 배열 생성
+function getLast7Days() {
+    const dates = [];
+    const today = new Date();
+
+    for (let i = 6; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);  // 오늘 날짜에서 i일 빼기
+		
+        const date_str = date.toISOString().split('T')[0];  // yyyy-mm-dd 형식으로 저장
+		
+		// '월일'만 가져오기
+		const md_date = date_str.substring(5);
+		
+		dates.push(md_date);
+    }
+
+    return dates;
+}// end of function getLast7Days() {}------------------------------------------

@@ -13,29 +13,30 @@
     <title>공지사항 상세</title>
     <!-- 스타일 추가 -->
     <style>
-        /* 전체 페이지 스타일 */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #fff5e6;
-            color: #403d39; /* 어두운 회갈색 글씨 */
-        }
 
-        /* 페이지 컨테이너 스타일 */
-        .container {
-            width: 70%; /* 컨테이너 너비 */
-            margin: 40px auto;
-            padding: 30px;
-            border-radius: 16px;
-            display: table;
-   			border-collapse: separate;
-    		box-sizing: border-box;
-    		text-indent: initial;
-    		unicode-bidi: isolate;
-    		border-spacing: 2px;
-    		border-color: gray;        
-        }
+		/* 전체 페이지 스타일 */
+		body {
+		    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		    margin: 0;
+		    padding: 0;
+		    background-color: #fff5e6;
+		    color: #403d39;
+		}
+		
+		/* 페이지 컨텐츠 스타일 */
+		.container {
+		    width: 70%;
+		    margin: 40px auto;
+		    padding: 30px;
+		    border-radius: 16px;
+		    display: table;
+		    border-collapse: separate;
+		    box-sizing: border-box;
+		    text-indent: initial;
+		    unicode-bidi: isolate;
+		    border-spacing: 2px;
+		    border-color: gray;
+		}
 
         /* 공지사항 제목 및 헤더 */
         .board-header {
@@ -82,11 +83,13 @@
 
         /* 공지사항 내용 텍스트 */
         .notice-content p {
-            padding: 35px 13px;
-            background-color: #f9f9f9;
-    	    border-bottom: solid 1px #b8b6aa;
-    		line-height: 24px;
-        }
+		    padding: 35px 13px;
+		    background-color: #f9f9f9;
+		    border-bottom: solid 1px #b8b6aa;
+		    line-height: 24px;
+		    height: 270px; /* 고정된 높이 설정 */
+		    overflow-y: auto; /* 내용이 넘치면 세로로 스크롤이 생김 */
+		}
 
        /* 버튼 컨테이너 */
 		.button-container {
@@ -154,6 +157,18 @@
 		.delete-btn:hover {
 		    background-color: #eb5e28;
 		    color: white;
+		}
+		
+		/* 고정된 Footer */
+		footer {
+		    position: fixed;  /* 화면 하단에 고정 */
+		    bottom: 0;
+		    left: 0;
+		    width: 100%;
+		    background-color: #252422;
+		    color: white;
+		    text-align: center;
+		    padding: 10px;
 		}
 
     </style>
