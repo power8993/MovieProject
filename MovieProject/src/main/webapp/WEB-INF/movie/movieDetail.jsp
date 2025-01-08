@@ -305,8 +305,8 @@
                     // 차트 위에 메시지를 표시할 div 추가
                     var messageDiv = document.createElement('div');
                     messageDiv.innerText = "예매한 사람이 없습니다";
-                    messageDiv.style.position = 'absolute';
-                    messageDiv.style.top = '147%';
+                    messageDiv.style.position = 'fixed';
+                    messageDiv.style.top = '50%';
                     messageDiv.style.left = '50%';
                     messageDiv.style.transform = 'translate(-50%, -50%)';
                     messageDiv.style.fontSize = '18px';
