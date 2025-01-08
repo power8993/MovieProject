@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -371,6 +372,91 @@ public class MovieDAO_imple_wonjae implements MovieDAO_wonjae {
 	        close();
 	    }
 	    return reviews;
+	}
+
+	// 영화별 예매 성비 비율
+	@Override
+	public Map<String, Integer> getGender(int seq_movie_no) throws SQLException {
+		
+		Map<String, Integer> gender = new HashMap<>();
+	    
+	    try {
+	        conn = ds.getConnection();
+	        
+	        String sql = " select "
+		        	   + "    count(distinct case when m.gender = 1 then m.user_id end) as male_count, "
+		        	   + "    count(distinct case when m.gender = 2 then m.user_id end) as female_count "
+	        		   + " from  "
+	        		   + " tbl_member m join tbl_payment p on m.user_id = p.fk_user_id "
+	        		   + " join tbl_showtime s on p.fk_seq_showtime_no = s.seq_showtime_no "
+	        		   + " join tbl_movie mv on s.fk_seq_movie_no = mv.seq_movie_no "
+	        		   + " where seq_movie_no = ? and pay_status = '결제 완료' ";
+	        
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, seq_movie_no);  // 한 페이지에 표시할 리뷰 수	        
+	        
+	        rs = pstmt.executeQuery();
+	        
+	        if (rs.next()) {
+                gender.put("male", rs.getInt("male_count"));   // 남성 수
+                gender.put("female", rs.getInt("female_count")); // 여성 수
+            }
+
+	    } finally {
+	        close();
+	    }
+	    
+	    return gender;
+	}
+
+	// 영화별 예매 나이 비율
+	@Override
+	public Map<String, Integer> getAge(int seq_movie_no) throws SQLException {
+		Map<String, Integer> age = new HashMap<>();
+	    
+	    try {
+	        conn = ds.getConnection();
+	        
+	        String sql = " select  "
+	        		   + "    case "
+	        		   + "        when floor(months_between(current_date, to_date(m.birthday, 'yyyy-mm-dd')) / 12) between 10 and 19 then '10대' "
+	        		   + "        when floor(months_between(current_date, to_date(m.birthday, 'yyyy-mm-dd')) / 12) between 20 and 29 then '20대' "
+	        		   + "        when floor(months_between(current_date, to_date(m.birthday, 'yyyy-mm-dd')) / 12) between 30 and 39 then '30대' "
+	        		   + "        when floor(months_between(current_date, to_date(m.birthday, 'yyyy-mm-dd')) / 12) between 40 and 49 then '40대' "
+	        		   + "        else '그 이외' "
+	        		   + "    end as age_group, "
+	        		   + "    count(*) as count "
+	        		   + " from  "
+	        		   + "     tbl_member m join tbl_payment p on m.user_id = p.fk_user_id "
+	        		   + "     join tbl_showtime s on p.fk_seq_showtime_no = s.seq_showtime_no "
+	        		   + "     join tbl_movie mv on s.fk_seq_movie_no = mv.seq_movie_no "
+	        		   + " 	   where seq_movie_no = ? and pay_status = '결제 완료' "
+	        		   + " group by "
+	        		   + " 	   case "
+	        		   + "        when floor(months_between(current_date, to_date(m.birthday, 'yyyy-mm-dd')) / 12) between 10 and 19 then '10대' "
+	        		   + "        when floor(months_between(current_date, to_date(m.birthday, 'yyyy-mm-dd')) / 12) between 20 and 29 then '20대' "
+	        		   + "        when floor(months_between(current_date, to_date(m.birthday, 'yyyy-mm-dd')) / 12) between 30 and 39 then '30대' "
+	        		   + "        when floor(months_between(current_date, to_date(m.birthday, 'yyyy-mm-dd')) / 12) between 40 and 49 then '40대' "
+	        		   + "        else '그 이외' "
+	        		   + "      end ";
+	        
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setInt(1, seq_movie_no);  // 한 페이지에 표시할 리뷰 수	        
+	        
+	        rs = pstmt.executeQuery();
+	        
+	        while (rs.next()) {
+	        	String ageGroup = rs.getString("age_group");
+	            int count = rs.getInt("count");
+	            
+	            // 나이 그룹과 수를 Map에 저장
+	            age.put(ageGroup, count);
+            }
+
+	    } finally {
+	        close();
+	    }   
+	    return age;
 	}
 
 	

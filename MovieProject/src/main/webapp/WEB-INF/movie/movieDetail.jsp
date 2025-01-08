@@ -59,6 +59,7 @@
         .rating-stars {
             font-size: 24px;
             margin-top: 20px;
+            display: flex;
         }
         .rating-stars span {
             cursor: pointer;
@@ -72,6 +73,8 @@
 		}
         .review-section {
             margin-top: 20px;
+            width: 95%; 
+            margin: 0 auto;"
         }
         .review-section textarea {
             width: 100%;
@@ -80,14 +83,19 @@
             margin-bottom: 10px;
             font-size: 16px;
             border-radius: 8px;
-            border: 1px solid;
+            border: 1px solid #eb5e28;
+            background-color: inherit;
         }
         .review-section button {
 		    text-decoration: none;
-		    border-radius: 2px;
+		    border-radius: 5px;
 		    border: 1px solid #ddd;
 		    color: #403D39;
 		    background-color: #fff;
+		    margin-left: 20px;
+		    font-size: 15px;
+		    padding: 5px 10px; /* 버튼 크기 조정 */
+        	margin-top: 10px; /* 위쪽 여백 */
         }
         
         .review-section button:hover {
@@ -109,14 +117,27 @@
 		    flex-wrap: wrap;  /* 항목을 여러 줄로 배치 */		    
         }
         
-        .reviews-list li {
-            width: 48%;  /* 각 항목의 너비를 48%로 설정 */
+        .review1 {
+            width: 49%;  /* 각 항목의 너비를 48%로 설정 */
 		    padding: 15px;
 		    border-radius: 5px;
 		    border: 1px solid #ddd;
 		    margin: 0 auto;
 		    margin-bottom: 15px;
         }
+        
+        .no-reviews {
+		    text-align: center;
+		    font-size: 16px;     
+		    color: #888;         
+		    width: 100%;
+		    border: 1px solid #ddd;
+		    padding: 15px;
+		    border-radius: 5px;
+		    margin: 0 auto;
+		    margin-bottom: 15px;
+		}
+        
         .review-item {
             margin-bottom: 10px;
         }
@@ -151,7 +172,7 @@
         .graph {
             margin-top: 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: space-between;            
         }
 
         .graph li {
@@ -195,6 +216,7 @@
 		    border-color: #EB5E28;
 		    color: white;
 		}
+
     </style>
 
 </head>
@@ -207,6 +229,16 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+    	
+    	// 초기 로드 시 페이지 1을 요청
+		loadReviews(1);  // 첫 번째 페이지 로드
+    	
+    	// 페이지 바에서 특정 페이지를 클릭하면 해당 페이지 로드
+		$(document).on("click", ".page-link", function(event) {
+		    event.preventDefault();
+		    var pageNo = $(this).data("page");  // data-page 속성에서 페이지 번호를 가져옴
+		    loadReviews(pageNo);  // 해당 페이지 번호로 리뷰 목록 로드
+		});
     	
     	// 별점 클릭 이벤트
         $(".rating-stars span").click(function() {
@@ -244,138 +276,166 @@
                 alert("에러 발생: " + error);  // 에러 메시지를 더 자세히 표시
             }
         });
-    	
-    	// 초기 로드 시 페이지 1을 요청
-		loadReviews(1);  // 첫 번째 페이지 로드
-    	
-    	// 페이지 바에서 특정 페이지를 클릭하면 해당 페이지 로드
-		$(document).on("click", ".page-link", function(event) {
-		    event.preventDefault();
-		    var pageNo = $(this).data("page");  // data-page 속성에서 페이지 번호를 가져옴
-		    loadReviews(pageNo);  // 해당 페이지 번호로 리뷰 목록 로드
-		});
 
-    	function loadReviews(pageNo) {
-    	    $.ajax({
-    	        url: "/MovieProject/movie/reviwDetail.mp",
-    	        type: "POST",
-    	        dataType: "json",
-    	        data: {
-    	            "seq_movie_no": ${mvo.seq_movie_no},
-    	            "currentShowPageNo": pageNo  // 페이지 번호를 추가
-    	        },
-    	        success: function(json) {
-    	        	console.log(json);
-    	            const mrList = json.mrList;
-    	            var reviewList = $("#reviewsList");
-    	            reviewList.empty();  // 이전 리뷰 목록을 초기화
-
-    	            if (mrList.length > 0) {
-    	                mrList.forEach(mrList => {
-    	                    var stars = "";
-    	                    for (var i = 1; i <= 5; i++) {
-    	                        if (i <= mrList.movie_rating) {
-    	                            stars += '<span class="star filled">★</span>';
-    	                        } else {
-    	                            stars += '<span class="star">★</span>';
-    	                        }
-    	                    }
-
-    	                    var reviewHtml = `<li>
-					                             <div class="reviewuser">
-					                                 <span class="author"> 별점: \${stars}</span><br>
-					                                 <p class="content"> \${mrList.review_content}</p><br>
-					                                 <span class="date"> 작성자: \${mrList.userid} \${mrList.review_write_date}</span><br>
-					                             </div>
-						                      </li>`;
-    	                    reviewList.append(reviewHtml);
-    	                });
-    	            }
-
-    	            // 페이지 바 업데이트
-    	            $("#pageBar").html(json.pageBar);   	            
-    	        },
-    	        error: function(request, status, error){
-    	            alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
-    	        }
-    	    });
-    	}
-	
-        var genderCtx = document.getElementById('genderChart').getContext('2d');
-        var genderChart = new Chart(genderCtx, {
-            type: 'pie',
+    	// 성별 예매 그래프에 값을 넣기 위함 ajax
+        $.ajax({
+            url: "/MovieProject/movie/moviegender.mp",
+            type: "GET",
+            dataType: "json",
             data: {
-                labels: ['남성', '여성'],
-                datasets: [{
-                    label: '성별 예매 분포',
-                    data: [60, 40],
-                    backgroundColor: ['#36A2EB', '#FF6384'],
-                    hoverOffset: 4
-                }]
+                "seq_movie_no": ${mvo.seq_movie_no}
             },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                    	 display: false,
+            success: function(json) {
+                var maleCount = json.gender.male || 0; // 남자 예매 수, 없으면 0
+                var femaleCount = json.gender.female || 0; // 여자 예매 수, 없으면 0
+                
+                var totalCount = maleCount + femaleCount;  // 전체 예매자 수
+                
+                // 데이터가 없을 경우 기본 비율 설정 (예: 50% / 50%)
+                var malePercentage = totalCount === 0 ? 50 : Math.floor((maleCount / totalCount) * 100);  // 남성 비율
+                var femalePercentage = totalCount === 0 ? 50 : Math.floor((femaleCount / totalCount) * 100);  // 여성 비율
+
+                // 차트가 존재할 경우
+                var genderCanvas = document.getElementById('genderChart');
+                
+                // 데이터가 없을 경우 차트에 블러 처리 및 메시지 표시
+                if (totalCount === 0) {
+                    genderCanvas.style.filter = 'blur(5px)';
+                    // 차트 위에 메시지를 표시할 div 추가
+                    var messageDiv = document.createElement('div');
+                    messageDiv.innerText = "예매한 사람이 없습니다";
+                    messageDiv.style.position = 'absolute';
+                    messageDiv.style.top = '147%';
+                    messageDiv.style.left = '50%';
+                    messageDiv.style.transform = 'translate(-50%, -50%)';
+                    messageDiv.style.fontSize = '18px';
+                    messageDiv.style.color = '#333';
+                    messageDiv.style.fontWeight = 'bold';
+                    messageDiv.style.textAlign = 'center';
+                    genderCanvas.parentNode.appendChild(messageDiv);  // 차트 위에 메시지 추가
+                } else {
+                    genderCanvas.style.filter = 'none'; // 데이터가 있으면 블러 제거
+                }
+
+                var genderCtx = genderCanvas.getContext('2d');
+                var genderChart = new Chart(genderCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['남성', '여성'],
+                        datasets: [{
+                            label: '성별 예매 분포',
+                            data: [malePercentage, femalePercentage],
+                            backgroundColor: ['#36A2EB', '#FF6384'],
+                            hoverOffset: 4
+                        }]
                     },
-                    tooltip: {
-                        callbacks: {
-                            label: function(tooltipItem) {
-                                return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            tooltip: {
+                                enabled: totalCount !== 0, // 데이터가 있을 때만 툴팁 활성화
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+                                    }
+                                }
                             }
+                        },
+                        interaction: {
+                            mode: totalCount !== 0 ? 'nearest' : 'none' // 데이터가 없을 경우 hover 효과 비활성화
                         }
                     }
-                }
-            }
-        });
-
-        var ageCtx = document.getElementById('ageChart').getContext('2d');
-        var ageChart = new Chart(ageCtx, {
-            type: 'bar',
-            data: {
-                labels: ['10대', '20대', '30대', '40대', '50대 이상'],
-                datasets: [{
-                    label: '',
-                    data: [15, 40, 25, 10, 10],
-                    backgroundColor: 'Navy',
-                    borderColor: 'Navy',
-                    borderWidth: 1
-                }]
+                });
             },
-            options: {
-                responsive: true,
-                scales: {
-                    x: {
-                        beginAtZero: true
-                    },
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-                plugins: {
-                	 legend: {
-                         display: false
-                     },
-                    tooltip: {
-                        callbacks: {
-                            label: function(tooltipItem) {
-                                return tooltipItem.label + ': ' + tooltipItem.raw + '명';
-                            }
-                        }
-                    }
-                }
+            error: function(request, status, error){
+                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
             }
         });
+        
+        // 연령별 예매 그래프에 값을 넣기 위함 ajax
+		 $.ajax({
+		        url: '/MovieProject/movie/movieage.mp',
+		        type: 'GET',
+				dataType: 'json',
+				data: {
+	                "seq_movie_no": ${mvo.seq_movie_no}
+	            },
+		        success: function(json) {
+		            var ageGroups = ['10대', '20대', '30대', '40대', '그 이외'];
+		            var counts = [
+		            	json.age['10대'] || 0,  // '10대'에 해당하는 예매 수, 없으면 0
+		            	json.age['20대'] || 0,  // '20대'에 해당하는 예매 수, 없으면 0
+		            	json.age['30대'] || 0,  // '30대'에 해당하는 예매 수, 없으면 0
+		            	json.age['40대'] || 0,  // '40대'에 해당하는 예매 수, 없으면 0
+		            	json.age['그 이외'] || 0  // '50대 이상'에 해당하는 예매 수, 없으면 0
+		            ];	
+		         // 차트가 존재할 경우
+		            var ageCanvas = document.getElementById('ageChart');
+		            
+		            // 데이터가 없을 경우 차트에 블러 처리
+		            if (counts.every(count => count === 0)) {
+		                ageCanvas.style.filter = 'blur(5px)';
+		            } else {
+		                ageCanvas.style.filter = 'none'; // 데이터가 있으면 블러 제거
+		            }
 
-    });
+		            // 차트 생성
+		            var ageCtx = ageCanvas.getContext('2d');
+		            var ageChart = new Chart(ageCtx, {
+		                type: 'bar',
+		                data: {
+		                    labels: ageGroups,
+		                    datasets: [{
+		                        label: '연령별 예매 분포',
+		                        data: counts,
+		                        backgroundColor: 'Navy',
+		                        borderColor: 'Navy',
+		                        borderWidth: 1
+		                    }]
+		                },
+		                options: {
+		                    responsive: true,
+		                    scales: {
+		                        x: {
+		                            beginAtZero: true
+		                        },
+		                        y: {
+		                            beginAtZero: true
+		                        }
+		                    },
+		                    plugins: {
+		                        legend: {
+		                            display: false
+		                        },
+		                        tooltip: {
+		                            callbacks: {
+		                                label: function(tooltipItem) {
+		                                    return tooltipItem.label + ': ' + tooltipItem.raw + '명';
+		                                }
+		                            }
+		                        }
+		                    }
+		                }
+		            });
+		        },
+		        error: function(request, status, error){
+		            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		        }
 
-    // 후기 작성하는 json
+		    });
+		
+    }); // end of ready
+
+    // 후기 작성하는 함수
     function submitReview() {
     	
     	var rating = $("#rating").val();  // 선택된 별점
         var review = $("#reviewText").val().trim();  // 리뷰 내용
-		
+        var currentPageNo = $("#currentPage").val();
+        
         if(${not empty sessionScope.loginuser}) {
         	
         	// 1. 리뷰 내용이 비어 있거나 별점이 선택되지 않았을 경우
@@ -400,7 +460,7 @@
 	                "rating": rating,  // 별점
 	                "review": review  // 리뷰 내용
 	            },
-	            success: function(json) {
+	            success: function(json) {	            	
 	            	if (json.n == 1) {
 	            		
 	                    alert("리뷰가 성공적으로 제출되었습니다.");  // 리뷰 제출 성공 메시지
@@ -417,7 +477,7 @@
 	                        }
 	                    }
 	                    
-	                    var reviewHtml = `<li>
+	                    var reviewHtml = `<li class="review1">
 	                                         <div class="reviewuser">
 	                                         	 <span class="author">별점: \${stars}</span><br>
 	                                             <p class="content"> \${json.review.review_content}</p><br>
@@ -432,6 +492,10 @@
 	                    $("#reviewText").val("");  // 후기 내용 초기화
 	                    
 	                    $(".rating-stars span").removeClass("selected");
+	                    
+	                    // 페이지 재로딩
+	                    loadReviews(currentPageNo); // 추가할 때 페이징 처리 기준유지하기 위함
+	                    
 	                } 
 	                else if (json.n == 2) {
 	                    alert("결제된 회원만 후기를 작성할 수 있습니다.");
@@ -448,8 +512,61 @@
         else {
         	alert("로그인 후 리뷰를 작성할 수 있습니다.");
         }
-    }
+    } // end of submitReview()
+	
+    // 영화 후기 조회하는 함수
+    function loadReviews(pageNo) {
+		
+		$("#currentPageNo").val(pageNo);  // 페이지 번호 업데이트
+		
+	    $.ajax({
+	        url: "/MovieProject/movie/reviwDetail.mp",
+	        type: "POST",
+	        dataType: "json",
+	        data: {
+	            "seq_movie_no": ${mvo.seq_movie_no},
+	            "currentShowPageNo": pageNo  // 페이지 번호를 추가
+	        },
+	        success: function(json) {
+	            const mrList = json.mrList;
+	            var reviewList = $("#reviewsList");
+	            reviewList.empty();  // 이전 리뷰 목록을 초기화
+				console.log(mrList);
 
+            	if (mrList.length === 0) {
+                    reviewList.append('<li class="no-reviews">후기가 없습니다.</li>');
+                    $("#pageBar").hide();
+            	}
+            	else {
+	                mrList.forEach(mrList => {
+	                    var stars = "";
+	                    for (var i = 1; i <= 5; i++) {
+	                        if (i <= mrList.movie_rating) {
+	                            stars += '<span class="star filled">★</span>';
+	                        } else {
+	                            stars += '<span class="star">★</span>';
+	                        }
+	                    }
+
+	                    var reviewHtml = `<li class="review1">
+				                             <div class="reviewuser">
+				                                 <span class="author"> 별점: \${stars}</span><br>
+				                                 <p class="content"> \${mrList.review_content}</p><br>
+				                                 <span class="date"> 작성자: \${mrList.userid} \${mrList.review_write_date}</span><br>
+				                             </div>
+					                      </li>`;
+	                    reviewList.append(reviewHtml);
+	                });		                
+            	}
+	            // 페이지 바 업데이트
+	            $("#pageBar").html(json.pageBar);   	            
+	        },
+	        error: function(request, status, error){
+	            alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+	        }
+	    });
+	} // end of loadReviews(pageNo)
+    
 </script>
 
 <div class="container">
@@ -494,12 +611,12 @@
     <div id="graphdiv" style="border-top: 1px solid #ccc5b9; border-bottom: 1px solid #ccc5b9; width: 95%; margin: 0 auto;">
 	    <ul class="graph" style="list-style-type: none; padding: 0; margin: 0; display: flex; justify-content: space-between;">
 	        <li style="flex: 1; border-right: 1px solid #ccc5b9; padding-right: 10px; margin-right: 10px; text-align: center;">
-	            <strong style="display: block; border-bottom: 1px solid #ccc5b9; padding: 10px 0 10px 0; margin-bottom: 25px; color: #eb5e28;">성별 예매 분포</strong>
-	            <div class="chart" style="display: flex; justify-content: center; margin-top: 15px; margin-bottom: 15px;">
-	                <canvas id="genderChart" width="380" height="160"></canvas>
-	            </div>
-	        </li>
-	        
+		    	<strong style="display: block; border-bottom: 1px solid #ccc5b9; padding: 10px 0 10px 0; margin-bottom: 25px; color: #eb5e28;">성별 예매 분포</strong>
+		    	<div class="chart" style="display: flex; justify-content: center; margin-top: 15px; margin-bottom: 15px;">
+		        	<canvas id="genderChart" width="380" height="160"></canvas>
+		    	</div>
+			</li>
+
 	        <li style="flex: 1; text-align: center;">
 	            <strong style="display: block; border-bottom: 1px solid #ccc5b9; padding: 10px 0 10px 0; margin-bottom: 25px; color: #eb5e28;">연령별 예매 분포</strong>
 	            <div class="chart" style="display: flex; justify-content: center; margin-top: 15px; margin-bottom: 15px;">
@@ -510,7 +627,7 @@
 	</div>
 
     <!-- 후기 작성 -->
-    <div class="review-section" style="margin-top: 20px; width: 95%; margin: 0 auto;">       
+    <div class="review-section">       
         <!-- 별점 선택 -->
         <div class="rating-stars">
             <label for="reviewText"><i class="fa-solid fa-circle-user" style="color: #252422;" aria-hidden="true"> 별점을 선택해주세요.</i></label>
@@ -519,13 +636,14 @@
             <span data-value="3">&#9733;</span>
             <span data-value="4">&#9733;</span>
             <span data-value="5">&#9733;</span>
+            <button onclick="submitReview()">등록 하기</button>
         </div>
-        <textarea id="reviewText" placeholder="영화에 대한 후기를 작성해주세요..." style="-webkit-border-radius: 0; outline: 0; resize: none;"></textarea><br>
+        <textarea id="reviewText" placeholder="영화에 대한 후기를 작성해주세요..." style="outline: 0; resize: none; margin-top: 10px;"></textarea><br>
         
         <!-- 별점값을 가져오기 위함 -->
         <input type="hidden" id="rating" name="rating" value="">
         
-        <button onclick="submitReview()" style="margin-top: 20px; width: 100%; margin: 0 auto;">등록 하기</button>
+        
     </div>
 
     <hr style="width: 95%; border: 1.5px solid #ccc5b9;">
@@ -541,6 +659,8 @@
 	<div>
        <nav>
           <ul id="pageBar" class="pagination"></ul>
+          <!-- 숨겨진 필드로 currentPageNo 추가 -->
+		  <input type="hidden" id="currentPageNo" value="1"> <!-- 기본값은 1로 설정 -->
        </nav>
    </div>
 </div>
