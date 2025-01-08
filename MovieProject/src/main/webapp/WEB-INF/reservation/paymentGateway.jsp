@@ -79,10 +79,10 @@ $(document).ready(function() {
 	 		window.opener.reservationEnd('<%= ctxPath%>', '${requestScope.userid}', rsp.imp_uid, '${requestScope.name}');
 	 		
 	 		alert("결제에 성공하였습니다.");
-			// self.close();
+			self.close();
 			
         } else {
-        	opener.location.href = "javascript:history.go(0)";
+        	window.opener.stopCSSLoader();
             alert("결제에 실패하였습니다.");
             self.close();
             

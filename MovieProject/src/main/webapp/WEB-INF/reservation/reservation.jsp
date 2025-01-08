@@ -56,7 +56,7 @@ $(document).ready(function(){
 				if($(this).text() == '<%= start_date%>') {
 					$(this).parent().addClass("selected");
 					$("div#date-choice").text($(this).parent().find("span.input_date").text());
-					$("div#screen-date-info").text('<%= start_date%>');
+					$("div#screen-date-info").text('상영날짜 : <%= start_date%>');
 					
 					// 영화와 날짜를 선택했을 때 상영 시간이 보여주기
 					getScreenTime('<%= seq_movie_no%>', '<%= start_date%>', '<%= start_time%>', '<%= fk_screen_no%>');
@@ -179,7 +179,6 @@ $(document).ready(function(){
 			<div class="col-body">
 				<div id="person-screen">
 					<div id="numberOfPeople" class="mt-3">
-											
 						<div id="adult" class="btn-group">
 							<label>성인</label>
 							<button type="button" class="btn adult" value="0">0</button>
@@ -211,8 +210,12 @@ $(document).ready(function(){
 					<div id="screen-info">
 						<div id="screen-date-info"></div>
 						<div id="screen-time-info"></div>
-						<div id="total_seat_cnt" style="display: none;"></div>
+						<div id="total_seat_cnt" style="display: none;">0</div>
 						<div id="selected_seat_cnt" style="display: none;">0</div>
+					</div>
+					<div id="point">
+						<input id="using-point" type="number" step="100" min="0" value="0" placeholder="point를 입력해주세요" />
+						<div>보유중인 point : <label id="having-point"></label></div>
 					</div>
 				</div>
 				<div id="seat-screen" class="text-center">
@@ -222,36 +225,41 @@ $(document).ready(function(){
 		
 		<%-- -------------------------------------------------------------------- --%>
 		
-		<div id="step3" class="steps">
-			<div class="col-head">
-				<h3 class="title">포인트 사용</h3>
-			</div>
-			<div class="col-body">
-				<input id="using-point" type="number" step="100" min="0" value="0" placeholder="point를 입력해주세요" />
-				<div>보유중인 point : <label id="having-point"></label></div>
-			</div>
-		</div>
-		
-		<%-- -------------------------------------------------------------------- --%>
-		
 		<div id="ticket-info-container" class="ticket-info-container">
 			<div id="ticket-info" class="container ticket-info" style="align-content: center;">
-				<button id="goMovieChoice" onclick="goMovieChoice()">-> 영화선택</button>
+				<div id="goMovieChoice" class="bg-dark" onclick="goMovieChoice()" style="border: solid 2px gray; border-radius: 10px; width:110px; cursor: pointer;">
+					<i class="fa-solid fa-circle-left fa-3x my-2"></i>
+					<div>영화선택</div>
+				</div>
+				<div id="movie-choice-poster" class="movie-choice-poster" style="width: 100px;"></div>
 				<div id="movie-choice" class="movie-choice">영화선택</div>
 				<div>
 					<div id="date-choice">시간선택</div>
 					<div id="time-choice"></div>
 					<div id="seq_showtime_no" style="display: none;"></div>
 				</div>
-				<div id="seat-choice">> 좌석선택</div>
-				<div id="pay-choice">> 결제</div>
-				<button id="goSeatChoice" onclick="goSeatChoice('${sessionScope.loginuser.userid}', '${sessionScope.loginuser.birthday}')">-> 좌석선택</button>
-				<button id="goPointChoice" onclick="goPointChoice('<%= ctxPath%>', '${sessionScope.loginuser.userid}')">-> 포인트사용</button>
-				<button id="goPay" onclick="goPay('<%= ctxPath%>', '${sessionScope.loginuser.userid}')">-> 결제하기</button>
+				<div id="seat-choice">좌석선택</div>
+				<div id="pay-choice">예약정보</div>
+				
+				<div id="goSeatChoice" class="bg-dark" onclick="goSeatChoice('${sessionScope.loginuser.userid}', '${sessionScope.loginuser.birthday}')" style="border: solid 2px gray; border-radius: 10px; width:110px; cursor: pointer;">
+					<i class="fa-solid fa-circle-right fa-3x my-2"></i>
+					<div>좌석선택</div>
+				</div>
+				<div id="goPay" class="bg-dark" onclick="goPay('<%= ctxPath%>', '${sessionScope.loginuser.userid}')" style="border: solid 2px gray; border-radius: 10px; width:110px; cursor: pointer;">
+					<i class="fa-solid fa-circle-right fa-3x my-2"></i>
+					<div>결제하기</div>
+				</div>
+				
 			</div>
 		</div>
 		
 	</div>
+	
+	<%-- CSS 로딩화면 구현한것--%>
+	<div style="display: flex; position: absolute; top: 50%; left: 47%; border: solid 0px blue;">
+		<div class="loader" style="margin: auto"></div>
+	</div>
+    
 
 </div>
 <form name="payment">
