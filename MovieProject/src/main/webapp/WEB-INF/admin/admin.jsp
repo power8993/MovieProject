@@ -51,11 +51,11 @@ section#mycontent {
 			<div class="chart_body"> 
 		    	<div class="statistis_title">금일 예매 현황 및 매출액</div>
 			    <div style="display: flex; width: 100%; align-items: center;">
-				   	<div id="today_reserved" data-chart-type="pie" style="align-items: center; display: flex; width: 220px; margin-right: 2%;">
+				   	<div id="today_reserved" data-chart-type="pie" style="align-items: center; display: flex; width: 250px; margin-right: 2%;">
 		            	<canvas id="today_reserved_chart"></canvas>
 			        </div>
 			
-			        <div id="today_payment_amount" data-chart-type="bar" style="align-items: center; display: flex; width: 480px; margin: 2%;">
+			        <div id="today_payment_amount" data-chart-type="bar" style="align-items: center; display: flex; width: 450px; margin: 2%;">
 			            <canvas id="today_payment_chart"></canvas>
 			        </div>
 				</div>
