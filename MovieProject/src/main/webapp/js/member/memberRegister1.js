@@ -504,6 +504,8 @@ $(document).ready(function(){
 					type: "post",	
 					dataType: "json",		
 					success:function(json){
+						console.log(json.isExists);
+						
 						if(json.isExists) { //전화번호를 사용 중인 경우
 							b_phoneCheck_click = false; 
 							$("#authMsg").html("<span style='color:red; font-size:10pt;'>사용 중인 전화번호입니다.</span>");

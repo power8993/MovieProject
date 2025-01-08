@@ -1,6 +1,21 @@
 @charset "UTF-8";
 
+@font-face {
+     font-family: 'S-CoreDream-3Light';
+     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+     font-weight: normal;
+     font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
 body{
+font-family: 'Pretendard-Regular', sans-serif; /* 'GmarketSansMedium' 폰트를 기본으로 사용, 만약 없으면 sans-serif를 사용 */
 margin:0;
 padding:0;
 background-color:#fffcf2;
@@ -236,7 +251,11 @@ div#content{
 .movieTitle{
 	text-align:center; 
 	margin-top:10px;
-	height:50px;
+	margin-bottom:0px;
+}
+.bookingRate{
+	text-align:center;
+	font-size:10pt; 
 }
 
 a.carousel-control-prev{

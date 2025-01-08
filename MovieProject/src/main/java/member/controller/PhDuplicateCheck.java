@@ -27,7 +27,7 @@ public class PhDuplicateCheck extends AbstractController {
 		
 		String randomNumberAuth = request.getParameter("randomNumberAuth"); // 인증하기 버튼 클릭 시 ajax로 전송되는 값. 해당 버튼 클릭 시의 로직 구성을 위해.
 		String authPassInput = request.getParameter("authPassInput"); //인증번호 전송 후 생기는 input의 value값. (사용자 입력 인증번호 값)
-		
+		System.out.println("phoneNumber:"+phoneNumber);
 		
 		if(randomNumberAuth.equals("randomNumberAuth")) { // 인증하기 버튼을 클릭한 경우를 구성하기위한 if문
 			

@@ -91,6 +91,7 @@
 									</form>
                                 </div>
 								<p class="movieTitle">${movie.movie_title}</p>
+								<p class="bookingRate">예매율:${movie.bookingRate}%</p>
                             </div>
 							</c:forEach>
                             
@@ -134,6 +135,7 @@
 									</form>
                                 </div>
 								<p class="movieTitle">${movie2.movie_title}</p>
+								<p class="bookingRate">예매율:${movie2.bookingRate}%</p>
                             </div>
 							</c:forEach>
                         </div>
@@ -217,8 +219,8 @@
 			                                    <div class="movieCard" style="position: relative; width: 170px; height: 234px; margin: 0 auto;">
 												    <img src="${pageContext.request.contextPath}/images/admin/poster_file/${movie.poster_file}" class="card-img-top poster" style="width: 100%; height: 100%; object-fit: cover;">
 												   	<input style="margin-top:50px;" type="hidden" name="seq_movie_no" value="${movie.seq_movie_no}">
-												<div style="position:absolute; width:20px;height:20px; text-align:center; top:20px;  right:10px; z-index:4; border-radius:5px; font-size:8pt; background-color: white; color:red; font-weight: 700;" >D-${movie.remaining_day}</div>
-										<%-- (개봉일 - 현재날짜) --%>
+												<div  class="remaining_day" style="position:absolute; width:20px;height:20px; text-align:center; top:20px;  right:10px; z-index:4; border-radius:5px; font-size:8pt; background-color: white; color:red; font-weight: 700;" >D-${movie.remaining_day}</div>
+											<%-- (개봉일 - 현재날짜) --%>
 		                                    <div class="movieRank">${status.index + 6}</div>
 												</div>
 											</div>
