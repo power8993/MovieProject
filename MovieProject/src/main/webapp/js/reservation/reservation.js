@@ -20,6 +20,7 @@ $(document).ready(function(){
 	$("div#goMovieChoice").hide();
 	$("div#goPay").hide();
 	$("div.loader").hide(); // CSS 로딩화면 보여주기
+	$("div#movie-choice-poster").hide();
 	
 	// 영화 티켓 가격 가져오기
 	$.ajax({
@@ -44,6 +45,7 @@ $(document).ready(function(){
 	// 예약페이지에서 영화를 선택했을 때
 	$("tr.movie-list").click(e => {
 		$("tr.movie-list").removeClass("selected");
+		$("div#movie-choice-poster").show();
 		if($(e.target).hasClass('movie-title') || $(e.target).hasClass('movie-grade')) {
 			$(e.target).parent().addClass("selected");
 			seq_movie_no = $(e.target).parent().find("td#seq_movie_no").text();
@@ -63,6 +65,7 @@ $(document).ready(function(){
 		movie_grade = $(e.target).parent().find("span").text();
 		
 		if($("div#date-choice").text() == "시간선택") {
+			getScreenDate(seq_movie_no);
 			return;
 		}
 		
@@ -210,7 +213,7 @@ function getScreenTime(seq_movie_no1, input_date1, start_time1, fk_screen_no1) {
 						v_html += `<tr class='screen_no'><td class='screen_no_data'>${screen_no}관</td><td>(총 40석)</td></tr>`;
 					}
 					if(start_time1 == (item.start_time).substr(0,2) + ':' + (item.start_time).substr(2,2) && fk_screen_no1 == item.fk_screen_no) {
-						v_html += `<tr class='time-choice selected'><td class='time_data' 
+						v_html += `<tr class='time-choice'><td class='time_data selected' 
 											onclick='onScreenClick(this, ${item.start_time},${item.seq_showtime_no},${item.fk_screen_no},"${item.seat_arr}")'>
 											${(item.start_time).substr(0,2)}:${(item.start_time).substr(2,2)}</td><td class='unused_seat'>${item.unused_seat}석</td></tr>`;
 								
@@ -239,6 +242,12 @@ function getScreenTime(seq_movie_no1, input_date1, start_time1, fk_screen_no1) {
 		}
 	}); // end of $.ajax({})---------------------------------------------------------------------
 
+}
+
+
+// 영화를 선택했을 때 상영 날짜 가져오기
+function getScreenDate(seq_movie_no) {
+	
 }
 
 
@@ -352,7 +361,7 @@ function showTotalPrice() {
 	}
 	
 	html += `<div>총금액 ${total_price.toLocaleString()}원</div>`
-	
+	$("div#totalPrice").text(total_price);
 	$("div#pay-choice").html(html);
 	
 }
@@ -414,17 +423,22 @@ function getHavingPoint(userid) {
 	}); // end of $.ajax({})---------------------------------------------------------------------
 	
 	$("input#using-point").bind("change", function(e) {
-		if($(e.target).val() > havingPoint) {
-			alert("보유하신 point 만큼만 사용 가능합니다.");
-			$(e.target).val(0);
-		}
-		else if($(e.target).val() < 0) {
+		
+		if($(e.target).val() < 0) {
 			alert("음수 입력은 불가능합니다.");
 			$(e.target).val(0);
 		}
 		else if($(e.target).val() % 10 != 0) {
 			alert("포인트는 10 단위로 사용 가능합니다.");
 			$(e.target).val( Math.floor($(e.target).val() / 10) * 10 );
+		}
+		else if($(e.target).val() > havingPoint) {
+			alert("보유하신 point 만큼만 사용 가능합니다.");
+			$(e.target).val(havingPoint);
+		}
+		else if($(e.target).val() > total_price) {
+			alert("결제 금액보다 낮은 포인트만 사용 가능합니다.");
+			$(e.target).val(total_price);
 		}
 	});
 	
