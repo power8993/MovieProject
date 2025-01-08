@@ -163,7 +163,7 @@ $(document).ready(function(){
 		// === 수정하기 버튼 클릭 이벤트 끝 === //
 		
 		
-		// === 상영중지 버튼 클릭 이벤트 (모달 내에서) === //
+		// === 상영중지 버튼 클릭 이벤트 (모달 내에서) 시작 === //
 		$(document).one('click', '#delete_button', function(e) {
 			
 			var current_date = new Date();
@@ -191,7 +191,7 @@ $(document).ready(function(){
 				}
 			}
 		});  // end of $(document).on('click', '#delete_button')
-		// === 삭제하기 버튼 클릭 이벤트 끝 === //
+		// === 상영중지 버튼 클릭 이벤트 (모달 내에서) 끝  === //
 		
 		
 		// === 상영일정 등록 버튼 클릭 이벤트 (모달 내에서) === //

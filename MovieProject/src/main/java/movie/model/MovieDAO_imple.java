@@ -421,6 +421,32 @@ public class MovieDAO_imple implements MovieDAO {
 
 
 
+	// 상영일정을 삭제하는 메소드(seq에 해당하는 상영일정을 delete)
+	@Override
+	public int deleteShowtime(String seq) throws SQLException {
+		
+		int result = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " delete from tbl_showtime where seq_showtime_no = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, Integer.parseInt(seq));
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		
+		return result;
+	}// end of public int deleteShowtime(String seq) throws SQLException {}-----------------------------------------
+	
+	
+
 	// [상영시간 조회하기] 선택한 상영 시간과 상영관에 중첩된 상영이 있는지 확인하는 메소드 (select)
 	@Override
 	public List<MovieVO> selectShowtimeConflict(Map<String, String> paraMap) throws SQLException {
@@ -1367,6 +1393,9 @@ public class MovieDAO_imple implements MovieDAO {
 		
 		return isDateValid;
 	}// end of public boolean isDateValidCheck(Map<String, String> paraMap) throws SQLException {}------------------------------
+
+
+
 
 
 

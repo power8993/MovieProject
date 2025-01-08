@@ -119,9 +119,10 @@ $(document).ready(function() {
 					url: 'showtimeDelete.mp',
 					type: 'post',
 					data: { "seq" : seq_showtime_no },
-					async: true,
+					async: false,
 					success: function(json) {
 						alert("상영일정이 삭제되었습니다.");
+						window.location.href = 'showtimeList.mp';
 					},
 		            error: function() {
 		                alert("상영일정 삭제에 실패했습니다. 다시 시도해주세요.");

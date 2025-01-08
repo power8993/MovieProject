@@ -28,15 +28,15 @@ public class ShowtimeDelete extends AbstractController {
 				
 				// 폼태그의 값 받기	
 				String seq = request.getParameter("seq");
-	/*
+
 				try {
 	
 					// **** 상영일정을 삭제하는 메소드(seq에 해당하는 상영일정을 delete) **** //
 					int n = mvdao.deleteShowtime(seq);
 	
 					if (n == 1) {
-						String message = "영화가 비활성화 되었습니다.";
-						String loc = "movieRegisteredList.mp";
+						String message = "상영일정이 삭제되었습니다.";
+						String loc = "showtimeList.mp";
 	
 						request.setAttribute("message", message);
 						request.setAttribute("loc", loc);
@@ -48,7 +48,7 @@ public class ShowtimeDelete extends AbstractController {
 				} catch (SQLException e) {
 					e.printStackTrace();
 	
-					String message = "영화 삭제 실패";
+					String message = "상영일정 삭제 실패";
 					String loc = "javascript:history.back()";
 	
 					request.setAttribute("message", message);
@@ -58,9 +58,6 @@ public class ShowtimeDelete extends AbstractController {
 					super.setViewPage("/WEB-INF/msg.jsp");
 				}
 			}
-			
-		
-		*/
 			
 			
 			}// end of if(loginuser != null && "admin".equalsIgnoreCase(loginuser.getUserid())) {}------------------------------
@@ -74,4 +71,3 @@ public class ShowtimeDelete extends AbstractController {
 		}
 	}// end of public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {}-------------------------
 
-}
