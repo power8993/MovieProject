@@ -27,6 +27,8 @@ public class PhDuplicateCheck extends AbstractController {
 		
 		String randomNumberAuth = request.getParameter("randomNumberAuth"); // 인증하기 버튼 클릭 시 ajax로 전송되는 값. 해당 버튼 클릭 시의 로직 구성을 위해.
 		String authPassInput = request.getParameter("authPassInput"); //인증번호 전송 후 생기는 input의 value값. (사용자 입력 인증번호 값)
+		
+		
 		System.out.println("phoneNumber:"+phoneNumber);
 		
 		if(randomNumberAuth.equals("randomNumberAuth")) { // 인증하기 버튼을 클릭한 경우를 구성하기위한 if문
@@ -85,9 +87,10 @@ public class PhDuplicateCheck extends AbstractController {
 				// String api_secret = "발급받은 본인의 API Secret"; // 발급받은 본인 API Secret
 				String api_secret = "QBQHN7YKB2GTNMT7ULHIOPTQSD0PTOXA";
 				String mobile = phoneNumber;
+				System.out.println("mobile"+mobile);
 				if (mobile == null || !mobile.matches("\\d{10,11}")) {// 잘못된 전화번호 형식
 					System.out.println("잘못된 전화번호 형식입니다.");
-				    return;
+				    
 				}
 				
 				Message coolsms = new Message(api_key, api_secret);
@@ -124,7 +127,6 @@ public class PhDuplicateCheck extends AbstractController {
         JSONObject jsonObj = new JSONObject();
         
         jsonObj.put("isExists", isExists);
-        
         // 응답 데이터 설정
         response.setContentType("application/json; charset=UTF-8");//응답데이터가 json 형식임을 알리는 용도
         PrintWriter out = response.getWriter(); // 이 출력 스트림을 사용하여 클라이언트에 데이터를 보낼 수 있음.

@@ -200,21 +200,21 @@ $(document).ready(function(){
 
 	    if (!bool) {
 	        // hp2 값이 정규표현식에 맞지 않는 경우
-	        $("#hp_error").text("연락처 중간 자리는 4자리 숫자여야 합니다.").show();
+	        $("#hp_error").text("전화번호 중간 자리를 정확하게 입력해 주세요.").show();
 	        return;
 	    }
 
 	    // hp3 값이 비어 있는지 확인
 	    const hp3Value = $("input#hp3").val(); // `hp3` 입력값 가져오기
 	    if (hp3Value === "") {
-	        $("#hp_error").text("연락처 마지막 자리를 입력해주세요.").show();
+	        $("#hp_error").text("전화번호 마지막 자리를 입력해주세요.").show();
 			$("input#hp3").focus();
 	        return;
 	    }
 
 	    // hp3 값의 길이가 4자리인지 확인
 	    if (hp3Value.length !== 4) {
-	        $("#hp_error").text("연락처 마지막 자리는 정확히 4자리여야 합니다.").show();
+	        $("#hp_error").text("전화번호 마지막 자리는 정확히 4자리여야 합니다.").show();
 			$("input#hp3").focus();
 	        return;
 	    }
@@ -222,7 +222,7 @@ $(document).ready(function(){
 	    // hp3 값이 숫자 4자리인지 확인
 	    const regExp_hp3 = /^[1-9][0-9]{3}$/; // 첫 번째 숫자는 1-9, 나머지는 0-9로 이루어진 4자리 숫자
 	    if (!regExp_hp3.test(hp3Value)) {
-	        $("#hp_error").text("연락처 마지막 자리는 4자리 숫자여야 합니다.").show();
+	        $("#hp_error").text("전화번호 마지막 자리는 4자리 숫자여야 합니다.").show();
 	        return;
 	    }
 
@@ -242,20 +242,20 @@ $(document).ready(function(){
 
 	    if (!bool) {
 	        // 연락처 마지막 4자리가 정규표현식에 위배된 경우
-	        $("#hp_error").text("연락처 형식이 올바르지 않습니다.").show();
+	        $("#hp_error").text("전화번호 형식이 올바르지 않습니다1.").show();
 	        return;
 	    }
 
 	    // hp2 값이 비어 있는지 확인
 	    const hp2Value = $("input#hp2").val();
 	    if (hp2Value === "") {
-	        $("#hp_error").text("연락처 중간 자리를 입력해주세요.").show();
+	        $("#hp_error").text("전화번호 중간 자리를 입력해주세요.").show();
 	        return;
 	    }
 
 	    // hp3 값의 길이를 확인
 	    if (hp3Value.length !== 4) {
-	        $("#hp_error").text("연락처 마지막 4자리를 입력해주세요.").show();
+	        $("#hp_error").text("전화번호 마지막 4자리를 입력해주세요.").show();
 	        return;
 	    }
 
@@ -492,6 +492,29 @@ $(document).ready(function(){
 			$("#authMsg").html("<span style='color:red; font-size:10pt;'>전화번호를 입력해주세요.</span>");
 			return false;
 		}
+		/*======= 전화번호 유효성 검사======*/
+		
+		const regExp_hp2 = /^[1-9][0-9]{3}$/; // 첫 번째 숫자는 1-9, 나머지는 0-9로 이루어진 4자리 숫자
+		const hp2Value = $("#hp2").val(); // hp2 입력값 가져오기
+		const isHp2Valid = regExp_hp2.test(hp2Value); // 정규표현식 검사
+		
+		if (!isHp2Valid) {
+		    // hp2 값이 정규표현식에 맞지 않는 경우
+		    $("#hp_error").text("전화번호 중간 자리를 정확하게 입력해 주세요.").show();
+		    return;
+		}
+		
+		const regExp_hp3 = /^[1-9][0-9]{3}$/; // 첫 번째 숫자는 1-9, 나머지는 0-9로 이루어진 4자리 숫자
+		const hp3Value = $("#hp3").val(); // 입력된 값 가져오기
+		const isHp3Valid = regExp_hp3.test(hp3Value); // 정규표현식 검사
+		
+		if (!isHp3Valid) {
+		    // 연락처 마지막 4자리가 정규표현식에 위배된 경우
+		    $("#hp_error").text("전화번호 형식이 올바르지 않습니다.").show();
+		    return;
+		}
+
+		
 				
 				const phoneNumber = $("input#hp1").val() + $("input#hp2").val() + $("input#hp3").val(); 
 				$.ajax({
@@ -508,13 +531,20 @@ $(document).ready(function(){
 						
 						if(json.isExists) { //전화번호를 사용 중인 경우
 							b_phoneCheck_click = false; 
-							$("#authMsg").html("<span style='color:red; font-size:10pt;'>사용 중인 전화번호입니다.</span>");
+							console.log("사용 중인 전화번호입니다.");
+							$("#authMsg").html("<span style='color:red; font-size:10pt;'>사용 중인 전화번호입니다.</span>").show();
+							$("#hp2").val("");
+							$("#hp3").val("");
+							$("#hp2").focus(); 
+							return;
 						}
-						else{// 전화번호가 중복되지 않은 경우
+						else if(json.phoneNumber == null || json.phoneNumber == undefined){// 전화번호가 중복되지 않은 경우
 							b_phoneCheck_click = true; 
-							$("#authMsg").html("<span style='color:navy; font-size:10pt;'>사용 가능한 전화번호입니다. 인증을 진행해 주세요.</span>");
+							console.log("사용 가능한 전화번호입니다.");
+							$("#authMsg").html("<span style='color:navy; font-size:10pt;'>사용 가능한 전화번호입니다. 인증을 진행해 주세요.</span>").show();
 							$("#authPassElmt").show();
 						}
+						
 					},
 					error: function(request, status, error){
 		                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -555,6 +585,7 @@ $(document).on('click', '#authPassBtn', function() {
 				}
 				else{// 인증번호가 일치하지 않은 경우
 					$("#authMsg").html("<span style='color:red; font-size:10pt;'>전화번호 인증에 실패하였습니다.</span>");
+					$("#authPassElmt").hide();
 				}
 			},
 			error: function(request, status, error){

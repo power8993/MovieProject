@@ -591,7 +591,7 @@ public class MemberDAO_imple implements MemberDAO {
 			
 			String sql = " select * "
 					   + " from tbl_member "
-					   + " where MOBILE = ? ";
+					   + " where MOBILE = ? and user_status != 0"; //탈퇴한 회원 것도 사용이 가능한 번호임.
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, aes.encrypt(phoneNumber));

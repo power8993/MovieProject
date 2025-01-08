@@ -18,6 +18,13 @@ div#form_container  {
 	width: 150px;
 }
 
+#pwdFindTitle{
+	text-align: center;
+    margin-bottom: 0px;
+    font-size: 20pt;
+    font-weight: 700;
+}
+
 div#form_container > form {
   	max-width: 350px;
   	margin: 0 auto;

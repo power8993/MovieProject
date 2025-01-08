@@ -133,6 +133,7 @@ function goidfind() {
 	<form name="pwdFindFrm">
 	  <!-- 성명 입력 -->
 	  <div class="form-group">
+	  <div id="idFindTitle"><p>아이디 찾기</p></div>
 	    <div class="form-floating-label">
 	      <input type="text" class="form-control" id="nameInput" name="name" autocomplete="off" placeholder=" " />
 	      <label for="nameInput" style= "margin-bottom: 0px;">성명</label>
