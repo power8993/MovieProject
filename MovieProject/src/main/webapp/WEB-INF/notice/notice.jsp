@@ -14,7 +14,6 @@
 <!-- CSS 스타일 추가 -->
 <style>
     body {
-        font-family: Arial, sans-serif;
         background-color: #fffcf2; /* 부드러운 아이보리 배경색 */
         margin: 0;
         padding: 0;
@@ -24,73 +23,72 @@
         margin: 50px auto;
         padding: 30px;
     }
-    .board-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 30px;
-        color: #403d39; /* 딥한 브라운 색 */
-    }
-    .board-header h3 {
-        margin: 0;
-        font-size: 28px;
-    }
-    .board-header a {
-        font-size: 18px;
-        color: #eb5e28; /* 오렌지색 버튼 링크 */
-        text-decoration: none;
-    }
-    .board-header a:hover {
-        text-decoration: underline;
-    }
+    
     .board-table {
         width: 100%;
         border-collapse: collapse;
         margin-bottom: 30px;
+        border: 1px solid red;
     }
     .board-table th, .board-table td {
         padding: 12px;
         text-align: center;
-        border: 1px solid #ddd;
+        border: 1px solid #dbd7ce;
     }
     .board-table th {
-        background-color: #ccc5b9; /* 밝은 베이지 색 */
-        color: #252422; /* 어두운 회색 텍스트 */
+        background-color: #333;
+        color: white;
     }
     .board-table td {
-        background-color: #f9f9f9; /* 연한 회색 배경 */
+        background-color: #fffcf2; /* 연한 회색 배경 */
+        border: 1px solid inherit;
     }
     .board-table td a {
         text-decoration: none;
         color: #007bff;
     }
-    .board-table td a:hover {
-        text-decoration: underline;
-        color: #0056b3;
-    }
+    
+	body > div:nth-child(22) > table > tbody > tr:hover {
+	    background-color: #EB5E28;
+		color: #403D39;
+	    cursor: pointer; /* 마우스가 손 모양으로 변경 */
+	}
+	
+	body > div:nth-child(22) > table > tbody > tr > td:nth-child(2):hover {
+	    background-color: #dee2e6;
+	    color: #403D39;
+	}
     .pagination {
         list-style-type: none;
         padding: 0;
         text-align: center;
         margin-top: 20px;
+        display: flex;  
+		justify-content: center;  /* 수평 중앙 정렬 */
     }
     .pagination li {
         display: inline;
         margin: 0 5px;
     }
     .pagination a {
-        text-decoration: none;
-        padding: 10px 15px;
-        background-color: #252422; 
-        color: white;
-        border-radius: 5px;
+        padding: 10px 20px;
+	    text-decoration: none;
+	    border-radius: 5px;
+	    border: 1px solid #ddd;
+	    color: #403D39;
     }
     .pagination a:hover {
         background-color: #eb5e28;
+		color: #403D39;
     }
+    .pagination .page-item.active .page-link {
+	    background-color: #eb5e28;
+	    border-color: #EB5E28;
+	    color: white;
+	}
     .btn-create {
         padding: 6px 17px;
-        background-color: #252422;
+        background-color: #EB5E28;
         color: white;
         border: none;
         border-radius: 5px;
@@ -130,12 +128,12 @@
         </thead>
         <tbody>
             <c:forEach var="notice" items="${requestScope.NoticeList}" varStatus="status">
-                <tr>
+                <tr class="tr-table" onclick="location.href='<%= ctxPath %>/notice/noticeDetail.mp?seq=${notice.seq_notice_no}'">
                     <fmt:parseNumber var="currentShowPageNo" value="${requestScope.currentShowPageNo}" />
                     <fmt:parseNumber var="sizePerPage" value="${requestScope.sizePerPage}" /> 
                     <%-- fmt:parseNumber 은 문자열을 숫자형식으로 형변환 시키는 것이다. --%>
           			<td>${(requestScope.totalNoticeCount) - (currentShowPageNo - 1) * sizePerPage - (status.index)}</td>
-                    <td><a href="<%= ctxPath %>/notice/noticeDetail.mp?seq=${notice.seq_notice_no}">${notice.notice_subject}</a></td>
+                    <td style="text-align: left;">${notice.notice_subject}</td>
                     <td>${notice.notice_wtite_date}</td>
                     <td>${notice.views}</td> <!-- 조회수 -->
                 </tr>
