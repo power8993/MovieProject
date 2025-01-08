@@ -1,6 +1,22 @@
 @charset "UTF-8";
 
-@charset "UTF-8";
+@font-face {
+     font-family: 'S-CoreDream-3Light';
+     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+     font-weight: normal;
+     font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Pretendard-Regular', sans-serif; /* 'GmarketSansMedium' 폰트를 기본으로 사용, 만약 없으면 sans-serif를 사용 */
+}
 
 div.mycontainer {
 	border: solid 0px gray;
@@ -129,4 +145,117 @@ section#mysidebar a:hover {
 
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/*############*/
+/*   통계차트   */
+/*############*/
 
+/* 본문 전체 */
+div.movie_header {
+	background-color: #e9e7e0;
+	padding: 10px;
+ 	border-radius: 5px;
+}
+
+/* 공통 */
+div.movie_header >  div {
+	border: solid 0px red;
+	background-color: #fff;
+}
+
+/* 통계요약 */
+div#statistics {
+	background-color: #e9e7e0;
+	margin-bottom: 4%;
+}
+
+div#statistics > div {
+	background-color: #fff;
+	border-radius: 3px;
+	padding: 15px 0 7px 7px;
+	height: 75px;
+}
+
+div#statistics > div:nth-child(-n+3) {
+	margin-right: 10px;	
+}
+
+div#statistics > div.visit {
+	border-left: solid 4px #62A87C;
+}
+
+div#statistics > div.pay {
+	border-left: solid 4px #C94F53;
+}
+
+div#statistics > div > div:first-child {
+	font-size: 9pt;
+}
+
+div#statistics > div > div:last-child {
+	font-size: 14pt;
+}
+
+div#statistics > div.visit > div:first-child {
+	color: #62A87C;
+	font-weight: bold;
+}
+
+div#statistics > div.pay > div:first-child {
+	color: #C94F53;
+	font-weight: bold;
+}
+
+/* 차트 공통 */
+div.chart_body {
+	border-radius: 3px;
+	margin-top: 3%;
+}
+
+div.chart_body > div.statistis_title {
+	font-size: 14pt;
+	font-weight: bold;
+	padding-left: 2%;
+	padding-top: 0.9%;
+	height: 42px;
+	background-color: #b9d6d433;
+	color: #403D39;
+}
+
+/* 전체 영화 예매 추이 버튼*/
+div#total_reserved > button {
+  display: block;
+  position: relative;
+  float: left;
+  width: 60px;
+  padding: 0;
+  margin: 10px 10px 10px 0;
+  font-weight: 600;
+  text-align: center;
+  line-height: 25px;
+  color: #FFF;
+  border-radius: 5px;
+  transition: all 0.2s ;
+  border: none;
+}
+
+button#day_btn {
+	margin-left: 1.5% !important;
+}
+
+.btnLightBlue {
+  background: #5DC8CD;
+}
+
+.btnLightBlue.btnBorder {
+  box-shadow: 0px 0px 0px 0px #01939A;
+}
+
+.btnLightBlue.btnBorder:hover {
+  box-shadow: 0px 0px 0px 3px #01939A;
+}
+
+/* 클릭 상태에서 유지할 스타일 */
+.btn-clicked {
+    box-shadow: 0px 0px 0px 3px #01939A !important;  /* 클릭된 상태에서 유지되는 box-shadow */
+}

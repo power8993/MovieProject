@@ -19,11 +19,9 @@ import javax.sql.DataSource;
 
 import member.domain.MemberVO;
 import member.domain.MemberVO_hongbi;
-import movie.domain.CategoryVO;
 import movie.domain.MovieVO;
 import util.security.AES256;
 import util.security.SecretMyKey;
-import util.security.Sha256;
 
 public class MemberDAO_imple_hongbi implements MemberDAO_hongbi {
 	
@@ -333,7 +331,7 @@ public class MemberDAO_imple_hongbi implements MemberDAO_hongbi {
 					   + " ) "
 					   + " select "
 					   + "     dr.pay_date, "
-					   + "     nvl(sum(p.pay_amount), 0) as pay_sum, "
+					   + "     nvl(sum(case when p.pay_status != '결제 취소' then p.pay_amount end), 0) as pay_sum, "
 					   + "     count(case when p.pay_status != '결제 취소' then 1 end) as reserved_cnt "
 					   + " from "
 					   + "     date_range dr "
@@ -414,7 +412,7 @@ public class MemberDAO_imple_hongbi implements MemberDAO_hongbi {
 
 	
 	
-	// [관리자 메인페이지] 일주일 간 전체 예매 현황을 차트로 보여주기(select)
+	// [관리자 메인페이지] 7일간 전체 예매 현황을 차트로 보여주기(select)
 	@Override
 	public List<Map<String,Object>> totalDayReservedChart() throws SQLException {
 		
@@ -434,8 +432,8 @@ public class MemberDAO_imple_hongbi implements MemberDAO_hongbi {
 					   + "     connect by level <= 7 "
 					   + " ) "
 					   + " select "
-					   + "     dr.pay_date, "
-					   + "     nvl(sum(p.pay_amount), 0) as pay_sum, "
+					   + "     dr.pay_date as pay_date, "
+					   + "     nvl(sum(case when p.pay_status != '결제 취소' then p.pay_amount end), 0) as pay_sum, "
 					   + "     count(case when p.pay_status != '결제 취소' then 1 end) as reserved_cnt "
 					   + " from "
 					   + "     date_range dr "
@@ -462,10 +460,9 @@ public class MemberDAO_imple_hongbi implements MemberDAO_hongbi {
 				reservedDayList.add(paraMap);
 
 			}
-
 			
 		} finally {
-			
+			close();
 		}
 		
 		return reservedDayList;
@@ -473,7 +470,7 @@ public class MemberDAO_imple_hongbi implements MemberDAO_hongbi {
 
 	
 	
-	// [관리자 메인페이지] 한 달간 전체 예매 현황을 차트로 보여주기(select)
+	// [관리자 메인페이지] 30일간 전체 예매 현황을 차트로 보여주기(select)
 	@Override
 	public List<Map<String, Object>> totalMonthReservedChart() throws SQLException {
 		
@@ -491,7 +488,7 @@ public class MemberDAO_imple_hongbi implements MemberDAO_hongbi {
 			           + " ) "
 			           + " select "
 			           + "     dr.pay_date, "
-			           + "     nvl(sum(p.pay_amount), 0) as pay_sum, "
+			           + "     nvl(sum(case when p.pay_status != '결제 취소' then p.pay_amount end), 0) as pay_sum, "
 			           + "     count(case when p.pay_status != '결제 취소' then 1 end) as reserved_cnt "
 			           + " from "
 			           + "     date_range dr "
@@ -518,9 +515,8 @@ public class MemberDAO_imple_hongbi implements MemberDAO_hongbi {
 				reservedMonthList.add(paraMap);
 			}
 			
-			
 		} finally {
-			
+			close();
 		}
 		return reservedMonthList;
 	}// end of public List<Map<String, Object>> totalMonthReservedChart() throws SQLException {}---------------------
@@ -545,7 +541,7 @@ public class MemberDAO_imple_hongbi implements MemberDAO_hongbi {
 			           + " ) "
 			           + " select "
 			           + "     to_char(dr.pay_month, 'YYYY-MM') as pay_month, "
-			           + "     nvl(sum(p.pay_amount), 0) as pay_sum, "
+			           + "     nvl(sum(case when p.pay_status != '결제 취소' then p.pay_amount end), 0) as pay_sum, "
 			           + "     count(case when p.pay_status != '결제 취소' then 1 end) as reserved_cnt "
 			           + " from "
 			           + "     date_range dr "
@@ -577,4 +573,100 @@ public class MemberDAO_imple_hongbi implements MemberDAO_hongbi {
 		}
 		return reservedYearList;
 	}// end of public List<Map<String, Object>> totalYearReservedChart() throws SQLException {}----------------------
+
+	
+	
+	// [관리자 메인페이지] 7일간 접속자 수를 차트로 보여주기(select)
+	@Override
+	public List<Map<String, Object>> totalVisitedCountChart() throws SQLException {
+		
+		List<Map<String,Object>> visitedCntList = new ArrayList<>();
+
+		try {
+			conn = ds.getConnection();
+
+			String sql = " with date_range as ( "
+					   + "     select trunc(sysdate) - level + 1 as login_date "
+					   + "     from dual "
+					   + "     connect by level <= 7 "
+					   + " ) "
+					   + " select dr.login_date, count(*) as cnt "
+					   + " from date_range dr left join TBL_LOGIN_HISTORY lo "
+					   + " on ( trunc(lo.login_date) = dr.login_date ) "
+					   + " and lo.login_date between sysdate - 6 and sysdate "
+					   + " group by dr.login_date "
+					   + " order by dr.login_date ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				Map<String, Object> paraMap = new HashMap<>();
+				
+				paraMap.put("visit_date", rs.getString("login_date"));
+				paraMap.put("visited_cnt", rs.getInt("cnt"));
+				
+				visitedCntList.add(paraMap);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return visitedCntList;
+	}// end of public List<Map<String, Object>> totalVisitedCountChart() throws SQLException {}----------------------
+
+	
+	
+	// [관리자 메인페이지] 금일 및 누적 매출과 방문자 수 보여주기(select)
+	@Override
+	public Map<String, Integer> statisticalAnalysis() throws SQLException {
+		
+		Map<String, Integer> paraMap = new HashMap<>();
+		
+		try {
+			conn = ds.getConnection();
+	
+			String sql = " with "
+					   + " lo as ( "
+					   + "     select count(*) as today_visit_cnt "
+					   + "     from tbl_login_history "
+					   + "     where trunc(login_date) = trunc(sysdate) "
+					   + " ), "
+					   + " t_lo as ( "
+					   + "     select count(*) as total_visit_cnt "
+					   + "     from tbl_login_history "
+					   + " ), "
+					   + " p as ( "
+					   + "     select sum(case when pay_status != '결제 취소' then pay_amount end) as today_pay_sum "
+					   + "     from tbl_payment "
+					   + "     where trunc(pay_success_date) = trunc(sysdate) "
+					   + " ), "
+					   + " t_p as ( "
+					   + "     select sum(case when pay_status != '결제 취소' then pay_amount end) as total_pay_sum "
+					   + "     from tbl_payment "
+					   + " ) "
+					   + " select today_visit_cnt, total_visit_cnt, today_pay_sum, total_pay_sum "
+					   + " from lo cross join t_lo cross join p cross join t_p ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+				
+			paraMap.put("today_visit_cnt", rs.getInt("today_visit_cnt"));
+			paraMap.put("total_visit_cnt", rs.getInt("total_visit_cnt"));
+			paraMap.put("today_pay_sum", rs.getInt("today_pay_sum"));
+			paraMap.put("total_pay_sum", rs.getInt("total_pay_sum"));
+			
+		} finally {
+			close();
+		}
+			
+		return paraMap;
+	}// end of public Map<String, Object> statisticalAnalysis() {}-----------------------------------
+	
 }
