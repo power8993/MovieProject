@@ -553,7 +553,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 			// 결제 내역 상태 수정
 			if(n2 == 1) {
 				
-				sql = " update tbl_payment set pay_status = '결제 취소' "
+				sql = " update tbl_payment set pay_status = '결제 취소', PAY_CANCEL_DATE = sysdate "
 					+ " where imp_uid = ? ";
 				
 				pstmt = conn.prepareStatement(sql);
