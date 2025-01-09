@@ -28,6 +28,7 @@ public class MovieRegister extends AbstractController {
 	
 			if("GET".equalsIgnoreCase(method)) { // [영화등록] 버튼 클릭 후 폼태그 보이기
 				
+				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/admin/movieRegister.jsp");
 				
 			}
