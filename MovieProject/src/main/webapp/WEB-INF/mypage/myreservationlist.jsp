@@ -3,6 +3,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <%
 String ctxPath = request.getContextPath();
@@ -82,7 +83,8 @@ String ctxPath = request.getContextPath();
 						<div class="reservation_box">
 
 							<!-- 예매번호 -->
-							 <p class="reservation_number">예매번호 ${reservation.imp_uid}</p>
+							   <input type="hidden" name="imp_uid" value="${reservation.imp_uid}" />
+							 <p class="reservation_number">예매번호 ${fn:replace(reservation.imp_uid, 'imp_', '')}</p>
 
 							<!-- 포스터 이미지 -->
 							<div class="my_main_reservationlist_poster">
@@ -140,6 +142,7 @@ String ctxPath = request.getContextPath();
 							<tr>
 								<th>영화제목</th>
 								<th>관람일시</th>
+								<th>결제일</th>
 								<th>취소일</th>
 								<th>결제취소 금액</th>
 							</tr>
@@ -151,6 +154,7 @@ String ctxPath = request.getContextPath();
 									<tr>
 										<td>${cancel.svo.mvo.movie_title}</td>
 										<td>${cancel.svo.start_time}</td>
+										<td>${cancel.pay_success_date}</td>
 										<td>${cancel.pay_cancel_date}</td>
 										<td><fmt:formatNumber value="${cancel.pay_amount}" pattern="#,###" /></td>
 									</tr>

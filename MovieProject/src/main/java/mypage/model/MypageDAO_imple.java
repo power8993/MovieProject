@@ -117,8 +117,8 @@ public class MypageDAO_imple implements MypageDAO {
 		        String sql = " SELECT fk_user_id as userid, " +
 		                     " sum(case when point_type = 1 then point else 0 end) as total_earned, " +
 		                     " sum(case when point_type = 0 then point else 0 end) as total_deducted, " +
-		                     " sum(case when point_type = 1 then point else 0 end) -  " +
-		                     "  sum(case when point_type = 0 then point else 0 end) as total_points " +
+		                     " GREATEST(sum(case when point_type = 1 then point else 0 end) -  " +
+		                     "  sum(case when point_type = 0 then point else 0 end),0) as total_points " +
 		                     " FROM tbl_point " +
 		                     " WHERE FK_USER_ID = ? " +
 		                     " GROUP BY FK_USER_ID ";
@@ -480,12 +480,12 @@ public class MypageDAO_imple implements MypageDAO {
 			String sql = "SELECT " + " p.FK_USER_ID as userid, " + "  p.IMP_UID, " + " m.SEQ_MOVIE_NO, "
 					+ "   case when length(movie_title) > 23 then substr(movie_title,1,20) || ' ...' else movie_title end as movie_title,  "
 					+ "    to_char(s.START_TIME, 'yyyy-mm-dd hh24:mi') as START_TIME, "
-					+ "    to_char(p.PAY_CANCEL_DATE, 'yyyy-mm-dd') as PAY_CANCEL_DATE, " + "    p.PAY_AMOUNT, "
+					+ "    to_char(p.PAY_CANCEL_DATE, 'yyyy-mm-dd') as PAY_CANCEL_DATE, " + " to_char(p.pay_success_date, 'yyyy-mm-dd') as pay_success_date,   p.PAY_AMOUNT, "
 					+ "    p.PAY_STATUS " + " FROM tbl_payment p " + " JOIN tbl_showtime s "
 					+ " ON s.SEQ_SHOWTIME_NO = p.FK_SEQ_SHOWTIME_NO " + " JOIN tbl_movie m "
 					+ " ON s.FK_SEQ_MOVIE_NO = m.SEQ_MOVIE_NO " + " WHERE p.FK_USER_ID = ? AND p.PAY_STATUS = '결제 취소' "
 					+ " GROUP BY " + "     p.FK_USER_ID, p.IMP_UID, m.SEQ_MOVIE_NO, m.MOVIE_TITLE,  "
-					+ "  PAY_CANCEL_DATE, START_TIME,  p.PAY_AMOUNT, p.PAY_STATUS "
+					+ "  PAY_CANCEL_DATE, START_TIME, pay_success_date,  p.PAY_AMOUNT, p.PAY_STATUS "
 					+ " ORDER BY p.PAY_CANCEL_DATE DESC ";
 
 			pstmt = conn.prepareStatement(sql);
@@ -497,6 +497,7 @@ public class MypageDAO_imple implements MypageDAO {
 				PaymentVO pvo = new PaymentVO();
 				pvo.setFk_user_id(rs.getString("userid"));
 				pvo.setImp_uid(rs.getString("imp_uid"));
+				pvo.setPay_success_date(rs.getString("pay_success_date"));
 				pvo.setPay_cancel_date(rs.getString("pay_cancel_date"));
 				pvo.setPay_amount(rs.getInt("pay_amount"));
 				pvo.setPay_status(rs.getString("pay_status"));
@@ -595,14 +596,14 @@ public class MypageDAO_imple implements MypageDAO {
 		    try {
 		        conn = ds.getConnection();
 		        
-		        String sql = " SELECT fk_user_id as userid, " +
-		                     " sum(case when point_type = 1 then point else 0 end) as total_earned, " +
-		                     " sum(case when point_type = 0 then point else 0 end) as total_deducted, " +
-		                     " sum(case when point_type = 1 then point else 0 end) -  " +
-		                     "  sum(case when point_type = 0 then point else 0 end) as total_points " +
-		                     " FROM tbl_point " +
-		                     " WHERE FK_USER_ID = ? " +
-		                     " GROUP BY FK_USER_ID ";
+		        String sql = " SELECT fk_user_id as userid,  "
+		        		+ "       sum(case when point_type = 1 then point else 0 end) as total_earned, "
+		        		+ "       sum(case when point_type = 0 then point else 0 end) as total_deducted, "
+		        		+ "       GREATEST(sum(case when point_type = 1 then point else 0 end) -   "
+		        		+ "       sum(case when point_type = 0 then point else 0 end), 0 ) as total_points "
+		        		+ " FROM tbl_point "
+		        		+ " WHERE FK_USER_ID = ? "
+		        		+ " GROUP BY FK_USER_ID ";
 		        
 		        pstmt = conn.prepareStatement(sql);
 		        pstmt.setString(1, userid);

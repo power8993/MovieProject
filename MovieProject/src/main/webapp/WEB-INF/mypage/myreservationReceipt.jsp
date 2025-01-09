@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <style>
 div.ticket_info {
@@ -142,7 +142,7 @@ table th {
 
 	<c:if test="${not empty myreservationList_impUid}">
 		<c:forEach var="reservation" items="${myreservationList_impUid}">
-			<div class="reservation_info">${reservation.imp_uid}</div>
+			<div class="reservation_info">${fn:replace(reservation.imp_uid, 'imp_', '')}</div>
 			<div class="info">
 				<strong>영화명:</strong> ${reservation.svo.mvo.movie_title}
 			</div>
