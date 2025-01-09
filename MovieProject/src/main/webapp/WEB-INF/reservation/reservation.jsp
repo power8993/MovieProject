@@ -47,6 +47,9 @@ $(document).ready(function(){
 			if($(this).text() == <%= seq_movie_no%>) {
 				$(this).parent().addClass("selected");
 				$("div#movie-choice").text($(this).parent().find("td.movie-title").text());
+				
+				let poster_file = $(this).parent().find("td#poster_file").text();
+				
 				let v_html = '<img src="http://localhost:9090/MovieProject/images/admin/poster_file/미니언즈.jpg" style="width:auto; height:110px;">';
 				$("div#movie-choice-poster").html(v_html);
 				$("div#movie-choice-poster").show();
@@ -106,6 +109,7 @@ $(document).ready(function(){
 										</td>
 										<td class="movie-title">${movievo.movie_title}</td>
 										<td id="seq_movie_no" style="display: none">${movievo.seq_movie_no}</td>
+										<td id="poster_file" style="display: none">${movievo.poster_file}</td>
 									</tr>
 			      				</c:forEach>
 		      				</tbody>

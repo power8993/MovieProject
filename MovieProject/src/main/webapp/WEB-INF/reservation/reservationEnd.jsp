@@ -29,7 +29,7 @@ div#information > span {
 	<h3 class="text-center my-5" style="font-size:30pt; font-weight:bold;">예매가 완료 되었습니다.</h3>
 	
 	<div class="movie_info ml-3 mx-5" style="display: flex; width: 60%;">
-		<img src="/MovieProject/images/admin/poster_file/미니언즈.jpg" style="width: 50%; height: auto;">
+		<img src="/MovieProject/images/admin/poster_file/${requestScope.poster_file}" style="width: 50%; height: auto;">
 		<div id="reservation_info" class="ml-5">
 			<div class="mt-5" style="width: 500px;"><label>예매번호 : </label>${requestScope.imp_uid}</div>
 			<div><label>영&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;화 : </label>${requestScope.movie_title}</div>
