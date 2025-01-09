@@ -412,6 +412,7 @@ function goFind() {
 	<form name="pwdFindFrm">
 	  <!-- 아이디 입력 -->
 	  <div class="form-group">
+	  <div id="pwdFindTitle"><p>비밀번호 찾기</p></div>
 	    <div class="form-floating-label">
 	      <input type="text" class="form-control" id="useridInput" name="userid" autocomplete="off" placeholder=" " />
 	      <label for="useridInput" >아이디</label>
