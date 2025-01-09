@@ -63,16 +63,16 @@
 		                                    <div style="position: absolute; right:10px; top:10px;">
 		                                    <c:choose>
 											    <c:when test="${movie.movie_grade == '전체'}">
-											        <img src="<%= ctxPath%>/images/admin/movie_grade/전체.png" alt="전체" class="movieGrade">
+											        <img src="<%= ctxPath%>/images/admin/movie_grade/전체.png" class="movieGrade">
 											    </c:when>
 											    <c:when test="${movie.movie_grade == '15세'}">
-											        <img src="<%= ctxPath%>/images/admin/movie_grade/15세.png" alt="15세" class="movieGrade">
+											        <img src="<%= ctxPath%>/images/admin/movie_grade/15세.png" class="movieGrade">
 											    </c:when>
 											    <c:when test="${movie.movie_grade == '12세'}">
-											        <img src="<%= ctxPath%>/images/admin/movie_grade/12세.png" alt="12세" class="movieGrade">
+											        <img src="<%= ctxPath%>/images/admin/movie_grade/12세.png" class="movieGrade">
 											    </c:when>
 											    <c:when test="${movie.movie_grade == '19세'}">
-											        <img src="<%= ctxPath%>/images/admin/movie_grade/19세.png" alt="19세" class="movieGrade">
+											        <img src="<%= ctxPath%>/images/admin/movie_grade/19세.png"  class="movieGrade">
 											    </c:when>
 											</c:choose>
 		                                    </div>
@@ -107,16 +107,16 @@
 		                                    <div style="position: absolute; right:10px; top:10px;">
 		                                    <c:choose>
 											    <c:when test="${movie2.movie_grade == '전체'}">
-											        <img src="<%= ctxPath%>/images/admin/movie_grade/전체.png" alt="전체" class="movieGrade">
+											        <img src="<%= ctxPath%>/images/admin/movie_grade/전체.png" class="movieGrade">
 											    </c:when>
 											    <c:when test="${movie2.movie_grade == '15세'}">
-											        <img src="<%= ctxPath%>/images/admin/movie_grade/15세.png" alt="15세" class="movieGrade">
+											        <img src="<%= ctxPath%>/images/admin/movie_grade/15세.png" class="movieGrade">
 											    </c:when>
 											    <c:when test="${movie2.movie_grade == '12세'}">
-											        <img src="<%= ctxPath%>/images/admin/movie_grade/12세.png" alt="12세" class="movieGrade">
+											        <img src="<%= ctxPath%>/images/admin/movie_grade/12세.png" class="movieGrade">
 											    </c:when>
 											    <c:when test="${movie2.movie_grade == '19세'}">
-											        <img src="<%= ctxPath%>/images/admin/movie_grade/19세.png" alt="19세" class="movieGrade">
+											        <img src="<%= ctxPath%>/images/admin/movie_grade/19세.png" class="movieGrade">
 											    </c:when>
 											</c:choose>
 		                                    </div>
@@ -168,7 +168,7 @@
 	                                <div class="card">
 		                                <form name="MovieForm" action="<%=ctxPath%>/movie/movieDetail.mp">
 		                                <div id="movieGradeElmt">
-		                                    <div class="movieCard" style="position: relative; width: 170px; height: 234px; margin: 0 auto;">
+		                                    <div class="movieCard" >
 											    <img src="${pageContext.request.contextPath}/images/admin/poster_file/${movie.poster_file}" class="card-img-top poster" style="width: 100%; height: 100%; object-fit: cover;">
 											   	<input style="margin-top:50px;" type="hidden" name="seq_movie_no" value="${movie.seq_movie_no}">
 											
@@ -213,12 +213,29 @@
 	                                <div class="card">
 		                                <form name="MovieForm" action="<%=ctxPath%>/movie/movieDetail.mp">
 			                                <div id="movieGradeElmt">
-			                                    <div class="movieCard" style="position: relative; width: 170px; height: 234px; margin: 0 auto;">
+			                                    <div class="movieCard" >
 												    <img src="${pageContext.request.contextPath}/images/admin/poster_file/${movie.poster_file}" class="card-img-top poster" style="width: 100%; height: 100%; object-fit: cover;">
 												   	<input style="margin-top:50px;" type="hidden" name="seq_movie_no" value="${movie.seq_movie_no}">
-												<div  class="remaining_day" style="position:absolute; width:20px;height:20px; text-align:center; top:20px;  right:10px; z-index:4; border-radius:5px; font-size:8pt; background-color: white; color:red; font-weight: 700;" >D-${movie.remaining_day}</div>
+												<div  class="remaining_day" style="position:absolute; width:20px;height:20px; text-align:center; top:40px;  right:10px; z-index:4; border-radius:5px; font-size:8pt; background-color: white; color:red; font-weight: 700;" >D-${movie.remaining_day}</div>
+												<%-- 상영등급 --%>
+			                                    <div class="movieGradeChoose" style="position: absolute; right:10px; top:10px;">
+			                                    <c:choose>
+												    <c:when test="${movie.movie_grade == '전체'}">
+												        <img src="<%= ctxPath%>/images/admin/movie_grade/전체.png" alt="전체" class="movieGrade">
+												    </c:when>
+												    <c:when test="${movie.movie_grade == '15세'}">
+												        <img src="<%= ctxPath%>/images/admin/movie_grade/15세.png" alt="15세" class="movieGrade">
+												    </c:when>
+												    <c:when test="${movie.movie_grade == '12세'}">
+												        <img src="<%= ctxPath%>/images/admin/movie_grade/12세.png" alt="12세" class="movieGrade">
+												    </c:when>
+												    <c:when test="${movie.movie_grade == '19세'}">
+												        <img src="<%= ctxPath%>/images/admin/movie_grade/19세.png" alt="19세" class="movieGrade">
+												    </c:when>
+												</c:choose>
+			                                    </div>	
 											<%-- (개봉일 - 현재날짜) --%>
-		                                    <div class="movieRank">${status.index + 6}</div>
+		                                    <div class="movieRank" >${status.index + 6}</div>
 												</div>
 											</div>
 										</form>

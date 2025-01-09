@@ -298,7 +298,9 @@ div#content{
 	height: 234px; 
 	margin: 0 auto;
 }
-
+.movieCard{
+	position: relative; width: 170px; height: 234px; margin: 0 auto;
+}
 .movieGrade{
 	width:20px;
 }
