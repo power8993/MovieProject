@@ -85,7 +85,7 @@
             <p class="text-center">
                 <button type="button" class="mymovielikebutton" id="btnmymovielike" value="">↓더보기
                 <span id="mymovielikecount">0</span>
-                <span id="totalmymovielike">/ ${requestScope.totalmymovielike}</span>
+                <span id="totalmymovielike"> ${requestScope.totalmymovielike}</span>
                 </button>
             </p>
         </div>
