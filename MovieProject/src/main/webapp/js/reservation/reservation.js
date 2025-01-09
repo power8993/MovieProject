@@ -15,12 +15,12 @@ let movie_grade = "";
 $(document).ready(function(){
 	
 	// 영화, 날짜 선택 외의 다른 div와 button 들 안보이게 하기
-	$("div#step2").hide();
-	$("div#step3").hide();
-	$("div#goMovieChoice").hide();
-	$("div#goPay").hide();
-	$("div.loader").hide(); // CSS 로딩화면 보여주기
-	$("div#movie-choice-poster").hide();
+	$("div#step2").hide();			// 좌석 선택 숨기기
+	$("div#goMovieChoice").hide();	// 영화 선택으로 돌아가는 버튼 숨기기
+	$("div#goPay").hide();			// 결제하기 버튼 숨기기
+	$("div.loader").hide(); 		// CSS 로딩화면 숨기기
+	$("div#movie-choice-poster").hide();	// 포스터 이미지가 들어올 div 숨기기
+	
 	
 	// 영화 티켓 가격 가져오기
 	$.ajax({
@@ -47,18 +47,22 @@ $(document).ready(function(){
 		$("tr.movie-list").removeClass("selected");
 		$("div#movie-choice-poster").show();
 		if($(e.target).hasClass('movie-title') || $(e.target).hasClass('movie-grade')) {
+			// 제목이나 관람등급을 눌렀을 때
 			$(e.target).parent().addClass("selected");
 			seq_movie_no = $(e.target).parent().find("td#seq_movie_no").text();
-			let v_html = '<img src="http://localhost:9090/MovieProject/images/admin/poster_file/미니언즈.jpg" style="width:auto; height:110px;">';
+			let poster_file = $(e.target).parent().find("td#poster_file").text();
+			let v_html = '<img src="http://localhost:9090/MovieProject/images/admin/poster_file/' + poster_file + '" style="width:auto; height:110px;">';
 			$("div#movie-choice-poster").html(v_html);
 			$("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
 			
 			$("div#empty_div").css('width','130px');
 		}
 		else if($(e.target).hasClass('movie_grade_img')) {
+			// 관람등급 이미지를 눌렀을 때
 			$(e.target).parent().parent().addClass("selected");
 			seq_movie_no = $(e.target).parent().parent().find("td#seq_movie_no").text();
-			let v_html = '<img src="http://localhost:9090/MovieProject/images/admin/poster_file/미니언즈.jpg" style="width:auto; height:110px;">';
+			let poster_file = $(e.target).parent().parent().find("td#poster_file").text();
+			let v_html = '<img src="http://localhost:9090/MovieProject/images/admin/poster_file/' + poster_file + '" style="width:auto; height:110px;">';
 			$("div#movie-choice-poster").html(v_html);
 			$("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
 			// $("div#movie-choice").html($(e.target).parent().parent().find("td.movie-title").html());
@@ -67,9 +71,10 @@ $(document).ready(function(){
 		}
 		
 		movie_grade = $(e.target).parent().find("span").text();
+
+		// getScreenDate(seq_movie_no);
 		
 		if($("div#date-choice").text() == "시간선택") {
-			getScreenDate(seq_movie_no);
 			return;
 		}
 		
@@ -253,26 +258,57 @@ function getScreenTime(seq_movie_no1, input_date1, start_time1, fk_screen_no1) {
 // 영화를 선택했을 때 상영 날짜 가져오기
 function getScreenDate(seq_movie_no) {
 	
+	$.ajax({
+		url:"/MovieProject/reservation/getScreenDate.mp",
+		dataType:"json",
+		data: {
+             "seq_movie_no": seq_movie_no
+        },
+        success: function(json){
+			$("li.day").addClass("mouse_block");
+			if(json.length > 0) {
+				$.each(json, function(index, item){
+					$("li.day").each(function(index, elmt) {
+						if($(this).find("span.input_date").text() == item.start_date) {
+							$(this).removeClass("mouse_block");
+						}
+						else {
+							$(this).removeClass("selected");
+						}
+					});
+				});
+			}
+		},
+		error: function(){
+			alert("request error!");
+		}
+	});
+	
 }
 
 
 // 좌석선택 버튼을 눌렀을 경우
 function goSeatChoice(userid, birthday) {
+	
 	if($("div#movie-choice").text() == "영화선택" || $("div#date-choice").text() == "시간선택" || $("div#time-choice").text() == "") {
+		// 영화, 날짜, 시간을 하나라도 선택하지 않았을 경우
 		alert("영화와 날짜와 시간을 모두 선택해주세요.");
 		return;
 	}
 	else if(userid == "") {
+		// 로그인 하지 않았을 경우
 		alert("로그인이 필요한 서비스입니다.");
 		location.href = "/MovieProject/login/login.mp";
 		return;
 	}
 	else if(userid == "admin") {
+		// 관리자로 로그인 했을 경우
 		alert("관리자는 영화 예약이 불가능합니다.");
 		location.href = "/MovieProject/";
 		return;
 	}
 	else if(movie_grade != "전체") {
+		// 상영등급보다 어린 경우
 		let today = new Date();   
 		let year = today.getFullYear();
 		let age = year - Number(birthday.substr(0, 4));
@@ -284,17 +320,25 @@ function goSeatChoice(userid, birthday) {
 		}
 	}
 	
-	makeSeatArray();
-	
-	getHavingPoint(userid);
+	makeSeatArray();			// 좌석 배열 생성
+	getHavingPoint(userid);		// 회원이 가지고 있는 포인트 가져오기
 
-	$("div#step1").hide();
-	$("div#step2").show();
-	$("div#goMovieChoice").show();
-	$("div#goSeatChoice").hide();
-	$("div#goPay").show();
+	$("div#step1").hide();			// 영화 선택 숨기기
+	$("div#step2").show();			// 좌석 선택 보여주기
+	$("div#goMovieChoice").show();	// 영화 선택으로 돌아가는 버튼 보여주기
+	$("div#goSeatChoice").hide();	// 좌석 선택으로 가는 버튼 숨기기
+	$("div#goPay").show();			// 결제하기 버튼 보여주기
 	
-	$("div#empty_div").hide();
+	$("div#empty_div").hide();		// 위치 조정을 위한 비어있는 div
+	
+	if(movie_grade == "19세") {
+		$("div#adolescent").hide();
+		$("div#youth").hide();
+	}
+	else {
+		$("div#adolescent").show();
+		$("div#youth").show();
+	}
 	
 	let seatArr = []; // 선택한 좌석 배열 초기화
 		
@@ -635,6 +679,10 @@ function updateShowtime(ctxPath) {
         success: function(json){
 			if(json.n == 1) {
 				console.log("상영 영화 수정 성공")
+			}
+			else if(json.n == -1) {
+				alert("좌석 예약 중복으로 예매 실패!");
+				location.href = "/MovieProject/reservation/reservation.mp";
 			}
 			else {
 				console.log("상영 영화 수정 실패")

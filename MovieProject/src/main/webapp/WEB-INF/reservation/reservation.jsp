@@ -50,7 +50,7 @@ $(document).ready(function(){
 				
 				let poster_file = $(this).parent().find("td#poster_file").text();
 				
-				let v_html = '<img src="http://localhost:9090/MovieProject/images/admin/poster_file/미니언즈.jpg" style="width:auto; height:110px;">';
+				let v_html = '<img src="http://localhost:9090/MovieProject/images/admin/poster_file/' + poster_file + '" style="width:auto; height:110px;">';
 				$("div#movie-choice-poster").html(v_html);
 				$("div#movie-choice-poster").show();
 				
@@ -87,7 +87,7 @@ $(document).ready(function(){
 
 <div class="container">
 	
-	<div id="ticket" class="ticket">
+	<div id="ticket" class="ticket mt-5">
 		
 		<div id="step1" class="steps">
 			

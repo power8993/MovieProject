@@ -602,5 +602,35 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		return isSuccess;
 	}
 
+	// 상영 날짜 가져오기
+	@Override
+	public List<String> getScreenDate(String seq_movie_no) throws SQLException {
+		
+		List<String> screenDateList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+
+			String sql = " select to_char(start_time, 'yyyy-mm-dd') AS start_date "
+					   + " from tbl_showtime "
+					   + " where fk_seq_movie_no = to_number(?) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, seq_movie_no);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				screenDateList.add(rs.getString("start_date"));
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return screenDateList;
+		
+	}
+
 	
 }
