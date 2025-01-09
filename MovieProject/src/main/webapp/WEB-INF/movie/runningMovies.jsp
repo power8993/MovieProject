@@ -271,7 +271,7 @@
                         <div class="movie-card position-relative">
                             <div class="rank">No. ${status.index + 1}</div>
                             <div class="poster">
-                                <img src="<%= ctxPath %>/images/admin/poster_file/미니언즈.jpg">
+                                 <img src="<%= ctxPath %>/images/admin/poster_file/${movie.poster_file}.jpg">
                             </div>
                             <button class="view-details-btn" onclick="location.href='<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}&bookingRate=${movie.bookingRate}'">상세보기</button>
                             <div class="movie-details">

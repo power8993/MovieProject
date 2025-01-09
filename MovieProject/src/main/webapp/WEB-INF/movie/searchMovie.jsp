@@ -111,8 +111,7 @@
                           
                             <div class="poster">
                                 <a href="<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}&bookingRate=${movie.bookingRate}">
-                                     <img src="<%= ctxPath %>/images/admin/poster_file/미니언즈.jpg" alt="${movie.movie_title}">
-                                    
+                                      <img src="<%= ctxPath %>/images/admin/poster_file/${movie.poster_file}.jpg">  
                                 </a>
                             </div>
                             <div class="movie-details">
