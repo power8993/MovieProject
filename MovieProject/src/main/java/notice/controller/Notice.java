@@ -60,7 +60,7 @@ public class Notice extends AbstractController {
 
 		// === !!! [맨처음][이전] 만들기 === *** //
 		pageBar += "<li class='page-item'><a class='page-link' href='notice.mp?sizePerPage=" + sizePerPage
-				+ "&currentShowPageNo=1'>[맨처음]</a></li>";
+				+ "&currentShowPageNo=1'>[처음]</a></li>";
 
 		if (pageNo != 1) {
 			pageBar += "<li class='page-item'><a class='page-link' href='notice.mp?sizePerPage=" + sizePerPage

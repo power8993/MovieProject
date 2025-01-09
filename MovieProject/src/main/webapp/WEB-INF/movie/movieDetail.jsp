@@ -95,21 +95,21 @@
         }
         .review-section button {
 		    text-decoration: none;
-		    border-radius: 5px;
-		    border: 1px solid #ddd;
-		    background-color: #FFFCF2;
+		    border-radius: 10px;
+		    border: 3px solid #ddd;
 		    margin-left: 20px;
 		    font-size: 15px;
 		    width: 100%;
 		    margin: 0 auto;
 		    padding-top: 10px;
 		    padding-bottom: 10px;
+			background-color: #fffcf2;
         }
 
         .review-section button:hover {
         	background-color: #eb5e28;
-        	border: 1px solid #eb5e28;
-		    color: #403D39;
+        	border: 3px solid #eb5e28;
+		    color: #fff;
         }
           
         .reviews-list {
@@ -731,7 +731,7 @@
         <!-- 별점값을 가져오기 위함 -->
         <input type="hidden" id="rating" name="rating" value="">
         
-        <button onclick="submitReview()">등록 하기</button>
+        <button onclick="submitReview()" class="btn-gradient red block">등록 하기</button>
         
     </div>
 

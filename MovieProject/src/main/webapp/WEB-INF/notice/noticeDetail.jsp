@@ -13,15 +13,18 @@
     <title>공지사항 상세</title>
     <!-- 스타일 추가 -->
     <style>
-    
-        /* 공지사항 제목 및 헤더 */
-        .board-header {
-            margin-top: 20px;
-        }
+		@font-face {
+		    font-family: 'Pretendard-Regular';
+		    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+		    font-weight: 400;
+		    font-style: normal;
+		}
+		
         .board-header h3 {
             font-size: 28px;
             font-weight: bold;
             margin-bottom: 18px;
+            margin-top: 20px;
         }
 
         /* 공지사항 내용 */
@@ -29,7 +32,6 @@
     		width: 100%;
 	        border-collapse: collapse;
 	        margin-bottom: 10px;
-	        border-radius: 10%;
 		
 			border-collapse: separate; /* 테이블 셀 사이를 분리하도록 설정 */
 		    border-spacing: 0; /* 셀 간의 간격을 0으로 설정 */
@@ -51,7 +53,8 @@
 		}
 
         .notice-info .title {
-            font-size: 22px;
+            font-size: 25px;
+            font-weight:bold;
             margin-top: 8px;
             margin-left: 5px;
         }
@@ -59,11 +62,12 @@
         .notice-info .date, .notice-info .views {
     		margin-right: 10px;
 		}
-        
 
         /* 공지사항 내용 텍스트 */
-        .notice-content p {
-		    padding: 20px 10px;
+        .notice-content pre {
+        	font-family: 'Pretendard-Regular', sans-serif; /* 'GmarketSansMedium' 폰트를 기본으로 사용, 만약 없으면 sans-serif를 사용 */
+        	font-size: 18px;
+		    padding: 10px 15px;
 		    border: solid 1px #b8b6aa;
 		    line-height: 24px;
 		    height: 300px; /* 고정된 높이 설정 */
@@ -73,6 +77,8 @@
 		    border-spacing: 0; /* 셀 간의 간격을 0으로 설정 */
 		    border-radius: 4px; /* 테이블의 둥근 모서리 설정 */
 		    overflow: hidden; /* 둥근 모서리가 잘리지 않도록 */
+		    
+		    white-space: pre-wrap;
 		}
 
          /* 버튼 컨테이너 */
@@ -141,7 +147,7 @@
         </div>
 
         <!-- 공지사항 내용 출력 -->
-        <p>${notice.notice_content}</p>
+        <pre>${notice.notice_content}</pre>
     </div>
 
     <div class="button-container">
