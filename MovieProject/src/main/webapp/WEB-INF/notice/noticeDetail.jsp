@@ -13,31 +13,7 @@
     <title>공지사항 상세</title>
     <!-- 스타일 추가 -->
     <style>
-
-		/* 전체 페이지 스타일 */
-		body {
-		    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-		    margin: 0;
-		    padding: 0;
-		    background-color: #fff5e6;
-		    color: #403d39;
-		}
-		
-		/* 페이지 컨텐츠 스타일 */
-		.container {
-		    width: 70%;
-		    margin: 40px auto;
-		    padding: 30px;
-		    border-radius: 16px;
-		    display: table;
-		    border-collapse: separate;
-		    box-sizing: border-box;
-		    text-indent: initial;
-		    unicode-bidi: isolate;
-		    border-spacing: 2px;
-		    border-color: gray;
-		}
-
+    
         /* 공지사항 제목 및 헤더 */
         .board-header {
             margin-top: 20px;
@@ -49,54 +25,62 @@
         }
 
         /* 공지사항 내용 */
-        .notice-content {
-            font-family: 'Noto Sans KR', 'CJONLYONENEW', '맑은 고딕', '돋움', Dotum, sans-serif;
-    		font-size: 100%;
-    		margin: 0;
-    		padding: 0;
-    		border: 0;
-    		vertical-align: baseline;
-    		word-break: break-all;
+        .notice-content {  		
+    		width: 100%;
+	        border-collapse: collapse;
+	        margin-bottom: 10px;
+	        border-radius: 10%;
+		
+			border-collapse: separate; /* 테이블 셀 사이를 분리하도록 설정 */
+		    border-spacing: 0; /* 셀 간의 간격을 0으로 설정 */
+		    border-radius: 5px; /* 테이블의 둥근 모서리 설정 */
+		    overflow: hidden; /* 둥근 모서리가 잘리지 않도록 */
         }
 
         /* 공지사항 정보(제목, 날짜, 조회수) */
         .notice-info {
-        	display: flex;
-            overflow: hidden;
-    		padding: 11px;
-    		border-top: solid 1px #b8b6aa;
-    		background-color: #ccc5b9;
+    		padding: 5px;
+    		background-color: #333;
+        	color: white;
 		}
-        
+		
+		.dayview {
+			font-size: 13.5px;
+			display: flex;
+			justify-content: end;
+		}
+
         .notice-info .title {
-            font-weight: 600;
             font-size: 22px;
-            flex: 2;
+            margin-top: 8px;
+            margin-left: 5px;
         }
         
         .notice-info .date, .notice-info .views {
-            overflow: hidden;
-    		padding: 11px;
-    		background-color: #ccc5b9;
+    		margin-right: 10px;
 		}
         
 
         /* 공지사항 내용 텍스트 */
         .notice-content p {
-		    padding: 35px 13px;
-		    background-color: #f9f9f9;
-		    border-bottom: solid 1px #b8b6aa;
+		    padding: 20px 10px;
+		    border: solid 1px #b8b6aa;
 		    line-height: 24px;
-		    height: 270px; /* 고정된 높이 설정 */
+		    height: 300px; /* 고정된 높이 설정 */
 		    overflow-y: auto; /* 내용이 넘치면 세로로 스크롤이 생김 */
+		
+			border-collapse: separate; /* 테이블 셀 사이를 분리하도록 설정 */
+		    border-spacing: 0; /* 셀 간의 간격을 0으로 설정 */
+		    border-radius: 4px; /* 테이블의 둥근 모서리 설정 */
+		    overflow: hidden; /* 둥근 모서리가 잘리지 않도록 */
 		}
 
-       /* 버튼 컨테이너 */
+         /* 버튼 컨테이너 */
 		.button-container {
 		    display: flex;
 		    justify-content: space-between; /* 양 끝에 정렬 */
 		    align-items: center; /* 세로 중앙 정렬 */
-		    margin-top: 20px; /* 버튼들 사이 여백 */
+		    margin-bottom: 20px;
 		}
 		
 		/* 목록으로 돌아가기 버튼 */
@@ -111,15 +95,9 @@
 		    text-align: center;
 		    display: inline-block;
 		    text-decoration: none;
-		    margin: 0 auto; /* 가운대로 정렬 */
+		    margin-left: 365px;
 		}
-		
-		.back-btn:hover {
-		    background-color: #eb5e28;
-		    color: white;
-		    text-decoration: none;
-		}
-		
+
 		/* 수정 및 삭제 버튼 */
 		.edit-btn, .delete-btn {
 		    padding: 6px 17px;
@@ -134,42 +112,12 @@
 		    margin: 5px; /* 버튼들 사이에 여백 추가 */
 		}
 		
-		.edit-btn:hover, .delete-btn:hover {
+		.edit-btn:hover, .delete-btn:hover, .back-btn:hover {
 		    background-color: #eb5e28;
 		    color: white;
 		    text-decoration: none;
 		}
-		
-		/* 삭제 버튼 스타일 */
-		.delete-btn {
-		    padding: 6px 17px;
-		    color: white;
-		    border: none;
-		    border-radius: 5px;
-		    font-size: 17px;
-		    cursor: pointer;
-		    background-color: #252422;
-		    text-align: center;
-		    display: inline-block;
-		    margin: 5px;
-		}
-		
-		.delete-btn:hover {
-		    background-color: #eb5e28;
-		    color: white;
-		}
-		
-		/* 고정된 Footer */
-		footer {
-		    position: fixed;  /* 화면 하단에 고정 */
-		    bottom: 0;
-		    left: 0;
-		    width: 100%;
-		    background-color: #252422;
-		    color: white;
-		    text-align: center;
-		    padding: 10px;
-		}
+
 
     </style>
 </head>
@@ -185,9 +133,11 @@
     <div class="notice-content">
         <!-- 제목, 등록일, 조회수를 한 줄로 나열 -->
         <div class="notice-info">
-            <div class="title"><h4>[공지] ${notice.notice_subject}</h4></div>
-            <div class="date"><strong>등록일:</strong> ${notice.notice_wtite_date}</div>
-            <div class="views"><strong>조회수:</strong> ${notice.views}</div>
+            <div class="title">[공지] &nbsp; ${notice.notice_subject}</div>
+            <div class="dayview">
+            <div class="date"><strong>등록일 </strong> &nbsp; ${notice.notice_wtite_date}</div>
+            <div class="views"><strong>조회수 </strong> &nbsp; ${notice.views}</div>
+            </div>
         </div>
 
         <!-- 공지사항 내용 출력 -->
@@ -197,7 +147,7 @@
     <div class="button-container">
         <!-- 목록으로 돌아가기 버튼 -->
         <a href="<%= ctxPath %>/notice/notice.mp" class="back-btn"><i class="fa-solid fa-house style=" > 목록으로 돌아가기</i></a>
-
+		<div>
 		<c:if test="${not empty sessionScope.loginuser and sessionScope.loginuser.userid == 'admin' }"> <!-- admin 으로 로그인 했으면 -->
 	        <!-- 수정 버튼 (수정 페이지로 이동) -->
 	        <a href="<%= ctxPath %>/notice/noticeEdit.mp?seq=${notice.seq_notice_no}&subject=${notice.notice_subject}&notice_content=${notice.notice_content}" class="edit-btn"><i class="fa-solid fa-pen-to-square"> 수정</i></a>
@@ -208,10 +158,12 @@
 		    	<button type="submit" class="delete-btn" onclick="return confirm('정말 삭제하시겠습니까?');"><i class="fa-solid fa-trash"> 삭제</i></button>
 			</form>
 		</c:if>
+		</div>
     </div>
 </div>
 
 <jsp:include page="/WEB-INF/footer1.jsp" />
 
 </body>
+
 </html>

@@ -28,20 +28,22 @@
         width: 100%;
         border-collapse: collapse;
         margin-bottom: 30px;
-        border: 1px solid red;
+        border-radius: 10%;
+	
+		border-collapse: separate; /* 테이블 셀 사이를 분리하도록 설정 */
+	    border-spacing: 0; /* 셀 간의 간격을 0으로 설정 */
+	    border-radius: 5px; /* 테이블의 둥근 모서리 설정 */
+	    overflow: hidden; /* 둥근 모서리가 잘리지 않도록 */
     }
     .board-table th, .board-table td {
         padding: 12px;
         text-align: center;
         border: 1px solid #dbd7ce;
+        
     }
     .board-table th {
         background-color: #333;
         color: white;
-    }
-    .board-table td {
-        background-color: #fffcf2; /* 연한 회색 배경 */
-        border: 1px solid inherit;
     }
     .board-table td a {
         text-decoration: none;
@@ -49,43 +51,38 @@
     }
     
 	body > div:nth-child(22) > table > tbody > tr:hover {
-	    background-color: #EB5E28;
-		color: #403D39;
-	    cursor: pointer; /* 마우스가 손 모양으로 변경 */
+	    cursor: pointer;
+	    background-color: #dbd7ce; 
 	}
-	
-	body > div:nth-child(22) > table > tbody > tr > td:nth-child(2):hover {
-	    background-color: #dee2e6;
-	    color: #403D39;
-	}
+    
     .pagination {
-        list-style-type: none;
-        padding: 0;
-        text-align: center;
-        margin-top: 20px;
-        display: flex;  
-		justify-content: center;  /* 수평 중앙 정렬 */
-    }
-    .pagination li {
-        display: inline;
-        margin: 0 5px;
-    }
-    .pagination a {
-        padding: 10px 20px;
-	    text-decoration: none;
-	    border-radius: 5px;
-	    border: 1px solid #ddd;
-	    color: #403D39;
-    }
-    .pagination a:hover {
-        background-color: #eb5e28;
-		color: #403D39;
-    }
-    .pagination .page-item.active .page-link {
-	    background-color: #eb5e28;
-	    border-color: #EB5E28;
-	    color: white;
-	}
+			display: flex;
+		    list-style: none;
+		    border-radius: .25rem;
+		    justify-content: center;  
+		    margin-top: 20px;  
+		}
+		.pagination a {
+		    padding: 10px 20px;
+		    text-decoration: none;
+		    border: 1px solid #ddd;
+		    color: #403D39;
+		    list-style: none;
+		}
+		
+		.pagination a:hover {
+		    background-color: #eb5e28;
+		    color: #403D39;
+		}
+
+		.pagination .page-item.active .page-link {
+		    background-color: #eb5e28;
+		    border-color: #EB5E28;
+		    color: white;
+		    margin-left: 0;
+		    border-top-left-radius: .25rem;
+		    border-bottom-left-radius: .25rem;
+		}
     .btn-create {
         padding: 6px 17px;
         background-color: #EB5E28;
