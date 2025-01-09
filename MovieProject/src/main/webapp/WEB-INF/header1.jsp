@@ -98,7 +98,7 @@ window.onscroll = function () {
 	                        <i class="fa-solid fa-gear fa-2x "></i>
 	                    </a>
 	                </div>
-	                <a class="navbar-brand custom_a" href="<%= ctxPath %>/member/memberRegister.mp">관리자</a>
+	                <a class="navbar-brand custom_a" href="<%= ctxPath %>/admin/admin.mp">관리자</a>
 	            </li>
 	            <li>
 	                <div class="icon">
