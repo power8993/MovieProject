@@ -48,4 +48,7 @@ public interface MemberDAO {
 
 	// 비밀번호 변경 3개월 이상 시 비밀번호 변경하기(update)
 	int threeMonthPwdChange(String userid,String pwd) throws SQLException;
+
+	//인증하고자 하는 전화번호가 존재하는지 확인. DB에 존재하지않으면 false 존재하면 true
+	boolean PhoneDuplicateCheck(String phoneNumber) throws SQLException;
 }

@@ -20,21 +20,21 @@ function Receipt_Printing(imp_uid,ctxPath){
 
 
 /* 예매취소 */
-function myreservation_cancel(imp_uid,fk_seq_movie_no,userid) {
+function myreservation_cancel(imp_uid,seq_showtime_no,userid) {
 
 	if (confirm(`예매를 취소하시겠습니까? \n\n ※ 예매 취소는 상영시간 20분 전까지 가능하며, \n 예매 가능은 상영시간 30분 전까지 가능합니다.`)) {
 		$.ajax({
 			url: "/MovieProject/reservation/reservationCancel.mp",
 			type: "post",
-			data: {"imp_uid":imp_uid, "fk_seq_movie_no":fk_seq_movie_no,"userid":userid},
+			data: {"imp_uid":imp_uid, "seq_showtime_no":seq_showtime_no,"userid":userid},
 			dataType: "json",
 			success: function(json) {
 				if (json.n == 1) {
 					// 삭제 성공 후 수정 모달 띄우기
 					myreservation_cancel_Modal();
 				} else {
-					/*alert("삭제 실패. 다시 시도해 주세요.");*/
-					myreservation_cancel_Modal();
+					alert("삭제 실패. 다시 시도해 주세요.");
+					
 				}
 			},
 			error: function(request, status, error) {

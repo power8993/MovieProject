@@ -12,11 +12,18 @@ public class MovieVO_sangwoo {
 	private String movie_grade;        // 상영등급
 	private String running_time;       // 러닝타임
 	private int like_count;            // 좋아요 수
+	
+
+
 	private String start_date;         // 상영시작일(개봉일)
 	private String end_date;           // 상영종료일
 	private String poster_file;        // 포스터 파일명
 	private String video_url;          // 비디오URL
 	private String register_date;      // 등록일자
+	
+	
+	private int remaining_day;
+	private double bookingRate = 0.0;   // 예매율(%)
 	
 	// === Join Field === // 
 	private ScreenVO   scvo;
@@ -161,6 +168,22 @@ public class MovieVO_sangwoo {
 	public void setRegister_date(String register_date) {
 		this.register_date = register_date;
 	}
+	
+	public int getRemaining_day() {
+		return remaining_day;
+	}
+
+	public void setRemaining_day(int remaining_day) {
+		this.remaining_day = remaining_day;
+	}
+	
+	public double getBookingRate() {
+        return bookingRate;
+    }
+
+    public void setBookingRate(double bookingRate) {
+        this.bookingRate = bookingRate;
+    }
 	
 	
 	// === User Method === //

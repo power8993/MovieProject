@@ -6,6 +6,7 @@ let b_emailcheck_click = false;
 
 $(document).ready(function(){
 	
+	$("#authPassElmt").hide();
 	
 	/* --------------- 생년월일 선택하기 시작 ---------------- */
 	// '출생 연도', '출생 월', '출생 일' 엘리먼트 가져오기
@@ -77,63 +78,41 @@ $(document).ready(function(){
 	$("span.error").hide();
 	$("input#name").focus();
 	
-//	$("input#name").bind("blur", function(e){ alert("name 에 있던 포커스를 읽어버렸습니다") });
-//	또는
-//	$("input#name").blur(function(e){ alert("name 에 있던 포커스를 읽어버렸습니다") });
-//	또는
-	$("input#name").blur((e) => {
-		
-		const name = $(e.target).val().trim();
-		if(name == "") {
-			// 입력하지 않거나 공백만 입력했을 경우
-			
-			
-			$(e.target).next().show();
-		//	또는
-			//$(e.target).parent().find("span.error").show();
-		}
-		else {
-			// 공백이 아닌 글자를 입력했을 경우
-			
-			$("table#tblMemberRegister :input").prop("disabled", false);
-			$(e.target).next().hide();
-		//	또는
-		//	$(e.target).parent().find("span.error").hide();
-		}
-		
-	}); // 아이디가 name 인 것이 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
+	
+	$("input#name").on("input", function (e) {
+	    const name = $(e.target).val().trim();
+
+	    // 정규식: 한글 또는 알파벳만 허용 (숫자와 특수문자 금지)
+	    const regExp_Name = /^[가-힣\s]{2,10}$/;
+
+	    if (name === "" || !regExp_Name.test(name)) {
+	        // 이름이 공백이거나 정규식을 통과하지 못한 경우
+	        $(e.target).next().text("이름은 한글만 입력 가능하며 2~10자여야 합니다.").show();
+	    } else {
+	        // 이름이 유효한 경우
+	        $(e.target).next().hide();
+	    }
+	});
+
 
 	
-	$("input#userid").blur((e) => {
-			
-		//const userid = $(e.target).val().trim();
-		
-		const regExp_Userid = /^[a-zA-Z][a-zA-Z0-9_-]{3,14}$/;
-			
-		const bool = regExp_Userid.test($(e.target).val());
-		
-		if(!bool) {
-			// 아이디가 정규표현식에 위배된 경우
-			
-			$("#idcheckResult").text(""); // 중복확인이 성공한 경우의 문구가 있을 수 있으니 사전에 제거
-			$(e.target).parent().next().show();
-			
-		//	또는
-			//$(e.target).parent().find("span.error").show();
-		}
-		else {
-			// 아이디가 정규표현식에 부합하는 경우
-			
-			$("table#tblMemberRegister :input").prop("disabled", false);
-			$(e.target).parent().next().hide();
-		//	또는
-		//	$(e.target).parent().find("span.error").hide();
-		}
-		
-	}); // 아이디가 userid 인 것이 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
+	$("input#userid").on("input", function (e) {
+	    // 정규식: 소문자, 숫자만 허용, 길이는 4~15자
+	    const regExp_Userid = /^[a-z][a-z0-9]{3,14}$/;
+
+	    const bool = regExp_Userid.test($(e.target).val());
+
+	    if (!bool) {
+	        // 아이디가 정규표현식에 위배된 경우
+	        $("#idcheckResult").text(""); // 중복확인이 성공한 경우의 문구가 있을 수 있으니 사전에 제거
+	        $(e.target).parent().next().show();
+	    } else {
+	        $(e.target).parent().next().hide();
+	    }
+	});
 		
 		
-	$("input#pwd").blur((e) => {
+	$("input#pwd").on("input", function (e) {
 				
 	//	const regExp_pwd = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).*$/g;
 	//	또는
@@ -152,7 +131,6 @@ $(document).ready(function(){
 		else {
 			// 암호가 정규표현식에 부합하는 경우
 			
-			$("table#tblMemberRegister :input").prop("disabled", false);
 		//	$(e.target).next().show();
 		//	또는
 			$(e.target).next().hide();
@@ -161,13 +139,13 @@ $(document).ready(function(){
 	}); // 아이디가 pwd 인 것이 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
 	
 	
-	$("input#pwdcheck").blur((e) => {
+	$("input#pwdcheck").on("input", function (e) {
 					
 		if( $("input#pwd").val() != $(e.target).val() ) {
 			// 암호와 암호확인값이 일치하지 않는 경우
 			
 			
-			$(e.target).val("");
+			//$(e.target).val("");
 			
 		//	$(e.target).next().show();
 		//	또는
@@ -175,8 +153,6 @@ $(document).ready(function(){
 		}
 		else {
 			// 암호와 암호확인값이 일치하는 경우
-			
-			$("table#tblMemberRegister :input").prop("disabled", false);
 		//	$(e.target).next().show();
 		//	또는
 			$(e.target).next().hide();
@@ -185,7 +161,7 @@ $(document).ready(function(){
 	}); // 아이디가 pwdcheck 인 것이 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
 	
 	
-	$("input#email").blur((e) => {
+	$("input#email").on("input", function (e) {
 					
 	//	const regExp_email = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 	//	또는
@@ -214,70 +190,78 @@ $(document).ready(function(){
 	}); // 아이디가 email 인 것이 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
 	
 	
-	$("input#hp2").blur((e) => {
-						
-	//	const regExp_hp2 = /^[1-9][0-9]{3}$/;
-	//	또는
-		const regExp_hp2 = new RegExp(/^[1-9][0-9]{3}$/);
-		// 연락처 국번( 숫자 4자리인데 첫번째 숫자는 1-9 이고 나머지는 0-9) 정규표현식 객체 생성
+	$("input#hp2").on("input", function (e) {
 		
-		const bool = regExp_hp2.test($(e.target).val());
+		$("#authMsg").hide(); // 인증번호 전송 버튼 클릭 시 유효성 검증 메세지 출력되어있는 것 숨기기.
+	    const regExp_hp2 = /^[1-9][0-9]{3}$/; // 첫 번째 숫자는 1-9, 나머지는 0-9로 이루어진 4자리 숫자
+
+	    const hp2Value = $(e.target).val(); // hp2 입력값 가져오기
+	    const bool = regExp_hp2.test(hp2Value); // 정규표현식 검사
+
+	    if (!bool) {
+	        // hp2 값이 정규표현식에 맞지 않는 경우
+	        $("#hp_error").text("연락처 중간 자리는 4자리 숫자여야 합니다.").show();
+	        return;
+	    }
+
+	    // hp3 값이 비어 있는지 확인
+	    const hp3Value = $("input#hp3").val(); // `hp3` 입력값 가져오기
+	    if (hp3Value === "") {
+	        $("#hp_error").text("연락처 마지막 자리를 입력해주세요.").show();
+			$("input#hp3").focus();
+	        return;
+	    }
+
+	    // hp3 값의 길이가 4자리인지 확인
+	    if (hp3Value.length !== 4) {
+	        $("#hp_error").text("연락처 마지막 자리는 정확히 4자리여야 합니다.").show();
+			$("input#hp3").focus();
+	        return;
+	    }
+
+	    // hp3 값이 숫자 4자리인지 확인
+	    const regExp_hp3 = /^[1-9][0-9]{3}$/; // 첫 번째 숫자는 1-9, 나머지는 0-9로 이루어진 4자리 숫자
+	    if (!regExp_hp3.test(hp3Value)) {
+	        $("#hp_error").text("연락처 마지막 자리는 4자리 숫자여야 합니다.").show();
+	        return;
+	    }
+
+	    // 모든 조건을 만족한 경우
 		
-		if(!bool) {
-			// 연락처 국번이 정규표현식에 위배된 경우
-		//	$(e.target).next().show();
-		//	또는
-			$(e.target).next().next().show();
-		}
-		else {
-			// 연락처 국번이 정규표현식에 부합하는 경우
-			if($("input#hp3").val()==""){
-					$("#hp_error").show();
-					return;
-				}
-			
-		//	$(e.target).next().show();
-		//	또는
-			$(e.target).next().next().hide();
-		}
 		
-	}); // 아이디가 hp2 인 것이 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
+	    $("#hp_error").hide();
+	});
 
 	
-	$("input#hp3").blur((e) => {
-							
-	//	const regExp_hp3 = /^[0-9]{4}$/;
-	//	또는
-	//	const regExp_hp3 = /^\d{4}$/; // d는 decimal(숫자)
-	//	또는
-	//	const regExp_hp3 = new RegExp(/^[0-9]{4}$/);
-	//	또는
-		const regExp_hp3 = new RegExp(/^\d{4}$/); 
-		// 연락처 국번( 숫자 4자리인데 첫번째 숫자는 1-9 이고 나머지는 0-9) 정규표현식 객체 생성
-		
-		const bool = regExp_hp3.test($(e.target).val());
-		
-		if(!bool) {
-			// 연락처 마지막 4자리가 정규표현식에 위배된 경우
-			
-		//	$(e.target).next().show();
-		//	또는
-		//	$(e.target).parent().find("span.error").show();
-			$(e.target).next().show();
-		}
-		else {
-			if($("input#hp2").val()==""){
-					$("#hp_error").show();
-					return;
-				}
-			// 연락처 마지막 4자리가 정규표현식에 부합하는 경우
-		//	$(e.target).next().show();
-		//	또는
-		//	$(e.target).parent().find("span.error").hide();
-		$(e.target).next().hide();
-		}
-		
-	}); // 아이디가 hp3 인 것이 포커스를 잃어버렸을 경우(blur) 이벤트를 처리해주는 것이다.
+	$("input#hp3").on("input", function (e) {
+		$("#authMsg").hide();
+	    const regExp_hp3 = /^[1-9][0-9]{3}$/; // 첫 번째 숫자는 1-9, 나머지는 0-9로 이루어진 4자리 숫자
+	    
+	    const hp3Value = $(e.target).val(); // 입력된 값 가져오기
+	    const bool = regExp_hp3.test(hp3Value);
+
+	    if (!bool) {
+	        // 연락처 마지막 4자리가 정규표현식에 위배된 경우
+	        $("#hp_error").text("연락처 형식이 올바르지 않습니다.").show();
+	        return;
+	    }
+
+	    // hp2 값이 비어 있는지 확인
+	    const hp2Value = $("input#hp2").val();
+	    if (hp2Value === "") {
+	        $("#hp_error").text("연락처 중간 자리를 입력해주세요.").show();
+	        return;
+	    }
+
+	    // hp3 값의 길이를 확인
+	    if (hp3Value.length !== 4) {
+	        $("#hp_error").text("연락처 마지막 4자리를 입력해주세요.").show();
+	        return;
+	    }
+
+	    // 모든 조건을 통과한 경우
+	    $("#hp_error").hide();
+	});
 	
 	
 	$("input#hp2").on("input", (e) => {
@@ -406,13 +390,9 @@ $(document).ready(function(){
 			dataType : "json",	
 								
 			success : function(json){
-				console.log(json);
-				
-				
-				console.log("~~~ json 의 데이터타입 : ", typeof json);
 				// ~~~ json 의 데이터타입 : object
 				
-				const regExp_Userid = /^[a-zA-Z][a-zA-Z0-9_-]{3,14}$/;
+				const regExp_Userid = /^[a-z][a-z0-9_-]{3,14}$/;
 							
 				const bool = regExp_Userid.test($("#userid").val());
 				
@@ -503,11 +483,88 @@ $(document).ready(function(){
 		b_emailcheck_click = false;
 	});
 	
+	
+	b_phoneCheck_click = false; // "전송" 버튼을 클릭했는지 클릭 하지 않았는지 여부를 알아오기 위한 용도(전화번호 중복확인 체크용)
+	// === 전송 버튼 클릭 시 시작 === //
+	$("#phoneCheckandAuth").click(function(){
+		$("#phoneCheckandAuth").html("재전송");
+		if($("#hp2").val()==""||$("#hp3").val()==""){
+			$("#authMsg").html("<span style='color:red; font-size:10pt;'>전화번호를 입력해주세요.</span>");
+			return false;
+		}
+				
+				const phoneNumber = $("input#hp1").val() + $("input#hp2").val() + $("input#hp3").val(); 
+				$.ajax({
+					url: "phDuplicateCheck.mp",
+					data: {"phoneNumber":phoneNumber,
+					"randomNumberAuth":"",
+					"authPassInput":""
+					
+					},  
+					type: "post",	
+					dataType: "json",		
+					success:function(json){
+						console.log(json.isExists);
+						
+						if(json.isExists) { //전화번호를 사용 중인 경우
+							b_phoneCheck_click = false; 
+							$("#authMsg").html("<span style='color:red; font-size:10pt;'>사용 중인 전화번호입니다.</span>");
+						}
+						else{// 전화번호가 중복되지 않은 경우
+							b_phoneCheck_click = true; 
+							$("#authMsg").html("<span style='color:navy; font-size:10pt;'>사용 가능한 전화번호입니다. 인증을 진행해 주세요.</span>");
+							$("#authPassElmt").show();
+						}
+					},
+					error: function(request, status, error){
+		                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		            }
+				});
+	});// end of $("button#emailcheck").click(function(){
+	// === 전화번호 인증 버튼 클릭 시 끝 === //
+	
 }); // end of $(document).ready(function(){})---------------------------------------------------------------
 
 
 
 // function declaration
+
+////////////////// 전화번호 중복 통과 후 생기는 인증하기 버튼 클릭 시 //////////////////
+
+var b_isAuth_click = false;
+
+$(document).on('click', '#authPassBtn', function() {
+		//location.href = json.ctxPath + "/member/smsSend.mp?authType="+"registerMobileAuth";
+		//alert("인증하기 버튼 클릭 됨.");
+		let randomNumberAuth ="randomNumberAuth";
+		
+		$.ajax({
+			url: "phDuplicateCheck.mp",
+			data: {"randomNumberAuth":randomNumberAuth,
+					"authPassInput":$("input[name='authPassInput']").val(),
+					"phoneNumber" : ""
+			},  
+			type: "post",	
+			dataType: "json",		
+			success:function(json){
+				
+				if(json.isAuthStatus) { //인증번호가 일치한 경우
+					$("#authPassElmt").hide();
+					$("#authMsg").html("<span style='color:navy; font-size:10pt;'>전화번호 인증이 완료되었습니다.</span>");
+					b_isAuth_click = true;
+				}
+				else{// 인증번호가 일치하지 않은 경우
+					$("#authMsg").html("<span style='color:red; font-size:10pt;'>전화번호 인증에 실패하였습니다.</span>");
+				}
+			},
+			error: function(request, status, error){
+                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+            }
+		});
+		
+	});
+
+
 // "가입하기" 버튼 클릭시 호출되는 함수
 function goRegister() {
 
@@ -518,6 +575,13 @@ function goRegister() {
 		return;
 		
 	}
+	const name = $("#name").val().trim();
+    const regExp_Name = /^[가-힣\s]{2,10}$/;
+    if (name === "" || !regExp_Name.test(name)) {
+        // 이름이 공백이거나 정규식을 통과하지 못한 경우
+		$("#name").focus();
+		return;
+    }
 	if($("#userid").val().trim()==""){
 			$("#userid").focus();
 			return;	
@@ -530,6 +594,25 @@ function goRegister() {
 			$("#pwdcheck").focus();
 			return;	
 	}
+	
+	const regExp_pwd = new RegExp(/^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).*$/g);
+	// 숫자/문자/특수문자 포함 형태의 8~15자리 이내의 암호 정규표현식 객체 생성
+	
+	const bool = regExp_pwd.test($("#pwd").val().trim());
+	
+	if(!bool) {
+		// 암호가 정규표현식에 위배된 경우
+		$("#pwd").focus();
+		return;	
+	}
+	
+	if($("#pwdcheck").val().trim()!=$("#pwd").val().trim()){
+			$("#pwdcheck").focus();
+			return;	
+	}
+	
+	
+	
 	if($("#email").val().trim()==""){
 			$("#email").focus();
 			return;	
@@ -586,22 +669,27 @@ function goRegister() {
 		
 	// **** "아이디 중복확인"을 클릭했는지 검사하기 시작 **** //
 	if(!b_idcheck_click) {
-		// "아이디중복확인"을 클릭 하지 않았을 경우
 		alert("아이디 중복확인을 클릭하셔야 합니다.");
-		return; // goRegister() 함수를 종료한다.
+		return;
 	}
-	
-	// **** "아이디 중복확인"을 클릭했는지 검사하기 끝 **** //
 	
 	// **** "이메일 중복확인"을 클릭했는지 검사하기 시작 **** //
 	if(!b_emailcheck_click) {
-		// "이메일중복확인"을 클릭 하지 않았을 경우
 		alert("이메일 중복확인을 클릭하셔야 합니다.");
-		return; // goRegister() 함수를 종료한다.
+		return; 
 	}
 	
-	// **** "이메일 중복확인"을 클릭했는지 검사하기 끝 **** //
+	// **** "전송"을 클릭했는지 검사하기 시작 **** //
+	if(!b_phoneCheck_click) {
+		alert("전송 버튼을 클릭하셔야합니다.");
+		return; 
+	}
 	
+	// **** "인증"을 클릭했는지 검사하기 시작 **** //
+	if(!b_isAuth_click){
+		alert("인증 버튼을 클릭하셔야합니다.");
+		return; 
+	}
 	
 	const frm = document.registerFrm;
 	frm.aciton = "memberRegister.mp";
@@ -610,12 +698,5 @@ function goRegister() {
 	
 	
 }
-
-/* 취소하기 => 없앰
-function goReset() {
-
-    history.back();
-}// end of function goReset()---------------------
-*/
 
 

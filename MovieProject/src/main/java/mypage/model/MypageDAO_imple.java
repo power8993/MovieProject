@@ -81,6 +81,30 @@ public class MypageDAO_imple implements MypageDAO {
 	
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	//마이페이지 프로필 사진 편집
+		@Override
+		public int profileUpdate(String profile, String userid) throws SQLException {
+			int result = 0;
+		      
+		      try {
+		         conn = ds.getConnection();
+		         
+		         String sql = "UPDATE tbl_member SET profile = ? WHERE user_id = ?";
+		         pstmt = conn.prepareStatement(sql);
+		         pstmt.setString(1, profile);
+		         pstmt.setString(2, userid);
+		         
+		         result = pstmt.executeUpdate();
+		         
+		      } finally {
+		         close();
+		      }
+		      
+		      return result;
+		}
+
+
 
 	// 마이페이지 프로필 - 포인트 적립/사용내역 목록
 	@Override
@@ -182,7 +206,7 @@ public class MypageDAO_imple implements MypageDAO {
 
 			String sql = " SELECT * " + " FROM ( "
 					+ "    SELECT ROW_NUMBER() OVER (ORDER BY p.PAY_SUCCESS_DATE DESC) AS RNO, "
-					+ "    p.FK_USER_ID as userid, " + "    p.IMP_UID, "
+					+ "    p.FK_USER_ID as userid, " + "    p.IMP_UID, s.seq_showtime_no,  "
 					+ "    LISTAGG(t.SEAT_NO, ',') WITHIN GROUP (ORDER BY t.SEAT_NO) AS SEAT_NO_LIST,  "
 					+ "    s.FK_SEQ_MOVIE_NO, " + "    m.POSTER_FILE, "
 					+ "    case when length(movie_title) > 23 then substr(movie_title,1,20) || ' ...' else movie_title end as movie_title, "
@@ -193,7 +217,7 @@ public class MypageDAO_imple implements MypageDAO {
 					+ " ON s.SEQ_SHOWTIME_NO = p.FK_SEQ_SHOWTIME_NO " + " JOIN tbl_movie m "
 					+ " ON s.FK_SEQ_MOVIE_NO = m.SEQ_MOVIE_NO "
 					+ " WHERE p.FK_USER_ID = ? AND p.PAY_STATUS = '결제 완료' AND SYSDATE <= (s.START_TIME - INTERVAL '20' MINUTE) "
-					+ " GROUP BY p.FK_USER_ID, p.IMP_UID, s.FK_SEQ_MOVIE_NO, m.POSTER_FILE, m.MOVIE_TITLE, p.PAY_SUCCESS_DATE, START_TIME, END_TIME, p.PAY_AMOUNT, p.PAY_STATUS "
+					+ " GROUP BY p.FK_USER_ID, p.IMP_UID, s.FK_SEQ_MOVIE_NO, m.POSTER_FILE, m.MOVIE_TITLE, p.PAY_SUCCESS_DATE, START_TIME, END_TIME, p.PAY_AMOUNT, p.PAY_STATUS, s.seq_showtime_no "
 					+ " ) " + " WHERE RNO BETWEEN 1 AND 2 ";
 
 			pstmt = conn.prepareStatement(sql);
@@ -210,6 +234,7 @@ public class MypageDAO_imple implements MypageDAO {
 				pvo.setPay_status(rs.getString("pay_status"));
 
 				ShowtimeVO svo = new ShowtimeVO();
+				svo.setSeq_showtime_no(rs.getInt("seq_showtime_no"));
 				svo.setFk_seq_movie_no(rs.getInt("fk_seq_movie_no"));
 				svo.setStart_time(rs.getString("start_time"));
 				svo.setEnd_time(rs.getString("end_time"));
@@ -391,7 +416,7 @@ public class MypageDAO_imple implements MypageDAO {
 
 			String sql = " SELECT " + "    p.FK_USER_ID as userid, " + "    p.IMP_UID, " + "    s.FK_SCREEN_NO, "
 					+ "    LISTAGG(t.SEAT_NO, ',') WITHIN GROUP (ORDER BY t.SEAT_NO) AS SEAT_NO_LIST, "
-					+ "    COUNT(t.SEAT_NO) AS SEAT_COUNT, " + "    s.FK_SEQ_MOVIE_NO, " + "    m.POSTER_FILE, "
+					+ "    COUNT(t.SEAT_NO) AS SEAT_COUNT, " + "    s.FK_SEQ_MOVIE_NO, " + "    m.POSTER_FILE, s.seq_showtime_no, "
 					+ "    m.MOVIE_TITLE, " + "    p.PAY_SUCCESS_DATE, "
 					+ "    to_char(s.START_TIME, 'yyyy-mm-dd hh24:mi') as START_TIME, " + "    p.PAY_AMOUNT, "
 					+ "    p.PAY_STATUS " + " FROM tbl_payment p " + " JOIN tbl_ticket t "
@@ -401,7 +426,7 @@ public class MypageDAO_imple implements MypageDAO {
 					+ " WHERE p.FK_USER_ID = ? AND p.PAY_STATUS = '결제 완료' AND SYSDATE <= (s.START_TIME - INTERVAL '20' MINUTE) "
 					+ " GROUP BY "
 					+ "    p.FK_USER_ID, p.IMP_UID, s.FK_SCREEN_NO, s.FK_SEQ_MOVIE_NO,  m.POSTER_FILE, m.MOVIE_TITLE, "
-					+ "    p.PAY_SUCCESS_DATE, START_TIME,  p.PAY_AMOUNT, p.PAY_STATUS "
+					+ "    p.PAY_SUCCESS_DATE, START_TIME,  p.PAY_AMOUNT, p.PAY_STATUS, s.seq_showtime_no "
 					+ " ORDER BY p.PAY_SUCCESS_DATE DESC ";
 
 			pstmt = conn.prepareStatement(sql);
@@ -418,6 +443,7 @@ public class MypageDAO_imple implements MypageDAO {
 				pvo.setPay_status(rs.getString("pay_status"));
 
 				ShowtimeVO svo = new ShowtimeVO();
+				svo.setSeq_showtime_no(rs.getInt("seq_showtime_no"));
 				svo.setFk_screen_no(rs.getInt("fk_screen_no"));
 				svo.setFk_seq_movie_no(rs.getInt("fk_seq_movie_no"));
 				svo.setStart_time(rs.getString("start_time"));
@@ -1060,7 +1086,8 @@ public class MypageDAO_imple implements MypageDAO {
 		return result;
 	}
 
-
+	
+	
 	
 	
 }// end of public class MypageDAO_imple implements MypageDAO-----

@@ -110,7 +110,7 @@ String ctxPath = request.getContextPath();
 							<div class="reservation_actions">
 								<button type="button" class="Receipt_Printing"  onclick="Receipt_Printing('${reservation.imp_uid}','<%=ctxPath%>' )">영수증 출력</button>
 								<div id="Receipt_Printing_model"></div>
-								<button type="button" class="Cancel_Reservation" onclick="myreservation_cancel('${reservation.imp_uid}','${reservation.svo.fk_seq_movie_no}', '${sessionScope.loginuser.userid}')">예매 취소</button>
+								<button type="button" class="Cancel_Reservation" onclick="myreservation_cancel('${reservation.imp_uid}','${reservation.svo.seq_showtime_no}', '${sessionScope.loginuser.userid}')">예매 취소</button>
 								<div id="myreservation_cancel_modal"></div>  <!-- 모달을 삽입할 위치 -->
 							</div>	
 									
