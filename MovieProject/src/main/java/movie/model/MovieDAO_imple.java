@@ -960,19 +960,19 @@ public class MovieDAO_imple implements MovieDAO {
 			if(search_date.isBlank() && search_time_1.isBlank() && search_movie_title.isBlank()) {
 				// 처음 보이는 페이지와 같이 모두 빈 값이라면
 				
-				if("상영예정작".equals(invalid_showtime)) {
+				if("상영예정".equals(invalid_showtime)) {
 					sql += " where start_time >= current_date ";
 				}
-				else if ("상영종료작".equals(invalid_showtime)){
+				else if ("상영종료".equals(invalid_showtime)){
 					sql += " where start_time < current_date ";
 				}
 			}
 			else {
 				// 값이 비어있지 않다면
-				if("상영예정작".equals(invalid_showtime)) {
+				if("상영예정".equals(invalid_showtime)) {
 					sql += " and start_time >= current_date ";
 				}
-				else if ("상영종료작".equals(invalid_showtime)){
+				else if ("상영종료".equals(invalid_showtime)){
 					sql += " and start_time < current_date ";
 				}
 				
@@ -1106,19 +1106,19 @@ public class MovieDAO_imple implements MovieDAO {
 			if(search_date.isBlank() && search_time_1.isBlank() && search_movie_title.isBlank()) {
 				// 처음 보이는 페이지와 같이 모두 빈 값이라면
 				
-				if("상영예정작".equals(invalid_showtime)) {
+				if("상영예정".equals(invalid_showtime)) {
 					sql += " where start_time >= current_date ";
 				}
-				else if ("상영종료작".equals(invalid_showtime)){
+				else if ("상영종료".equals(invalid_showtime)){
 					sql += " where start_time < current_date ";
 				}
 			}
 			else {
 				// 값이 비어있지 않다면
-				if("상영예정작".equals(invalid_showtime)) {
+				if("상영예정".equals(invalid_showtime)) {
 					sql += " and start_time >= current_date ";
 				}
-				else if ("상영종료작".equals(invalid_showtime)){
+				else if ("상영종료".equals(invalid_showtime)){
 					sql += " and start_time < current_date ";
 				}
 				
@@ -1279,19 +1279,19 @@ public class MovieDAO_imple implements MovieDAO {
 			if(search_date.isBlank() && search_time_1.isBlank() && search_movie_title.isBlank()) {
 				// 처음 보이는 페이지와 같이 모두 빈 값이라면
 				
-				if("상영예정작".equals(invalid_showtime)) {
+				if("상영예정".equals(invalid_showtime)) {
 					sql += " where start_time >= current_date ";
 				}
-				else if ("상영종료작".equals(invalid_showtime)){
+				else if ("상영종료".equals(invalid_showtime)){
 					sql += " where start_time < current_date ";
 				}
 			}
 			else {
 				// 값이 비어있지 않다면
-				if("상영예정작".equals(invalid_showtime)) {
+				if("상영예정".equals(invalid_showtime)) {
 					sql += " and start_time >= current_date ";
 				}
-				else if ("상영종료작".equals(invalid_showtime)){
+				else if ("상영종료".equals(invalid_showtime)){
 					sql += " and start_time < current_date ";
 				}
 				

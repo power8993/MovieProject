@@ -35,14 +35,8 @@ public class ShowtimeDelete extends AbstractController {
 					int n = mvdao.deleteShowtime(seq);
 	
 					if (n == 1) {
-						String message = "상영일정이 삭제되었습니다.";
-						String loc = "showtimeList.mp";
-	
-						request.setAttribute("message", message);
-						request.setAttribute("loc", loc);
-						
-						super.setRedirect(false);
-						super.setViewPage("/WEB-INF/msg.jsp");
+						super.setRedirect(true); 
+				        super.setViewPage(request.getContextPath()+"/admin/showtimeList.mp");
 					}
 	
 				} catch (SQLException e) {

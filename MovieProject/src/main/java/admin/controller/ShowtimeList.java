@@ -59,8 +59,8 @@ public class ShowtimeList extends AbstractController {
 				}
 				
 				if(invalid_showtime == null ||
-				  (!"상영예정작".equals(invalid_showtime)) && (!"상영종료작".equals(invalid_showtime))) {
-					invalid_showtime = "상영예정작";
+				  (!"상영예정".equals(invalid_showtime)) && (!"상영종료".equals(invalid_showtime))) {
+					invalid_showtime = "상영예정";
 				}
 				
 				if(size_per_page == null||

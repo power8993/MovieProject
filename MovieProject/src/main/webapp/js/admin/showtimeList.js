@@ -28,7 +28,7 @@ $(document).ready(function() {
 		
 		html = ``;
 			
-		html += `<span style='display: inline-block; background-color:#CCC5B9; color:white; height: 10px; width: 205px;'>SCREEN</span>
+		html += `<span style='display: inline-block; background-color:#CCC5B9; color:white; height: 16px; width: 205px; font-size:8pt; font-weight:bold;'>SCREEN</span>
 		         <br>`;
 		
 		seat_arr.forEach((item, index) => {
@@ -37,7 +37,7 @@ $(document).ready(function() {
 	            html += `<span class='seat' style='background-color:#403D39; color:white;'>${charArr[Math.floor(index/10)] + (index%10 + 1)}</span>`;
 	        }
 	        else {
-	            html += `<span class='seat mouse_block' style='background-color:#CCC5B9; color:black;'>${charArr[Math.floor(index/10)] + (index%10 + 1)}</span>`;
+	            html += `<span class='seat mouse_block' style='background-color:#EB5E28; color:white;'>${charArr[Math.floor(index/10)] + (index%10 + 1)}</span>`;
 	        }
 
 	        if((index + 1) % 10 == division) {
@@ -70,10 +70,11 @@ $(document).ready(function() {
         // 툴팁 위치 설정: 잔여좌석 기준 우측으로 표시
         tooltip.css({
             //top: offset.top + "px", // 해당 태그의 상단 위치
-            left: offset.left + $(this).outerWidth() + 10 + "px",  // 좌석의 우측에 10px 떨어진 위치
+            left: offset.left + $(this).outerWidth() + 18 + "px",  // 좌석의 우측에 10px 떨어진 위치
+			top: offset.top - 5 + "px", // 10px 위로 이동
             position: "absolute",
             border: "1px solid #ccc",
-            background: "#fff",
+            background: "#e1d3c050",
             padding: "10px",
             boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
             borderRadius: "5px",
@@ -180,11 +181,11 @@ function toggleShowtimeInvalidStatus() {
 	
 	var invalid_showtime =  $("span#invalid_showtime");
 	
-	if (invalid_showtime.text() == "상영예정작") {
-		$("input[name='invalid_showtime']").val("상영종료작");
+	if (invalid_showtime.text() == "상영예정") {
+		$("input[name='invalid_showtime']").val("상영종료");
 	} 
 	else {
-		$("input[name='invalid_showtime']").val("상영예정작");
+		$("input[name='invalid_showtime']").val("상영예정");
 	}
 	
 	const frm = document.showtime_search_frm;

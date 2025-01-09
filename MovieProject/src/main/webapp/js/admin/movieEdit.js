@@ -278,7 +278,14 @@ $(document).ready(function() {
 				start_date_dom.setCustomValidity("상영시작일과 상영종료일은 함께 입력되거나, 둘 다 입력되지 않은 상태여야 합니다");
 				start_date_dom.reportValidity();  // 유효성 검사 메시지 표시
 				
+				// 각 값을 비우기
+				$("input[name='start_date']").val("");
+				$("input[name='end_date']").val("");
+									
 				is_empty = true;
+			} else {
+			    // 유효성 검사 통과 후 오류 메시지 제거
+			    start_date_dom.setCustomValidity("");  // 오류 메시지 제거
 			}
 			
 			if (is_empty) {
