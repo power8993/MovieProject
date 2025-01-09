@@ -267,6 +267,11 @@ function goSeatChoice(userid, birthday) {
 		location.href = "/MovieProject/login/login.mp";
 		return;
 	}
+	else if(userid == "admin") {
+		alert("관리자는 영화 예약이 불가능합니다.");
+		location.href = "/MovieProject/";
+		return;
+	}
 	else if(movie_grade != "전체") {
 		let today = new Date();   
 		let year = today.getFullYear();
