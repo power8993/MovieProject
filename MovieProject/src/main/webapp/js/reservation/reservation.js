@@ -52,6 +52,8 @@ $(document).ready(function(){
 			let v_html = '<img src="http://localhost:9090/MovieProject/images/admin/poster_file/미니언즈.jpg" style="width:auto; height:110px;">';
 			$("div#movie-choice-poster").html(v_html);
 			$("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
+			
+			$("div#empty_div").css('width','130px');
 		}
 		else if($(e.target).hasClass('movie_grade_img')) {
 			$(e.target).parent().parent().addClass("selected");
@@ -60,6 +62,8 @@ $(document).ready(function(){
 			$("div#movie-choice-poster").html(v_html);
 			$("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
 			// $("div#movie-choice").html($(e.target).parent().parent().find("td.movie-title").html());
+			
+			$("div#empty_div").css('width','130px');
 		}
 		
 		movie_grade = $(e.target).parent().find("span").text();
@@ -221,6 +225,7 @@ function getScreenTime(seq_movie_no1, input_date1, start_time1, fk_screen_no1) {
 					    $("div#screen-time-info").text("상영시간 : " + start_time1);
 						$("div#seq_showtime_no").html(item.seq_showtime_no);
 						
+						
 						seat_str = item.seat_arr;
 						fk_screen_no = item.fk_screen_no;
 					}
@@ -283,6 +288,8 @@ function goSeatChoice(userid, birthday) {
 	$("div#goMovieChoice").show();
 	$("div#goSeatChoice").hide();
 	$("div#goPay").show();
+	
+	$("div#empty_div").hide();
 	
 	let seatArr = []; // 선택한 좌석 배열 초기화
 		
@@ -373,6 +380,7 @@ function goMovieChoice() {
 	$("div#goMovieChoice").hide();
 	$("div#goSeatChoice").show();
 	$("div#goPay").hide();
+	$("div#empty_div").show();
 	
 	$("div#adult").find("button").removeClass('selected');
 	$("div#adolescent").find("button").removeClass('selected');
@@ -457,7 +465,7 @@ function goPay(ctxPath, userid) {
 		
 		if(confirm("결제하시겠습니까?")) {
 			
-			$("div.loader").show(); // CSS 로딩화면 보여주기
+			// $("div.loader").show(); // CSS 로딩화면 보여주기
 			
 			const ticketInfo = "영화 : " + $("div#movie-choice").text() + " " + $("div#total_seat_cnt").text() + "명";
 			const using_point = $("input#using-point").val();
@@ -470,8 +478,9 @@ function goPay(ctxPath, userid) {
 			    
 		    const url = `${ctxPath}/reservation/goPayTicket.mp?ticketInfo=${ticketInfo}&userid=${userid}&total_price=${total_price}&using_point=${using_point}`;      
 	
-		    window.open(url, "goPayTicket",
+		    const popup = window.open(url, "goPayTicket",
 			               `left=${left}, top=${top}, width=${width}, height=${height}`);
+						   
 		}
 		else {
 			$("div.loader").hide(); // CSS 로딩화면 숨기기

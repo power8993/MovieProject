@@ -36,7 +36,7 @@ div.time {
 }
 
 h3.title {
-	background-color: #333;
+	background-color: #252422;
 	color: white;
 	text-align: center;
 	padding-top: 10px;
@@ -140,6 +140,7 @@ td.screen_no_data {
 table.time-tab {
 	border-collapse: separate;
 	border-spacing: 0 1rem;
+	font-size: 15pt;
 }
 
 td.time_data:hover,
@@ -160,7 +161,7 @@ tr.movie-list > td {
 }
 
 div.goSeatChoice {
-	margin: 0 0 auto 0;
+	margin: 0 0 0 auto !important;
 }
 
 div.ticket-info-container {
@@ -169,7 +170,7 @@ div.ticket-info-container {
 	left: calc(-50vw + 50%);
 	min-height: 120px;
 	max-height: 120px;
-	background-color: black;
+	background-color: #252422;
 }
 
 div.ticket-info {
@@ -204,25 +205,23 @@ div#numberOfPeople {
 	height: 140px;
 }
 
-div#screen-info {
-	display: inline-block;
-	width: 200px;
-	height: 140px;
-}
-
+div#screen-info, 
 div#point {
 	display: inline-block;
-	width: 200px;
-	height: 140px;
+	width: 250px;
+	font-size: 13pt;
+	font-weight: bold;
+	position: relative;
+	top: -25px;
+}
+
+input#using-point {
+	width: 180px;
 }
 
 div#seat-screen {
 	display: block;	
 	height: 350px;
-}
-
-div#seat-screen > button {
-	width: 40px;
 }
 
 div#seat-screen > span {
@@ -236,8 +235,13 @@ div#numberOfPeople label {
 	width: 80px;
 }
 
+div#numberOfPeople button:hover {
+	background-color: #EB5E28;
+}
+
 div#numberOfPeople button {
-	border: solid 1px #d6d3ce;
+	border: solid 1px #252422;
+	border-radius: 2px;
 	margin-right: 6px;
 	font-weight: bold;
 	font-size: 12pt;
@@ -245,6 +249,19 @@ div#numberOfPeople button {
 
 div.btn-group {
 	margin-bottom: 5px;
+}
+
+div#seat-screen > button.seat:hover {
+	background-color: #EB5E28;
+	transform: translateY(-5px);
+	font-weight: bold;
+}
+
+div#seat-screen > button.seat {
+	width:50px;
+	height:40px;
+	border: solid 2px #252422;
+	border-radius: 3px;
 }
 
 /* -- CSS 로딩화면 구현 시작(bootstrap 에서 가져옴) 시작 -- */    
@@ -276,23 +293,3 @@ div.loader {
 }
 /* -- CSS 로딩화면 구현 끝(bootstrap 에서 가져옴) 끝 -- */
 
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 0 grey;
-  border-radius: 5px;
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #EB5E28;
-  border-radius: 8px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #ffff00; 
-}

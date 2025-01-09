@@ -64,7 +64,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select case when length(movie_title) < 20 then movie_title else substr(movie_title, 0, 17) || '...' end as movie_title, seq_movie_no, movie_grade "
+			String sql = " select case when length(movie_title) < 20 then movie_title else substr(movie_title, 0, 17) || '...' end as movie_title, seq_movie_no, movie_grade, poster_file "
 					   + " from tbl_movie "
 					   + " where sysdate >= start_date and sysdate <= end_date + 1 ";
 			
@@ -76,6 +76,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 				movie.setSeq_movie_no(rs.getInt("seq_movie_no"));
 				movie.setMovie_title(rs.getString("movie_title"));
 				movie.setMovie_grade(rs.getString("movie_grade"));
+				movie.setPoster_file(rs.getString("poster_file"));
 				
 				movieList.add(movie);
 				
@@ -103,7 +104,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 			String sql = " select to_char(start_time, 'hh24mi') as start_time, to_char(end_time, 'hh24mi') as end_time, "
 					   + " seat_arr, seq_showtime_no, fk_seq_movie_no, total_viewer, unused_seat, fk_screen_no "
 					   + " from tbl_showtime "
-					   + " where FK_SEQ_MOVIE_NO = ? and to_char(start_time, 'yyyymmdd') = ? "
+					   + " where FK_SEQ_MOVIE_NO = ? and to_char(start_time, 'yyyymmdd') = ? and start_time > sysdate "
 					   + " order by fk_screen_no asc ";
 			
 			pstmt = conn.prepareStatement(sql);

@@ -33,7 +33,7 @@ public class ReservationEnd extends AbstractController {
 			String userid = request.getParameter("userid");
 			String imp_uid = request.getParameter("imp_uid");
 			
-			int ticketPrice = 0;
+			int ticketPrice_int = 0;
 			String seat_str = "";
 			
 			List<TicketVO> ticketlist = mdao.getTickets(userid, imp_uid);
@@ -47,8 +47,10 @@ public class ReservationEnd extends AbstractController {
 				else {
 					seat_str += "," + ticketlist.get(i).getSeat_no();
 				}
-				ticketPrice += ticketlist.get(i).getTicket_price();
+				ticketPrice_int += ticketlist.get(i).getTicket_price();
 			}
+			
+			String ticketPrice = String.format("%,d", ticketPrice_int);
 			
 			request.setAttribute("imp_uid", imp_uid);
 			request.setAttribute("seat_str", seat_str);
