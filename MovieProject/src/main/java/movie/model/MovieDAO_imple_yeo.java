@@ -543,7 +543,7 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 	                     "JOIN tbl_movie m ON s.fk_seq_movie_no = m.seq_movie_no " +
 	                     "JOIN tbl_category c ON m.fk_category_code = c.category_code " + // 장르 조인
 	                     "JOIN tbl_screen sc ON s.fk_screen_no = sc.screen_no " + // 상영관 테이블 조인 추가
-	                     "WHERE TO_CHAR(s.start_time, 'yyyy-MM-dd') = ? and start_time > sysdate " +
+	                     "WHERE TO_CHAR(s.start_time, 'yyyy-MM-dd') = ? and s.start_time > sysdate " +
 	                     "ORDER BY s.start_time ASC";
 
 	        pstmt = conn.prepareStatement(sql); // PreparedStatement 생성
@@ -615,7 +615,7 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 	                     " fk_screen_no " +
 	                     " FROM tbl_showtime s " +
 	                     " JOIN tbl_movie m ON s.fk_seq_movie_no = m.seq_movie_no " +	                     
-	                     " WHERE TO_CHAR(s.start_time, 'yyyy-MM-dd') = ? AND s.fk_screen_no = 1 and start_time > sysdate " +
+	                     " WHERE TO_CHAR(s.start_time, 'yyyy-MM-dd') = ? AND s.fk_screen_no = 1 and s.start_time > sysdate " +
 	                     " ORDER BY s.start_time ASC ";
 
 	        pstmt = conn.prepareStatement(sql); // PreparedStatement 생성
@@ -676,7 +676,7 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 		                     " fk_screen_no " +
 		                     " FROM tbl_showtime s " +
 		                     " JOIN tbl_movie m ON s.fk_seq_movie_no = m.seq_movie_no " +		                     
-		                     " WHERE TO_CHAR(s.start_time, 'yyyy-MM-dd') = ? AND s.fk_screen_no = 2 and start_time > sysdate " +
+		                     " WHERE TO_CHAR(s.start_time, 'yyyy-MM-dd') = ? AND s.fk_screen_no = 2 and s.start_time > sysdate " +
 		                     " ORDER BY s.start_time ASC ";
 
 		        pstmt = conn.prepareStatement(sql); // PreparedStatement 생성
