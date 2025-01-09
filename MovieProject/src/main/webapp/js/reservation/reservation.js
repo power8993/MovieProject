@@ -470,8 +470,12 @@ function goPay(ctxPath, userid) {
 			    
 		    const url = `${ctxPath}/reservation/goPayTicket.mp?ticketInfo=${ticketInfo}&userid=${userid}&total_price=${total_price}&using_point=${using_point}`;      
 	
-		    window.open(url, "goPayTicket",
+		    var popup = window.open(url, "goPayTicket",
 			               `left=${left}, top=${top}, width=${width}, height=${height}`);
+						   
+			   popup.addEventListener('beforeunload', function() {
+			       $("div.loader").hide(); // CSS 로딩화면 숨기기
+			     });
 		}
 		else {
 			$("div.loader").hide(); // CSS 로딩화면 숨기기
