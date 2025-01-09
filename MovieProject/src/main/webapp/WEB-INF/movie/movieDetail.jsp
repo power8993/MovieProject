@@ -661,7 +661,7 @@
 <div class="container">
     <div class="movie-header">
         <div style="position: relative; width: 185px; height: 260px; margin-top: 20px;">
-            <img src="<%= ctxPath %>/images/admin/poster_file/미니언즈.jpg" alt="영화 포스터" class="movie-poster" style="border: 0px solid red; width:100%; height: 260px; display: block; position: absolute; top:0px; left: 0px;">
+            <img src="<%= ctxPath%>/images/admin/poster_file/${mvo.poster_file}.jpg" alt="영화 포스터" class="movie-poster" style="border: 0px solid red; width:100%; height: 260px; display: block; position: absolute; top:0px; left: 0px;">
             <i id="like" class="fa-solid fa-heart fa-bounce" onclick="golike(this, ${mvo.seq_movie_no})"  style="color:${isLiked ? '#ff2626' : '#252422'}; position: absolute; top: 10px; right: 10px; z-index: 5; font-size: 20pt;"></i>
         </div>
         <div class="movie-details" style="margin: 0 15px; margin-top: 20px; ">
