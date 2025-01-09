@@ -1,7 +1,3 @@
-
-
-
-
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -17,7 +13,7 @@
     <style>
         /* 전체 페이지 스타일 */
         body {
-         user-select:none;
+            user-select: none;
             font-family: Arial, sans-serif;
             background-color: #f8f8f8;
             margin: 0;
@@ -51,14 +47,15 @@
 
         .genre-filter a {
             margin-right: 20px;
-            color: #EB5E28;
+            color: black;
             text-decoration: none;
         }
 
         .genre-filter a:hover {
-            text-decoration: underline;
-            color: red;
+          
+            color: #EB5E28;
             transform: translateY(-5px);
+            border: 1px solid #EB5E28;
         }
 
         /* 장르 필터 폼 스타일 */
@@ -138,22 +135,22 @@
             transition: background-color 0.3s ease-in-out;
         }
 
-        /* 마우스를 올리면 상세보기 버튼 보이기 */
         .movie-card:hover .view-details-btn {
             display: block;
-            
-        }
-
-        /* 상세보기 버튼 hover 효과 */
-        .view-details-btn:hover {
-            background-color: #EB5E28;
-            color: #FFFCF2;
         }
 
         .movie-title {
             font-weight: bold;
             margin-top: 1rem;
             font-size: 1.1rem;
+        }
+
+        .movie-details p {
+            margin: 0;
+        }
+
+        .movie-details p + p {
+            margin-top: 6px; /* 예매율과 개봉일 간의 간격 */
         }
 
         .movie-details {
@@ -189,6 +186,7 @@
             position: absolute;
             top: 10px;
             left: 10px;
+            z-index: 10; /* 다른 요소보다 위에 표시되도록 설정 */
         }
 
         /* 숨김 클래스 */
@@ -223,9 +221,22 @@
             font-size: 1.2rem;
             color: #999;
             margin-top: 2rem;
-            margin : auto;
-            
+            margin: auto;
         }
+        .genre-filter a.bold {
+        	background-color: #FFFCF2;
+	        color: #EB5E28;
+	        text-decoration: underline;
+        
+	    }
+	   .movie-details p {
+   		 margin: 0;
+		}
+
+		.movie-details p + p {
+		    margin-top: 4px; /* 예매율과 개봉일 간의 간격 */
+		}
+	    
     </style>
 </head>
 <body>
@@ -236,7 +247,7 @@
             <div class="page-title">상영중인 영화</div>
             <div class="genre-filter">
                 <a href="<%= ctxPath %>/movie/movieList.mp">전체 영화</a>
-                <a href="<%= ctxPath %>/movie/runningMovies.mp">▶ 상영중인 영화</a>
+                <a href="<%= ctxPath %>/movie/runningMovies.mp" class="bold">상영중인 영화</a>
                 <a href="<%= ctxPath %>/movie/upcomingMovies.mp">상영 예정작</a>
             </div>
         </div>
@@ -260,9 +271,7 @@
                         <div class="movie-card position-relative">
                             <div class="rank">No. ${status.index + 1}</div>
                             <div class="poster">
-                                
-                               <img src="<%= ctxPath %>/images/admin/poster_file/미니언즈.jpg">
-                              
+                                <img src="<%= ctxPath %>/images/admin/poster_file/미니언즈.jpg">
                             </div>
                             <button class="view-details-btn" onclick="location.href='<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}&bookingRate=${movie.bookingRate}'">상세보기</button>
                             <div class="movie-details">
@@ -272,18 +281,20 @@
                                          style="width: 30px; height: 30px; margin-right: 10px;">
                                     ${movie.movie_title}
                                 </div>
-                                <p>예매율: ${movie.bookingRate}%<br>개봉일: ${movie.start_date}</p>
+                                <p>예매율: ${movie.bookingRate}%</p>
+                                <p>개봉일: ${movie.start_date}</p>
                                 <button class="reservation-btn">
-                                    <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie.seq_movie_no}" style="color: white; text-decoration: none;">예매하기</a>
+                                    <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie.seq_movie_no}" 
+                                       style="color: white; text-decoration: none;">예매하기</a>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </c:forEach>
             </c:if>
-            <c:if test="${movies == null || empty movies}">    
- 			<p class="no-data" style="color: #EB5E28;  font-weight: bold; font-size: 2rem; padding: 10px 20px;/* 더 큰 글씨 크기 */"> 해당장르의 영화가 없습니다.<br><img src="<%= ctxPath %>/images/index/logo.png"></p>           
- 		    </c:if>
+            <c:if test="${movies == null || empty movies}">
+                <p class="no-data" style="color: #EB5E28; font-weight: bold; font-size: 2rem;">해당 장르의 영화가 없습니다.<br><img src="<%= ctxPath %>/images/index/logo.png"></p>
+            </c:if>
         </div>
 
         <c:if test="${movies != null && movies.size() > 15}">

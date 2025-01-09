@@ -14,16 +14,19 @@ public class MovieTime extends AbstractController {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	String selectedDate = request.getParameter("selectedDate");
+        String selectedDate = request.getParameter("selectedDate");
 
         if (selectedDate == null || selectedDate.isEmpty()) {
             selectedDate = java.time.LocalDate.now().toString(); // 기본값: 오늘 날짜
+           
         }
 
         try {
-            // 영화 시간표 가져오기
+            // 영화 시간표 가져오기 
             List<MovieVO_yeo> movieTimeList = mdao.selectMovieTimeByDate(selectedDate);
+            //Thread.sleep(300); // 3초 동안 일시 정지
             List<MovieVO_yeo> movieTimeList_o = mdao.selectMovieTimeByDateNO1(selectedDate); // 1관
+            //Thread.sleep(300); // 3초 동안 일시 정지
             List<MovieVO_yeo> movieTimeList_t = mdao.selectMovieTimeByDateNO2(selectedDate); // 2관
 
             // JSP에 데이터 전달
