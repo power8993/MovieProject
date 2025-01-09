@@ -37,6 +37,54 @@ input[name='hp1'],input[name='hp2'],input[name='hp3']{
 	/* font-weight:700; */
 }
 
+
+
+#name{
+	display: block; width:100%;
+}
+#userid{
+	display: block; width:100%;
+}
+#pwd{
+	display: block; width:100%;
+}
+#pwdcheck{
+	display: block; width:100%;
+}
+#email{
+	display: block; width:100%;
+}
+#hp1,#hp2,#hp3{
+	width:73px;
+}
+#phoneCheckandAuth{
+	height:35px;width: 126.81px;
+}
+#hp_error{
+	display:block;
+}
+#authPassElmt{
+	display:flex; margin-top:10px; justify-content: space-between; width:100%;
+}
+#authPassValue{
+	width: 287.19px;background: transparent;border: solid 1px #ff7a00;outline: none;border-radius: 5px;
+}
+#authPassBtn{
+	height:35px;width: 92.81px;margin-left: 15px;
+}
+#gender_error{
+	display:block;
+}
+#birth-year{
+	margin-left:0px;
+}
+#birth_error{
+	display:block;
+}
+
+
+
+
 #registerbtn {
 	width:100%;
 	height:43px;

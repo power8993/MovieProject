@@ -16,39 +16,36 @@
     <div>${movie.showvo.seq_showtime_no},${movie.poster_file},${movie.movie_title}</div>
 </c:forEach> --%>
 
-		<div style="width: 100%; height:690px;background-color: black; position: relative;">
-			<div style="width: 1240px; height:690px; margin: 0 auto; position: relative;">
-			<video id="customVideo" src="<%=ctxPath%>/images/index/LionKing.mp4" autoplay loop muted style="width: 1240px; height: 690px;"></video>
+		<div id="customVideoContainer">
+			<div id="customVideoPositionRelative">
+			<video id="customVideo" src="<%=ctxPath%>/images/index/LionKing.mp4" autoplay loop muted></video>
 
 			<!-- 커스텀 컨트롤 -->
-				<div style="position: absolute; bottom: 20px; left: 70px; top:250px;">
-					<p style="color:white; font-size:30pt;font-weight:700;text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.8);">무파사:라이온 킹</p>
-					<p style="color:white;">	
+				<div id="trailerContentElmt">
+					<p id="trailerTitle">무파사:라이온 킹</p>
+					<p id="trailerInfo">	
 						‘라이온 킹’ 탄생 30주년 기념작<br>
 						외로운 고아에서 전설적인 왕으로 거듭난 ‘무파사’의 숨겨진 이야기가 베일을 벗는다!
 					</p>
-					<div id="videoControls" style=" display: flex; align-items: center; padding: 10px;">
+					<div id="videoControls">
 
-					<button id="trailerShowDetailBtn"
-					style="border: none; background-color: #eb5e28; border-radius: 10px; color:white;font-size: 12px; width: 80px; height: 25px;">
-					상세보기</button>
+					<button id="trailerShowDetailBtn">상세보기</button>
 
 					<!-- 재생/일시정지 버튼 -->
-					<button id="playPauseBtn"
-						style="margin-left:5px;width:20px;border: none; cursor: pointer; background-color: transparent; "><i class="fa-solid fa-pause" style="color:white"></i></button>
+					<button id="playPauseBtn">
+						<i class="fa-solid fa-pause" style="color:white"></i>
+					</button>
 					<!-- 볼륨 켜기/끄기 버튼 -->
-					<button id="muteBtn"
-						style="border: none; cursor: pointer; background-color: transparent;"><i class="fa-solid fa-volume-xmark" style="color:white"></i></button>
-			
+					<button id="muteBtn">
+						<i class="fa-solid fa-volume-xmark" style="color:white"></i>
+					</button>
 					</div>
 				</div>
 				<!-- 그라데이션 효과를 위한 오버레이 -->
-				<div
-					style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, black, transparent 10%, transparent 90%, black); pointer-events: none;">
-				</div>
+				<div id="overlayForgradation"></div>
 			</div>
 		</div>
-<%-- 무비차트 시작  --%>
+		<%-- 무비차트 시작  --%>
          <div id="content">
             <h3 id="movie_ct"  style="font-weight:700;">무비차트</h3>
             <div id="cardCarousel" class="carousel slide" data-ride="carousel">
