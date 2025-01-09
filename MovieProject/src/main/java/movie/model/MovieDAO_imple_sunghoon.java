@@ -101,7 +101,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select to_char(start_time, 'hh24mi') as start_time, to_char(end_time, 'hh24mi') as end_time, "
+			String sql = " select to_char(start_time, 'hh24:mi') as start_time, to_char(end_time, 'hh24:mi') as end_time, "
 					   + " seat_arr, seq_showtime_no, fk_seq_movie_no, total_viewer, unused_seat, fk_screen_no "
 					   + " from tbl_showtime "
 					   + " where FK_SEQ_MOVIE_NO = ? and to_char(start_time, 'yyyymmdd') = ? and start_time > sysdate "

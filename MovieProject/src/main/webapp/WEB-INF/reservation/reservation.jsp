@@ -50,7 +50,7 @@ $(document).ready(function(){
 				
 				let poster_file = $(this).parent().find("td#poster_file").text();
 				
-				let v_html = '<img src="http://localhost:9090/MovieProject/images/admin/poster_file/' + poster_file + '" style="width:auto; height:110px;">';
+				let v_html = '<img src="/MovieProject/images/admin/poster_file/' + poster_file + '.jpg" style="width:auto; height:110px;">';
 				$("div#movie-choice-poster").html(v_html);
 				$("div#movie-choice-poster").show();
 				
@@ -87,7 +87,7 @@ $(document).ready(function(){
 
 <div class="container">
 	
-	<div id="ticket" class="ticket mt-5">
+	<div id="ticket" class="ticket">
 		
 		<div id="step1" class="steps">
 			
@@ -248,6 +248,7 @@ $(document).ready(function(){
 					<div id="date-choice">시간선택</div>
 					<div id="time-choice"></div>
 					<div id="seq_showtime_no" style="display: none;"></div>
+					<div id="selected_movie_grade" style="display: none;"></div>
 				</div>
 				<div id="seat-choice">좌석선택</div>
 				<div id="pay-choice">예약정보</div>

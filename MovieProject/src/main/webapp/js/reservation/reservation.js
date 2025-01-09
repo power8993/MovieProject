@@ -51,7 +51,7 @@ $(document).ready(function(){
 			$(e.target).parent().addClass("selected");
 			seq_movie_no = $(e.target).parent().find("td#seq_movie_no").text();
 			let poster_file = $(e.target).parent().find("td#poster_file").text();
-			let v_html = '<img src="http://localhost:9090/MovieProject/images/admin/poster_file/' + poster_file + '" style="width:auto; height:110px;">';
+			let v_html = '<img src="/MovieProject/images/admin/poster_file/' + poster_file + '.jpg" style="width:auto; height:110px;">';
 			$("div#movie-choice-poster").html(v_html);
 			$("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
 			
@@ -62,7 +62,7 @@ $(document).ready(function(){
 			$(e.target).parent().parent().addClass("selected");
 			seq_movie_no = $(e.target).parent().parent().find("td#seq_movie_no").text();
 			let poster_file = $(e.target).parent().parent().find("td#poster_file").text();
-			let v_html = '<img src="http://localhost:9090/MovieProject/images/admin/poster_file/' + poster_file + '" style="width:auto; height:110px;">';
+			let v_html = '<img src="/MovieProject/images/admin/poster_file/' + poster_file + '.jpg" style="width:auto; height:110px;">';
 			$("div#movie-choice-poster").html(v_html);
 			$("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
 			// $("div#movie-choice").html($(e.target).parent().parent().find("td.movie-title").html());
@@ -221,10 +221,10 @@ function getScreenTime(seq_movie_no1, input_date1, start_time1, fk_screen_no1) {
 						screen_no = item.fk_screen_no;
 						v_html += `<tr class='screen_no'><td class='screen_no_data'>${screen_no}관</td><td>(총 40석)</td></tr>`;
 					}
-					if(start_time1 == (item.start_time).substr(0,2) + ':' + (item.start_time).substr(2,2) && fk_screen_no1 == item.fk_screen_no) {
+					if(start_time1 == item.start_time && fk_screen_no1 == item.fk_screen_no) {
 						v_html += `<tr class='time-choice'><td class='time_data selected' 
-											onclick='onScreenClick(this, ${item.start_time},${item.seq_showtime_no},${item.fk_screen_no},"${item.seat_arr}")'>
-											${(item.start_time).substr(0,2)}:${(item.start_time).substr(2,2)}</td><td class='unused_seat'>${item.unused_seat}석</td></tr>`;
+											onclick='onScreenClick(this, "${item.start_time}",${item.seq_showtime_no},${item.fk_screen_no},"${item.seat_arr}")'>
+											${item.start_time}</td><td class='unused_seat'>${item.unused_seat}석</td></tr>`;
 								
 						$("div#time-choice").html(start_time1);
 					    $("div#screen-time-info").text("상영시간 : " + start_time1);
@@ -236,8 +236,8 @@ function getScreenTime(seq_movie_no1, input_date1, start_time1, fk_screen_no1) {
 					}
 					else {
 						v_html += `<tr class='time-choice'><td class='time_data' 
-									onclick='onScreenClick(this, ${item.start_time},${item.seq_showtime_no},${item.fk_screen_no},"${item.seat_arr}")'>
-									${(item.start_time).substr(0,2)}:${(item.start_time).substr(2,2)}</td><td class='unused_seat'>${item.unused_seat}석</td></tr>`;
+									onclick='onScreenClick(this, "${item.start_time}",${item.seq_showtime_no},${item.fk_screen_no},"${item.seat_arr}")'>
+									${item.start_time}</td><td class='unused_seat'>${item.unused_seat}석</td></tr>`;
 					}
 					
 						
@@ -595,9 +595,9 @@ function onScreenClick(element, start_time, seq_showtime_no, fk_screen_no1, seat
 	$("td.time_data").removeClass("selected");
 	$(element).addClass("selected");
 	
-	$("div#time-choice").html(String(start_time).substr(0,2) + ":" + String(start_time).substr(2,2));
+	$("div#time-choice").html(start_time);
 	
-    $("div#screen-time-info").text("상영시간 : " + String(start_time).substr(0,2) + ":" + String(start_time).substr(2,2));
+    $("div#screen-time-info").text("상영시간 : " + start_time);
 	$("div#seq_showtime_no").html(seq_showtime_no);
 	
 }
