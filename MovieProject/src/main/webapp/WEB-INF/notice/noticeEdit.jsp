@@ -9,51 +9,31 @@
     <meta charset="UTF-8">
     <title>공지사항 수정하기</title>
     <style>
-        /* 전체 배경 */
-        body {
-            font-family: Arial, sans-serif;
-	        background-color: #fffcf2; /* 부드러운 아이보리 배경색 */
-	        margin: 0;
-	        padding: 0;
-        }
-
-        /* 컨테이너 설정 */
-        .container {
-             width: 70%; /* 컨테이너 너비를 70%로 설정 */
-		     margin: 50px auto;
-		     padding: 30px;
-        }
-
-        .form-header {
-            display: flex;
-	        justify-content: space-between;
-	        align-items: center;
-	        margin-bottom: 30px;
-	        color: #403d39;
-        }
         .form-header h3 {
             font-size: 28px;
-		    font-weight: bold;
+            font-weight: bold;
+            margin-bottom: 18px;
+            margin-top: 20px;
         }
-
-        /* 입력 필드 및 텍스트 영역 */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 0 !important;
         }
         .form-group label {
-            font-size: 16px;
-		    display: block;
-		    margin-bottom: 5px;
-		    background-color: #ccc5b9;
-		    color: #252422;
+            padding: 5px;
+    		background-color: #333;
+        	color: white;
+        	width: 100%;
+        	margin:0;
+        	font-size: 22px;
+        	border-radius: 4px; /* 테이블의 둥근 모서리 설정 */
         }
         .form-group input, .form-group textarea {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             font-size: 16px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            transition: all 0.3s ease;
+            border-radius: 4px; /* 테이블의 둥근 모서리 설정 */
+            border: solid 1px #b8b6aa;
+            background-color: #fff;
         }
         .form-group input:focus, .form-group textarea:focus {
             border-color: #eb5e28; /* 주황색 포커스 */
@@ -63,36 +43,31 @@
 
         /* 텍스트 영역 기본 높이 설정 */
         .form-group textarea {
-            resize: vertical;
-            min-height: 150px;
+            padding: 20px 10px;
+		    line-height: 24px;
+		    height: 300px; /* 고정된 높이 설정 */
+		    overflow-y: auto; /* 내용이 넘치면 세로로 스크롤이 생김 */
         }
 
         /* 제출 버튼 */
         .submit-btn {
             padding: 6px 17px;
-	        background-color: #252422;
-	        color: white;
-	        border: none;
-	        border-radius: 5px;
-	        font-size: 17px;
-	        cursor: pointer;
+		    background-color: #252422;
+		    color: white;
+		    border: none;
+		    border-radius: 5px;
+		    font-size: 17px;
         }
         .submit-btn:hover {
-            background-color: #d85e1b; /* 어두운 주황색 */
-            transform: translateY(-2px); /* 버튼 호버시 살짝 위로 */
+           background-color: #eb5e28;
         }
 
         /* 버튼을 중앙 정렬 */
         .form-groups {
             text-align: center;
+            margin: 10px 0;
         }
 
-        /* 반응형 디자인: 화면이 좁아지면 입력 필드 및 버튼이 자동으로 줄어듬 */
-        @media (max-width: 768px) {
-            .container {
-                width: 90%;
-            }
-        }
     </style>
 </head>
 <body>
@@ -116,7 +91,7 @@
 
         <div class="form-group">
             <label for="notice_content">공지사항 내용</label>
-            <textarea id="notice_content" name="notice_content" placeholder="공지사항 내용을 입력하세요" required><%=request.getAttribute("notice_content")%></textarea>
+            <textarea id="notice_content" name="notice_content" placeholder="공지사항 내용을 입력하세요" required style="resize: none;"><%=request.getAttribute("notice_content")%></textarea>
         </div>
 
         <div class="form-groups">
