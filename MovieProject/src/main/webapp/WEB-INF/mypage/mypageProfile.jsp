@@ -20,8 +20,8 @@ String ctxPath = request.getContextPath();
 		<div class="profile-photo-container">
 
 			<img
-				src="${pageContext.request.contextPath}/${(sessionScope.loginuser).profile}"
-				alt="${(sessionScope.loginuser).name}님" />
+				src="${pageContext.request.contextPath}/Profile_image/${(sessionScope.loginuser).profile}" 
+				alt="${(sessionScope.loginuser).name}님"  />
 
 
 			<button type="button" class="profile_Edit"

@@ -3,16 +3,13 @@ function lastpwdchangedate() {
         url: "mylastpwdchangedateJSON.mp",  // 서버 URL
         data: { "userid": $("input#userid").val() },  // 사용자 ID를 서버에 전송
         dataType: "json",  // 응답 데이터 타입
-        success: function(json) {
-            console.log("~~ 확인용 json =>", json);
-            
-            // 서버에서 받은 비밀번호 변경일을 표시
-            // json이 배열이라면 첫 번째 항목의 pwdChangeDate를 사용
-            if (json.length > 0) {
-                $("div#lastpwdchangedate").text(json[0].pwdChangeDate); 
-            } else {
-                $("div#lastpwdchangedate").text("비밀번호 변경 정보 없음");
-            }
+		success: function(json) {
+		    console.log("Received JSON: ", json);
+		    if (json.pwdChangeDate) {
+		        $("div#lastpwdchangedate").text(json.lastpwdchangedate);
+		    } else {
+		        $("div#lastpwdchangedate").text("비밀번호 변경 정보 없음");
+		    }
         },
         error: function(request, status, error) {
             alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);

@@ -31,9 +31,9 @@ public class MylastpwdchangedateJSON extends AbstractController {
 
 	    // 결과가 있을 경우 처리
 	    if (mvo != null) {
-	        jsonObj.put("pwdChangeDate", mvo.getLastpwdchangedate());
+	        jsonObj.put("lastpwdchangedate", mvo.getLastpwdchangedate());
 	    } else {
-	        jsonObj.put("pwdChangeDate", "정보 없음");
+	        jsonObj.put("lastpwdchangedate", "정보 없음");
 	    }
 
 	    // JSON 응답으로 반환

@@ -3,6 +3,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <%
 String ctxPath = request.getContextPath();
@@ -16,6 +17,8 @@ String ctxPath = request.getContextPath();
 <%-- h3 a태그의 이모티콘 --%>
 <script src="https://kit.fontawesome.com/0c69fdf2c0.js"
 	crossorigin="anonymous"></script>
+	
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/mypage/mypage.js"></script> 
 
 <%-- 전체 창 --%>
 <div class="my_container">
@@ -72,8 +75,7 @@ String ctxPath = request.getContextPath();
 					<a href="<%=ctxPath%>/mypage/myreservationlist.mp"
 						class="my_section_title">나의 예매내역</a> <a
 						href="<%=ctxPath%>/mypage/myreservationlist.mp"><i
-						class="fa-solid fa-square-plus"
-						style="color: #ccc5b9; margin-right: 8px;"> </i></a>
+						class="fa-solid fa-square-plus"> </i></a>
 				</h3>
 
 				<div class="my_box_list">
@@ -87,7 +89,7 @@ String ctxPath = request.getContextPath();
 									<div class="sect-viw-rated">
 
 										<!-- 예매번호 -->
-										<p class="reservation_number">예매번호: ${reservation.imp_uid}
+										<p class="reservation_number">예매번호: ${fn:replace(reservation.imp_uid, 'imp_', '')}
 											(${reservation.pay_success_date})</p>
 
 										<!-- 포스터 이미지 -->
@@ -111,7 +113,8 @@ String ctxPath = request.getContextPath();
 
 										<!-- 버튼 -->
 										<div class="reservation_actions">
-											<button type="button" class="btn">예매 취소</button>
+											<button type="button" class="Receipt_Printing"  onclick="Receipt_Printing('${reservation.imp_uid}','<%=ctxPath%>' )">영수증 출력</button>
+											<div id="Receipt_Printing_model"></div>
 										</div>
 
 									</div>
@@ -135,8 +138,7 @@ String ctxPath = request.getContextPath();
 					<a href="<%=ctxPath%>/mypage/mymoviewatched.mp"
 						class="my_section_title">내가 본 영화</a> <a
 						href="<%=ctxPath%>/mypage/mymoviewatched.mp"><i
-						class="fa-solid fa-square-plus"
-						style="color: #ccc5b9; margin-right: 8px;"> </i></a>
+						class="fa-solid fa-square-plus "> </i></a>
 				</h3>
 
 				<div class="my_box_list">
@@ -190,8 +192,7 @@ String ctxPath = request.getContextPath();
 					<a href="<%=ctxPath%>/mypage/mymoviereview.mp"
 						class="my_section_title">내가 쓴 평점</a> <a
 						href="<%=ctxPath%>/mypage/mymoviereview.mp"><i
-						class="fa-solid fa-square-plus"
-						style="color: #ccc5b9; margin-right: 8px;"> </i></a>
+						class="fa-solid fa-square-plus"> </i></a>
 				</h3>
 				<div class="my_box_list">
 
@@ -258,8 +259,7 @@ String ctxPath = request.getContextPath();
 					<a href="<%=ctxPath%>/mypage/mymovielike.mp"
 						class="my_section_title">기대되는 영화</a> <a
 						href="<%=ctxPath%>/mypage/mymovielike.mp"><i
-						class="fa-solid fa-square-plus"
-						style="color: #ccc5b9; margin-right: 8px;"> </i></a>
+						class="fa-solid fa-square-plus"> </i></a>
 				</h3>
 
 				<div class="my_box_list">

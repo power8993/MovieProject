@@ -2,6 +2,7 @@
 
 div.my_box_list {
 	margin-bottom: 50px;
+
 }
 
 div.my_box_list>h3.title0 {
@@ -38,6 +39,7 @@ div.reservation_box {
 	border: 2px solid #ddd;
 	padding: 16px;
 	margin-bottom: 20px;
+	height: 280px; 
 }
 /*///////////////////////////////////////////////////////////////////////////////////*/
 /* 포스터 */
@@ -69,6 +71,7 @@ h2.reservation_h2 {
 /* 영화제목 */
 h2.reservation_h2 a {
 	color: black;
+	padding-left: 30px;
 }
 
 /* 가격 */
@@ -96,7 +99,7 @@ div.reservation_details>ul>li>dl>dd.start_time {
 div.reservation_details>ul>li>dl {
 	display: flex;
 	margin: 0;
-	padding: 4px 0;
+	padding: 0;
 }
 
 div.reservation_details>ul>li>dl>dt {
@@ -111,11 +114,12 @@ div.reservation_details>ul>li>dl>dt>dd {
 }
 
 div.reservation_actions {
-	margin-top: 16px;
 	text-align: right;
-	display: flex;
-	justify-content: flex-end;
-	gap: 8px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: -26px;
 }
 
 div.reservation_actions>button {
@@ -163,9 +167,10 @@ div.movie_status table th {
 	border-bottom: solid 1px #ccc5b9;
 }
 
-div.movie_status table tr:nth-child(even) {
-	background-color: #f9f9f9;
+div.movie_status table tr {
+	border-bottom: solid 1px #ccc5b9;
 }
+
 
 div.movie_status table td {
 	color: #555;

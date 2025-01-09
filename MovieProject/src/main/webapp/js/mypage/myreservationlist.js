@@ -32,6 +32,7 @@ function myreservation_cancel(imp_uid,seq_showtime_no,userid) {
 				if (json.n == 1) {
 					// 삭제 성공 후 수정 모달 띄우기
 					myreservation_cancel_Modal();
+					location.reload();
 				} else {
 					alert("삭제 실패. 다시 시도해 주세요.");
 					

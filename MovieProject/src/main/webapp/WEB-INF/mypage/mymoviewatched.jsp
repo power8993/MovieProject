@@ -15,6 +15,9 @@ String ctxPath = request.getContextPath();
 <%-- 직접 만든 CSS --%>
 <link rel="stylesheet" type="text/css"
 	href="<%=ctxPath%>/css/mypage/mypagemovie.css" />
+	<%-- 직접 만든 CSS --%>
+<link rel="stylesheet" type="text/css"
+	href="<%=ctxPath%>/css/mypage/mymoviewatched.css" />
 <%-- h3 a태그의 이모티콘 --%>
 <script src="https://kit.fontawesome.com/0c69fdf2c0.js"
 	crossorigin="anonymous"></script>
@@ -80,6 +83,7 @@ String ctxPath = request.getContextPath();
 					<c:if test="${not empty requestScope.mymoviewatchedList}">
 						<ul>
 							<c:forEach var="watched" items="${requestScope.mymoviewatchedList}">
+							<li class="my_main_watchedmovie_card">
 							<!-- 포스터 이미지 -->
 							<div class="my_main_moviewatchedList_poster">
 								<a
@@ -99,6 +103,7 @@ String ctxPath = request.getContextPath();
 								<li> ${watched.tvo.seat_count}명</li>
 							</ul>
 							</div>
+							</li>
 							</c:forEach>
 						</ul>
 					</c:if>
