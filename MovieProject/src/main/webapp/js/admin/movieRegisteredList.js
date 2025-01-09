@@ -116,7 +116,7 @@ $(document).ready(function(){
 					                                    <div class="modal-footer">
 															<button type="button" class="btn btn-success" id="register_button" style="margin-right: auto;">상영일정 등록</button>
 					                                        <button type="button" class="btn btn-primary" id="edit_button">수정하기</button>
-					                                        <button type="button" class="btn btn-danger" id="delete_button">상영중지</button>
+					                                        ${''/* <button type="button" class="btn btn-danger" id="delete_button">상영중지</button> */} 
 					                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 					                                    </div>
 					                                </div>

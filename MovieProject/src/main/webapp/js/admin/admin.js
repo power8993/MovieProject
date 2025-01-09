@@ -16,8 +16,8 @@ $(document).ready(function(){
 			success: function(json) {
 				// console.log(json);
 				
-				$("div#today_visit_cnt").text(json.today_visit_cnt+" 명");
-				$("div#total_visit_cnt").text(json.total_visit_cnt+" 명");
+				$("div#today_visit_cnt").text(json.today_visit_cnt.toLocaleString()+" 명");
+				$("div#total_visit_cnt").text(json.total_visit_cnt.toLocaleString()+" 명");
 				$("div#today_pay_sum").text(json.today_pay_sum.toLocaleString()+" 원");
 				$("div#total_pay_sum").text(json.total_pay_sum.toLocaleString()+" 원");
 			},
@@ -225,7 +225,7 @@ $(document).ready(function(){
 										// 결제 금액 표시
 										const dateIndex = tooltipItem.dataIndex;  // 마우스를 올린 날짜의 인덱스
 										const payAmount = day_pay_sum[dateIndex];     // 해당 날짜의 결제 금액
-										return '결제 금액: ' + payAmount + ' 원';    // 결제 금액만 툴팁에 표시
+										return '결제 금액: ' + payAmount.toLocaleString() + ' 원';    // 결제 금액만 툴팁에 표시
 									}
 								}
 							}
@@ -330,7 +330,7 @@ $(document).ready(function(){
 	                                label: function(tooltipItem) {
 	                                    const dateIndex = tooltipItem.dataIndex;
 	                                    const payAmount = month_pay_sum[dateIndex];
-	                                    return '결제 금액: ' + payAmount + ' 원';
+	                                    return '결제 금액: ' + payAmount.toLocaleString() + ' 원';
 	                                }
 	                            }
 	                        }
@@ -439,7 +439,7 @@ $(document).ready(function(){
 	                                label: function(tooltipItem) {
 	                                    const dateIndex = tooltipItem.dataIndex;
 	                                    const payAmount = year_pay_sum[dateIndex];
-	                                    return '결제 금액: ' + payAmount + ' 원';
+	                                    return '결제 금액: ' + payAmount.toLocaleString() + ' 원';
 	                                }
 	                            }
 	                        }
@@ -531,7 +531,7 @@ $(document).ready(function(){
 	                                label: function(tooltipItem) {
 	                                    const dateIndex = tooltipItem.dataIndex;
 	                                    const visitAmount = visited_cnt[dateIndex];
-	                                    return '방문자 수 ' + visitAmount + ' 명';
+	                                    return '방문자 수 ' + visitAmount.toLocaleString() + ' 명';
 	                                }
 	                            }
 	                        }

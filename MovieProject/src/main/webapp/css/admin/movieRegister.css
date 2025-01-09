@@ -144,6 +144,16 @@ button#reset_btn {
    	font-size: 13pt;
 }
 
+button#resister_btn:hover {
+	background-color: #e14e15;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+button#reset_btn {
+	background-color: #b1a794;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /*#########*/
 /*   모달   */

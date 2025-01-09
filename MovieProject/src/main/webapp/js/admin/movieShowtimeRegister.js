@@ -242,7 +242,7 @@ $(document).ready(function(){
 	$("button[id='showtime_resister_btn']").click(function(e) {
 		
 		if (!showtime_select_btn_click) {
-			alert("[상영시간 조회하기] 버튼을 클릭하여 상영시간 중첩 여부를 먼저 확인해주세요!");
+			alert("[상영시간 조회하기] 버튼을 클릭하여 \n상영시간 중첩 여부를 먼저 확인해주세요!");
 			
 			e.preventDefault();  // 폼 제출을 막음
 			return;  // 나머지 검사 생략

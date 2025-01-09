@@ -209,11 +209,41 @@ $(document).ready(function(){
 	            }
 			});// end of $.ajax({});-------------------
 		}
-		
 		       
 	});// end of $("table#memberTbl tr.memberInfo").click( e => {})----------------------------
 	
 	// === 특정 회원을 클릭하면 그 회원의 상세정보를 보여주기 끝  === //
+	
+	
+	
+	// === 토글버튼을 클릭하여 가입/탈퇴 회원만 보여주기 시작  === //
+	$("label.toggleSwitch").click( function(e) {
+		
+		var label_value = $(this).attr('data-value');
+		//console.log("현재 data-value 값: " + label_value);
+		
+		
+		if(label_value == "1" || !label_value) {
+			$(this).addClass('active');
+			$(this).attr('data-value', '0');
+
+			$("input[name='member_status']").val("0");
+		}
+		else if (label_value == "0") {
+			$(this).removeClass('active');
+			$(this).attr('data-value', '1');
+			
+			$("input[name='member_status']").val("1");
+		}
+		
+		const frm = document.member_search_frm
+		// frm.action = "memberList.mp";
+		// frm.method = "get";
+		
+		frm.submit();
+		
+	} );// end of $("label.toggleSwitch").click( e => {} )------------------------
+	// === 토글버튼을 클릭하여 가입/탈퇴 회원만 보여주기 끝   === //
 		
 });// end of $(document).ready(function(){})------------------------------
 

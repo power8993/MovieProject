@@ -57,14 +57,14 @@
 					  <div class="form-row">
 					    <div class="col">
 					      <label for="director" class="info_text"><span class="star">*&nbsp;</span>감독</label>
-					      <input type="text" id="director" name="director" class="form-control" placeholder="감독 이름을 입력하세요" autocomplete="off">
+					      <input type="text" id="director" name="director" class="form-control" placeholder="감독 이름을 입력 후 엔터 키를 눌러 추가하세요." autocomplete="off">
 					      <div id="director_tags" class="d-flex flex-wrap mt-2">
 					        <!-- 감독 이름이 나열되는 곳 -->
 					      </div>
 					    </div>
 					    <div class="col">
 					      <label for="actor" class="info_text"><span class="star">*&nbsp;</span>배우</label>
-					      <input type="text" id="actor" name="actor" class="form-control" placeholder="배우 이름을 입력하세요" autocomplete="off">
+					      <input type="text" id="actor" name="actor" class="form-control" placeholder="배우 이름을 입력 후 엔터 키를 눌러 추가하세요." autocomplete="off">
 					      <div id="actor_tags" class="d-flex flex-wrap mt-2">
 					        <!-- 배우 이름이 나열되는 곳 -->
 					      </div>

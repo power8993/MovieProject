@@ -70,7 +70,8 @@ public class MovieRegister extends AbstractController {
 					int n = mvdao.registerMovie(movie);
 					
 					if(n == 1) {
-						
+						super.setRedirect(true); 
+				        super.setViewPage(request.getContextPath()+"/admin/movieRegisteredList.mp");
 					}
 					
 				} catch (SQLException e) {

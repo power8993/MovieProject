@@ -141,7 +141,14 @@ public class MemberDAO_imple_hongbi implements MemberDAO_hongbi {
 					   
 			String search_type = paraMap.get("search_type");
 			String search_word = paraMap.get("search_word");
+			String member_status = paraMap.get("member_status");
 			
+			if("1".equals(member_status)) {
+				sql += " and user_status = 1 ";
+			}
+			else if ("0".equals(member_status)) {
+				sql += " and user_status = 0 ";
+			}
 			
 			// 검색유형이 email 이라면 암호화 처리
 			if("email".equals(search_type)) {
@@ -215,6 +222,14 @@ public class MemberDAO_imple_hongbi implements MemberDAO_hongbi {
 			
 			String search_type = paraMap.get("search_type");
 			String search_word = paraMap.get("search_word");
+			String member_status = paraMap.get("member_status");
+			
+			if("1".equals(member_status)) {
+				sql += " and user_status = 1 ";
+			}
+			else if ("0".equals(member_status)) {
+				sql += " and user_status = 0 ";
+			}
 			
 			// 검색유형이 email 이라면 암호화 처리
 			if("email".equals(search_type)) {

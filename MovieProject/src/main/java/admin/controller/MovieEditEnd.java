@@ -68,8 +68,8 @@ public class MovieEditEnd extends AbstractController {
 					int n = mvdao.updateMovie(movie);
 					
 					if(n == 1) {
-						super.setRedirect(false); 
-				        super.setViewPage("/WEB-INF/admin/movieRegisteredList.jsp");
+						super.setRedirect(true); 
+				        super.setViewPage(request.getContextPath()+"/admin/movieRegisteredList.mp");
 					}
 					
 				} catch (SQLException e) {

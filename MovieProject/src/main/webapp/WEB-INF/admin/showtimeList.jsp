@@ -94,12 +94,12 @@ $(document).ready(function(){
     var invalid_showtime = $("input[name='invalid_showtime']").val();
 	
     // 페이지 로딩 시 활성화된 버튼에 css 부여
-    if (invalid_showtime == '상영예정작') {
-    	$("span#invalid_showtime").text("상영예정작");
-        $('span#invalid_showtime').css({ 'background-color': '#403D39' });
-    } else if (invalid_showtime == '상영종료작') {
-    	$("span#invalid_showtime").text("상영종료작");
-        $('span#invalid_showtime').css({ 'background-color': '#CCC5B9' });
+    if (invalid_showtime == '상영예정') {
+    	$("span#invalid_showtime").text("상영예정");
+    	$("label.toggleSwitch").addClass('active');
+    } else if (invalid_showtime == '상영종료') {
+    	$("span#invalid_showtime").text("상영종료");
+    	$("label.toggleSwitch").removeClass('active');
     }
     
 
@@ -149,7 +149,10 @@ $(document).ready(function(){
 		<div id="search_result">
 			<div class="btn_container">
 				<span class="re_orderby" id="re_asc">시간 빠른 순</span>&nbsp;<span class="re_orderby" id="re_desc">시간 늦은 순</span>
-				<span id="invalid_showtime" onclick="toggleShowtimeInvalidStatus()">상영예정작</span>
+				<label class="toggleSwitch" onclick="toggleShowtimeInvalidStatus()">
+					<span class="toggleButton"></span>
+					<span class="toggleText" id="invalid_showtime">상영예정</span>
+				</label>
 			</div>
 				<table class="table table-bordered" id="showtime_table">
 				<thead>
