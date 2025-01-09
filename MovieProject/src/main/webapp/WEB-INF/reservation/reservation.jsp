@@ -50,6 +50,8 @@ $(document).ready(function(){
 				let v_html = '<img src="http://localhost:9090/MovieProject/images/admin/poster_file/미니언즈.jpg" style="width:auto; height:110px;">';
 				$("div#movie-choice-poster").html(v_html);
 				$("div#movie-choice-poster").show();
+				
+				$("div#empty_div").css('width','130px');
 				return false;
 			}
 		});
@@ -210,16 +212,17 @@ $(document).ready(function(){
 							<button type="button" class="btn youth" value="5">5</button>
 						</div>
 					</div>
+					<div id="point">
+						<div>포인트 사용</div>
+						<input id="using-point" type="number" step="100" min="0" value="0" placeholder="point를 입력해주세요" />
+						<div>보유중인 point : <label id="having-point"></label></div>
+					</div>
 					<div id="screen-info">
 						<div id="screen-date-info"></div>
 						<div id="screen-time-info"></div>
 						<div id="total_seat_cnt" style="display: none;">0</div>
 						<div id="selected_seat_cnt" style="display: none;">0</div>
 						<div id="totalPrice" style="display: none;"></div>
-					</div>
-					<div id="point">
-						<input id="using-point" type="number" step="100" min="0" value="0" placeholder="point를 입력해주세요" />
-						<div>보유중인 point : <label id="having-point"></label></div>
 					</div>
 				</div>
 				<div id="seat-screen" class="text-center">
@@ -244,6 +247,7 @@ $(document).ready(function(){
 				</div>
 				<div id="seat-choice">좌석선택</div>
 				<div id="pay-choice">예약정보</div>
+				<div id="empty_div" style="width: 230px"></div>
 				
 				<div id="goSeatChoice" class="bg-dark" onclick="goSeatChoice('${sessionScope.loginuser.userid}', '${sessionScope.loginuser.birthday}')" style="border: solid 2px gray; border-radius: 10px; width:110px; cursor: pointer;">
 					<i class="fa-solid fa-circle-right fa-3x my-2"></i>
