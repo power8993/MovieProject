@@ -221,7 +221,8 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 	                 "    FROM TBL_PAYMENT p " +
 	                 ") " +
 	                 "SELECT m.SEQ_MOVIE_NO, m.FK_CATEGORY_CODE, c.CATEGORY AS category_name, " +
-	                 "       m.MOVIE_TITLE, m.CONTENT, m.DIRECTOR, m.ACTOR, m.MOVIE_GRADE, m.RUNNING_TIME, m.LIKE_COUNT, " +
+	                 "       case when length(movie_title) < 10 then movie_title else substr(movie_title, 0, 10) || '...' end as movie_title, " +
+	                 " m.CONTENT, m.DIRECTOR, m.ACTOR, m.MOVIE_GRADE, m.RUNNING_TIME, m.LIKE_COUNT, " +
 	                 "       TO_CHAR(m.START_DATE, 'yyyy-MM-dd') AS start_date, m.POSTER_FILE, m.VIDEO_URL, " +
 	                 "       COALESCE(mp.movie_payment_count, 0) AS movie_payment_count, " +
 	                 "       COALESCE(tp.total_payment_count, 1) AS total_payment_count, " +
@@ -324,7 +325,9 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 	                 "    SELECT COUNT(p.IMP_UID) AS total_payment_count " +
 	                 "    FROM TBL_PAYMENT p " +
 	                 ") " +
-	                 "SELECT m.SEQ_MOVIE_NO, m.MOVIE_TITLE, m.RUNNING_TIME, " +
+	                 "SELECT m.SEQ_MOVIE_NO," +
+	                 "       case when length(movie_title) < 10 then movie_title else substr(movie_title, 0, 10) || '...' end as movie_title," +
+	                 " m.RUNNING_TIME, " +
 	                 "       TO_CHAR(m.START_DATE, 'yyyy-MM-dd') AS start_date, " +
 	                 "       TO_CHAR(m.END_DATE, 'yyyy-MM-dd') AS end_date, m.POSTER_FILE, " +
 	                 "       c.CATEGORY, m.MOVIE_GRADE, " +
@@ -393,7 +396,9 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 	                 "    SELECT COUNT(p.IMP_UID) AS total_payment_count " +
 	                 "    FROM TBL_PAYMENT p " +
 	                 ") " +
-	                 "SELECT m.SEQ_MOVIE_NO, m.MOVIE_TITLE, m.RUNNING_TIME, " +
+	                 "SELECT m.SEQ_MOVIE_NO,"+
+	                 "       case when length(movie_title) < 10 then movie_title else substr(movie_title, 0, 10) || '...' end as movie_title," +
+	                 "m.RUNNING_TIME, " +
 	                 "       TO_CHAR(m.START_DATE, 'yyyy-MM-dd') AS start_date, " +
 	                 "       TO_CHAR(m.END_DATE, 'yyyy-MM-dd') AS end_date, m.POSTER_FILE, " +
 	                 "       c.CATEGORY, m.MOVIE_GRADE, " +
@@ -459,7 +464,9 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 	                 "    SELECT COUNT(p.IMP_UID) AS total_payment_count " +
 	                 "    FROM TBL_PAYMENT p " +
 	                 ") " +
-	                 "SELECT m.SEQ_MOVIE_NO, m.MOVIE_TITLE, m.RUNNING_TIME, " +
+	                 "SELECT m.SEQ_MOVIE_NO,"+
+	                 "       case when length(movie_title) < 10 then movie_title else substr(movie_title, 0, 10) || '...' end as movie_title," +
+	                  " m.RUNNING_TIME, " +
 	                 "       TO_CHAR(m.START_DATE, 'yyyy-MM-dd') AS start_date, " +
 	                 "       TO_CHAR(m.END_DATE, 'yyyy-MM-dd') AS end_date, m.POSTER_FILE, " +
 	                 "       c.CATEGORY, m.MOVIE_GRADE, " +
@@ -536,7 +543,7 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 	                     "JOIN tbl_movie m ON s.fk_seq_movie_no = m.seq_movie_no " +
 	                     "JOIN tbl_category c ON m.fk_category_code = c.category_code " + // 장르 조인
 	                     "JOIN tbl_screen sc ON s.fk_screen_no = sc.screen_no " + // 상영관 테이블 조인 추가
-	                     "WHERE TO_CHAR(s.start_time, 'yyyy-MM-dd') = ? " +
+	                     "WHERE TO_CHAR(s.start_time, 'yyyy-MM-dd') = ? and s.start_time > sysdate " +
 	                     "ORDER BY s.start_time ASC";
 
 	        pstmt = conn.prepareStatement(sql); // PreparedStatement 생성
@@ -608,7 +615,7 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 	                     " fk_screen_no " +
 	                     " FROM tbl_showtime s " +
 	                     " JOIN tbl_movie m ON s.fk_seq_movie_no = m.seq_movie_no " +	                     
-	                     " WHERE TO_CHAR(s.start_time, 'yyyy-MM-dd') = ? AND s.fk_screen_no = 1 " +
+	                     " WHERE TO_CHAR(s.start_time, 'yyyy-MM-dd') = ? AND s.fk_screen_no = 1 and s.start_time > sysdate " +
 	                     " ORDER BY s.start_time ASC ";
 
 	        pstmt = conn.prepareStatement(sql); // PreparedStatement 생성
@@ -669,7 +676,7 @@ public class MovieDAO_imple_yeo implements MovieDAO_yeo {
 		                     " fk_screen_no " +
 		                     " FROM tbl_showtime s " +
 		                     " JOIN tbl_movie m ON s.fk_seq_movie_no = m.seq_movie_no " +		                     
-		                     " WHERE TO_CHAR(s.start_time, 'yyyy-MM-dd') = ? AND s.fk_screen_no = 2 " +
+		                     " WHERE TO_CHAR(s.start_time, 'yyyy-MM-dd') = ? AND s.fk_screen_no = 2 and s.start_time > sysdate " +
 		                     " ORDER BY s.start_time ASC ";
 
 		        pstmt = conn.prepareStatement(sql); // PreparedStatement 생성

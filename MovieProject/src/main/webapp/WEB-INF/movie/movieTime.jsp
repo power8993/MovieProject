@@ -43,20 +43,20 @@
     .date-button { 
         margin: 0 5px; /* 좌우 여백 설정 */
         padding: 10px 20px; /* 버튼 안쪽 여백 설정 */
-        border: 1px solid #EB5E28; /* 테두리를 회색으로 설정 */
+        border: 1px solid #F5F5F5; /* 테두리를 회색으로 설정 */
         border-radius: 5px; /* 버튼의 모서리를 둥글게 설정 */
-        background-color: #FFFCF2; /* 버튼 배경 색상을 연한 회색으로 설정 */
+        background-color: #fff; /* 버튼 배경 색상을 연한 회색으로 설정 */
         cursor: pointer; /* 커서를 포인터로 변경 */
         font-size: 16px; /* 버튼 텍스트 크기 설정 */
         transition: background-color 0.3s ease; /* 배경 색상 변화에 부드러운 전환 효과 추가 */
-        color: #EB5E28;
+        color: black;
     }
 
     /* 선택된 날짜 버튼 스타일 */
     .date-button.active { 
-        background-color: #EB5E28; /* 활성화된 버튼의 배경 색상 설정 (파란색) */
-        color: #FFFCF2; /* 텍스트 색상을 흰색으로 변경 */
-        border-color: #FFFCF2; /* 테두리 색상도 파란색으로 설정 */
+        background-color: #EB5E28; 
+        color: #FFFCF2; 
+        border-color: #fff; 
     }
 
     /* 날짜 버튼에 마우스를 올릴 때 스타일 */
@@ -129,6 +129,7 @@
         display: flex; /* 버튼들을 가로로 정렬 */
         justify-content: center; /* 버튼들을 컨테이너 중앙에 정렬 */
         margin-top: 20px; /* 위쪽 여백 추가 */
+        
     }
 
     /* 개별 페이지 이동 버튼 스타일 */
@@ -279,7 +280,7 @@
     <hr>
     <div class="date-selector">
         <% if (pageIndex > 0) { %>
-            <button type="button" class="pagination-button" onclick="changePage(<%= pageIndex - 1 %>)"><i class="fa-solid fa-star"></i></button>
+            <button type="button" class="pagination-button" onclick="changePage(<%= pageIndex - 1 %>)"><i class="fa-solid fa-caret-left" style="font-size: 24px; line-height: 1;"></i></button>
         <% } %>
         <% 
         for (int day = startDay; day <= endDay && day <= daysInMonth; day++) {
@@ -296,7 +297,7 @@
             </button>
         <% } %>
         <% if (endDay < daysInMonth) { %>
-            <button type="button" the class="pagination-button" onclick="changePage(<%= pageIndex + 1 %>)"><i class="fa-solid fa-star" ></i></button>
+            <button type="button" the class="pagination-button" onclick="changePage(<%= pageIndex + 1 %>)"><i class="fa-solid fa-caret-right"style="font-size: 24px; line-height: 1;"></i></button>
         <% } %>
     </div>
 

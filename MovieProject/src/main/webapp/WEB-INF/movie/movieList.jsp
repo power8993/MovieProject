@@ -47,14 +47,14 @@
 
         .genre-filter a {
             margin-right: 20px;
-            color: #EB5E28;
+            color: black;
             text-decoration: none;
         }
 
         .genre-filter a:hover {
-            text-decoration: underline;
-            color: red;
+            color: #EB5E28;
             transform: translateY(-5px);
+            border: 1px solid #EB5E28;
         }
 
         /* 장르 필터 폼 스타일 */
@@ -131,13 +131,12 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease-in-out;
+            
         }
 
         /* 마우스를 올리면 상세보기 버튼 보이기 */
         .movie-card:hover .view-details-btn {
             display: block;
-            
         }
 
         /* 상세보기 버튼 hover 효과 */
@@ -185,6 +184,7 @@
             position: absolute;
             top: 10px;
             left: 10px;
+            z-index: 10; /* 다른 요소보다 위에 표시되도록 설정 */
         }
 
         /* 숨김 클래스 */
@@ -219,8 +219,24 @@
             font-size: 1.2rem;
             color: #999;
             margin-top: 2rem;
-            margin : auto;
+            margin: auto;
         }
+        .genre-filter a.bold {
+	        background-color: #FFFCF2;
+	        color: #EB5E28;
+	        text-decoration: underline;
+        
+	    }
+	   .movie-details p {
+   		 margin: 0;
+		}
+
+		.movie-details p + p {
+		    margin-top: 4px; /* 예매율과 개봉일 간의 간격 */
+		}
+        
+        
+        
     </style>
 </head>
 <body>
@@ -230,7 +246,7 @@
         <div class="filter-container">
             <div class="page-title">전체 영화</div>
             <div class="genre-filter">
-                <a href="<%= ctxPath %>/movie/movieList.mp">▶ 전체 영화</a>
+                <a href="<%= ctxPath %>/movie/movieList.mp" class="bold">전체 영화</a>
                 <a href="<%= ctxPath %>/movie/runningMovies.mp">상영중인 영화</a>
                 <a href="<%= ctxPath %>/movie/upcomingMovies.mp">상영 예정작</a>
             </div>
@@ -254,10 +270,8 @@
                     <div class="col-md-4 mb-4 movie-card-container ${status.index >= 15 ? 'hidden' : ''}">
                         <div class="movie-card position-relative">
                             <div class="rank">No. ${status.index + 1}</div>
-                            <div class="poster">
-                                
-                               <img src="<%= ctxPath %>/images/admin/poster_file/미니언즈.jpg">
-                              
+                            <div class="poster">                  
+                                <img src="<%= ctxPath %>/images/admin/poster_file/${movie.poster_file}.jpg">
                             </div>
                             <button class="view-details-btn" onclick="location.href='<%= ctxPath %>/movie/movieDetail.mp?seq_movie_no=${movie.seq_movie_no}&bookingRate=${movie.bookingRate}'">상세보기</button>
                             <div class="movie-details">
@@ -267,20 +281,20 @@
                                          style="width: 30px; height: 30px; margin-right: 10px;">
                                     ${movie.movie_title}
                                 </div>
-                                <p>예매율: ${movie.bookingRate}%<br>개봉일: ${movie.start_date}</p>
+                                <p>예매율: ${movie.bookingRate}%</p>
+                                <p>개봉일: ${movie.start_date}</p>
                                 <button class="reservation-btn">
-                                    <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie.seq_movie_no}" style="color: white; text-decoration: none;">예매하기</a>
+                                    <a href="<%= ctxPath %>/reservation/reservation.mp?seq_movie_no=${movie.seq_movie_no}" 
+                                       style="color: white; text-decoration: none;">예매하기</a>
                                 </button>
                             </div>
                         </div>
                     </div>
                 </c:forEach>
             </c:if>
-            <div>
             <c:if test="${movies == null || empty movies}">
-               <p class="no-data" style="color: #EB5E28;  font-weight: bold; font-size: 2rem; /* 더 큰 글씨 크기 */">해당장르의 영화가 없습니다.<br><img src="<%= ctxPath %>/images/index/logo.png"></p>
+                <p class="no-data" style="color: #EB5E28; font-weight: bold; font-size: 2rem;">해당 장르의 영화가 없습니다.<br><img src="<%= ctxPath %>/images/index/logo.png"></p>
             </c:if>
-            </div>
         </div>
 
         <c:if test="${movies != null && movies.size() > 15}">
