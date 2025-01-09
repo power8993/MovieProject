@@ -546,6 +546,10 @@ color:#252422;
     transition: opacity 0.5s, transform 0.5s;
     z-index: 99;
 }
+#scroll-btn:hover{
+	border: solid 1px #eb5e28;
+	transition: 0.3 s;
+}
 
 #scroll-btn.show {
     opacity: 1;
