@@ -19,22 +19,37 @@ div.my_container>div.my_main {
 }
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /* 마이페이지 나의 프로필장 */
-body>div.my_container>div.myprofile {
-	/* border: solid 1px black;   */
+body > div.my_container > div.myprofile {
+	/* border: solid 1px black; */
 	height: 250px;
 	padding: 35px;
 	background-color: #ccc5b9;
 }
 
-div.profile-container {
+body > div.my_container > div.myprofile > div.profile-container {
+	/* border: solid 1px black; */
 	display: flex;
 	align-items: center;
-	gap: 35px;
+	gap: 25px;
 }
 
-div.profile-container>i.fa-circle-user {
+body > div.my_container > div.myprofile > div.profile-container > div.profile-photo-container {
+	/* border: solid 1px black; */
+}
+
+div.profile-container>div.profile-photo-container>i.fa-circle-user {
 	font-size: 150px;
-	padding: 20px;
+	margin-bottom: 10px;
+}
+
+div.profile-container>div.profile-photo-container>button.profile_Edit {
+	display: block;
+	font-size: 16px;
+	border: none;
+	border-radius: 2px;
+	cursor: pointer;
+	margin-bottom: 10px;
+	margin-left: 25px;
 }
 
 div.profile-info h2 {
@@ -208,6 +223,7 @@ div.empty-message {
 body>div.my_container>div.my_main>div.mypage_main_content>div>div>ul.mypage_main_List
 	{
 	/* border: 1px solid #ccc5b9; */
+	
 }
 
 /*데이터값 css 하나값 영역*/

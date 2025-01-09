@@ -34,6 +34,8 @@ public class MymovielikeJSON extends AbstractController {
 	      
 	      List<MovieLikeVO> mymovielikeList = mydao.selectBymymovielike(paraMap);
 	      
+	      
+	      
 	      JSONArray jsonArr = new JSONArray();
 	      
 	      if (mymovielikeList.size() > 0) {

@@ -96,7 +96,7 @@ String ctxPath = request.getContextPath();
 
 							<tr>
 								<td id="tblEditcss">비밀번호</td>
-								<td><button type="button" class="mypagepwdcss"  onclick="mypasswdFind_update()">비밀번호 변경</button>
+								<td><button type="button" class="mypagepwdcss"  onclick="mypasswdFind_update('${sessionScope.loginuser.userid}','<%=ctxPath%>')">비밀번호 변경</button>
 									<div id="passwdFind_modal"></div> <%-- 비번변경 모달창 --%>
 									<div id="lastpwdchangedate"></div> <%-- 비번변경날짜 모달창 --%>
 									 </td>	

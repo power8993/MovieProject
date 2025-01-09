@@ -67,6 +67,7 @@ public class SmsSend extends AbstractController {
 			String mobile = request.getParameter("mobile");
 			
 			if (mobile == null || !mobile.matches("\\d{10,11}")) {// 잘못된 전화번호 형식
+				System.out.println("잘못된 전화번호 형식입니다.");
 			    return;
 			}
 			

@@ -1,22 +1,25 @@
 function lastpwdchangedate() {
-
-	$.ajax({
-		url: "mylastpwdchangedateJSON.mp",
-		data: { "userid": $("input#userid").val() },
-		dataType: "json",
-		success: function(json) {
-			console.log("~~ 확인용 json =>", json);
-
-			$("div#lastpwdchangedate").text(json.pwdChangeDate); // 서버에서 받은 값 표시
-
-		},
-		error: function(request, status, error) {
-			alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
-		}
-
-	});
-
+    $.ajax({
+        url: "mylastpwdchangedateJSON.mp",  // 서버 URL
+        data: { "userid": $("input#userid").val() },  // 사용자 ID를 서버에 전송
+        dataType: "json",  // 응답 데이터 타입
+        success: function(json) {
+            console.log("~~ 확인용 json =>", json);
+            
+            // 서버에서 받은 비밀번호 변경일을 표시
+            // json이 배열이라면 첫 번째 항목의 pwdChangeDate를 사용
+            if (json.length > 0) {
+                $("div#lastpwdchangedate").text(json[0].pwdChangeDate); 
+            } else {
+                $("div#lastpwdchangedate").text("비밀번호 변경 정보 없음");
+            }
+        },
+        error: function(request, status, error) {
+            alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+        }
+    });
 };
+
 
 let b_emailcheck_click = false;
 // "이메일중복확인" 을 클릭했는지 클릭을 안했는지 여부를 알아오기 위한 용도
@@ -196,7 +199,7 @@ function goEdit() {
 }
 
 
-function mypasswdFind_update() {
+function mypasswdFind_update(userid, ctxPath) {
 	const mypasswdFind = $("div#passwdFind_modal"); // 모달을 넣을 위치	
 
 	const modal_popup = `
@@ -213,7 +216,23 @@ function mypasswdFind_update() {
 	            <!-- Modal body -->
 	            <div class="modal-body">
 	                <div id="pwFind">
-	                    <iframe style="border: none; width: 100%; height: 350px;" src="/MovieProject/mypage/myuppwdEdit.mp"></iframe>
+					<form name="pwdUpdateEndFrm">
+					         <div class="div_pwd" style="text-align: center;">
+					            <span style="color: blue; font-size: 12pt;">새암호</span><br/> 
+					            <input type="password" name="pwd" size="25" />
+					         </div>
+					         
+					         <div class="div_pwd" style="text-align: center;">
+					              <span style="color: blue; font-size: 12pt;">새암호확인</span><br/>
+					            <input type="password" id="pwd2" size="25" />
+					         </div>
+					         
+					         <input type="hidden" name="userid" value="${userid}" />
+					   
+					         <div style="text-align: center;">
+					            <button type="button" class="btn btn-success">암호변경하기</button>
+					         </div>
+					      </form>
 	                </div>
 	            </div>
 	            <!-- Modal footer -->
@@ -225,9 +244,71 @@ function mypasswdFind_update() {
 	</div>`;
 
 	mypasswdFind.html(modal_popup); // 모달 HTML 삽입
+	
+	// 모달을 열 때 aria-hidden과 inert 설정
+	  $('#passwdFind').on('shown.bs.modal', function () {
+	      $(this).attr('aria-hidden', 'false').removeAttr('inert');
+	      // 모달이 열릴 때 첫 번째 포커스 가능한 요소로 포커스를 이동
+	      $(this).find('button:first').focus(); // 여기서 첫 번째 버튼에 포커스를 이동
+	  });
+
+	  // 모달을 닫을 때 aria-hidden과 inert 설정 및 포커스 관리
+	  $('#passwdFind').on('hidden.bs.modal', function () {
+	      $(this).attr('aria-hidden', 'true').attr('inert', 'true');
+	      // 모달을 닫은 후 포커스를 원래 위치로 되돌림 (예시: 모달을 여는 버튼)
+	      $('#openModalButton').focus(); // #openModalButton은 모달을 여는 버튼 ID로 가정
+	  });
 
 	// 모달을 표시
 	$('#passwdFind').modal('show'); // 모달 띄우기
+
+	$("button.btn-success").click(function() {
+		const pwd = $("input:password[name='pwd']").val();
+		const pwd2 = $("input:password[id='pwd2']").val();
+
+		if (pwd !== pwd2) {
+			alert("암호가 일치하지 않습니다.");
+			$("input:password[name='pwd']").val("");
+			$("input:password[id='pwd2']").val("");
+			return;
+		}
+
+		const regExpPwd = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).*$/;
+
+		if (!regExpPwd.test(pwd)) {
+			alert("암호는 8글자 이상 15글자 이하에 영문자, 숫자, 특수기호가 혼합되어야만 합니다.");
+			$("input:password[name='pwd']").val("");
+			$("input:password[id='pwd2']").val("");
+			return;
+		}
+		
+		// 실제 AJAX 요청 전에 로그로 확인
+		   console.log("AJAX 요청 보내기", {
+		       pwd: pwd,
+		       userid: $("input:hidden[name='userid']").val()
+		   });
+		
+		$.ajax({
+			url: "/mypage/myuppwdEdit.mp",
+			type: "post",
+			data: {
+				pwd: pwd,
+				userid: $("input:hidden[name='userid']").val()
+			},
+			dataType: "json",
+			success: function(json) {
+				console.log("서버 응답 성공:", json); // 서버 응답 확인
+				if (json.n == 1) {
+					$('#passwdFind').modal('hide'); // 모달 닫기
+					alert("비밀번호가 변경되었습니다.");
+				}
+			},
+			error: function(request, status, error) {
+				alert("code: " + request.status + "\n" + "message: " + request.responseText + "\n" + "error: " + error);
+			}
+		});
+	});
+
 }
 
 

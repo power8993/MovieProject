@@ -9,43 +9,42 @@
     <meta charset="UTF-8">
     <title>공지사항 작성</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .container {
-            width: 70%; /* 컨테이너 너비 */
-            margin: 0 auto;
-            background-color: #fffcf2;
-            padding: 20px;
-            border-radius: 8px;
-        }
-        .form-header {
-            margin-bottom: 20px;
-        }
         .form-header h3 {
-            font-size: 24px;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 18px;
+            margin-top: 20px;
         }
         .form-group {
             margin-bottom: 15px;
         }
         .form-group label {
-            font-size: 16px;
-            display: block;
-            margin-bottom: 5px;
-            background-color: #ccc5b9;
-    		color: #252422;
+            padding: 5px;
+    		background-color: #333;
+        	color: white;
+        	width: 100%;
+        	margin:0;
+        	font-size: 22px;
+        	border-radius: 4px; /* 테이블의 둥근 모서리 설정 */
         }
         .form-group input, .form-group textarea {
             width: 100%;
             padding: 10px;
             font-size: 16px;
-            border-radius: 5px;
-            border: 0px solid #ddd;
+            border-radius: 4px; /* 테이블의 둥근 모서리 설정 */
+            border: solid 1px #b8b6aa;
+            background-color: #fff;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #eb5e28; /* 주황색 포커스 */
+            box-shadow: 0 0 8px rgba(235, 94, 40, 0.5);
+            outline: none;
         }
         .form-group textarea {
-            resize: vertical;
-            height: 150px; /* 기본 텍스트 영역 높이 설정 */
+            padding: 20px 10px;
+		    line-height: 24px;
+		    height: 300px; /* 고정된 높이 설정 */
+		    overflow-y: auto; /* 내용이 넘치면 세로로 스크롤이 생김 */
         }
         .submit-btn {
             padding: 6px 17px;
@@ -67,7 +66,7 @@
 
 <div class="container">
     <div class="form-header">
-        <h3><i class="fa-solid fa-pen">공지사항 작성</i></h3>
+        <h3><i class="fa-solid fa-pen">&nbsp;공지사항 작성</i></h3>
     </div>
 
     <!-- 공지사항 작성 폼 -->
@@ -75,11 +74,9 @@
         <div class="form-group">
             <label for="notice_subject">공지사항 제목</label>
             <input type="text" id="notice_subject" name="notice_subject" placeholder="공지사항 제목을 입력하세요"  />
-        </div>
 
-        <div class="form-group">
             <label for="notice_content">공지사항 내용</label>
-            <textarea id="notice_content" name="notice_content" placeholder="공지사항 내용을 입력하세요"></textarea>
+            <textarea id="notice_content" name="notice_content" placeholder="공지사항 내용을 입력하세요" style="resize: none;"></textarea>
         </div>
 
         <div class="form-group" style="text-align: center;">
@@ -115,8 +112,8 @@ function gosubmit() {
         return false;  // 폼 제출을 막음
     }
 
-    if (notice_content.replace(/\r?\n/g, '<br>').length > 200) {
-        alert("내용은 200자 이하로 입력해주세요.");
+    if (notice_content.replace(/\r?\n/g, '<br>').length > 500) {
+        alert("내용은 500자 이하로 입력해주세요.");
         return false;  // 폼 제출을 막음
     }
 

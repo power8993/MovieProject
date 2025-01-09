@@ -83,10 +83,10 @@ $(document).ready(function(){
     // 페이지 로딩 시 활성화된 버튼에 css 부여
     if (invalid_movie == '상영작') {
     	$("span#invalid_movie").text("상영작");
-        $('span#invalid_movie').css({ 'background-color': '#403D39' });
+    	$("label.toggleSwitch").addClass('active');
     } else if (invalid_movie == '미상영작') {
     	$("span#invalid_movie").text("미상영작");
-        $('span#invalid_movie').css({ 'background-color': '#CCC5B9' });
+    	$("label.toggleSwitch").removeClass('active');
     }
     
 
@@ -149,7 +149,10 @@ $(document).ready(function(){
 		<div id="search_result">
 			<div class="btn_container">
 				<span class="re_orderby" id="re_desc">최신순</span>&nbsp;<span class="re_orderby" id="re_asc">등록순</span>
-				<span id="invalid_movie" onclick="toggleMovieInvalidStatus()">상영작</span>
+				<label class="toggleSwitch" onclick="toggleMovieInvalidStatus()">
+					<span class="toggleButton"></span>
+					<span class="toggleText" id="invalid_movie">상영작</span>
+				</label>
 			</div>
 			<table class="table table-bordered" id="movie_table">
 				<thead>

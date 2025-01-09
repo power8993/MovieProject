@@ -99,24 +99,41 @@ String ctxPath = request.getContextPath();
 								
 								 <!-- 리뷰 정보 -->
 									<div class="my_main_moviereview_box">
-									
-									<div class="my_moviereview_title">
-										<strong class="movie_title">${mrvo.mvo.movie_title}</strong>
-									</div>
+
+										<div class="my_moviereview_title">
+											<strong id="movie_title_${mrvo.seq_review_no}"
+												class="movie_title">${mrvo.mvo.movie_title}</strong>
+										</div>
 										<ul>
-										<li >${mrvo.fk_user_id} |</li>
-										<li> ${mrvo.review_write_date} </li>
+											<li>${mrvo.fk_user_id}|</li>
+											<li>${mrvo.review_write_date}</li>
 										</ul>
-											 <!-- 삭제 버튼 -->
-								<button type="button" class="mymoviereview_delete_btn"
-									onclick="mymoviereview_delete(event, seq_review_no)">×</button>
-									
-										
-									<p class="review_date movie_rating">${mrvo.movie_rating}</p>
-									<p class="review_date review_content">${mrvo.review_content}</p>
-									
+										<!-- 삭제 버튼 -->
+										<button type="button" class="mymoviereview_delete_btn"
+											onclick="mymoviereview_delete(event, ${mrvo.seq_review_no})">×</button>
+
+
+
+										<%-- 별점 --%>
+										<div id="movie_rating_${mrvo.seq_review_no}" class="movie_rating" data-rating="${mrvo.movie_rating}">
+										    <c:forEach var="i" begin="1" end="5">
+										        <i class="fa-solid fa-star" 
+										           data-rating="${i}" 
+										           style="color: ${i <= mrvo.movie_rating ? '#eb5e28' : '#E0E0E0'}; cursor: pointer;" 
+										           onclick="setRating(this)">
+										        </i>
+										    </c:forEach>
+										</div>
+
+
+
+
+
+										<p id="review_content_${mrvo.seq_review_no}"
+											class="review_content">${mrvo.review_content}</p>
+
 									</div>
-									
+
 									<!-- 수정 버튼 -->
 									<button type="button" class="mymoviereview_update_btn"
 										onclick="mymoviereview_update(${mrvo.seq_review_no})">수정하기</button>

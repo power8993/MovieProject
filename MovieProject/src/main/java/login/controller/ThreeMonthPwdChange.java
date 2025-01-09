@@ -61,11 +61,10 @@ public class ThreeMonthPwdChange extends AbstractController {
 		}
 			
 		// 응답 데이터 설정
-        response.setContentType("application/json; charset=UTF-8");//응답데이터가 json 형식임을 알리는 용도
-        PrintWriter out = response.getWriter(); // 이 출력 스트림을 사용하여 클라이언트에 데이터를 보낼 수 있음.
-        out.print(jsonObj.toString()); //문자열 형태의 JSON으로 변환  ex: jsonObj.put("userid", "user123"); >> {"userid":"user123"}로 변환
-        out.flush(); // 출력 버퍼에 있는 데이터를 즉시 클라이언트로 전송
-		return;
+		String json = jsonObj.toString();
+        request.setAttribute("json", json);
+        super.setRedirect(false);
+        super.setViewPage("/WEB-INF/jsonview.jsp");
 	}
 
 }

@@ -20,8 +20,6 @@ public class Reservation extends AbstractController {
 		String referer = request.getHeader("referer");
 		// request.getHeader("referer"); 은 이전 페이지의 URL을 가져오는 것이다.
 		
-		// System.out.println("~~~ 확인용 referer : " + referer);
-		
 		if(referer == null) {
 			// referer == null 은 웹브라우저 주소창에 URL 을 직접 입력하고 들어온 경우
 			super.setRedirect(true);
