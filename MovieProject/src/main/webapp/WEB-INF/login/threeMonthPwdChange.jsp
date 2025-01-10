@@ -41,7 +41,7 @@
 			</div>
 			
 			<div id="btnElmt">
-				<button type="button" id="submitBtn">비밀번호 변경</button><button type="button" id="button">90일 후에 변경</button>
+				<button type="button" id="submitBtn">비밀번호 변경</button><button type="button" id="button">나중에 변경</button>
 			</div>
 		</form>
 		
