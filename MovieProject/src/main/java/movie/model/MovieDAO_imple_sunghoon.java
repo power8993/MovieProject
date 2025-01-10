@@ -446,7 +446,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select movie_title, to_char(start_time, 'yyyy.mm.dd hh24:mi') as start_time, to_char(fk_screen_no) as fk_screen_no, movie_grade, poster_file "
+			String sql = " select movie_title, to_char(start_time, 'yyyy.mm.dd hh24:mi') as start_time, to_char(end_time, 'yyyy.mm.dd hh24:mi') as end_time, to_char(fk_screen_no) as fk_screen_no, movie_grade, poster_file "
 					   + " from tbl_payment p join tbl_showtime s "
 					   + " on s.seq_showtime_no = p.fk_seq_showtime_no "
 					   + " join tbl_movie m "
@@ -464,6 +464,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 				map.put("fk_screen_no", rs.getString("fk_screen_no"));
 				map.put("movie_grade", rs.getString("movie_grade"));
 				map.put("poster_file", rs.getString("poster_file"));
+				map.put("end_time", rs.getString("end_time"));
 			}
 			
 		} finally {

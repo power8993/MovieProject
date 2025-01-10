@@ -52,6 +52,7 @@ $(document).ready(function(){
 			seq_movie_no = $(e.target).parent().find("td#seq_movie_no").text();
 			let poster_file = $(e.target).parent().find("td#poster_file").text();
 			let v_html = '<img src="/MovieProject/images/admin/poster_file/' + poster_file + '.jpg" style="width:auto; height:110px;">';
+			$("div#selected_movie_grade").text( $(e.target).parent().find("td#movie_grade").text() );
 			$("div#movie-choice-poster").html(v_html);
 			$("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
 			
@@ -63,6 +64,7 @@ $(document).ready(function(){
 			seq_movie_no = $(e.target).parent().parent().find("td#seq_movie_no").text();
 			let poster_file = $(e.target).parent().parent().find("td#poster_file").text();
 			let v_html = '<img src="/MovieProject/images/admin/poster_file/' + poster_file + '.jpg" style="width:auto; height:110px;">';
+			$("div#selected_movie_grade").text( $(e.target).parent().parent().find("td#movie_grade").text() );
 			$("div#movie-choice-poster").html(v_html);
 			$("div#movie-choice").html($(e.target).parent().find("td.movie-title").html());
 			// $("div#movie-choice").html($(e.target).parent().parent().find("td.movie-title").html());
@@ -289,6 +291,8 @@ function getScreenDate(seq_movie_no) {
 
 // 좌석선택 버튼을 눌렀을 경우
 function goSeatChoice(userid, birthday) {
+	
+	movie_grade = $("div#selected_movie_grade").text();
 	
 	if($("div#movie-choice").text() == "영화선택" || $("div#date-choice").text() == "시간선택" || $("div#time-choice").text() == "") {
 		// 영화, 날짜, 시간을 하나라도 선택하지 않았을 경우
@@ -680,10 +684,10 @@ function updateShowtime(ctxPath) {
 			if(json.n == 1) {
 				console.log("상영 영화 수정 성공")
 			}
-			else if(json.n == -1) {
+			/*else if(json.n == -1) {
 				alert("좌석 예약 중복으로 예매 실패!");
 				location.href = "/MovieProject/reservation/reservation.mp";
-			}
+			}*/
 			else {
 				console.log("상영 영화 수정 실패")
 			}
@@ -724,13 +728,12 @@ function makePoint(ctxPath, userid, using_point, ticketPrice, imp_uid ) {
 
 
 // 예약 확인 문자
-function sendReservationSMS(ctxPath, name, ticketInfo, ticketPrice, mobile) {
+function sendReservationSMS(ctxPath, name, ticketPrice, mobile) {
 	
 	$.ajax({
 		url:ctxPath + "/reservation/sendReservationSMS.mp",
 		data: {
              "name": name,
-             "ticketInfo": ticketInfo,
              "ticketPrice": ticketPrice,
              "mobile": mobile
         },
