@@ -50,7 +50,9 @@ $(document).ready(function(){
 				
 				let poster_file = $(this).parent().find("td#poster_file").text();
 				
-				let v_html = '<img src="http://localhost:9090/MovieProject/images/admin/poster_file/미니언즈.jpg" style="width:auto; height:110px;">';
+				$("div#selected_movie_grade").text( $(this).parent().find("td#movie_grade").text() );
+				
+				let v_html = '<img src="/MovieProject/images/admin/poster_file/' + poster_file + '.jpg" style="width:auto; height:110px;">';
 				$("div#movie-choice-poster").html(v_html);
 				$("div#movie-choice-poster").show();
 				
@@ -110,6 +112,7 @@ $(document).ready(function(){
 										<td class="movie-title">${movievo.movie_title}</td>
 										<td id="seq_movie_no" style="display: none">${movievo.seq_movie_no}</td>
 										<td id="poster_file" style="display: none">${movievo.poster_file}</td>
+										<td id="movie_grade" style="display: none">${movievo.movie_grade}</td>
 									</tr>
 			      				</c:forEach>
 		      				</tbody>
@@ -248,6 +251,7 @@ $(document).ready(function(){
 					<div id="date-choice">시간선택</div>
 					<div id="time-choice"></div>
 					<div id="seq_showtime_no" style="display: none;"></div>
+					<div id="selected_movie_grade" style="display: none;"></div>
 				</div>
 				<div id="seat-choice">좌석선택</div>
 				<div id="pay-choice">예약정보</div>
