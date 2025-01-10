@@ -178,7 +178,7 @@ $(document).ready(function(){
 								<td id="show_date_text" ><span id="seq_showtime_no" style="display: none;">${movievo.showvo.seq_showtime_no}</span>${fn:substring(movievo.showvo.start_time,0,10)}</td>
 								<td id="show_time_text">${fn:substring(movievo.showvo.start_time,11,16)} ~ ${fn:substring(movievo.showvo.end_time,11,16)}</td>
 								<td class="fk_screen_no">${movievo.showvo.fk_screen_no}관</td>
-								<td id="movie_title_text"><img src="<%= ctxPath%>/images/admin/poster_file/${movievo.poster_file}" alt="${movievo.movie_title}" style="width:60px; height:auto;">&nbsp;${movievo.movie_title}</td>
+								<td id="movie_title_text"><img src="<%= ctxPath%>/images/admin/poster_file/${movievo.poster_file}.jpg" alt="${movievo.movie_title}" style="width:60px; height:auto;">&nbsp;${movievo.movie_title}</td>
 								<td class="seat_status"><span id="seat_arr" style="display: none;">${movievo.showvo.seat_arr}</span><span id="seat_text">${movievo.showvo.unused_seat} / ${movievo.scvo.seat_cnt}</span></td>
 							</tr>
 						</c:forEach>
