@@ -177,7 +177,7 @@ $(document).ready(function(){
 								
 								<td><span style="display:none;">${movievo.seq_movie_no}</span>${movievo.register_date}</td>
 								<td>${movievo.catevo.category}</td>
-								<td><img src="<%= ctxPath%>/images/admin/poster_file/${movievo.poster_file}" alt="${movievo.movie_title}" style="width:60px; height:auto;">&nbsp;${movievo.movie_title}</td>
+								<td><img src="<%= ctxPath%>/images/admin/poster_file/${movievo.poster_file}.jpg" alt="${movievo.movie_title}" style="width:60px; height:auto;">&nbsp;${movievo.movie_title}</td>
 								<td><img src="<%= ctxPath%>/images/admin/movie_grade/${movievo.movie_grade}.png" alt="${movievo.movie_grade}" style="width:30px; height:auto;"></td>
 								<td>${movievo.start_date}<br>${movievo.end_date}</td>	
 							</tr>
