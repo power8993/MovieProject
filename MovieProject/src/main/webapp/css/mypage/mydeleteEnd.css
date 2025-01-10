@@ -9,7 +9,7 @@ div.deleteclear{
    padding: 30px;
 }
 
-i.fa-solid {
+div.deleteclear > i.fa-solid {
 	/* border: solid 1px purple; */
     font-size: 60px; 
     margin-bottom: 10px; 

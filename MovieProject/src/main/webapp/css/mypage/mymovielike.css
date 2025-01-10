@@ -7,6 +7,7 @@ div.movielikecss {
     width: 197px;
     margin: auto 20px;
     background-color: transparent;
+   
 }
 
 /* 포스터 이미지 케이스 */
@@ -97,11 +98,4 @@ div.movielikecss1 > ul > li{
 	 text-align: center;
 }
 
-div#mymovielikeHIT > div > div > div.movielikecss1 > ul > li.text-center > a{
-	color:white;
-	background-color: #403d39;
-}
 
-div#mymovielikeHIT > div > div > div.movielikecss1 > ul > li.text-center > a:hover {
-	background-color: #eb5e28;
-}

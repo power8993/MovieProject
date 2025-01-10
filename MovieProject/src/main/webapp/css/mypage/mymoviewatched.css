@@ -6,7 +6,6 @@ div.my_mywatchedmovie_list {
 	margin: 0;
 	display: flex;
 	flex-direction: column;
-	gap: 20px;
 }
 
 /* 카드 스타일 */
@@ -45,7 +44,7 @@ div.moviewatched_details> h2.moviewatched_h2 a{
 	margin-bottom: 5px;
 }
 
-body > div.my_container > div.my_main > div.mypage_main_content > div.my_main_movie > div > ul {
+body > div.my_container > div.my_main > div.mypage_main_content > div.my_main_movie > div > li{
 	list-style: none;
 	padding: 15px 0;
 	display: flex;
@@ -55,7 +54,7 @@ body > div.my_container > div.my_main > div.mypage_main_content > div.my_main_mo
 	border-bottom: 1px solid #ddd;
 }
 
-body > div.my_container > div.my_main > div.mypage_main_content > div.my_main_movie > div > ul > li > div.moviewatched_details > ul{
+body > div.my_container > div.my_main > div.mypage_main_content > div.my_main_movie > div > li > div.moviewatched_details > ul{
 	list-style: none;
 	font-size: 17px;
 	padding: 0;
