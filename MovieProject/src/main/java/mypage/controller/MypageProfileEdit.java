@@ -87,7 +87,7 @@ public class MypageProfileEdit extends AbstractController {
                 String json = jsonObj.toString(); // 문자열로 변환 
                 request.setAttribute("json", json);
                 
-                System.out.println(json);
+                //System.out.println(json);
             }
 
             super.setRedirect(false);

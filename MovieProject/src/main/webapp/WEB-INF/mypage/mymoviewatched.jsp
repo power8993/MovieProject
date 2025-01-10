@@ -88,9 +88,7 @@ String ctxPath = request.getContextPath();
 							<div class="my_main_moviewatchedList_poster">
 								<a
 									href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${watched.svo.fk_seq_movie_no}">
-									<img
-									src="${pageContext.request.contextPath}/images/admin/poster_file/${watched.svo.mvo.poster_file}"
-									alt="${watched.svo.mvo.movie_title}" />
+									<img src="<%= ctxPath%>/images/admin/poster_file/${watched.svo.mvo.poster_file}.jpg" alt="영화 포스터"/>
 								</a>
 							</div>
 							

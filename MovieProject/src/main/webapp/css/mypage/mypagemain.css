@@ -263,3 +263,23 @@ div.mypage_main_List_poster img {
 	width: 110px;
 	height: 151px;
 }
+
+
+
+div.reservation_actions>button {
+	border: none;
+	padding: 8px 12px;
+	cursor: pointer;
+	font-size: 14px;
+	border-radius: 4px;
+}
+
+div.reservation_actions>button.Receipt_Printing {
+	background-color: #403d39;
+	color: white;
+}
+
+div.reservation_actions>button.Receipt_Printing:hover {
+	background-color: #ccc5b9;
+	color: black;
+}

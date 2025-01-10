@@ -43,7 +43,7 @@ function mymovielikeHIT(start) {
 
                     if (currentDate < startDate) {
                         // 상영 시작 전 -> 상영 예정작 버튼
-                        likeButtonType = "상영 예정작";
+                        likeButtonType = `<a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${item.FK_SEQ_MOVIE_NO}" class="scheduled-movie-link">상영 예정작</a>`;
                     } else if (currentDate >= startDate && currentDate <= endDate) {
                         // 상영 중 -> 예매하기 버튼
                          likeButtonType = "예매하기";
@@ -58,7 +58,7 @@ function mymovielikeHIT(start) {
                             <div class="mb-3 movielikecss">
                                 <div class="poster_relative">
                                     <a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${item.FK_SEQ_MOVIE_NO}">
-                                        <img src="/MovieProject/images/admin/poster_file/${item.poster_file}" class="card-img-top">
+                                        <img src="/MovieProject/images/admin/poster_file/${item.poster_file}.jpg" alt="영화 포스터" class="card-img-top"/>
                                     </a>
                                     <button type="button" class="movielikeDelBtn" onclick="movielikeDel('${item.FK_SEQ_MOVIE_NO}')">X</button>
                                 </div>
@@ -67,9 +67,12 @@ function mymovielikeHIT(start) {
                                         <li><label class="prodInfo movietitle">${item.movie_title}</label></li>
                                         <li><label class="prodInfo">${item.start_date}</label></li>
                                         <input type="hidden" value="${item.end_date}" />
-                                        <li class="text-center">
-                                            <a href="/MovieProject/reservation/reservation.mp?seq_movie_no=${item.FK_SEQ_MOVIE_NO}" class="${buttonClass}" role="button" ${isButtonDisabled ? 'cursor: not-allowed; opacity: 0.6;' : ''}>${likeButtonType}</a>
-                                        </li>
+										<li class="text-center">
+										    <button class="${buttonClass}" type="button likebtncss" onclick="window.location.href='/MovieProject/reservation/reservation.mp?seq_movie_no=${item.FK_SEQ_MOVIE_NO}'" ${isButtonDisabled ? 'disabled style="cursor: not-allowed; opacity: 0.6;"' : ''}>
+										        ${likeButtonType}
+										    </button>
+										</li>
+
                                     </ul>
                                 </div>
                             </div>

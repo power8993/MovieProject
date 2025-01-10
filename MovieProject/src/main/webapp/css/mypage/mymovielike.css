@@ -2,36 +2,34 @@
 
 /* 공통 카드 스타일 */
 div.movielikecss {
-/* 	border: solid 1px black;  */
-    height: 370px;
-    width: 197px;
-    margin: auto 20px;
-    background-color: transparent;
-   
+	/* 	border: solid 1px black;  */
+	height: 370px;
+	width: 197px;
+	margin: auto 20px;
+	background-color: transparent;
 }
 
 /* 포스터 이미지 케이스 */
-div.poster_relative{
+div.poster_relative {
 	position: relative;
-    display: inline-block;
-	width:197px;
-	height:273px;
-	padding:6px;
+	display: inline-block;
+	width: 197px;
+	height: 273px;
+	padding: 6px;
 	background-color: #252422;
 }
 
 /* 이미지 스타일 */
 img.card-img-top {
 	/* border: solid 1px red;  */
-    width: 185px;
-    height: 261px;
-    object-fit: cover;
-    border-bottom: 1px solid #ddd;
+	width: 185px;
+	height: 261px;
+	object-fit: cover;
+	border-bottom: 1px solid #ddd;
 }
 
-
-div#mymovielikeHIT > div.card-body.movielikecss1 {
-	border: solid 1px blue; 
+div#mymovielikeHIT>div.card-body.movielikecss1 {
+	border: solid 1px blue;
 	width: 197px;
 	height: 73px;
 }
@@ -39,63 +37,115 @@ div#mymovielikeHIT > div.card-body.movielikecss1 {
 /* 제목과 날짜 스타일 */
 label.movietitle {
 	margin: 0;
-    width: 95%;
-    color: #222;
-    font-size: 15px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+	width: 95%;
+	color: #222;
+	font-size: 15px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 /*더보기 버튼 스타일 */
-button.mymovielikebutton{
-	 width:140px;
-	 height:40px;
-	 border: none;
-	 border-top: dashed 1px black;
-	 border-bottom: dashed 1px black;
+button.mymovielikebutton {
+	width: 140px;
+	height: 40px;
+	border: none;
+	border-top: dashed 1px black;
+	border-bottom: dashed 1px black;
 }
 
 /* 버튼 스타일 */
 a.mybtnlike {
-    background-color: #252422;
-    color: white;
-    border: none;
-    padding: 10px 5px;
-    font-size: 12pt;
-    cursor: pointer;
+	background-color: #252422;
+	color: white;
+	border: none;
+	padding: 10px 5px;
+	font-size: 12pt;
+	cursor: pointer;
 }
 
 a.mybtnlike:hover {
-    background-color: #eb5e28;
+	background-color: #eb5e28;
 }
 
-a.myDetailcss{
-	border: solid 1px blue; 
+a.myDetailcss {
+	border: solid 1px blue;
 }
 
 .movielikeDelBtn {
-    position: absolute;
-    top: 10px; 
-    right: 10px; 
+	position: absolute;
+	top: 10px;
+	right: 10px;
 	background-color: #403d39;
 	color: white;
-    border: none;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    font-size: 16px;
-    line-height: 30px;
-    text-align: center;
-    cursor: pointer;
-    z-index: 10;
+	border: none;
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	font-size: 16px;
+	line-height: 30px;
+	text-align: center;
+	cursor: pointer;
+	z-index: 10;
 }
 
 .movielikeDelBtn:hover {
-   	background-color: #eb5e28;
+	background-color: #eb5e28;
 }
 
-div.movielikecss1 > ul > li{
-	 text-align: center;
+div.movielikecss1>ul>li {
+	text-align: center;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+.text-center>button {
+	display: inline-block;
+	padding: auto 10px;
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
+	cursor: pointer;
+	border: none;
+	border-radius: 5px;
+	transition: all 0.3s ease;
+	background-color: #eb5e28;
+	color: white;
+	text-decoration: none;
+	color: black;
+}
+
+/* 비활성화 상태 스타일 */
+.likebtncss:disabled
+	{
+	cursor: not-allowed;
+	background-color: #252422 !important;
+	color: gray !important;
+}
+
+/* 상영예정작 상태 스타일 */
+.scheduled-movie-link
+	{
+	color: white !important;
+	text-decoration: none;
 }
 
 
+/* 버튼 호버(마우스 오버) 상태 */
+.likebtncss:hover
+	{
+	background-color: #ddd;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 호버 시 그림자 */
+}
+
+/* 버튼 내부 텍스트 스타일 */
+.likebtncss span
+	{
+	display: inline-block;
+	transition: transform 0.3s ease;
+}
+
+/* 버튼 비활성화 상태일 때 텍스트 효과 */
+.likebtncss:disabled span
+	{
+	background-color: #252422 !important;
+	color: gray !important;
+}

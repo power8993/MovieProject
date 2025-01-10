@@ -44,6 +44,14 @@ String ctxPath = request.getContextPath();
             return; // 함수 종료
          }
          
+      // **** 약관에 동의를 했는지 검사하기 시작 **** //
+     	const checkbox_chechked_length = $("input:checkbox[id='agree2']:checked").length;
+     		
+     	if(checkbox_chechked_length == 0) {
+     		alert("탈퇴약관에 동의하셔야 합니다.");
+     		return; // goRegister() 함수를 종료한다.
+     	}
+         
          const frm = document.my_deletecheckPwd_Frm;
          frm.action = "<%=ctxPath%>/mypage/mydeleteEnd.mp";
          frm.method = "post";
@@ -102,8 +110,8 @@ String ctxPath = request.getContextPath();
 						autocomplete="off" /></li>
 				</ul>
 				
-                <iframe src="<%= ctxPath%>/iframe_agree/agree1.html" width="100%" height="150px" ></iframe>
-                <label for="agree2">이용약관에 동의합니다</label>&nbsp;&nbsp;<input type="checkbox" id="agree2" />
+                <iframe src="<%= ctxPath%>/iframe_agree/agree2.html" width="100%" height="150px" ></iframe>
+                <label for="agree2">탈퇴약관에 동의합니다</label>&nbsp;&nbsp;<input type="checkbox" id="agree2" />
 
 				<div class="mybutton">
 					<button type="button" onclick="javascript:history.back();"
