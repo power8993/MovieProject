@@ -28,7 +28,7 @@
 		  <input type="text" name="userid" id="userid"size="25" autocomplete="off" placeholder="아이디를 입력하세요" /> 
 		  	<button  type="button" id="idcheck">중복확인</button>
 	       </div>   
-	       <span class="error">숫자,영문자 포함 형태의 4~15 자리 이내의 아이디를 입력해 주세요.</span>
+	       <span class="error">숫자,소문자 포함 형태의 4~15 자리 이내의 아이디를 입력해 주세요.</span>
 	        
 	        <%-- 아이디중복체크 --%>
            <span id="idcheckResult"></span>
@@ -53,8 +53,8 @@
 	      <label class="labelName" >전화번호</label>
 	      <div style="widht:100%;">
 		  <input type="text" name="hp1" id="hp1" size="6" maxlength="3" value="010" readonly/>&nbsp;-&nbsp; 
-	      <input type="text" name="hp2" id="hp2" size="6" maxlength="4" class="requiredInfo" placeholder="1234"/>&nbsp;-&nbsp;
-	      <input type="text" name="hp3" id="hp3" size="6" maxlength="4" class="requiredInfo" placeholder="5678"/>   
+	      <input type="text" name="hp2" id="hp2" size="6" maxlength="4" class="requiredInfo" autocomplete="off" placeholder="1234"/>&nbsp;-&nbsp;
+	      <input type="text" name="hp3" id="hp3" size="6" maxlength="4" class="requiredInfo" autocomplete="off" placeholder="5678"/>   
 	      	<button  type="button" id="phoneCheckandAuth" style="margin-left:19px;" >인증번호 전송</button>
 	      </div>
 	      <span class="error" id="hp_error">전화번호를 정확하게 입력해 주세요.</span>  
