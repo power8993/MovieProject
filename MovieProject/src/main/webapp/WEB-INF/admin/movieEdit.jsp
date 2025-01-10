@@ -112,7 +112,7 @@ $(document).ready(function(){
   
 
 	<div class="movie_register_container">
-	    <div class="movie_header">
+	    <div class="movie_header" style="background-color: #FFFCF2;">
 		    <h2>영화 수정</h2>
 		    <span><span class="star">*&nbsp;</span>표시는 <span class="star">필수 기재 사항</span>입니다.</span>
 	    </div>

@@ -2,7 +2,11 @@
     pageEncoding="UTF-8"%>
 <%
     String ctxPath = request.getContextPath();
+    //    /MyMVC
 %>
+ 			</section>
+		</div>
+	</div>     
      <footer>
        <div id="footer_info">
           <p>(04377)서울특별시 용산구 한강대로 23길 55, 아이파크몰 6층(한강로동)<br>

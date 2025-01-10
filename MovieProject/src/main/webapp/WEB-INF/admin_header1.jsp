@@ -222,7 +222,7 @@ window.onscroll = function () {
 					<ul>
 						<li><a href="<%= ctxPath %>/member/memberList.mp">회원 리스트</a></li>
 					</ul>
-				<li>통계</li>
+				<%-- <li>통계</li>--%>
 				
 			</section>
 			

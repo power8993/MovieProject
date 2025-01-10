@@ -71,6 +71,25 @@ $(document).ready(function() {
 	// ===== 배우 입력 끝 ===== //
 	
 	
+/*
+	// ===== 오류메세지 제거 시작 ===== //
+	$("input[name='director']").keydown(function(e) {
+	    if (e.keyCode == 13) {  // 엔터 키를 눌렀을 때
+	        var director_dom = $("input[name='director']")[0];
+			director_dom.setCustomValidity("");  // 오류 메시지 제거
+	    }
+	});
+	
+	// 배우 입력 필드에서 엔터 키 이벤트
+	$("input[name='actor']").keydown(function(e) {
+	    if (e.keyCode == 13) {  // 엔터 키를 눌렀을 때
+			var actor_dom = $("input[name='actor']")[0];
+			actor_dom.setCustomValidity("");  // 오류 메시지 제거
+	    }
+	});
+	// ===== 오류메세지 제거 끝  ===== //
+*/	
+	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	// ===== 제출 버튼 클릭 시 [필수입력값] 유효성 검사 시작 ===== //
@@ -186,7 +205,7 @@ $(document).ready(function() {
 			var actor_dom = $("input[name='actor']")[0];
 			
 			if (actor.length == 0) {	
-				actor_dom.setCustomValidity("감독은 한 명 이상 입력해주세요!");
+				actor_dom.setCustomValidity("배우는 한 명 이상 입력해주세요!");
 				actor_dom.reportValidity();  // 유효성 검사 메시지 표시
 				
 				is_empty = true;
@@ -322,6 +341,7 @@ $(document).ready(function() {
 	});
 	// ===== 제출 버튼 클릭 시 [필수입력값] 유효성 검사 유효성 검사 끝 ===== //
 
+	
 });// end of $(document).ready(function(){})----------------------
 
 
