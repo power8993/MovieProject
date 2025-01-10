@@ -117,7 +117,17 @@ $(document).ready(function(){
 			              y: {
 			                beginAtZero: true
 			              }
-			            }
+					  	},
+	                    plugins: {
+	                    	tooltip: {
+	                        	callbacks: {
+	                            	// 툴팁의 데이터 포맷을 수정하는 부분
+	                                label: function(tooltipItem) {
+	                                return tooltipItem.raw.toLocaleString() + ' 원';  // 데이터 값 뒤에 '원' 추가
+	                            	}
+	                            }
+	                        }
+	                    }
 		          	}
 				});
 			},

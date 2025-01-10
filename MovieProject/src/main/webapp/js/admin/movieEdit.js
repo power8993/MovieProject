@@ -478,7 +478,7 @@ function searchMovies(e) {
                     movieArray.forEach(movie => {
                         const movie_result_list = `
 										<tr>
-						                    <td><img src="${movie.poster_file}" alt="${movie.movie_title}" style="width:50px; height:auto;"> ${movie.movie_title}</td>
+						                    <td><img src="${ctxPath}/images/admin/poster_file/${movie.poster_file}.jpg" alt="${movie.movie_title}" style="width:50px; height:auto;"> ${movie.movie_title}</td>
 						                    <td>${movie.fk_category_code}</td>
 						                    <td><img src="${ctxPath}/images/admin/movie_grade/${movie.movie_grade}.png" alt="${movie.movie_grade}" style="width:30px; height:auto;"></td>
 						                    <td>${movie.register_date}</td>

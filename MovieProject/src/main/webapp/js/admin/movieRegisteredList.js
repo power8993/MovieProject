@@ -74,7 +74,7 @@ $(document).ready(function(){
 					                                    <table class="table" id="modal_table">
 					                                        <tbody>
 																<tr>
-																	<td rowspan="3"><img src="${mvvo.ctxPath}/images/admin/poster_file/${mvvo.poster_file}" alt="" style="width:230px; height:auto;"></td>
+																	<td rowspan="3"><img src="${mvvo.ctxPath}/images/admin/poster_file/${mvvo.poster_file}.jpg" alt="" style="width:230px; height:auto;"></td>
 																	<td colspan="2" class="modal_movie_title">${mvvo.movie_title}</td>
 																</tr>
 					                                            <tr>

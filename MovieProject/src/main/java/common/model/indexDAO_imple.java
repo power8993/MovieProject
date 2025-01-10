@@ -272,10 +272,28 @@ public class indexDAO_imple implements indexDAO{
 		try {
 			conn = ds.getConnection();
 
-			String sql = " select  seq_movie_no, MOVIE_TITLE, POSTER_FILE, MOVIE_GRADE,round(start_date-sysdate) as remaining_day from TBL_MOVIE "
-					+ " where start_date>sysdate "
-					+ " and ROWNUM<=5 "
-					+ " order by start_date ";
+			String sql = " SELECT seq_movie_no, "
+					+ " CASE "
+					+ "	 WHEN LENGTH(movie_title) < 10 THEN movie_title "
+					+ "	 ELSE SUBSTR(movie_title, 0, 10) || '...' "
+					+ "	 END AS movie_title "
+					+ " , POSTER_FILE, MOVIE_GRADE,round(start_date-sysdate) as remaining_day "
+					+ " FROM ( "
+					+ "    SELECT  "
+					+ "        seq_movie_no,  "
+					+ "        MOVIE_TITLE,  "
+					+ "        POSTER_FILE,  "
+					+ "        MOVIE_GRADE, "
+					+ "        start_date, "
+					+ "        ROUND(start_date - SYSDATE + 1) AS remaining_day "
+					+ "    FROM  "
+					+ "        TBL_MOVIE "
+					+ "    WHERE "
+					+ "        start_date > SYSDATE "
+					+ "    ORDER BY "
+					+ "        remaining_day ASC "
+					+ " ) "
+					+ " WHERE ROWNUM <= 5 ";
 
 			pstmt = conn.prepareStatement(sql);
 
@@ -299,7 +317,7 @@ public class indexDAO_imple implements indexDAO{
 		return laterMoviesList;
 	}
 
-	//상영예정작 현재날짜에 가까운 영화개봉일 기준 상위 5개 이후 5개 초회(카드의 첫화면)
+	//상영예정작 현재날짜에 가까운 영화개봉일 기준 상위 5개 이후 5개 초회(카드의 두 번째 화면)
 	@Override
 	public List<MovieVO_sangwoo> showLaterMovies2() throws SQLException {
 
@@ -309,14 +327,33 @@ public class indexDAO_imple implements indexDAO{
 		try {
 			conn = ds.getConnection();
 
-			String sql = " SELECT seq_movie_no, MOVIE_TITLE, POSTER_FILE,MOVIE_GRADE,round(start_date-sysdate) as remaining_day "
+			String sql = " SELECT seq_movie_no, "
+					+ " CASE "
+					+ "	 WHEN LENGTH(movie_title) < 10 THEN movie_title "
+					+ "	 ELSE SUBSTR(movie_title, 0, 10) || '...' "
+					+ "	 END AS movie_title "
+					+ " , POSTER_FILE, MOVIE_GRADE,remaining_day "
 					+ " FROM ( "
-					+ "    SELECT seq_movie_no, MOVIE_TITLE, POSTER_FILE,start_date,MOVIE_GRADE, ROWNUM AS RN "
-					+ "    FROM TBL_MOVIE "
-					+ "    WHERE start_date > SYSDATE "
-					+ "    ORDER BY start_date "
+					+ "    SELECT "
+					+ "        A.*, ROWNUM AS RN "
+					+ "    FROM ( "
+					+ "        SELECT "
+					+ "            seq_movie_no, "
+					+ "            MOVIE_TITLE, "
+					+ "            POSTER_FILE, "
+					+ "            MOVIE_GRADE, "
+					+ "            start_date, "
+					+ "            ROUND(start_date - SYSDATE + 1) AS remaining_day "
+					+ "        FROM "
+					+ "            TBL_MOVIE "
+					+ "        WHERE "
+					+ "            start_date > SYSDATE "
+					+ "        ORDER BY "
+					+ "            ROUND(start_date - SYSDATE + 1) ASC "
+					+ "    ) A "
+					+ "    WHERE ROWNUM <= 10  "
 					+ " ) "
-					+ " WHERE RN >= 6 and RN <= 10 ";
+					+ " WHERE RN >= 6  ";
 
 			pstmt = conn.prepareStatement(sql);
 

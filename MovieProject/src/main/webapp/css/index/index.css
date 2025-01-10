@@ -298,7 +298,9 @@ div#content{
 	height: 234px; 
 	margin: 0 auto;
 }
-
+.movieCard{
+	position: relative; width: 170px; height: 234px; margin: 0 auto;
+}
 .movieGrade{
 	width:20px;
 }
@@ -545,6 +547,10 @@ color:#252422;
     font: bold 20px monospace;
     transition: opacity 0.5s, transform 0.5s;
     z-index: 99;
+}
+#scroll-btn:hover{
+	border: solid 1px #eb5e28;
+	transition: 0.3 s;
 }
 
 #scroll-btn.show {
