@@ -9,7 +9,7 @@
 div.movie_info label {
 	display: inline-block;
 	width: 100px;
-	line-height: 300%;
+	line-height: 250%;
 	font-weight: normal;
 }
 
