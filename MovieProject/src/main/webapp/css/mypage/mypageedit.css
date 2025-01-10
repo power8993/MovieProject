@@ -198,3 +198,6 @@ div#passwdFind .modal-footer button {
     margin-left: 10px;
 }
 
+span.error{
+	font-size: 10px;
+}

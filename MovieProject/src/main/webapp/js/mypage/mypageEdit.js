@@ -24,27 +24,6 @@ $(document).ready(function() {
 
 	$("span.error").hide();
 
-	$("input#name").blur((e) => {
-
-		const name = $(e.target).val().trim();
-		if (name == "") {
-
-			$("table#tblMemberEdit :input").prop("disabled", true);
-			$(e.target).prop("disabled", false);
-
-			$(e.target).parent().find("span.error").show();
-			$(e.target).val("").focus();
-
-		}
-		else {
-			$("table#tblMemberEdit :input").prop("disabled", false);
-
-			$(e.target).parent().find("span.error").hide();
-		}
-
-	});
-
-
 	$("input#email").blur((e) => {
 
 		const regExp_email = new RegExp(/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i);
@@ -53,16 +32,10 @@ $(document).ready(function() {
 
 		if (!bool) {
 			// 이메일이 정규표현식에 위배된 경우 
-
-			$("table#tblMemberEdit :input").prop("disabled", true);
-			$(e.target).prop("disabled", false);
-
 			$(e.target).parent().find("span.error").show();
 			$(e.target).val("").focus();
 		}
 		else {
-			$("table#tblMemberEdit :input").prop("disabled", false);
-
 			$(e.target).parent().find("span.error").hide();
 		}
 
@@ -77,16 +50,11 @@ $(document).ready(function() {
 
 		if (!bool) {
 
-			$("table#tblMemberEdit :input").prop("disabled", true);
-			$(e.target).prop("disabled", false);
-
 			$(e.target).parent().find("span.error").show();
 
 			$(e.target).val("").focus();
 		}
 		else {
-			$("table#tblMemberEdit :input").prop("disabled", false);
-
 			$(e.target).parent().find("span.error").hide();
 		}
 
@@ -101,16 +69,11 @@ $(document).ready(function() {
 
 		if (!bool) {
 
-			$("table#tblMemberEdit :input").prop("disabled", true);
-			$(e.target).prop("disabled", false);
-
 			$(e.target).parent().find("span.error").show();
 
 			$(e.target).val("").focus();
 		}
 		else {
-
-			$("table#tblMemberEdit :input").prop("disabled", false);
 
 			$(e.target).parent().find("span.error").hide();
 		}

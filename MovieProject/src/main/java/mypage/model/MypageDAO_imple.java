@@ -677,7 +677,8 @@ public class MypageDAO_imple implements MypageDAO {
 						+ "    POINT, "
 						+ "     TO_CHAR(POINT_DATE,'yyyy-mm-dd') AS POINT_DATE "
 						+ " FROM tbl_point "
-						+ " WHERE FK_USER_ID = ? ";
+						+ " WHERE FK_USER_ID = ?"
+						+ " order by POINT_DATE desc ";
 				
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, userid);
