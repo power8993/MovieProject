@@ -89,16 +89,25 @@ $(document).ready(function(){
 		start_time_dom.setCustomValidity("");  // 오류 메시지 제거
 		
 		if(start_time == "" || end_time == "") {
+			showtime_select_btn_click = false;
 			start_time_dom.setCustomValidity("상영시간 입력 후 조회 가능합니다!");
 			start_time_dom.reportValidity();  // 유효성 검사 메시지 표시
 			return;
 		}
-		else if(screen_no_length == 0) {
+		else {
+		    start_time_dom.setCustomValidity("");  // 오류 메시지 제거
+		}
+		
+		if(screen_no_length == 0) {
+			showtime_select_btn_click = false;
 			screen_no_dom.setCustomValidity("상영관 입력 후 조회 가능합니다!");
 			screen_no_dom.reportValidity();  // 유효성 검사 메시지 표시
 			return;
 		}
-		else{
+		else {
+		    screen_no_dom.setCustomValidity("");  // 오류 메시지 제거
+		}
+		
 			// 모달을 넣을 위치
 			const container = $("div#showtime_conflict_check_modal");
 			
@@ -231,8 +240,7 @@ $(document).ready(function(){
 	            }
 			});// end of $.ajax({})------------------------------------
 					
-			
-		}
+
 	});// end of $("button[id='showtime_select_button']").click(function(e) {})------------------------
 	// ===== [상영시간 조회하기] 버튼 클릭 시 필수입력 값 유효성 검사 끝  ===== //
 	
