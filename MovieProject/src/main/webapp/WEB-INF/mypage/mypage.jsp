@@ -94,6 +94,25 @@ String ctxPath = request.getContextPath();
 
 										<!-- 포스터 이미지 -->
 										<div class="mypage_main_List_poster">
+										
+										<%-- 상영등급 --%>
+			                              <div class="movieGradeChoose" style="position: absolute; right:10px; top:10px;">
+			                              <c:choose>
+				                         <c:when test="${reservation.svo.mvo.movie_grade == '전체'}">
+				                             <img src="<%= ctxPath%>/images/admin/movie_grade/전체.png" alt="전체" class="movieGrade">
+				                         </c:when>
+				                         <c:when test="${reservation.svo.mvo.movie_grade == '15세'}">
+				                             <img src="<%= ctxPath%>/images/admin/movie_grade/15세.png" alt="15세" class="movieGrade">
+				                         </c:when>
+				                         <c:when test="${reservation.svo.mvo.movie_grade == '12세'}">
+				                             <img src="<%= ctxPath%>/images/admin/movie_grade/12세.png" alt="12세" class="movieGrade">
+				                         </c:when>
+				                         <c:when test="${reservation.svo.mvo.movie_grade == '19세'}">
+				                             <img src="<%= ctxPath%>/images/admin/movie_grade/19세.png" alt="19세" class="movieGrade">
+				                         </c:when>
+				                     		</c:choose>
+				                     		
+			                              </div>   
 											<a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${reservation.svo.fk_seq_movie_no}">
 												<img
 												src="${pageContext.request.contextPath}/images/admin/poster_file/${reservation.svo.mvo.poster_file}"

@@ -15,13 +15,13 @@ String ctxPath = request.getContextPath();
 <%-- 직접 만든 CSS --%>
 <link rel="stylesheet" type="text/css"
 	href="<%=ctxPath%>/css/mypage/mypageedit.css" />
-<%-- h3 a태그의 이모티콘 --%>
-<script src="https://kit.fontawesome.com/0c69fdf2c0.js"
-	crossorigin="anonymous"></script>
+
 
 <%-- 직접 만든 JS --%>
 <script type="text/javascript"
 	src="<%=ctxPath%>/js/mypage/mypageEdit.js"></script>
+	
+	
 
 <%-- 전체 창 --%>
 <div class="my_container">
@@ -96,10 +96,13 @@ String ctxPath = request.getContextPath();
 
 							<tr>
 								<td id="tblEditcss">비밀번호</td>
-								<td><button type="button" class="mypagepwdcss"  onclick="mypasswdFind_update('${sessionScope.loginuser.userid}','<%=ctxPath%>')">비밀번호 변경</button>
+								<td>
+								<div class="passwd">
+									<button type="button" class="mypagepwdcss"  onclick="mypasswdFind_update('${sessionScope.loginuser.userid}','<%=ctxPath%>')">비밀번호 변경</button>
 									<div id="passwdFind_modal"></div> <%-- 비번변경 모달창 --%>
 									<div id="lastpwdchangedate"></div> <%-- 비번변경날짜 모달창 --%>
-									 </td>	
+								</div> 
+								</td>	
 							</tr>
 
 							<tr>

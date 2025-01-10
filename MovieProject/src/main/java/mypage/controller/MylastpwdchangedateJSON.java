@@ -28,21 +28,14 @@ public class MylastpwdchangedateJSON extends AbstractController {
 
 	    // JSON 객체 생성
 	    JSONObject jsonObj = new JSONObject();
+	    jsonObj.put("lastpwdchangedate", mvo.getLastpwdchangedate());
+	   
 
-	    // 결과가 있을 경우 처리
-	    if (mvo != null) {
-	        jsonObj.put("lastpwdchangedate", mvo.getLastpwdchangedate());
-	    } else {
-	        jsonObj.put("lastpwdchangedate", "정보 없음");
-	    }
+	    response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(jsonObj.toString());
 
-	    // JSON 응답으로 반환
-	    String json = jsonObj.toString();
-	    System.out.println("~~~ 확인용 json: " + json);
-	    
-	    request.setAttribute("json", json);
-	    super.setRedirect(false);
-	    super.setViewPage("/WEB-INF/jsonview.jsp");
+        //System.out.println("~~~ 확인용 json: " + jsonObj.toString());
 	}
 
 

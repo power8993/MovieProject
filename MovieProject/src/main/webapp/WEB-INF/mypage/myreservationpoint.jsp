@@ -77,15 +77,15 @@ String ctxPath = request.getContextPath();
 						<c:forEach var="point" items="${requestScope.myreservationpoint}">
 							<tr>
 								<td>적립 내역</td>
-								<td><fmt:formatNumber value="${point.total_earned}" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${point.total_earned}" pattern="#,###" />pt</td>
 							</tr>
 							<tr>
 								<td>사용 내역</td>
-								<td><fmt:formatNumber value="${point.total_deducted}" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${point.total_deducted}" pattern="#,###" />pt</td>
 							</tr>
 							<tr>
 								<td>총 포인트 내역</td>
-								<td><fmt:formatNumber value="${point.total_points}" pattern="#,###" /></td>
+								<td><fmt:formatNumber value="${point.total_points}" pattern="#,###" />pt</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -93,8 +93,7 @@ String ctxPath = request.getContextPath();
 			</div>
 
 
-			<div class="my_box_list">
-
+			<div class="my_point_list">
 				<table>
 					<thead>
 						<tr>

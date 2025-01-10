@@ -81,7 +81,7 @@ String ctxPath = request.getContextPath();
 			<div class="my_main_movie">
 			<div class="my_mywatchedmovie_list">
 					<c:if test="${not empty requestScope.mymoviewatchedList}">
-						<ul>
+						
 							<c:forEach var="watched" items="${requestScope.mymoviewatchedList}">
 							<li class="my_main_watchedmovie_card">
 							<!-- 포스터 이미지 -->
@@ -100,12 +100,10 @@ String ctxPath = request.getContextPath();
 								<ul>
 								<li>${watched.svo.start_time}~${watched.svo.end_time}</li>
 								<li>${watched.svo.fk_screen_no}관/ ${watched.tvo.seat_no_list}</li>
-								<li> ${watched.tvo.seat_count}명</li>
-							</ul>
+								<li> ${watched.tvo.seat_count}명</li></ul>
 							</div>
 							</li>
 							</c:forEach>
-						</ul>
 					</c:if>
 					<c:if test="${empty requestScope.mymoviewatchedList}" >
 						<p class="empty">본 영화가 없습니다.</p>

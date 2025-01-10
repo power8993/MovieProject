@@ -43,7 +43,7 @@
         $("#btnUpdateProfile").click(function() {
 
             const formData = new FormData($("form[name='profileFrm']")[0]);
-            console.log(formData);
+            //console.log(formData);
             $.ajax({
                 url: "${pageContext.request.contextPath}/mypage/mypageProfileEdit.mp",
                 type: "post",
