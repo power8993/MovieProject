@@ -64,7 +64,41 @@ $(document).ready(function(){
 				            backgroundColor: ['#ffe268', '#2e313d', '#b46358',  '#16A085', '#e9a441', '762f1c',
 											  '#e1d3c0', '#8db880', '#c5a16f', '#453b25', '#6e6342']
 				        }]
-				    }
+				    }					,
+								    options: {
+								        responsive: true,
+								        plugins: {
+								            legend: {
+												display: false
+								               /* position: 'top', // legend 위치 변경
+								                labels: {
+								                    font: {
+								                        size: 14,  // 라벨 글자 크기 조정
+								                        weight: 'bold', // 라벨 글자 두께
+								                    },
+								                    padding: 20,  // 라벨과 차트 간의 간격
+								                    boxWidth: 20,  // 박스 크기 조정
+								                    boxHeight: 20, // 박스 크기 조정
+								                },
+								                padding: 30,  // legend와 차트 간의 간격*/
+								            },
+								            tooltip: {
+								                callbacks: {
+								                    label: function(tooltipItem) {
+								                        return tooltipItem.label + ': ' + tooltipItem.raw + '건'; // 툴팁에 예매건수 표시
+								                    }
+								                }
+								            }
+								        },
+								        layout: {
+								            padding: {
+								                top: 20, // 차트 상단 여백
+								                bottom: 20, // 차트 하단 여백
+								                left: 20, // 차트 좌측 여백
+								                right: 20 // 차트 우측 여백
+								            }
+								        }
+								    }
 				});
 				
 			},
