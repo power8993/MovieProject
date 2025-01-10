@@ -50,5 +50,8 @@ public interface MovieDAO_sunghoon {
 	// 결제 취소하기
 	int reservationCancel(Map<String, String> paramap) throws SQLException;
 
+	// 상영 날짜 가져오기
+	List<String> getScreenDate(String seq_movie_no) throws SQLException;
+
 
 }

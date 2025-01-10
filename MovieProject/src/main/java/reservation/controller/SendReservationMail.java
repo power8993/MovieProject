@@ -62,25 +62,32 @@ public class SendReservationMail extends AbstractController {
 				StringBuilder sb = new StringBuilder();
 				
 				sb.append("<div style='text-align:center; width:400px; margin-left:0'>");
-				sb.append("<h1 style='color: orange; font-weight: bold;'>[HGV]</h1>");
-				sb.append("안녕하세요&nbsp;" + loginuser.getName() + "님 [HGV]를 이용해주셔서 감사합니다.<br>");
+				sb.append("<h1 style='color: #EB5E28; font-weight: bold;'>[HGV]</h1>");
+				sb.append("안녕하세요&nbsp;" + loginuser.getName() + "님<br>[HGV]를 이용해주셔서 감사합니다.<br>");
 				sb.append("예약하신 티켓 내역 확인 부탁드립니다.<br>");
 				sb.append("결제번호 : <span style='color: blue; font-weight: bold;'>" + imp_uid + "</span><br><br>");
 				
 				sb.append("<티켓 내역><br>");
 				
 				sb.append("<div style='border:solid 1px gray; border-radius: 1px;'>");
-				sb.append("<div style='margin-right: 0;'>" + map.get("movie_grade") + "</div>");
-				sb.append("<hr style='width:90%; border:0px; border-top:5px solid black;'><div style='font-size:15pt; font-weight:bold;'>" + map.get("movie_title") + "</div><hr style='width:90%; border:0px; border-top:5px solid black;'>");
-				sb.append(map.get("fk_screen_no") + "관<br><div style='font-size:15pt; font-weight:bold;'>" + seat_str + "</div>" + map.get("start_time") + "<br>결제한비용<br>" + String.format("%,d", ticketPrice) + "원<br><br>");
-				sb.append("HGV");
-				sb.append("<div><img src='http://localhost:9090/MovieProject/images/바코드.png' style='width:390px;'></div>");
+				sb.append("<div><img src='http://localhost:9090/MovieProject/images/admin/poster_file/" + map.get("poster_file") + ".jpg' style='width:200px; height:auto; margin-top:10px;'></div>");
+				sb.append("<hr style='width:90%; border:0px; border-top:5px solid black;'><div style='font-size:15pt; font-weight:bold;'>" + map.get("movie_title") + "<img src='http://localhost:9090/MovieProject/images/admin/movie_grade/" + map.get("movie_grade") + ".png' style='width:30px; height:auto;'></div><hr style='width:90%; border:0px; border-top:5px solid black;'>");
+				sb.append("<div>");
+				
+				sb.append("<div>상영관 : [HGV] " + map.get("fk_screen_no") + "관</div>");
+				sb.append("<div>예매좌석 : " + seat_str + "</div>");
+				sb.append("<div>상영일시 : " + map.get("start_time") + "</div>");
+				sb.append("<div>결제금액 : " + String.format("%,d", ticketPrice) + "원</div>");
+				
+				sb.append("<div><img src='http://localhost:9090/MovieProject/images/바코드.png' style='width:200px;'></div>");
+
+				sb.append("</div>");
 				
 				
 				sb.append("</div>");
-	
-				sb.append("<br>이용해 주셔서 감사합니다.</div>");
 				
+				sb.append("<br>이용해 주셔서 감사합니다.</div>");
+
 				String emailContents = sb.toString();
 				
 				mail.sendmail_OrderFinish(loginuser.getEmail(), loginuser.getName(), emailContents);

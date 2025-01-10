@@ -101,7 +101,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select to_char(start_time, 'hh24mi') as start_time, to_char(end_time, 'hh24mi') as end_time, "
+			String sql = " select to_char(start_time, 'hh24:mi') as start_time, to_char(end_time, 'hh24:mi') as end_time, "
 					   + " seat_arr, seq_showtime_no, fk_seq_movie_no, total_viewer, unused_seat, fk_screen_no "
 					   + " from tbl_showtime "
 					   + " where FK_SEQ_MOVIE_NO = ? and to_char(start_time, 'yyyymmdd') = ? and start_time > sysdate "
@@ -446,7 +446,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select movie_title, to_char(start_time, 'yyyy.mm.dd hh24:mi') as start_time, to_char(fk_screen_no) as fk_screen_no, movie_grade, poster_file "
+			String sql = " select movie_title, to_char(start_time, 'yyyy.mm.dd hh24:mi') as start_time, to_char(end_time, 'yyyy.mm.dd hh24:mi') as end_time, to_char(fk_screen_no) as fk_screen_no, movie_grade, poster_file "
 					   + " from tbl_payment p join tbl_showtime s "
 					   + " on s.seq_showtime_no = p.fk_seq_showtime_no "
 					   + " join tbl_movie m "
@@ -464,6 +464,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 				map.put("fk_screen_no", rs.getString("fk_screen_no"));
 				map.put("movie_grade", rs.getString("movie_grade"));
 				map.put("poster_file", rs.getString("poster_file"));
+				map.put("end_time", rs.getString("end_time"));
 			}
 			
 		} finally {
@@ -600,6 +601,36 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		
 		
 		return isSuccess;
+	}
+
+	// 상영 날짜 가져오기
+	@Override
+	public List<String> getScreenDate(String seq_movie_no) throws SQLException {
+		
+		List<String> screenDateList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+
+			String sql = " select to_char(start_time, 'yyyy-mm-dd') AS start_date "
+					   + " from tbl_showtime "
+					   + " where fk_seq_movie_no = to_number(?) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, seq_movie_no);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				screenDateList.add(rs.getString("start_date"));
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return screenDateList;
+		
 	}
 
 	

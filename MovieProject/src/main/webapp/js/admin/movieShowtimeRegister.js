@@ -200,7 +200,7 @@ $(document).ready(function(){
 							$('div#no_movies_message').hide();  // 검색된 영화가 없다는 메시지 숨기기
 							
 							const movie_result_list = `<tr id="research_schedule">
-													   		<td><img src="${ctxPath}/images/admin/poster_file/${movie.poster_file}" alt="${movie.movie_title}" style="width:90px; height:auto;"> ${movie.movie_title}</td>
+													   		<td><img src="${ctxPath}/images/admin/poster_file/${movie.poster_file}.jpg" alt="${movie.movie_title}" style="width:90px; height:auto;"> ${movie.movie_title}</td>
 															<td><img src="${ctxPath}/images/admin/movie_grade/${movie.movie_grade}.png" alt="${movie.movie_grade}" style="width:40px; height:auto;"></td>
 															<td>${movie.screen_no}관</td>
 															<td>${movie.running_time}분</td>

@@ -250,11 +250,11 @@
                 </div>
             
                 <!-- 이전, 다음 버튼 -->
-                <a style="display:inline-block;background-color: gray; width:30px; height:30px; border-radius: 50%;" class="carousel-control-prev" href="#cardCarousel2" role="button" data-slide="prev">
+                <a style="display:inline-block;background-color: gray; width:30px; height:30px; border-radius: 50%; margin-top:180px;" class="carousel-control-prev" href="#cardCarousel2" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="sr-only">이전</span>
                 </a>
-                <a style="display:inline-block;background-color: gray; width:30px; height:30px; border-radius: 50%;" class="carousel-control-next" href="#cardCarousel2" role="button" data-slide="next">
+                <a style="display:inline-block;background-color: gray; width:30px; height:30px; border-radius: 50%; margin-top:180px;" class="carousel-control-next" href="#cardCarousel2" role="button" data-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="sr-only">다음</span>
                 </a>
