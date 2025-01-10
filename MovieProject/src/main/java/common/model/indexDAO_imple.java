@@ -272,7 +272,12 @@ public class indexDAO_imple implements indexDAO{
 		try {
 			conn = ds.getConnection();
 
-			String sql = " SELECT seq_movie_no, MOVIE_TITLE, POSTER_FILE, MOVIE_GRADE,round(start_date-sysdate) as remaining_day "
+			String sql = " SELECT seq_movie_no, "
+					+ " CASE "
+					+ "	 WHEN LENGTH(movie_title) < 10 THEN movie_title "
+					+ "	 ELSE SUBSTR(movie_title, 0, 10) || '...' "
+					+ "	 END AS movie_title "
+					+ " , POSTER_FILE, MOVIE_GRADE,round(start_date-sysdate) as remaining_day "
 					+ " FROM ( "
 					+ "    SELECT  "
 					+ "        seq_movie_no,  "
@@ -322,7 +327,12 @@ public class indexDAO_imple implements indexDAO{
 		try {
 			conn = ds.getConnection();
 
-			String sql = " SELECT seq_movie_no, MOVIE_TITLE, POSTER_FILE, MOVIE_GRADE,remaining_day "
+			String sql = " SELECT seq_movie_no, "
+					+ " CASE "
+					+ "	 WHEN LENGTH(movie_title) < 10 THEN movie_title "
+					+ "	 ELSE SUBSTR(movie_title, 0, 10) || '...' "
+					+ "	 END AS movie_title "
+					+ " , POSTER_FILE, MOVIE_GRADE,remaining_day "
 					+ " FROM ( "
 					+ "    SELECT "
 					+ "        A.*, ROWNUM AS RN "
