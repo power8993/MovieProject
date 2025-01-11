@@ -66,8 +66,8 @@ public class ReservationCancel extends AbstractController {
 				
 				Map<String, String> paramap = new HashMap<>();
 				String seatList = mdao.getSeatList(imp_uid);
-				// String seatArr = mdao.getSeatArr(seq_showtime_no);
-				String seatArr = mdao.getSeatArr(60);
+				String seatArr = mdao.getSeatArr(Integer.parseInt(seq_showtime_no));
+				// String seatArr = mdao.getSeatArr(60);
 				String[] selected_seat_arr = seatList.split(",");
 				String[] seat_arr = seatArr.split(",");
 				

@@ -534,7 +534,6 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 			pstmt.setString(1, paramap.get("imp_uid"));
 			
 			n1 = pstmt.executeUpdate();
-			
 			// 티켓 내역 삭제
 			if(n1 == 1) {
 				
@@ -545,7 +544,6 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 				pstmt.setString(1, paramap.get("imp_uid"));
 				
 				n2 = pstmt.executeUpdate();
-				
 				if(n2 == seatArr.length) {
 					n2 = 1;
 				}
@@ -561,23 +559,21 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 				pstmt.setString(1, paramap.get("imp_uid"));
 				
 				n3 = pstmt.executeUpdate();
-				
 			}
 			
 			// 상영 영화 좌석 배열 수정
 			if(n3 == 1) {
 				
 				sql = " update tbl_showtime set seat_arr = ?, UNUSED_SEAT = UNUSED_SEAT + to_number(?) "
-					+ " where seq_showtime_no = ? ";
+					+ " where seq_showtime_no = to_number(?) ";
 				
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, paramap.get("seatArr"));
 				pstmt.setString(2, paramap.get("seatListLength"));
-				pstmt.setInt(3, 60);
+				pstmt.setString(3, paramap.get("seq_showtime_no"));
 				// pstmt.setInt(3, Integer.parseInt(paramap.get("seq_showtime_no")));
 				
 				n4 = pstmt.executeUpdate();
-				
 			}
 			
 			// 모든처리가 성공되었을시 commit
