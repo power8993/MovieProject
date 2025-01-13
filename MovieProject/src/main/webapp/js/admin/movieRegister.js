@@ -71,241 +71,277 @@ $(document).ready(function() {
 	// ===== 배우 입력 끝 ===== //
 	
 	
+/*
+	// ===== 오류메세지 제거 시작 ===== //
+	$("input[name='director']").keydown(function(e) {
+	    if (e.keyCode == 13) {  // 엔터 키를 눌렀을 때
+	        var director_dom = $("input[name='director']")[0];
+			director_dom.setCustomValidity("");  // 오류 메시지 제거
+	    }
+	});
+	
+	// 배우 입력 필드에서 엔터 키 이벤트
+	$("input[name='actor']").keydown(function(e) {
+	    if (e.keyCode == 13) {  // 엔터 키를 눌렀을 때
+			var actor_dom = $("input[name='actor']")[0];
+			actor_dom.setCustomValidity("");  // 오류 메시지 제거
+	    }
+	});
+	// ===== 오류메세지 제거 끝  ===== //
+*/	
+	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	// ===== 제출 버튼 클릭 시 [필수입력값] 유효성 검사 시작 ===== //
 	// 순서대로 유효성 검사 및 메세지가 띄워지도록 각 항목마다 if(is_empty) 작성
 	$("button[id='resister_btn']").click(function(e) {
 		
-		// ---- [감독 / 배우] 이름 추출 시작 ---- // 	
-	    // 감독 이름을 콤마로 구분하여 추출
-	    const director_list = [];
-	    $("div#director_tags .director_tag").each(function() {
-			const director_name = $(this).text().trim().replace('x', '').trim(); // 클래스가 .director_tag 인 태그의 x제거, 공백 제거 후 추출
-	        director_list.push(director_name);  // 'x' 버튼 제거 후 이름만 저장
-	    });
-	    const director_value = director_list.join(', ');  // 감독 이름을 콤마로 구분
-
-	    // ---- 배우 이름을 콤마로 구분하여 추출
-	    const actor_list = [];
-	    $("div#actor_tags .actor_tag").each(function() {
-			const actor_name = $(this).text().trim().replace('x', '').trim(); // 클래스가 .actor_tag 인 태그의 x제거, 공백 제거 후 추출
-	        actor_list.push(actor_name);  // 'x' 버튼 제거 후 이름만 저장
-	    });
-	    const actor_value = actor_list.join(', ');  // 배우 이름을 콤마로 구분
-
-	    // 콤마로 구분된 감독과 배우 이름을 각 input 선택자에 저장
-	    $("input[name='director']").val(director_value); 
-	    $("input[name='actor']").val(actor_value); 
-		// ---- [감독 / 배우] 이름 추출 끝  ---- // 
+		const register_confirm = confirm("영화를 등록하시겠습니까?");
 		
-		
-		const movie_title = $("input[id='movie_title']").val().trim();
-		const content = $("textarea[id='content']").val().trim();
-		const fk_category_code = $("select[id='fk_category_code']").val();
-		const running_time = $("input[id='running_time']").val();
-		const movie_grade = $("select[id='movie_grade']").val();
-		const director = $("div#director_tags .director_tag");	// 태그의 개수를 확인한다.
-		const actor = $("div#actor_tags .actor_tag");			// 태그의 개수를 확인한다.
-		
-		let is_empty = false;
-		
-		// ===== 영화제목 유효성 검사  ===== //
-		var movie_dom = $("input[id='movie_title']")[0];
-
-		if (movie_title == "") {
-			// 입력하지 않거나 공백만 입력했을 경우
-			movie_dom.setCustomValidity("영화 제목을 입력해주세요!");
-			movie_dom.reportValidity();  // 유효성 검사 메시지 표시
-						
-			is_empty = true;
-		} 
-		else {
-			// 앞뒤 공백제거한 영화제목을 넘길 수 있도록 넣는다.
-			$("input[id='movie_title']").val(movie_title.replace(/\s+/g, ' ')); // 여러 공백을 하나로 변환		
-			movie_dom.setCustomValidity("");  // 오류 메시지 제거
-		}
-		
-		if (is_empty) {
-		    e.preventDefault();  // 폼 제출을 막음
-		    return;  // 나머지 검사 생략
-		}
-		
-		// ===== 줄거리 유효성 검사  ===== //
-		var content_dom = $("textarea[id='content']")[0];
-
-		if (content == "") {
-			// 입력하지 않거나 공백만 입력했을 경우	
-			content_dom.setCustomValidity("영화 줄거리를 입력해주세요!");
-			content_dom.reportValidity();  // 유효성 검사 메시지 표시
-			
-			is_empty = true;
-		} 
-		else if($("textarea[id='content']").val().replace(/\r?\n/g, '  ').length > 500) {
-			// 영화줄거리가 300자 초과인 경우
-			content_dom.setCustomValidity("영화 줄거리는 500자 이내만 입력 가능합니다.");
-			content_dom.reportValidity();  // 유효성 검사 메시지 표시
-			
-			is_empty = true;
-	    } 
-		else {
-			// 앞뒤 공백제거한 줄거리를 넘길 수 있도록 넣는다.
-			$("textarea[id='content']").val(content);
-			
-            content_dom.setCustomValidity("");  // 오류 메시지 제거
-	    }
-		
-		if (is_empty) {
-		    e.preventDefault();  // 폼 제출을 막음
-		    return;  // 나머지 검사 생략
-		}
-			
-		
-		// ===== 감독 유효성 검사  ===== //
-		var director_dom = $("input[name='director']")[0];
-		
-		if (director.length == 0) {
-			director_dom.setCustomValidity("감독은 한 명 이상 입력해주세요!");
-			director_dom.reportValidity();  // 유효성 검사 메시지 표시
-			
-			is_empty = true;
-		}
-		else{
-			director_dom.setCustomValidity("");  // 오류 메시지 제거
-		}
-		
-		if (is_empty) {
-	        e.preventDefault();  // 폼 제출을 막음
-	        return;  // 나머지 검사 생략
-	    }
-		
-		// ===== 배우 유효성 검사  ===== //
-		var actor_dom = $("input[name='actor']")[0];
-		
-		if (actor.length == 0) {	
-			actor_dom.setCustomValidity("감독은 한 명 이상 입력해주세요!");
-			actor_dom.reportValidity();  // 유효성 검사 메시지 표시
-			
-			is_empty = true;
-		}
-		else{
-			actor_dom.setCustomValidity("");  // 오류 메시지 제거
-		}
-		
-		if (is_empty) {
-	        e.preventDefault();  // 폼 제출을 막음
-	        return;  // 나머지 검사 생략
-	    }
-		
-		// ===== 장르 유효성 검사  ===== //
-		var fk_category_code_dom = $("select[id='fk_category_code']")[0];
-		
-		if (fk_category_code == "" ) {
-			fk_category_code_dom.setCustomValidity("장르를 선택해주세요!");
-			fk_category_code_dom.reportValidity();  // 유효성 검사 메시지 표시
-			
-			is_empty = true;
-		}
-		else{
-			fk_category_code_dom.setCustomValidity("");  // 오류 메시지 제거
-		}
-		
-		if (is_empty) {
-	        e.preventDefault();  // 폼 제출을 막음
-	        return;  // 나머지 검사 생략
-	    }
-		
-		// ===== 상영시간 유효성 검사  ===== //
-		var running_time_dom = $("input[id='running_time']")[0];
-		
-		if (running_time == "" || running_time == "0") {
-			running_time_dom.setCustomValidity("상영시간을 입력해주세요!");
-			running_time_dom.reportValidity();  // 유효성 검사 메시지 표시
-			
-			is_empty = true;
-		}
-		else{
-			running_time_dom.setCustomValidity("");  // 오류 메시지 제거
-		}
-		
-		if (is_empty) {
-	        e.preventDefault();  // 폼 제출을 막음
-	        return;  // 나머지 검사 생략
-	    }
-		
-		// ===== 상영등급 유효성 검사  ===== //
-		var movie_grade_dom = $("select[id='movie_grade']")[0];
+		if(register_confirm) {
+			// ---- [감독 / 배우] 이름 추출 시작 ---- // 	
+		    // 감독 이름을 콤마로 구분하여 추출
+		    const director_list = [];
+		    $("div#director_tags .director_tag").each(function() {
+				const director_name = $(this).text().trim().replace('x', '').trim(); // 클래스가 .director_tag 인 태그의 x제거, 공백 제거 후 추출
+		        director_list.push(director_name);  // 'x' 버튼 제거 후 이름만 저장
+		    });
+		    const director_value = director_list.join(', ');  // 감독 이름을 콤마로 구분
 	
-		if (movie_grade == "") {
-			movie_grade_dom.setCustomValidity("상영등급을 선택해주세요!");
-			movie_grade_dom.reportValidity();  // 유효성 검사 메시지 표시
+		    // ---- 배우 이름을 콤마로 구분하여 추출
+		    const actor_list = [];
+		    $("div#actor_tags .actor_tag").each(function() {
+				const actor_name = $(this).text().trim().replace('x', '').trim(); // 클래스가 .actor_tag 인 태그의 x제거, 공백 제거 후 추출
+		        actor_list.push(actor_name);  // 'x' 버튼 제거 후 이름만 저장
+		    });
+		    const actor_value = actor_list.join(', ');  // 배우 이름을 콤마로 구분
+	
+		    // 콤마로 구분된 감독과 배우 이름을 각 input 선택자에 저장
+		    $("input[name='director']").val(director_value); 
+		    $("input[name='actor']").val(actor_value); 
+			// ---- [감독 / 배우] 이름 추출 끝  ---- // 
 			
-			is_empty = true;
-		}
-		else{
-			movie_grade_dom.setCustomValidity("");  // 오류 메시지 제거
-		}
-		
-		// ===== 상영시작일 / 상영종료일 유효성검사 시작 ===== //
-		// 상영종료일이 상영시작일보다 이전일 수 없다.
-		let start_date = $("input[name='start_date']").val();
-		let end_date = $("input[name='end_date']").val();
-		
-		const today = new Date(); // 오늘날짜
-		const start_date_obj = new Date(start_date);
-		const end_date_obj = new Date(end_date);
-		
-		var start_date_dom = $("input[name='start_date']")[0];
-		
-		if(start_date && end_date) {
-			// 상영시작일과 상영종료일이 둘 다 비어있지 않을 경우
-		
-			if(today > start_date_obj) {
-				start_date_dom.setCustomValidity("상영시작일은 오늘보다 이후여야 합니다.");
-				start_date_dom.reportValidity();  // 유효성 검사 메시지 표시
-				
-				// 각 값을 비우기
-				$("input[name='start_date']").val("");
-				$("input[name='end_date']").val("");
-				
+			
+			const movie_title = $("input[id='movie_title']").val().trim();
+			const content = $("textarea[id='content']").val().trim();
+			const fk_category_code = $("select[id='fk_category_code']").val();
+			const running_time = $("input[id='running_time']").val();
+			const movie_grade = $("select[id='movie_grade']").val();
+			const director = $("div#director_tags .director_tag");	// 태그의 개수를 확인한다.
+			const actor = $("div#actor_tags .actor_tag");			// 태그의 개수를 확인한다.
+			
+			let is_empty = false;
+			
+			// ===== 영화제목 유효성 검사  ===== //
+			var movie_dom = $("input[id='movie_title']")[0];
+	
+			if (movie_title == "") {
+				// 입력하지 않거나 공백만 입력했을 경우
+				movie_dom.setCustomValidity("영화 제목을 입력해주세요!");
+				movie_dom.reportValidity();  // 유효성 검사 메시지 표시
+							
 				is_empty = true;
+			} 
+			else {
+				// 앞뒤 공백제거한 영화제목을 넘길 수 있도록 넣는다.
+				$("input[id='movie_title']").val(movie_title.replace(/\s+/g, ' ')); // 여러 공백을 하나로 변환		
+				movie_dom.setCustomValidity("");  // 오류 메시지 제거
 			}
-			else if(start_date_obj > end_date_obj) {
-				start_date_dom.setCustomValidity("상영시작일이 상영종료일보다 나중일 수 없습니다.");
-				start_date_dom.reportValidity();  // 유효성 검사 메시지 표시
-				
-				// 각 값을 비우기
-				$("input[name='start_date']").val("");
-				$("input[name='end_date']").val("");
+			
+			if (is_empty) {
+			    e.preventDefault();  // 폼 제출을 막음
+			    return;  // 나머지 검사 생략
+			}
+			
+			// ===== 줄거리 유효성 검사  ===== //
+			var content_dom = $("textarea[id='content']")[0];
+	
+			if (content == "") {
+				// 입력하지 않거나 공백만 입력했을 경우	
+				content_dom.setCustomValidity("영화 줄거리를 입력해주세요!");
+				content_dom.reportValidity();  // 유효성 검사 메시지 표시
 				
 				is_empty = true;
 			} 
-			else { 
-				start_date_dom.setCustomValidity("");  // 오류 메시지 제거
+			else if($("textarea[id='content']").val().replace(/\r?\n/g, '  ').length > 500) {
+				// 영화줄거리가 300자 초과인 경우
+				content_dom.setCustomValidity("영화 줄거리는 500자 이내만 입력 가능합니다.");
+				content_dom.reportValidity();  // 유효성 검사 메시지 표시
+				
+				is_empty = true;
+		    } 
+			else {
+				// 앞뒤 공백제거한 줄거리를 넘길 수 있도록 넣는다.
+				$("textarea[id='content']").val(content);
+				
+	            content_dom.setCustomValidity("");  // 오류 메시지 제거
+		    }
+			
+			if (is_empty) {
+			    e.preventDefault();  // 폼 제출을 막음
+			    return;  // 나머지 검사 생략
+			}
+				
+			
+			// ===== 감독 유효성 검사  ===== //
+			var director_dom = $("input[name='director']")[0];
+			
+			if (director.length == 0) {
+				director_dom.setCustomValidity("감독은 한 명 이상 입력해주세요!");
+				director_dom.reportValidity();  // 유효성 검사 메시지 표시
+				
+				is_empty = true;
+			}
+			else{
+				director_dom.setCustomValidity("");  // 오류 메시지 제거
+			}
+			
+			if (is_empty) {
+		        e.preventDefault();  // 폼 제출을 막음
+		        return;  // 나머지 검사 생략
+		    }
+			
+			// ===== 배우 유효성 검사  ===== //
+			var actor_dom = $("input[name='actor']")[0];
+			
+			if (actor.length == 0) {	
+				actor_dom.setCustomValidity("배우는 한 명 이상 입력해주세요!");
+				actor_dom.reportValidity();  // 유효성 검사 메시지 표시
+				
+				is_empty = true;
+			}
+			else{
+				actor_dom.setCustomValidity("");  // 오류 메시지 제거
+			}
+			
+			if (is_empty) {
+		        e.preventDefault();  // 폼 제출을 막음
+		        return;  // 나머지 검사 생략
+		    }
+			
+			// ===== 장르 유효성 검사  ===== //
+			var fk_category_code_dom = $("select[id='fk_category_code']")[0];
+			
+			if (fk_category_code == "" ) {
+				fk_category_code_dom.setCustomValidity("장르를 선택해주세요!");
+				fk_category_code_dom.reportValidity();  // 유효성 검사 메시지 표시
+				
+				is_empty = true;
+			}
+			else{
+				fk_category_code_dom.setCustomValidity("");  // 오류 메시지 제거
+			}
+			
+			if (is_empty) {
+		        e.preventDefault();  // 폼 제출을 막음
+		        return;  // 나머지 검사 생략
+		    }
+			
+			// ===== 상영시간 유효성 검사  ===== //
+			var running_time_dom = $("input[id='running_time']")[0];
+			
+			if (running_time == "" || running_time == "0") {
+				running_time_dom.setCustomValidity("상영시간을 입력해주세요!");
+				running_time_dom.reportValidity();  // 유효성 검사 메시지 표시
+				
+				is_empty = true;
+			}
+			else{
+				running_time_dom.setCustomValidity("");  // 오류 메시지 제거
+			}
+			
+			if (is_empty) {
+		        e.preventDefault();  // 폼 제출을 막음
+		        return;  // 나머지 검사 생략
+		    }
+			
+			// ===== 상영등급 유효성 검사  ===== //
+			var movie_grade_dom = $("select[id='movie_grade']")[0];
+		
+			if (movie_grade == "") {
+				movie_grade_dom.setCustomValidity("상영등급을 선택해주세요!");
+				movie_grade_dom.reportValidity();  // 유효성 검사 메시지 표시
+				
+				is_empty = true;
+			}
+			else{
+				movie_grade_dom.setCustomValidity("");  // 오류 메시지 제거
+			}
+			
+			// ===== 상영시작일 / 상영종료일 유효성검사 시작 ===== //
+			// 상영종료일이 상영시작일보다 이전일 수 없다.
+			let start_date = $("input[name='start_date']").val();
+			let end_date = $("input[name='end_date']").val();
+			
+			const today = new Date(); // 오늘날짜
+			const start_date_obj = new Date(start_date);
+			const end_date_obj = new Date(end_date);
+			
+			var start_date_dom = $("input[name='start_date']")[0];
+			
+			if(start_date && end_date) {
+				// 상영시작일과 상영종료일이 둘 다 비어있지 않을 경우
+			
+				if(today > start_date_obj) {
+					start_date_dom.setCustomValidity("상영시작일은 오늘보다 이후여야 합니다.");
+					start_date_dom.reportValidity();  // 유효성 검사 메시지 표시
+					
+					// 각 값을 비우기
+					$("input[name='start_date']").val("");
+					$("input[name='end_date']").val("");
+					
+					is_empty = true;
+				}
+				else if(start_date_obj > end_date_obj) {
+					start_date_dom.setCustomValidity("상영시작일이 상영종료일보다 나중일 수 없습니다.");
+					start_date_dom.reportValidity();  // 유효성 검사 메시지 표시
+					
+					// 각 값을 비우기
+					$("input[name='start_date']").val("");
+					$("input[name='end_date']").val("");
+					
+					is_empty = true;
+				} 
+				else { 
+					start_date_dom.setCustomValidity("");  // 오류 메시지 제거
+				}
+			}
+			else if((start_date && !end_date) || (!start_date && end_date)) {
+				// 상영시작일과 상영종료일이 둘 중 한 값이 비어있을 경우
+				start_date_dom.setCustomValidity("상영시작일과 상영종료일은 함께 입력되거나, 둘 다 입력되지 않은 상태여야 합니다");
+				start_date_dom.reportValidity();  // 유효성 검사 메시지 표시
+				
+				// 각 값을 비우기
+				$("input[name='start_date']").val("");
+				$("input[name='end_date']").val("");
+				
+				is_empty = true;
+			} else {
+			    // 유효성 검사 통과 후 오류 메시지 제거
+			    start_date_dom.setCustomValidity("");  // 오류 메시지 제거
+			}
+			
+			if (is_empty) {
+		        e.preventDefault();  // 폼 제출을 막음
+		        return;  // 나머지 검사 생략
+		    } 
+			// ===== 상영시작일 / 상영종료일 유효성검사 끝 ===== //
+			
+			
+			// ===== 모든 검사 후 폼 제출 여부 확인 ===== //
+			if(is_empty){
+				e.preventDefault();  // 폼 제출을 막음
 			}
 		}
-		else if(!start_date || !end_date) {
-			// 상영시작일과 상영종료일이 둘 중 한 값이 비어있을 경우
-			start_date_dom.setCustomValidity("상영시작일과 상영종료일은 함께 입력되거나, 둘 다 입력되지 않은 상태여야 합니다");
-			start_date_dom.reportValidity();  // 유효성 검사 메시지 표시
-			
-			is_empty = true;
-		}
-		
-		if (is_empty) {
-	        e.preventDefault();  // 폼 제출을 막음
-	        return;  // 나머지 검사 생략
-	    }
-		// ===== 상영시작일 / 상영종료일 유효성검사 끝 ===== //
-		
-		
-		// ===== 모든 검사 후 폼 제출 여부 확인 ===== //
-		if(is_empty){
+		else {
 			e.preventDefault();  // 폼 제출을 막음
+			return;
 		}
+		
 	});
 	// ===== 제출 버튼 클릭 시 [필수입력값] 유효성 검사 유효성 검사 끝 ===== //
 
+	
 });// end of $(document).ready(function(){})----------------------
 
 
@@ -446,7 +482,7 @@ function searchMovies(e) {
                     movieArray.forEach(movie => {
                         const movie_result_list = `
 										<tr>
-						                    <td><img src="${ctxPath}/images/admin/poster_file/${movie.poster_file}" alt="${movie.movie_title}" style="width:70px; height:auto;"> ${movie.movie_title}</td>
+						                    <td><img src="${ctxPath}/images/admin/poster_file/${movie.poster_file}.jpg" alt="${movie.movie_title}" style="width:70px; height:auto;"> ${movie.movie_title}</td>
 						                    <td>${movie.fk_category_code}</td>
 						                    <td><img src="${ctxPath}/images/admin/movie_grade/${movie.movie_grade}.png" alt="${movie.movie_grade}" style="width:40px; height:auto;"></td>
 						                    <td>${movie.register_date}</td>

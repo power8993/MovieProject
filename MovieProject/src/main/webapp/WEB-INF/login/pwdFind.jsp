@@ -262,16 +262,17 @@ $(document).ready(function(){
 		            	        <div class="form-floating-label">
 		            	          <input type="password" class="form-control" name="pwd" id="newPwd" autocomplete="off" placeholder=" " />
 		            	          <label for="newPwd">새 암호</label>
+		            	          <div id="newPwdErrorMsg"></div>
 		            	        </div>
-		            	        <div id="newPwdErrorMsg"></div>
+		            	        
 		            	      </div>
 		            	      <!-- 새 암호 확인 -->
 		            	      <div class="form-group">
 		            	        <div class="form-floating-label">
 		            	          <input type="password" class="form-control" name="pwd2" id="confirmPwd" autocomplete="off" placeholder=" " />
 		            	          <label for="confirmPwd">새 암호 확인</label>
+		            	          <div id="confirmPwdErrorMsg"></div>
 		            	        </div>
-		            	        <div id="confirmPwdErrorMsg"></div>
 		            	      </div>
 		            	      <button type="button" class="btn btn-primary" id="finishNewPwd" style="margin-top: 10px; width: 100%;">암호 변경하기</button>
 		            	    </form>
@@ -369,8 +370,8 @@ function goFind() {
                 	  </p>
                 	  <p>인증코드를 입력해주세요.</p>
                 	  <div class="verification-input">
-                	    <input type="text" name="input_confirmCode"  autocomplete="off" placeholder="인증코드 입력" />
-                	    <button type="button" class="btn btn-info" id="pwdFindjspBtn">인증하기</button>
+                	    <input type="text" name="input_confirmCode"  autocomplete="off" placeholder="인증코드 입력" style="height:41px;width:200px;padding:5px;"/>
+                	    <button type="button" class="btn btn-info" id="pwdFindjspBtn" >인증하기</button>
                 	    
                 	  </div>
                 	  <div id="verificationErr"></div>
@@ -409,39 +410,41 @@ function goFind() {
 
 <div id="semiLogo"><a href="<%= ctxPath%>/"><img src="<%= ctxPath%>/images/index/logo.png"/></a></div>
 	<form name="pwdFindFrm">
-  <!-- 아이디 입력 -->
-  <div class="form-group">
-    <div class="form-floating-label">
-      <input type="text" class="form-control" id="useridInput" name="userid" autocomplete="off" placeholder=" " />
-      <label for="useridInput">아이디</label>
-    </div>
-    <div id="idErrorMsg"></div>
-  </div>
-
-  <!-- 이메일 입력 -->
-  <div class="form-group">
-    <div class="form-floating-label" style="position: relative;">
-      <input type="text" class="form-control" id="emailInput" name="email" autocomplete="off" placeholder=" " />
-      <label for="emailInput" style="left: 10px;">이메일</label>
-      <button type="button" id="findBtn" class="btn btn-primary" style="position: absolute; top: 0; right: 0; height: 100%; border-radius: 0 4px 4px 0;">
-        전송
-      </button>
-    </div>
-    <div id="emailErrorMsg"></div>
-    <div id="errorMsg"></div>
-  </div>
-</form>
+	  <!-- 아이디 입력 -->
+	  <div class="form-group">
+	  <div id="pwdFindTitle"><p>비밀번호 찾기</p></div>
+	    <div class="form-floating-label">
+	      <input type="text" class="form-control" id="useridInput" name="userid" autocomplete="off" placeholder=" " />
+	      <label for="useridInput" >아이디</label>
+	      <div id="idErrorMsg"></div>
+	    </div>
+	    
+	  </div>
+	
+	  <!-- 이메일 입력 -->
+	  <div class="form-group">
+	    <div class="form-floating-label" style="position: relative;">
+	      <input type="text" class="form-control" id="emailInput" name="email" autocomplete="off" placeholder=" " />
+	      <label for="emailInput" style="left: 10px;">이메일</label>
+	      <button type="button" id="findBtn" class="btn btn-primary" style="position: absolute; top: 0; right: 0; height: 54px; border-radius: 0 4px 4px 0;">
+	        전송
+	      </button>
+	      <div id="emailErrorMsg"></div>
+	      <div id="errorMsg"></div>
+	    </div>
+	  </div>
+	</form>
 
 	<div class="my-3 text-center" id="div_findResult"></div>
 	
 	<div style="width: 350px; margin: 0 auto;">
-		    <div id="buttonContainer">
-					<button type="button" class="loginjspBtn" id="loginBtn" onclick="location.href='<%=request.getContextPath()%>/login/login.mp'">로그인</button>
-				<form action="<%=request.getContextPath()%>/login/idpwFind.mp" method="get">
-					<button type="submit" class="loginjspBtn" id="findPwBtn" name="action" value="findId">아이디 찾기</button>
-				</form>
-		    </div>
-		</div>
+	    <div id="buttonContainer" >
+			<button type="button" class="loginjspBtn" id="loginBtn" onclick="location.href='<%=request.getContextPath()%>/login/login.mp'">로그인</button>
+			<form action="<%=request.getContextPath()%>/login/idpwFind.mp" method="get">
+				<button type="submit" class="loginjspBtn" id="findPwBtn" name="action" value="findId">아이디 찾기</button>
+			</form>
+	    </div>
+	</div>
 
 
 

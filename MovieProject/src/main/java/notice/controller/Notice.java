@@ -60,7 +60,7 @@ public class Notice extends AbstractController {
 
 		// === !!! [맨처음][이전] 만들기 === *** //
 		pageBar += "<li class='page-item'><a class='page-link' href='notice.mp?sizePerPage=" + sizePerPage
-				+ "&currentShowPageNo=1'>[맨처음]</a></li>";
+				+ "&currentShowPageNo=1'>[처음]</a></li>";
 
 		if (pageNo != 1) {
 			pageBar += "<li class='page-item'><a class='page-link' href='notice.mp?sizePerPage=" + sizePerPage
@@ -97,18 +97,12 @@ public class Notice extends AbstractController {
 
 			request.setAttribute("pageBar", pageBar);
 
-			/*
-			 * >>> 뷰단(memberList.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 검색이 있는 또는 검색이 없는 회원의
-			 * 총개수 알아오기 시작 <<<
-			 */
+			
 			int totalNoticeCount = ndao.getTotalNoticeCount(paraMap);
 
 			request.setAttribute("totalNoticeCount", totalNoticeCount);
 			request.setAttribute("currentShowPageNo", currentShowPageNo);
-			/*
-			 * >>> 뷰단(memberList.jsp)에서 "페이징 처리시 보여주는 순번 공식" 에서 사용하기 위해 검색이 있는 또는 검색이 없는 회원의
-			 * 총개수 알아오기 끝 <<<
-			 */
+			
 			request.setAttribute("loginuser", loginuser);
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/notice/notice.jsp");

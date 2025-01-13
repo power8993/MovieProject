@@ -34,6 +34,8 @@ public class MymovielikeJSON extends AbstractController {
 	      
 	      List<MovieLikeVO> mymovielikeList = mydao.selectBymymovielike(paraMap);
 	      
+	      
+	      
 	      JSONArray jsonArr = new JSONArray();
 	      
 	      if (mymovielikeList.size() > 0) {
@@ -44,6 +46,7 @@ public class MymovielikeJSON extends AbstractController {
 	              jsonObj.put("poster_file", mlvo.getMvo().getPoster_file());
 	              jsonObj.put("movie_title", mlvo.getMvo().getMovie_title());
 	              jsonObj.put("start_date", mlvo.getMvo().getStart_date());
+	              jsonObj.put("end_date", mlvo.getMvo().getEnd_date());
 	              
 	             
 	              jsonArr.put(jsonObj);

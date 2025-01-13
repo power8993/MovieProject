@@ -36,8 +36,6 @@ public class GetScreenTime extends AbstractController {
 		
 		List<ShowTimeVO_sunghoon> showTimeList = mdao.getScreenTime(paraMap);
 		
-		// request.setAttribute("showTimeList", showTimeList);
-		
 		JSONArray jsonArr = new JSONArray(); // []
 		
 		if(showTimeList.size() > 0) {
@@ -60,7 +58,7 @@ public class GetScreenTime extends AbstractController {
 	            
 			} // end of for----------------------------------------------
 			
-		} // end of if(productList.size() > 0) -----------------------------------------------------------
+		} // end of if(showTimeList.size() > 0) -----------------------------------------------------------
 		
 		String json = jsonArr.toString(); // 문자열로 변환
 		

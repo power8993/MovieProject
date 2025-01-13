@@ -74,7 +74,7 @@ $(document).ready(function(){
 					                                    <table class="table" id="modal_table">
 					                                        <tbody>
 																<tr>
-																	<td rowspan="3"><img src="${mvvo.ctxPath}/images/admin/poster_file/${mvvo.poster_file}" alt="" style="width:230px; height:auto;"></td>
+																	<td rowspan="3"><img src="${mvvo.ctxPath}/images/admin/poster_file/${mvvo.poster_file}.jpg" alt="" style="width:230px; height:auto;"></td>
 																	<td colspan="2" class="modal_movie_title">${mvvo.movie_title}</td>
 																</tr>
 					                                            <tr>
@@ -116,7 +116,7 @@ $(document).ready(function(){
 					                                    <div class="modal-footer">
 															<button type="button" class="btn btn-success" id="register_button" style="margin-right: auto;">상영일정 등록</button>
 					                                        <button type="button" class="btn btn-primary" id="edit_button">수정하기</button>
-					                                        <button type="button" class="btn btn-danger" id="delete_button">상영중지</button>
+					                                        ${''/* <button type="button" class="btn btn-danger" id="delete_button">상영중지</button> */} 
 					                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
 					                                    </div>
 					                                </div>
@@ -163,7 +163,7 @@ $(document).ready(function(){
 		// === 수정하기 버튼 클릭 이벤트 끝 === //
 		
 		
-		// === 상영중지 버튼 클릭 이벤트 (모달 내에서) === //
+		// === 상영중지 버튼 클릭 이벤트 (모달 내에서) 시작 === //
 		$(document).one('click', '#delete_button', function(e) {
 			
 			var current_date = new Date();
@@ -191,7 +191,7 @@ $(document).ready(function(){
 				}
 			}
 		});  // end of $(document).on('click', '#delete_button')
-		// === 삭제하기 버튼 클릭 이벤트 끝 === //
+		// === 상영중지 버튼 클릭 이벤트 (모달 내에서) 끝  === //
 		
 		
 		// === 상영일정 등록 버튼 클릭 이벤트 (모달 내에서) === //

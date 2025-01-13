@@ -32,6 +32,9 @@ public interface MovieDAO {
 	// 상영일정을 등록해주는 메소드(tbl_showtime 테이블에 insert)
 	int registerShowtime(MovieVO mvvo) throws SQLException;
 	
+	// 상영일정을 삭제하는 메소드(seq에 해당하는 상영일정을 delete)
+	int deleteShowtime(String seq) throws SQLException;
+	
 	// [상영시간 조회하기] 선택한 상영 시간과 상영관에 중첩된 상영이 있는지 확인하는 메소드 (select)
 	List<MovieVO> selectShowtimeConflict(Map<String, String> paraMap) throws SQLException;
 
@@ -58,6 +61,8 @@ public interface MovieDAO {
 
 	// 입력한 상영시작일과 상영종료일이 해당 영화의 상영 일정들에 모두 포함되는지 확인하는 메소드
 	boolean isDateValidCheck(Map<String, String> paraMap) throws SQLException;
+
+
 	
 	
 

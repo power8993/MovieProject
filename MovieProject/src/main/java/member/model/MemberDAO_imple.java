@@ -176,11 +176,11 @@ public class MemberDAO_imple implements MemberDAO {
 	         
 	         
 	         String sql = " SELECT USER_ID, name,pwdchangegap, to_char(PWD_CHANGE_DATE,'yyyy-mm-dd') as lastpwdchangedate, "
-	                  + "        NVL( lastlogingap, TRUNC( months_between(sysdate, REGISTERDAY) ) ) AS lastlogingap, idle_status, email, mobile, gender, birthday "
+	                  + "        NVL( lastlogingap, TRUNC( months_between(sysdate, REGISTERDAY) ) ) AS lastlogingap, idle_status, email, mobile, gender,profile, birthday "
 	                  + " FROM "
 	                  + " (select user_id, name, "
 	                  + "         trunc( months_between(sysdate, PWD_CHANGE_DATE) ) AS pwdchangegap, PWD_CHANGE_DATE, "
-	                  + "         registerday, idle_status, email, mobile, gender, birthday "
+	                  + "         registerday, idle_status, email, mobile, gender, birthday,profile "
 	                  + " FROM tbl_member "
 	                  + " WHERE user_status = 1 AND user_id = ? AND pwd = ? "
 	                  + " ) M "
@@ -197,16 +197,18 @@ public class MemberDAO_imple implements MemberDAO {
 	         pstmt.setString(3, paraMap.get("userid"));
 	         
 	         rs = pstmt.executeQuery();
-	         
+
 	         if(rs.next()) {
 	            member = new MemberVO();
-	            
+
+		         System.out.println("rs.getString(\"profile\")"+rs.getString("profile"));
 	            member.setUserid(rs.getString("USER_ID"));
 	            member.setName(rs.getString("name"));
 	            member.setEmail( aes.decrypt(rs.getString("email")) );
 	            member.setMobile( aes.decrypt(rs.getString("mobile")) );
 	            member.setBirthday(rs.getString("birthday"));
 	            member.setLastpwdchangedate(rs.getString("lastpwdchangedate"));
+	            member.setProfile(rs.getString("profile")); // 프로필 컬럼 값 
 	            
 	            //// 마지막로그인과 오늘 날짜 차이 출력해보기 ////
 	            int lastLoginGap = rs.getInt("lastlogingap");
@@ -575,6 +577,37 @@ public class MemberDAO_imple implements MemberDAO {
 		}
 	  
 		return result;
+	}
+
+	
+	//인증하고자 하는 전화번호가 존재하는지 확인. DB에 존재하지않으면 false 존재하면 true
+	@Override
+	public boolean PhoneDuplicateCheck(String phoneNumber) throws SQLException {
+		
+		boolean isExists = false;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select * "
+					   + " from tbl_member "
+					   + " where MOBILE = ? and user_status != 0"; //탈퇴한 회원 것도 사용이 가능한 번호임.
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, aes.encrypt(phoneNumber));
+			
+			rs = pstmt.executeQuery();
+			
+			isExists = rs.next();	// 행이 있으면(중복된 MOBILE) true,
+									// 행이 없으면(사용가능한 MOBILE) false
+			
+		}catch(GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}finally {
+			close();
+		}
+		
+		return isExists;
 	}
 
 }

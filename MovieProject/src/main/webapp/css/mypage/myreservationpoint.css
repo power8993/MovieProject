@@ -25,17 +25,44 @@ div.movie_point table th, .movie_status table td {
 }
 
 div.movie_point table th {
-	background-color: #ccc5b9;
-	color: #403d39;
+	background-color: buttonface;
+	color: black;
 	font-weight: bold;
 	border-bottom: solid 1px #ccc5b9;
-}
-
-div.movie_point table tr:nth-child(even) {
-	background-color: #f9f9f9;
 }
 
 div.movie_point table td {
 	color: #555;
 	text-align: center;
+	border-bottom: solid 1px #eee;
+}
+
+body>div.my_container>div.my_main>div.mypage_main_content>div.my_point_list table
+	{
+	margin-top: 30px; width : 100%;
+	border-collapse: collapse;
+	border-top: solid 1px #333;
+	border-bottom: solid 1px #333;
+	width: 100%;
+}
+
+body>div.my_container>div.my_main>div.mypage_main_content>div.my_point_list td
+	{
+	padding: 10px;
+	text-align: center;
+	font-size: 0.95em;
+}
+
+body>div.my_container>div.my_main>div.mypage_main_content>div.my_point_list th
+	{
+	background-color: #ccc5b9;
+	color: #403d39;
+	font-weight: bold;
+	text-align: center;
+	border-bottom: solid 1px #ccc5b9;
+}
+
+body>div.my_container>div.my_main>div.mypage_main_content>div.my_point_list  tr
+	{
+	border-bottom: solid 1px #ccc5b9;
 }

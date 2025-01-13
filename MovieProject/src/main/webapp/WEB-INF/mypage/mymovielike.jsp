@@ -83,10 +83,9 @@
 					
 			<div class="col-12 mt-4">
             <p class="text-center">
-                <span id="end" class="end-message" style="display:block; margin:20px; font-size: 14pt; font-weight: bold; color: red;"></span>
                 <button type="button" class="mymovielikebutton" id="btnmymovielike" value="">↓더보기
                 <span id="mymovielikecount">0</span>
-                <span id="totalmymovielike">${requestScope.totalmymovielike}</span>
+                <span id="totalmymovielike"> ${requestScope.totalmymovielike}</span>
                 </button>
             </p>
         </div>

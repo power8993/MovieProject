@@ -3,21 +3,21 @@ div#form_container  {
 	width: 980px;
 	height: 600px;
 	margin: 0 auto;
-	box-sizing: border-box; /* padding 포함 계산 */
-	border:solid 1px red;
+	box-sizing: border-box; 
+	/* border:solid 1px red; */
 }
 
 #contentElmt{
 	width:50%;
-	border:solid 1px red;
+	/* border:solid 1px red; */
 	margin: 71px auto;
 	
 }
 
 #contentHeader{
 	display:flex;
-	align-items: center; /* 세로 중앙 정렬 */
-    gap: 10px; /* 이미지와 텍스트 사이 간격 */
+	align-items: center;
+    gap: 10px; 
 }
 #lockImg > img{
 	width:100px;
@@ -68,6 +68,15 @@ button[id='submitBtn']{
 
 button[id='button']{
 	background-color:transparent;
+}
+
+button[id='submitBtn']:hover{
+	background-color: #e95216;
+	transition: 0.3s;
+}
+button[id='button']:hover{
+	background-color: #e6e6e6;
+	transition: 0.3s;
 }
 
 

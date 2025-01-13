@@ -14,8 +14,8 @@ public class MymovielikeDelete extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-		      String method = request.getMethod();
+			
+			String method = request.getMethod();
 		      
 		      if (!"POST".equalsIgnoreCase(method)) {
 		         // GET 방식이라면
@@ -33,8 +33,7 @@ public class MymovielikeDelete extends AbstractController {
 		         // POST 방식이고 로그인을 했다라면
 		         
 		         String FK_SEQ_MOVIE_NO = request.getParameter("FK_SEQ_MOVIE_NO");
-		         
-		         // 장바구니 테이블에서 특정제품을 장바구니에서 비우기
+
 		         int n = mydao.movielikeDelete(FK_SEQ_MOVIE_NO);
 		         
 		         JSONObject jsobj = new JSONObject();  // {}

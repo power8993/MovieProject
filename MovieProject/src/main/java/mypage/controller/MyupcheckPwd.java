@@ -1,6 +1,7 @@
 package mypage.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import common.controller.AbstractController;
@@ -31,6 +32,14 @@ public class MyupcheckPwd extends AbstractController {
             return;
         }
 
+		// ★★★ 마이 프로필--나의 포인트 목록 ★★★ //
+		List<Map<String, Object>> myreservationprofile = mydao.myreservationprofile(loginuser.getUserid());
+		request.setAttribute("myreservationprofile", myreservationprofile);
+		
+		// ★★★ 마이 프로필--나의 영화 랭킹 ★★★ //
+		List<Map<String, String>> myranking = mydao.myranking(loginuser.getUserid());
+		request.setAttribute("myranking", myranking);
+        
         String method = request.getMethod(); // "GET" 또는 "POST"
 
         if ("POST".equalsIgnoreCase(method)) {

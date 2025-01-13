@@ -4,14 +4,13 @@
 <%@ page import="member.domain.*" %>  
 <%
     String ctxPath = request.getContextPath();
-    //    /MyMVC
 %>
 <!DOCTYPE html>
 <html>
 <head>
 
 <title>깊이 빠져 보다, HGV</title> 
-
+<link href="<%= ctxPath%>/images/index/headerTitleImg.png" rel="shortcut icon" type="image/x-icon">
 <!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -41,7 +40,7 @@ window.onscroll = function () {
     var nav = document.querySelector(".nav.sticky-nav");
     var mv_search = document.querySelector("#mv_search");
 
-    if (window.pageYOffset > 240) { // 스크롤 240px 이상일 때
+    if (window.pageYOffset > 205) { // 스크롤 240px 이상일 때
         nav.classList.add("scrolled");
         nav.style.backgroundColor="#252422";
         $(".custom_link").css("color", "white");
@@ -53,7 +52,11 @@ window.onscroll = function () {
         $("#mv_search").css("color", "");
     }
 };
+
+
+
 </script>
+
 
 </head>
 <body>
@@ -75,25 +78,100 @@ window.onscroll = function () {
            </div>
            
            
-        <%-- ${paraMap.userid}가 null이 아니면 로그인이 된 상태와 null인 상태를 나눌 것  --%>
+        <%-- 관리자가 로그인한 상태와 ${paraMap.userid}가 null이 아니면 로그인이 된 상태와 null인 상태를 나눌 것  --%>
         <%-- 로그인이 되지 않은 상태 --%>
-       <c:if test="${empty sessionScope.loginuser}">
-           <ul class="mb-4">
-               <li><div class="icon"><a href="<%= ctxPath %>/login/login.mp" style="color:#eb5e28;"><i class="fa-solid fa-unlock-keyhole fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/login/login.mp" >로그인</a></li>
-            <li><div class="icon"><a href="<%= ctxPath %>/member/memberRegister.mp" style="color:#eb5e28;"><i class="fa fa-user-plus fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/member/memberRegister.mp" >회원가입</a></li>
-            <li><div class="icon"><a href="<%= ctxPath %>/notice/notice.mp" style="color:#eb5e28;"><i class="fa-solid fa-bell fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.mp" >공지사항</a></li>
-           </ul>
-        </c:if>
-        
-        <%-- 로그인 된 상태 --%>
-        
-        <c:if test="${not empty sessionScope.loginuser}">
-           <ul class="mb-4">
-               <li><div class="icon"><a href="<%= ctxPath %>/login/logout.mp" style="color:#eb5e28;"><i class="fa-solid fa-unlock-keyhole fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/login/logout.mp" >로그아웃</a></li>
-            <li><div class="icon"><a href="<%= ctxPath %>/mypage/mypage.mp" style="color:#eb5e28;"><i class="fa-solid fa-user fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/mypage/mypage.mp" >마이페이지</a></li>
-            <li><div class="icon"><a href="<%= ctxPath %>/notice/notice.mp" style="color:#eb5e28;"><i class="fa-solid fa-bell fa-2x"></i></a></div><a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.mp" >공지사항</a></li>
-           </ul>
-        </c:if>
+        <c:choose>
+	    <%-- 관리자로 로그인한 경우 --%>
+	    <c:when test="${not empty sessionScope.loginuser && sessionScope.loginuser.userid == 'admin'}">
+	        <ul class="mb-4">
+	            <li>
+	                <div class="icon">
+	                    <a href="<%= ctxPath %>/login/logout.mp" class="iconLink">
+	                        <i class="fa-solid fa-unlock-keyhole fa-2x"></i>
+	                    </a>
+	                </div>
+	                <a class="navbar-brand custom_a" href="<%= ctxPath %>/login/logout.mp">로그아웃</a>
+	            </li>
+	            <li>
+	                <div class="icon">
+	                    <a href="<%= ctxPath %>/admin/admin.mp" class="iconLink">
+	                        <i class="fa-solid fa-gear fa-2x "></i>
+	                    </a>
+	                </div>
+	                <a class="navbar-brand custom_a" href="<%= ctxPath %>/admin/admin.mp">관리자</a>
+	            </li>
+	            <li>
+	                <div class="icon">
+	                    <a href="<%= ctxPath %>/notice/notice.mp" class="iconLink">
+	                        <i class="fa-solid fa-bell fa-2x"></i>
+	                    </a>
+	                </div>
+	                <a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.mp">공지사항</a>
+	            </li>
+	        </ul>
+	    </c:when>
+	
+	    <%-- 일반 회원으로 로그인한 경우 --%>
+	    <c:when test="${not empty sessionScope.loginuser && sessionScope.loginuser.userid != 'admin'}">
+	        <ul class="mb-4">
+	            <li>
+	                <div class="icon">
+	                    <a href="<%= ctxPath %>/login/logout.mp" class="iconLink">
+	                        <i class="fa-solid fa-unlock-keyhole fa-2x"></i>
+	                    </a>
+	                </div>
+	                <a class="navbar-brand custom_a" href="<%= ctxPath %>/login/logout.mp">로그아웃</a>
+	            </li>
+	            <li>
+	                <div class="icon">
+	                    <a href="<%= ctxPath %>/mypage/mypage.mp" class="iconLink">
+	                        <i class="fa-solid fa-user fa-2x"></i>
+	                    </a>
+	                </div>
+	                <a class="navbar-brand custom_a" href="<%= ctxPath %>/mypage/mypage.mp">마이페이지</a>
+	            </li>
+	            <li>
+	                <div class="icon">
+	                    <a href="<%= ctxPath %>/notice/notice.mp" class="iconLink">
+	                        <i class="fa-solid fa-bell fa-2x"></i>
+	                    </a>
+	                </div>
+	                <a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.mp">공지사항</a>
+	            </li>
+	        </ul>
+	    </c:when>
+	
+	    <%-- 비로그인 상태 --%>
+	    <c:otherwise>
+	        <ul class="mb-4">
+	            <li>
+	                <div class="icon">
+	                    <a href="<%= ctxPath %>/login/login.mp" class="iconLink" >
+	                        <i class="fa-solid fa-unlock-keyhole fa-2x"></i>
+	                    </a>
+	                </div>
+	                <a class="navbar-brand custom_a" href="<%= ctxPath %>/login/login.mp">로그인</a>
+	            </li>
+	            <li>
+	                <div class="icon">
+	                    <a href="<%= ctxPath %>/member/memberRegister.mp" class="iconLink">
+	                        <i class="fa fa-user-plus fa-2x"></i>
+	                    </a>
+	                </div>
+	                <a class="navbar-brand custom_a" href="<%= ctxPath %>/member/memberRegister.mp">회원가입</a>
+	            </li>
+	            <li>
+	                <div class="icon">
+	                    <a href="<%= ctxPath %>/notice/notice.mp" class="iconLink">
+	                        <i class="fa-solid fa-bell fa-2x"></i>
+	                    </a>
+	                </div>
+	                <a class="navbar-brand custom_a" href="<%= ctxPath %>/notice/notice.mp">공지사항</a>
+	            </li>
+	        </ul>
+	    </c:otherwise>
+	</c:choose>
+
     </div>
 </div>
 
@@ -102,7 +180,7 @@ window.onscroll = function () {
 <div class="nav sticky-nav">
     <div id="nav_mediatop">
         <ul class="nav-list" style=" align-items: center;">
-            <li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieList.mp">영화</a></li>
+         <li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieList.mp">영화</a></li>
          <li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/movie/movieTime.mp">상영시간표</a></li>
          <li class="nav-item"><a class="nav-link custom_link" href="<%= ctxPath %>/reservation/reservation.mp">영화예약</a></li>
          <li style="margin-left:auto; white-space: nowrap;">
@@ -111,7 +189,7 @@ window.onscroll = function () {
                 <div style="position:relative; min-width:250px;">
                 <form action="<%= ctxPath %>/movie/searchMovie.mp" method="get" class="d-flex align-items-center">
                     <input id="mv_search_input" name="keyword" class="form-control mr-2" type="search" placeholder="영화 검색" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">
+                    <button id="mv_search" type="submit">
                         <i class="fas fa-search"></i>
                     </button>
                 </form>

@@ -18,6 +18,13 @@ div#form_container  {
 	width: 150px;
 }
 
+#pwdFindTitle{
+	text-align: center;
+    margin-bottom: 0px;
+    font-size: 20pt;
+    font-weight: 700;
+}
+
 div#form_container > form {
   	max-width: 350px;
   	margin: 0 auto;
@@ -62,6 +69,9 @@ input[name='userid'],input[name='email'],input[name='pwd'],input[name='pwd2']{
     text-align: center; 
     font-weight:700;
 }
+#finishNewPwd{
+	margin-bottom: -23px;
+}
 
 .loginjspBtn {
 	color: #ffffff; 
@@ -78,7 +88,7 @@ input[name='userid'],input[name='email'],input[name='pwd'],input[name='pwd2']{
     display: flex;
     justify-content: space-between; 
     gap: 10px; 
-    margin-top: 20px;
+    margin-top: 40px;
 }
 #loginBtn{
 	background-color: #403d39;
@@ -245,20 +255,20 @@ input[name='userid'],input[name='email'],input[name='pwd'],input[name='pwd2']{
 
 /* 에러메세지 띄우는 요소 시작 */
 #idErrorMsg{
-	color: red; font-size: 10pt; text-align: left;margin-top: -10px;margin-bottom: 10px;
+	color: red; font-size: 10pt; text-align: left;
 }
 #emailErrorMsg{
-	color: red; font-size: 10pt; text-align: left;margin-top: -10px;margin-bottom: -16px;
+	color: red; font-size: 10pt; text-align: left;
 }
 #errorMsg{
-	color: red; font-size: 10pt; text-align: left;margin-top: 16px;margin-bottom: -16px;
+	color: red; font-size: 10pt; text-align: left;
 }
 
 #newPwdErrorMsg{
-	color: red; font-size: 10pt; text-align: left;margin-top: -10px;margin-bottom: 10px;
+	color: red; font-size: 10pt; text-align: left;
 }
 #confirmPwdErrorMsg{
-	color: red; font-size: 10pt; text-align: left;margin-top: -10px;margin-bottom: -16px;
+	color: red; font-size: 10pt; text-align: left;
 }
 
 /* 에러메세지 띄우는 요소 끝 */
@@ -311,7 +321,7 @@ input[name='userid'],input[name='email'],input[name='pwd'],input[name='pwd2']{
 
 .form-floating-label {
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: -14px;
 }
 
 .form-floating-label input {

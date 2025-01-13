@@ -2,12 +2,12 @@
 	pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <%
 String ctxPath = request.getContextPath();
 %>
-
-<% String userid = (String) session.getAttribute("userid"); %>
 
 <jsp:include page="../header1.jsp" />
 
@@ -83,22 +83,21 @@ String ctxPath = request.getContextPath();
 						<div class="reservation_box">
 
 							<!-- 예매번호 -->
-							 <p class="reservation_number">예매번호 ${reservation.imp_uid}</p>
+							   <input type="hidden" name="imp_uid" value="${reservation.imp_uid}" />
+							 <p class="reservation_number">예매번호 ${fn:replace(reservation.imp_uid, 'imp_', '')}</p>
 
 							<!-- 포스터 이미지 -->
 							<div class="my_main_reservationlist_poster">
-								<a
-									href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${reservation.svo.fk_seq_movie_no}">
-									<img
-									src="${pageContext.request.contextPath}/images/admin/poster_file/${reservation.svo.mvo.poster_file}"
-									alt="${reservation.svo.mvo.movie_title}" />
+								<a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${reservation.svo.fk_seq_movie_no}">
+									<img src="<%= ctxPath%>/images/admin/poster_file/${reservation.svo.mvo.poster_file}.jpg" alt="영화 포스터"/>
 								</a>
 							</div>
 							
 							
 							<!-- 영화제목, 영화총가격, 관람인원, 관람일자, 관람좌석, 상영관, 매수 -->
 							<div class="reservation_details">
-								<h2 class="reservation_h2"><a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${reservation.svo.fk_seq_movie_no}" > ${reservation.svo.mvo.movie_title}</a> <span>${reservation.pay_amount}원</span> </h2>
+								<h2 class="reservation_h2"><a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${reservation.svo.fk_seq_movie_no}" > ${reservation.svo.mvo.movie_title}</a> <span>
+								<fmt:formatNumber value="${reservation.pay_amount}" pattern="#,###" />원</span> </h2>
 								<ul>
 								<li><dl><dt>관람일시</dt> <dd class="start_time">${reservation.svo.start_time}</dd></dl></li>
 								<li><dl><dt>관람좌석</dt> <dd class="seat_no_list"> ${reservation.tvo.seat_no_list}</dd></dl></li>
@@ -108,9 +107,9 @@ String ctxPath = request.getContextPath();
 							</div>
 							<!-- 버튼 -->
 							<div class="reservation_actions">
-								<button type="button" class="Receipt_Printing"  onclick="Receipt_Printing('${reservation.imp_uid}')">영수증 출력</button>
+								<button type="button" class="Receipt_Printing"  onclick="Receipt_Printing('${reservation.imp_uid}','<%=ctxPath%>' )">영수증 출력</button>
 								<div id="Receipt_Printing_model"></div>
-								<button type="button" class="Cancel_Reservation" onclick="myreservation_cancel('${reservation.imp_uid}','${reservation.svo.fk_seq_movie_no}', '${sessionScope.loginuser.userid}')">예매 취소</button>
+								<button type="button" class="Cancel_Reservation" onclick="myreservation_cancel('${reservation.imp_uid}','${reservation.svo.seq_showtime_no}', '${sessionScope.loginuser.userid}')">예매 취소</button>
 								<div id="myreservation_cancel_modal"></div>  <!-- 모달을 삽입할 위치 -->
 							</div>	
 									
@@ -140,6 +139,7 @@ String ctxPath = request.getContextPath();
 							<tr>
 								<th>영화제목</th>
 								<th>관람일시</th>
+								<th>결제일</th>
 								<th>취소일</th>
 								<th>결제취소 금액</th>
 							</tr>
@@ -151,8 +151,9 @@ String ctxPath = request.getContextPath();
 									<tr>
 										<td>${cancel.svo.mvo.movie_title}</td>
 										<td>${cancel.svo.start_time}</td>
+										<td>${cancel.pay_success_date}</td>
 										<td>${cancel.pay_cancel_date}</td>
-										<td>${cancel.pay_amount}</td>
+										<td><fmt:formatNumber value="${cancel.pay_amount}" pattern="#,###" /></td>
 									</tr>
 								</c:forEach>
 							</c:if>

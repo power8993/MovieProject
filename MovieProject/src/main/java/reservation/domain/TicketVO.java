@@ -14,6 +14,7 @@ public class TicketVO {
 	
 	private String seat_no_list;  //좌석 총 인원수
 	private int seat_count; // 총 매수
+	private String AGE_GROUP_COUNT_LIST; //TICKET_AGE_GROUP + 인원수
 
 
 	// === Method === //
@@ -81,6 +82,16 @@ public class TicketVO {
 
 	public void setSeat_count(int seat_count) {
 		this.seat_count = seat_count;
+	}
+	
+
+
+	public String getAGE_GROUP_COUNT_LIST() {
+		return AGE_GROUP_COUNT_LIST;
+	}
+
+	public void setAGE_GROUP_COUNT_LIST(String aGE_GROUP_COUNT_LIST) {
+		AGE_GROUP_COUNT_LIST = aGE_GROUP_COUNT_LIST;
 	}
 
 

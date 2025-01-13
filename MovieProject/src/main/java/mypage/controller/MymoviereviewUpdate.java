@@ -26,14 +26,13 @@ public class MymoviereviewUpdate extends AbstractController {
 				// **** POST 방식으로 넘어온 것이라면 **** //
 
 				String userid = loginuser.getUserid();
+				int seq_review_no = Integer.parseInt(request.getParameter("seq_review_no"));
 				int movie_rating = Integer.parseInt(request.getParameter("movie_rating"));
 				String review_content = request.getParameter("review_content");
-				System.out.println(userid);
-				System.out.println(movie_rating);
-				System.out.println(review_content);
 
 				MovieReviewVO mrvo = new MovieReviewVO();
 				mrvo.setFk_user_id(userid);
+				mrvo.setSeq_review_no(seq_review_no);
 				mrvo.setMovie_rating(movie_rating);
 				mrvo.setReview_content(review_content);
 

@@ -10,13 +10,16 @@
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/admin/admin.css" >
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/member/admin/memberList.css" >
 
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <%-- 직접 만든 Javascript --%>
 <script type="text/javascript" src="<%= ctxPath%>/js/member/admin/memberList.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$("select[name='search_type']").val("${requestScope.search_type}");
 	$("input[name='search_word']").val("${requestScope.search_word}");
-
+	$("input[name='member_status']").val("${requestScope.member_status}");
 	$("select[name='size_per_page']").val("${requestScope.size_per_page}");
 	
 	// select 태그의 숫자를 선택함에 따라 해당 값의 행만큼 보여지는 이벤트
@@ -27,6 +30,23 @@ $(document).ready(function(){
 		
 		frm.submit();
 	});// end of $("select[name='size_per_page']").bind("change", function(){})--------------------------
+	
+	
+	// === 가입회원/탈퇴회원 선택 후 서버에서 전달된 값에 따라 활성화된 버튼을 설정 === //
+    var member_status = $("input[name='member_status']").val();
+	
+    // 페이지 로딩 시 활성화된 버튼에 css 부여
+    if (member_status == '1') {
+    	$("label.toggleSwitch").attr('data-value', '1');
+    	$("label.toggleSwitch").addClass('active');
+    	$("span.toggleText").text("가입");
+
+    } else if (member_status == '0') {	
+    	$("label.toggleSwitch").attr('data-value', '0');
+    	$("label.toggleSwitch").removeClass('active');
+    	$("span.toggleText").text("탈퇴");
+    }
+    
 });
 </script>
 
@@ -55,8 +75,16 @@ $(document).ready(function(){
 		      		<option value="15">15개</option>
 		      		<option value="20">20개</option>
 		    	</select>
-		  	</div>			
+		  	</div>
+		  	
+		  	<input type="hidden" name="member_status"/>
+		  				
 		</form>
+	
+	  	<label class="toggleSwitch">
+			<span class="toggleButton"></span>
+			<span class="toggleText">가입</span>
+		</label>
 		
 		<div id="search_result">
 			<table class="table table-bordered" id="member_table">

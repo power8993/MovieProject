@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import javax.sql.DataSource;
 import movie.domain.MovieVO;
 import movie.domain.ShowTimeVO_sunghoon;
 import reservation.controller.TicketVO_hoon;
+import reservation.domain.TicketVO;
 
 public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 	
@@ -62,7 +64,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select case when length(movie_title) < 13 then movie_title else substr(movie_title, 0, 10) || '...' end as movie_title, seq_movie_no, movie_grade "
+			String sql = " select case when length(movie_title) < 20 then movie_title else substr(movie_title, 0, 17) || '...' end as movie_title, seq_movie_no, movie_grade, poster_file "
 					   + " from tbl_movie "
 					   + " where sysdate >= start_date and sysdate <= end_date + 1 ";
 			
@@ -74,6 +76,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 				movie.setSeq_movie_no(rs.getInt("seq_movie_no"));
 				movie.setMovie_title(rs.getString("movie_title"));
 				movie.setMovie_grade(rs.getString("movie_grade"));
+				movie.setPoster_file(rs.getString("poster_file"));
 				
 				movieList.add(movie);
 				
@@ -98,10 +101,10 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select to_char(start_time, 'hh24mi') as start_time, to_char(end_time, 'hh24mi') as end_time, "
+			String sql = " select to_char(start_time, 'hh24:mi') as start_time, to_char(end_time, 'hh24:mi') as end_time, "
 					   + " seat_arr, seq_showtime_no, fk_seq_movie_no, total_viewer, unused_seat, fk_screen_no "
 					   + " from tbl_showtime "
-					   + " where FK_SEQ_MOVIE_NO = ? and to_char(start_time, 'yyyymmdd') = ? "
+					   + " where FK_SEQ_MOVIE_NO = ? and to_char(start_time, 'yyyymmdd') = ? and start_time > sysdate "
 					   + " order by fk_screen_no asc ";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -146,6 +149,8 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 			String sql = " select price "
 					   + " from tbl_movie_price "
 					   + " order by price desc ";
+			
+			// 가격순으로 정렬해서 제일 비싼 순으로 성인, 청소년, 어린이
 			
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -390,7 +395,239 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		return n;
 		
 	} // end of public int makePoint(Map<String, String> paraMap) throws SQLException----------------------
+
+
+	// 티켓 정보 가져오기
+	@Override
+	public List<TicketVO> getTickets(String userid, String imp_uid) throws SQLException {
+		
+		List<TicketVO> ticketlist = new ArrayList<>();
+		
+		try {
+			
+			conn = ds.getConnection();
+			
+			String str = " select ticket_price, ticket_age_group, seat_no "
+					   + " from tbl_ticket "
+					   + " where fk_imp_uid = ? "
+					   + " order by substr(seat_no, 1, 1), to_number(substr(seat_no, 2)) ";
+			
+			pstmt = conn.prepareStatement(str);
+			pstmt.setString(1, imp_uid);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				TicketVO ticket = new TicketVO();
+				
+				ticket.setTicket_price(rs.getInt("ticket_price"));
+				ticket.setTicket_age_group(rs.getString("ticket_age_group"));
+				ticket.setSeat_no(rs.getString("seat_no"));
+				
+				ticketlist.add(ticket);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return ticketlist;
+		
+	} // end of public Map<String, String> getTickets() throws SQLException----------------
+
+
 	
+	// 결제 번호로 영화 이름 가져오기
+	@Override
+	public Map<String, String> getMovieTitle(String imp_uid) throws SQLException {
+		
+		Map<String, String> map = new HashMap<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select movie_title, to_char(start_time, 'yyyy.mm.dd hh24:mi') as start_time, to_char(end_time, 'yyyy.mm.dd hh24:mi') as end_time, to_char(fk_screen_no) as fk_screen_no, movie_grade, poster_file "
+					   + " from tbl_payment p join tbl_showtime s "
+					   + " on s.seq_showtime_no = p.fk_seq_showtime_no "
+					   + " join tbl_movie m "
+					   + " on m.seq_movie_no = s.fk_seq_movie_no "
+					   + " where p.imp_uid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, imp_uid);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				map.put("movie_title", rs.getString("movie_title"));
+				map.put("start_time", rs.getString("start_time"));
+				map.put("fk_screen_no", rs.getString("fk_screen_no"));
+				map.put("movie_grade", rs.getString("movie_grade"));
+				map.put("poster_file", rs.getString("poster_file"));
+				map.put("end_time", rs.getString("end_time"));
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return map;
+	}
+
+	// 결제 번호로 좌석 알아오기
+	@Override
+	public String getSeatList(String imp_uid) throws SQLException {
+		
+		String seatList = "";
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select seat_no "
+					   + " from tbl_ticket "
+					   + " where fk_imp_uid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, imp_uid);
+			
+			rs = pstmt.executeQuery();
+			
+			int cnt = 0;
+			
+			while(rs.next()) {
+				cnt++;
+				if(cnt == 1) {
+					seatList += rs.getString("seat_no");
+				}
+				else {
+					seatList += "," + rs.getString("seat_no");
+				}
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return seatList;
+	}
+
+	// 결제 취소하기
+	@Override
+	public int reservationCancel(Map<String, String> paramap) throws SQLException {
+		
+		int isSuccess = 0;
+		int n1 = 0, n2 = 0, n3 = 0, n4 = 0;
+		
+		String seatList = paramap.get("seatList");
+		String[] seatArr = seatList.split(",");
+		
+		try {
+			conn = ds.getConnection();
+			
+			conn.setAutoCommit(false);
+			
+			// 포인트 내역 삭제
+			String sql = " delete from tbl_point "
+					   + " where fk_imp_uid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paramap.get("imp_uid"));
+			
+			n1 = pstmt.executeUpdate();
+			// 티켓 내역 삭제
+			if(n1 == 1) {
+				
+				sql = " delete from tbl_ticket "
+					+ " where fk_imp_uid = ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, paramap.get("imp_uid"));
+				
+				n2 = pstmt.executeUpdate();
+				if(n2 == seatArr.length) {
+					n2 = 1;
+				}
+			}
+			
+			// 결제 내역 상태 수정
+			if(n2 == 1) {
+				
+				sql = " update tbl_payment set pay_status = '결제 취소', PAY_CANCEL_DATE = sysdate "
+					+ " where imp_uid = ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, paramap.get("imp_uid"));
+				
+				n3 = pstmt.executeUpdate();
+			}
+			
+			// 상영 영화 좌석 배열 수정
+			if(n3 == 1) {
+				
+				sql = " update tbl_showtime set seat_arr = ?, UNUSED_SEAT = UNUSED_SEAT + to_number(?) "
+					+ " where seq_showtime_no = to_number(?) ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, paramap.get("seatArr"));
+				pstmt.setString(2, paramap.get("seatListLength"));
+				pstmt.setString(3, paramap.get("seq_showtime_no"));
+				// pstmt.setInt(3, Integer.parseInt(paramap.get("seq_showtime_no")));
+				
+				n4 = pstmt.executeUpdate();
+			}
+			
+			// 모든처리가 성공되었을시 commit
+			if(n1*n2*n3*n4 == 1) {
+				conn.commit();
+				conn.setAutoCommit(true);
+				
+				isSuccess = 1;
+			}
+			
+		} catch(SQLException e) {
+			
+			// SQL 장애 발생시 rollback
+			conn.rollback();
+			conn.setAutoCommit(true);
+			isSuccess = 0;
+			
+		} finally {
+			close();
+		}
+		
+		
+		return isSuccess;
+	}
+
+	// 상영 날짜 가져오기
+	@Override
+	public List<String> getScreenDate(String seq_movie_no) throws SQLException {
+		
+		List<String> screenDateList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+
+			String sql = " select to_char(start_time, 'yyyy-mm-dd') AS start_date "
+					   + " from tbl_showtime "
+					   + " where fk_seq_movie_no = to_number(?) ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, seq_movie_no);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				screenDateList.add(rs.getString("start_date"));
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return screenDateList;
+		
+	}
 
 	
 }

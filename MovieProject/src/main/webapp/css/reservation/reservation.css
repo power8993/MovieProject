@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+body {
+	user-select: none;
+}
+
 div.steps {
 	height: 600px;
 }
@@ -32,7 +36,7 @@ div.time {
 }
 
 h3.title {
-	background-color: black;
+	background-color: #252422;
 	color: white;
 	text-align: center;
 	padding-top: 10px;
@@ -45,7 +49,7 @@ table#movie-list {
 
 tr.movie-list {
 	font-size: 13pt;
-	line-height: 40px;
+	line-height: 45px;
 }
 
 td.movie-grade {
@@ -54,13 +58,21 @@ td.movie-grade {
 }
 
 td.movie-title {
-	min-width: 250px;
+	min-width: 300px;
 	font-weight: bold;
 }
 
 div#col-body li {
-	width: 80%;
 	list-style-type: none;
+}
+
+li.day {
+	width: 100px;
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	height: 45px;
+	line-height: 45px;
 }
 
 li.day > span.date,
@@ -93,30 +105,90 @@ span.date {
 	font-weight: bold;
 }
 
-.date ul {
-	padding: 0;
+.mouse_block {
+	pointer-events: none;
+	opacity: 0.5;
 }
 
-.ticket-info-container {
+.selected {
+	background-color: #333;
+	color: white;
+	border-style: double;
+}
+
+img.movie_grade_img {
+	width: 30px;
+	height: 30px;
+}
+
+td.time_data {
+	border: solid 1px #d6d3ce;
+	font-weight: bold;
+	margin-left: 10px;
+	padding: 3px;
+}
+
+td.unused_seat {
+	text-align: center;
+}
+
+td.screen_no_data {
+	font-weight: bold;
+	text-align: center;
+}
+
+table.time-tab {
+	border-collapse: separate;
+	border-spacing: 0 1rem;
+	font-size: 15pt;
+}
+
+td.time_data:hover,
+li.day:hover,
+tr.movie-list:hover {
+	cursor: pointer;
+	background-color: #EB5E28;
+	color: black;
+}
+
+tr.movie-list > td {
+	height: 50px;
+}
+
+.date ul {
+	padding: 0;
+	text-align: center;
+}
+
+div.goSeatChoice {
+	margin: 0 0 0 auto !important;
+}
+
+div.ticket-info-container {
 	width: 100vw;
 	position: relative;
 	left: calc(-50vw + 50%);
-	min-height: 100px;
-	max-height: 100px;
-	background-color: black;
+	min-height: 120px;
+	max-height: 120px;
+	background-color: #252422;
 }
 
-.ticket-info {
+div.ticket-info {
 	color: white;
-	min-height: 100px;
-	max-height: 100px;
+	min-height: 120px;
+	max-height: 120px;
 }
 
 div.ticket-info > div {
-	width: 18%;
+	width: 150px;
 	display: inline-block;
-	font-size: 20pt;
+	font-size: 15pt;
 	text-align: center;
+	vertical-align: middle;
+}
+
+div#pay-choice > div {
+	font-size: 10pt;
 }
 
 div#time-choice {
@@ -129,21 +201,25 @@ div#person-screen {
 
 div#numberOfPeople {
 	display: inline-block;
-	width: 500px;
+	width: 400px;
+	height: 140px;
 }
 
-div#screen-info {
+div#screen-info, 
+div#point {
 	display: inline-block;
-	width: 400px;
+	width: 250px;
+	font-size: 13pt;
+	font-weight: bold;
+}
+
+input#using-point {
+	width: 180px;
 }
 
 div#seat-screen {
 	display: block;	
 	height: 350px;
-}
-
-div#seat-screen > button {
-	width: 40px;
 }
 
 div#seat-screen > span {
@@ -157,11 +233,61 @@ div#numberOfPeople label {
 	width: 80px;
 }
 
-.mouse_block {
-	pointer-events: none;
-	opacity: 0.5;
+div#numberOfPeople button:hover {
+	background-color: #EB5E28;
 }
 
-.selected {
-	background-color: red;
+div#numberOfPeople button {
+	border: solid 1px #252422;
+	border-radius: 2px;
+	margin-right: 6px;
+	font-weight: bold;
+	font-size: 12pt;
 }
+
+div.btn-group {
+	margin-bottom: 5px;
+}
+
+div#seat-screen > button.seat:hover {
+	background-color: #EB5E28;
+	transform: translateY(-5px);
+	font-weight: bold;
+}
+
+div#seat-screen > button.seat {
+	width:50px;
+	height:40px;
+	border: solid 2px #252422;
+	border-radius: 3px;
+}
+
+/* -- CSS 로딩화면 구현 시작(bootstrap 에서 가져옴) 시작 -- */    
+div.loader {
+	/* border: 16px solid #f3f3f3; */
+	border: 12px solid #f3f3f3;
+	border-radius: 50%;
+	/* border-top: 16px solid #3498db; */
+	border-top: 12px dotted blue;
+	border-right: 12px dotted green;
+	border-bottom: 12px dotted red;
+	border-left: 12px dotted pink;
+	
+	width: 120px;
+	height: 120px;
+	-webkit-animation: spin 2s linear infinite; /* Safari */
+	animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+	0% { -webkit-transform: rotate(0deg); }
+	100% { -webkit-transform: rotate(360deg); }
+}
+   
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+/* -- CSS 로딩화면 구현 끝(bootstrap 에서 가져옴) 끝 -- */
+

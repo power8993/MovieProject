@@ -3,15 +3,22 @@
 div#divRegisterFrm{
 	margin: 0 auto;
 	width:980px;
-	border:solid 1px red;
+	/*border:solid 1px red;*/
 	
 }
+#registerTitle{
+	text-align: center;
+    margin-bottom: 50px;
+    font-size: 20pt;
+    font-weight: 700;
+}
+
 input[name='userid'],input[name='name'],input[name='email'],input[name='pwd'],input[name='pwdcheck'],input[name='pwd2'],input[name='hp1'],input[name='hp2'],input[name='hp3'],input[name='birthday']{
-	border: none;        /* 테두리 제거 */
-    outline: none;       /* 포커스 시 나타나는 아웃라인 제거 (선택 사항) */
-    background-color: transparent; /* 배경을 투명하게 */
+	border: none;       
+    outline: none;     
+    background-color: transparent; 
     padding: 5px;  
-    border-bottom: solid 2px gray; 
+    border-bottom: solid 1px gray; 
     
 }
 input[name='hp1'],input[name='hp2'],input[name='hp3']{
@@ -30,9 +37,58 @@ input[name='hp1'],input[name='hp2'],input[name='hp3']{
 	/* font-weight:700; */
 }
 
+
+
+#name{
+	display: block; width:100%;
+}
+#userid{
+	display: block; width:100%;
+}
+#pwd{
+	display: block; width:100%;
+}
+#pwdcheck{
+	display: block; width:100%;
+}
+#email{
+	display: block; width:100%;
+}
+#hp1,#hp2,#hp3{
+	width:73px;
+}
+#phoneCheckandAuth{
+	height:35px;width: 126.81px;
+}
+#hp_error{
+	display:block;
+}
+#authPassElmt{
+	display:flex; margin-top:10px; justify-content: space-between; width:100%;
+}
+#authPassValue{
+	width: 287.19px;background: transparent;border: solid 1px #ff7a00;outline: none;border-radius: 5px;
+}
+#authPassBtn{
+	height:35px;width: 92.81px;margin-left: 15px;
+}
+#gender_error{
+	display:block;
+}
+#birth-year{
+	margin-left:0px;
+}
+#birth_error{
+	display:block;
+}
+
+
+
+
 #registerbtn {
 	width:100%;
 	height:43px;
+	margin-bottom: 80px;
 	color: #ffffff; 
     font-size: 18px; 
     background-color: #ff7a00;
@@ -45,28 +101,8 @@ input[name='hp1'],input[name='hp2'],input[name='hp3']{
     transition: 0.3s;
 }
 #registerbtn:hover{
-	
-	background-color: #fa9205;
-
+	background-color: #e66f00;
 }
-/* 취소하기 => 없앰.
-#resetbtn {
-	width:100px;
-	height:50px;
-	color: #ffffff;
-    font-size: 14px;
-    background-color: #ccc5b9; 
-    border: none; 
-    border-radius: 5px;
-    cursor: pointer; 
-    flex: 1; 
-    text-align: center; 
-    font-weight:700;
-    transition: 0.3s;
-}
-#resetbtn:hover{
-	background-color: #c7c2be; 
-} */
 
 /* -----------------------------  */
 
@@ -165,3 +201,25 @@ span#emailcheck {
   background-color: #ebe9e9;
   border-radius: 6px;
 }
+
+
+/* 버튼 태그 */
+#idcheck,#emailcheck,#phoneCheckandAuth,#authPassBtn{
+	background-color: #403d39;
+	border: none;
+	color: white;
+    border-radius: 5px;
+    width:120px; 
+    margin-left:20px;
+}
+#idcheck:hover, 
+#emailcheck:hover, 
+#phoneCheckandAuth:hover, 
+#authPassBtn:hover {
+    background-color: #5c574f; 
+    color: #ffffff; 
+    transition: background-color 0.3s ease, color 0.3s ease; 
+}
+
+
+

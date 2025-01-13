@@ -43,7 +43,6 @@ public class MemberRegister extends AbstractController {
 	        	day = "0"+day;
 	        }
 	        String birthday = year+"-"+month+"-"+day;
-	        //String birthday = request.getParameter("birthday");
 	        
 	        String mobile = hp1 + hp2 + hp3;
 	        

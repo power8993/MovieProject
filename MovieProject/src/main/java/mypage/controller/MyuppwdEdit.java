@@ -1,8 +1,9 @@
 package mypage.controller;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.json.JSONObject;
 
 import common.controller.AbstractController;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,23 +20,15 @@ public class MyuppwdEdit extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		if (super.checkLogin(request)) {
-			HttpSession session = request.getSession();
-			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
-
-			if (loginuser == null) {
-				request.setAttribute("message", "로그인 세션이 만료되었습니다.");
-				request.setAttribute("loc", request.getContextPath() + "/login/login.mp");
-				super.setViewPage("/WEB-INF/msg.jsp");
-				return;
-			}
-
-			String userid = request.getParameter("userid");
+		HttpSession session = request.getSession();
+		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 
 			String method = request.getMethod(); // "GET" 또는 "POST"
 
 			if ("POST".equalsIgnoreCase(method)) {
 				// "암호변경하기" 버튼을 클릭했을 경우
+				
+				String userid = loginuser.getUserid();
 				String new_pwd = request.getParameter("pwd");
 
 				Map<String, String> paraMap = new HashMap<>();
@@ -45,18 +38,23 @@ public class MyuppwdEdit extends AbstractController {
 				int n = 0;
 				try {
 					n = mydao.mypwdUdate(paraMap);
-				} catch (SQLException e) {
+					
+					JSONObject jsobj = new JSONObject();  // {}
+			         jsobj.put("n", n);   // {"n":1}
+			         
+			         String json = jsobj.toString();   // "{"n":1}"
+			         
+			         request.setAttribute("json", json);
+			         
+			         super.setRedirect(false);
+			         super.setViewPage("/WEB-INF/jsonview.jsp");
 
-				}
-				request.setAttribute("n", n);
-			} // end of if---
+		} catch (Exception e) {
+			e.printStackTrace();
 
-			request.setAttribute("userid", userid);
-			request.setAttribute("method", method);
-
-			super.setRedirect(false);
-			super.setViewPage("/WEB-INF/mypage/myuppwdEdit.jsp");
-
+			super.setRedirect(true);
+			super.setViewPage(request.getContextPath() + "/error.jsp");
+		}
 		} else {
 			request.setAttribute("message", "로그인이 필요합니다.");
 			request.setAttribute("loc", request.getContextPath() + "/login/login.mp");
@@ -64,5 +62,4 @@ public class MyuppwdEdit extends AbstractController {
 		}
 
 	}
-
-}
+	}

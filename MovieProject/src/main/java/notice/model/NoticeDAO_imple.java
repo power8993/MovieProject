@@ -133,7 +133,8 @@ public class NoticeDAO_imple implements NoticeDAO {
 	    }
 	    return ndto;
 	}
-
+	
+	// 공지사항 등록하기
 	@Override
 	public int insertNotice(NoticeDTO notice) throws SQLException {
 	    int result = 0;

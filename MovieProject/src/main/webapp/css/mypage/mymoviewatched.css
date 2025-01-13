@@ -1,0 +1,62 @@
+@charset "UTF-8";
+/* 전체 리스트 */
+div.my_mywatchedmovie_list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+}
+
+/* 카드 스타일 */
+div.my_main_watchedmovie_card {
+	display: flex;
+	align-items: flex-start; /* 포스터와 리뷰 정보가 위쪽에서 정렬 */
+	border-bottom: 1px solid #ddd;
+	padding: 15px 0;
+	position: relative;
+}
+
+/* 포스터 */
+div.my_main_moviewatchedList_poster {
+	float: left;
+	width: 110px;
+	height: 158px;
+	margin-right: 20px;
+}
+
+div.my_main_moviewatchedList_poster img {
+	width: 110px;
+	height: 154px;
+}
+
+div.moviewatched_details{
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+div.moviewatched_details> h2.moviewatched_h2 a{
+	font-size: 18px;
+	font-weight: bold;
+	color: #333;
+	margin-bottom: 5px;
+}
+
+body > div.my_container > div.my_main > div.mypage_main_content > div.my_main_movie > div > li{
+	list-style: none;
+	padding: 15px 0;
+	display: flex;
+	gap: 10px;
+	font-size: 14px;
+	color: #666;
+	border-bottom: 1px solid #ddd;
+}
+
+body > div.my_container > div.my_main > div.mypage_main_content > div.my_main_movie > div > li > div.moviewatched_details > ul{
+	list-style: none;
+	font-size: 17px;
+	padding: 0;
+	margin: 0;
+}
