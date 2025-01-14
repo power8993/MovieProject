@@ -28,7 +28,7 @@
 		  <input type="text" name="userid" id="userid"size="25" autocomplete="off" placeholder="아이디를 입력하세요" /> 
 		  	<button  type="button" id="idcheck">중복확인</button>
 	       </div>   
-	       <span class="error">숫자,영문자 포함 형태의 4~15 자리 이내의 아이디를 입력해 주세요.</span>
+	       <span class="error">숫자,소문자 포함 형태의 4~15 자리 이내의 아이디를 입력해 주세요.</span>
 	        
 	        <%-- 아이디중복체크 --%>
            <span id="idcheckResult"></span>

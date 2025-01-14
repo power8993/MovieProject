@@ -469,6 +469,7 @@ $(document).ready(function(){
 					$("#authMsg").html("<span style='color:red; font-size:10pt;'>사용 중인 전화번호입니다.</span>").show();
 					$("#hp2").val("");
 					$("#hp3").val("");
+					$("#authPassElmt").hide();
 					$("#hp2").focus(); 
 					return;
 				}

@@ -19,26 +19,29 @@ div.my_container>div.my_main {
 }
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /* 마이페이지 나의 프로필장 */
-body > div.my_container > div.myprofile {
+body>div.my_container>div.myprofile {
 	/* border: solid 1px black; */
 	height: 250px;
 	padding: 35px;
 	background-color: #ccc5b9;
 }
 
-body > div.my_container > div.myprofile > div.profile-container {
+body>div.my_container>div.myprofile>div.profile-container {
 	/* border: solid 1px black; */
 	display: flex;
 	align-items: center;
 	gap: 25px;
 }
 
-body > div.my_container > div.myprofile > div.profile-container > div.profile-photo-container {
+body>div.my_container>div.myprofile>div.profile-container>div.profile-photo-container
+	{
 	/* border: solid 1px black; */
+	
 }
 
-div.profile-container>div.profile-photo-container>i.fa-circle-user {
-	font-size: 150px;
+div.profile-container>div.profile-photo-container>img {
+	width: 150px;
+	height: 150px;
 	margin-bottom: 10px;
 }
 
@@ -144,7 +147,7 @@ div.my_container>div.my_main>div.my_hside ul li ul li>a {
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 /* 메인 콘텐츠 영역 */
 body>div.my_container>div.my_main>div.mypage_main_content {
-	border: solid 1px black;
+	/* border: solid 1px black; */
 	position: relative;
 	flex: 1;
 	min-height: 800px;
@@ -167,6 +170,18 @@ body>div.my_container>div.my_main>div.mypage_main_content>div.mypage_box_css>h3
 	margin-bottom: 20px;
 	font-size: 18px;
 	color: #333;
+	color: #333;
+}
+
+body>div.my_container>div.my_main>div.mypage_main_content>div.mypage_box_css>h3>a>i
+	{
+	color: #ccc5b9;
+	margin-right: 8px;
+}
+
+body>div.my_container>div.my_main>div.mypage_main_content>div.mypage_box_css>h3>a>i:hover
+	{
+	color: #eb5e28;
 }
 
 /* 제목 링크 스타일 */
@@ -247,4 +262,24 @@ div.mypage_main_List_poster {
 div.mypage_main_List_poster img {
 	width: 110px;
 	height: 151px;
+}
+
+
+
+div.reservation_actions>button {
+	border: none;
+	padding: 8px 12px;
+	cursor: pointer;
+	font-size: 14px;
+	border-radius: 4px;
+}
+
+div.reservation_actions>button.Receipt_Printing {
+	background-color: #403d39;
+	color: white;
+}
+
+div.reservation_actions>button.Receipt_Printing:hover {
+	background-color: #ccc5b9;
+	color: black;
 }

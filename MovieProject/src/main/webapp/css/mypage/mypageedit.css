@@ -16,7 +16,7 @@ div.my_h2 p {
 div#mypageEditFrm>form {
  	/* border: solid 1px blue;  */
 	height: 500px;
-	margin-top: 35px;
+	margin-top: 21px;
 }
 
 div#mypageEditFrm>form>table#tblMemberEdit>tbody {
@@ -42,7 +42,7 @@ div#mypageEditFrm>form>table#tblMemberEdit>tbody>tr {
 	border: 1px solid #ccc5b9;
 	border-right: none;
 }
-
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 button.mypagepwdcss {
 	background-color: #ffffff;
 	margin-left: 20px;
@@ -97,7 +97,7 @@ button.mypageupbtn {
 button.mypageupbtn:hover {
 	background-color: #333;
 }
-
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 input[type="text"], input[type="email"] {
 	padding: 8px;
 	margin-top: 5px;
@@ -119,4 +119,85 @@ input[readonly] {
 }
 input[readonly]:hover {
  	 box-shadow: none;
+}
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/* 마지막 비밀번호 변경일 전체 창*/
+div#mypageEditFrm>form>table#tblMemberEdit > tbody > tr > td> div{
+	 display: flex;
+	 align-items: center; 
+}
+
+/* 마지막 비밀번호 변경일 글자 */
+div#lastpwdchangedate {
+    font-style: italic;
+    color: gray;
+    margin-left: 9px; 
+    font-size: 15px;
+}
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+/* 비밀번호 변경 모달 전체 창 */
+div#passwdFind .modal-dialog {
+    max-width: 500px; 
+    margin: 100px auto; 
+}
+
+/* 비밀번호 변경 모달 헤더 창 */
+div#passwdFind .modal-header {
+	background-color: #000;
+    color: white;
+    text-align: center;
+}
+
+/* 비밀번호 변경 모달 버튼 창 */
+div#passwdFind .modal-header .close {
+    color: white;
+    font-size: 30px;
+}
+
+/* 비밀번호 변경 입력 창 */
+div#pwFind .div_pwd {
+    margin-bottom: 20px;
+}
+
+/* 비밀번호 변경 입력 창 */
+div#pwFind input[type="password"] {
+    width: 100%; 
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* 비밀번호 변경 입력창 글자 창 */
+div#pwFind span {
+    font-weight: bold;
+}
+
+/* 비밀번호 변경 버튼 창 */
+div#pwFind button {
+    width: 100%; 
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+/* 비밀번호 변경하기 버튼 창 */
+div#pwFind .btn-success {
+    background-color: #eb5e28;
+    border-color: none !important;
+}
+
+/* 비밀번호 변경하기 푸터 창 */
+div#passwdFind .modal-footer .btn-danger {
+    background-color: #dc3545;
+}
+
+/* 비밀번호 변경하기 푸터 창닫기 */
+div#passwdFind .modal-footer button {
+    margin-left: 10px;
+}
+
+span.error{
+	font-size: 10px;
 }

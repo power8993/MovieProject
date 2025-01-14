@@ -275,34 +275,44 @@ public class MemberDAO_imple_hongbi implements MemberDAO_hongbi {
 			conn = ds.getConnection();
 			
 			String sql = " with "
-					   + " m as "
-					   + " (select user_id, name, mobile, email "
-					   + " from tbl_member), "
-					   + " pt as "
-					   + " (select fk_user_id, nvl(sum(point),0) as point_sum "
-					   + " from tbl_point "
-					   + " group by fk_user_id), "
-					   + " p as "
-					   + " (select fk_user_id, nvl(sum(pay_amount),0) as pay_sum, "
-					   + "         nvl((select count(*) "
-					   + "              from tbl_payment "
-					   + "              where fk_user_id = p.fk_user_id) "
-					   + "           - (select count(*) "
-					   + "             from tbl_payment "
-					   + "             where fk_user_id = p.fk_user_id and pay_status = '결제 취소'),0) as reserved_cnt "
-					   + " from tbl_payment p"
-					   + " where fk_user_id = ? "
-					   + " group by fk_user_id) "
-					   + " select m.user_id, m.name, m.mobile, m.email, nvl(p.reserved_cnt, 0) as reserved_cnt, nvl(p.pay_sum, 0) as pay_sum, nvl(pt.point_sum, 0) as point_sum "
-					   + " from m left join pt "
-					   + " on( m.user_id = pt.fk_user_id ) "
-					   + " left join p "
-					   + " on( m.user_id = p.fk_user_id ) "
-					   + " where m.user_id = ? ";
+					   + " A as ( "
+					   + " select m.user_id "
+					   + "      , m.name "
+					   + "      , m.mobile "
+					   + "      , m.email "
+					   + "      , p.total_cnt - p.cancel_cnt as reserved_cnt "
+					   + "      , p.total_pay_sum - p.cancel_pay_sum as pay_sum "
+					   + " from tbl_member m cross "
+					   + " join (select count(case when pay_status = '결제 취소' then 1 end) as cancel_cnt "
+					   + "            , sum(case when pay_status = '결제 취소' then pay_amount else 0 end) as cancel_pay_sum "
+					   + "            , count(*) as total_cnt "
+					   + "            , sum(pay_amount) as total_pay_sum "
+					   + "       from tbl_payment "
+					   + "       where fk_user_id = ?) p "
+					   + " where m.user_id = ? ), "
+					   + " B as( "
+					   + " select not_used_point - used_point as point_sum "
+					   + " from "
+					   + " ( "
+					   + "  select NVL(SUM(p2.point), 0) as not_used_point "
+					   + "  from tbl_payment p1 JOIN tbl_showtime s "
+					   + "  on p1.fk_SEQ_SHOWTIME_NO = s.SEQ_SHOWTIME_NO "
+					   + "  join tbl_point p2 "
+					   + "  on p1.imp_uid = p2.fk_imp_uid "
+					   + "  where sysdate > s.end_time and p2.fk_user_id = ? and point_type = 1 ), "
+					   + " ( "
+					   + "  select NVL(SUM(point), 0) as used_point "
+					   + "  from tbl_point "
+					   + "  where fk_user_id = ? and point_type = 0 "
+					   + " )) "
+					   + " select * "
+					   + " from A cross join B ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, user_id);
 			pstmt.setString(2, user_id);
+			pstmt.setString(3, user_id);
+			pstmt.setString(4, user_id);
 			
 			rs = pstmt.executeQuery();
 			

@@ -1,8 +1,9 @@
 package mypage.controller;
 
 import java.io.File;
-import java.util.Calendar;
 import java.util.Collection;
+import java.util.UUID;
+
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -53,7 +54,8 @@ public class MypageProfileEdit extends AbstractController {
             // 파일 업로드 처리
             ServletContext svlCtx = session.getServletContext();
             String uploadFileDir = svlCtx.getRealPath("/Profile_image");
-            System.out.println("=== 첨부되어지는 이미지 파일이 올라가는 절대경로 uploadFileDir ==> " + uploadFileDir);
+            //System.out.println("=== 첨부되어지는 이미지 파일이 올라가는 절대경로 uploadFileDir ==> " + uploadFileDir);
+            //==> C:\NCS\workspace_jsp\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\MovieProject\Profile_image
 
             String profile = null;
             Collection<Part> parts = request.getParts();
@@ -62,11 +64,8 @@ public class MypageProfileEdit extends AbstractController {
                     String fileName = extractFileName(part.getHeader("Content-Disposition"));
 
                     if (part.getSize() > 0) {
-                        // 파일명 생성 (중복되지 않도록)
-                        String newFilename = fileName.substring(0, fileName.lastIndexOf(".")); 
-                        newFilename += "_" + String.format("%1$tY%1$tm%1$td%1$tH%1$tM%1$tS", Calendar.getInstance());
-                        newFilename += System.nanoTime();
-                        newFilename += fileName.substring(fileName.lastIndexOf(".")); // 확장자 붙이기
+                        // 파일명 생성 (UUID 사용)
+                        String newFilename = UUID.randomUUID().toString() + fileName.substring(fileName.lastIndexOf("."));
                         
                         // 업로드된 파일 저장
                         part.write(uploadFileDir + File.separator + newFilename);
@@ -87,6 +86,8 @@ public class MypageProfileEdit extends AbstractController {
                 
                 String json = jsonObj.toString(); // 문자열로 변환 
                 request.setAttribute("json", json);
+                
+                //System.out.println(json);
             }
 
             super.setRedirect(false);

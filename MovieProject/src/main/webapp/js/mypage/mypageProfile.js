@@ -12,7 +12,5 @@ function profile_Edit(userid, ctxPath) {
 	window.open(url, "Receipt_Printing",
 		`left=${left}, top=${top}, width=${width}, height=${height}`);
 
-	// 팝업 객체를 부모창에 저장하여 나중에 제어할 수 있도록 함
-	window.popupWindow = popupWindow;
 
 }//end of function Receipt_Printing(ctxPath, userid)---

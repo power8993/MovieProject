@@ -49,8 +49,7 @@
         text-decoration: none;
         color: #007bff;
     }
-    
-	body > div:nth-child(22) > table > tbody > tr:hover {
+	body > div:nth-child(19) > table > tbody > tr:hover {
 	    cursor: pointer;
 	    background-color: #dbd7ce; 
 	}
@@ -85,15 +84,17 @@
 		}
     .btn-create {
         padding: 6px 17px;
-        background-color: #EB5E28;
+        background-color: #252422;
         color: white;
         border: none;
         border-radius: 5px;
         font-size: 17px;
         cursor: pointer;
     }
+    
     .btn-create:hover {
-        background-color: #eb5e28; 
+        background-color: #eb5e28;
+        color: white;
     }
 </style>
 </head>

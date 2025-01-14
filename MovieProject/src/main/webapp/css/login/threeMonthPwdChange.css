@@ -70,4 +70,13 @@ button[id='button']{
 	background-color:transparent;
 }
 
+button[id='submitBtn']:hover{
+	background-color: #e95216;
+	transition: 0.3s;
+}
+button[id='button']:hover{
+	background-color: #e6e6e6;
+	transition: 0.3s;
+}
+
 

@@ -15,6 +15,9 @@ String ctxPath = request.getContextPath();
 <%-- 직접 만든 CSS --%>
 <link rel="stylesheet" type="text/css"
 	href="<%=ctxPath%>/css/mypage/mypagemovie.css" />
+	<%-- 직접 만든 CSS --%>
+<link rel="stylesheet" type="text/css"
+	href="<%=ctxPath%>/css/mypage/mymoviewatched.css" />
 <%-- h3 a태그의 이모티콘 --%>
 <script src="https://kit.fontawesome.com/0c69fdf2c0.js"
 	crossorigin="anonymous"></script>
@@ -78,15 +81,14 @@ String ctxPath = request.getContextPath();
 			<div class="my_main_movie">
 			<div class="my_mywatchedmovie_list">
 					<c:if test="${not empty requestScope.mymoviewatchedList}">
-						<ul>
+						
 							<c:forEach var="watched" items="${requestScope.mymoviewatchedList}">
+							<li class="my_main_watchedmovie_card">
 							<!-- 포스터 이미지 -->
 							<div class="my_main_moviewatchedList_poster">
 								<a
 									href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${watched.svo.fk_seq_movie_no}">
-									<img
-									src="${pageContext.request.contextPath}/images/admin/poster_file/${watched.svo.mvo.poster_file}"
-									alt="${watched.svo.mvo.movie_title}" />
+									<img src="<%= ctxPath%>/images/admin/poster_file/${watched.svo.mvo.poster_file}.jpg" alt="영화 포스터"/>
 								</a>
 							</div>
 							
@@ -96,11 +98,10 @@ String ctxPath = request.getContextPath();
 								<ul>
 								<li>${watched.svo.start_time}~${watched.svo.end_time}</li>
 								<li>${watched.svo.fk_screen_no}관/ ${watched.tvo.seat_no_list}</li>
-								<li> ${watched.tvo.seat_count}명</li>
-							</ul>
+								<li> ${watched.tvo.seat_count}명</li></ul>
 							</div>
+							</li>
 							</c:forEach>
-						</ul>
 					</c:if>
 					<c:if test="${empty requestScope.mymoviewatchedList}" >
 						<p class="empty">본 영화가 없습니다.</p>

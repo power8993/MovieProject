@@ -211,8 +211,6 @@ div#point {
 	width: 250px;
 	font-size: 13pt;
 	font-weight: bold;
-	position: relative;
-	top: -25px;
 }
 
 input#using-point {

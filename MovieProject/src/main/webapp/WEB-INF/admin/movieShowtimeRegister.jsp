@@ -46,7 +46,7 @@
 	            <tbody>
 	                <!-- 첫 번째 줄: 영화 및 상영 관련 정보 -->
 	                <tr>
-	                    <td colspan="2" rowspan="3" style="width: 45%;"><img src="<%= ctxPath%>/images/admin/poster_file/${requestScope.mvvo.poster_file}" alt="" style="width:250px; height:auto;"></td>
+	                    <td colspan="2" rowspan="3" style="width: 45%;"><img src="<%= ctxPath%>/images/admin/poster_file/${requestScope.mvvo.poster_file}.jpg" alt="" style="width:250px; height:auto;"></td>
 	                    <td colspan="2" style="width: 55%;" class="movie_title">${requestScope.mvvo.movie_title}</td>
 	                </tr>
 	                <tr>

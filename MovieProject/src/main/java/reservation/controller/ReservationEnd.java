@@ -1,5 +1,8 @@
 package reservation.controller;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -57,6 +60,7 @@ public class ReservationEnd extends AbstractController {
 			request.setAttribute("ticketPrice", ticketPrice);
 			request.setAttribute("movie_grade", map.get("movie_grade"));
 			request.setAttribute("start_time", map.get("start_time"));
+			request.setAttribute("end_time", map.get("end_time"));
 			request.setAttribute("fk_screen_no", map.get("fk_screen_no"));
 			request.setAttribute("poster_file", map.get("poster_file"));
 			request.setAttribute("movie_title", map.get("movie_title"));
