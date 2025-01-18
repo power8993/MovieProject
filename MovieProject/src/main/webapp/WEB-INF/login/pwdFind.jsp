@@ -103,8 +103,6 @@ $(document).ready(function(){
         
         const pwd  = $("input:password[name='pwd']").val();
         const pwd2 = $("input:password[name='pwd2']").val();
-        console.log(pwd);
-        console.log(pwd2);
         
         if(pwd != pwd2) {
         	$("#confirmPwdErrorMsg").html("암호가 일치하지 않습니다.");
@@ -133,7 +131,7 @@ $(document).ready(function(){
                frm.method = "post";
                frm.submit(); --%>
                $.ajax({
-            	    url: "pwdUpdateEnd.mp", // 서버의 컨트롤러 매핑 주소
+            	    url: "pwdUpdateEnd.mp",
             	    data: {
             	        "pwd": $("input:password[name='pwd']").val().trim(),
             	        "userid": $("input:hidden[name='userid']").val().trim()
@@ -141,10 +139,10 @@ $(document).ready(function(){
             	    type: "post",
             	    dataType: "json", // 서버에서 JSON 형식의 응답을 받음
             	    success: function(json) {
-            	        console.log("서버 응답:", json);
             	        let resultHtml = "";
 
-            	        if (json.method.toLowerCase() === "post" && json.n == 1 ) { // 소문자/대문자 모두 처리(모두 소문자로 변경해주기 때문)
+            	        if (json.method.toLowerCase() === "post" && json.n == 1 ) { 
+            	        	// 소문자/대문자 모두 처리(모두 소문자로 변경해주기 때문)
             	            // post 방식이며 회원이 존재할 경우
             	            resultHtml = `
 										  <div class="password-reset-success">
@@ -231,7 +229,7 @@ $(document).ready(function(){
 		
 		/////////////////============ ajax ============///////////////////////
 		 $.ajax({
-		     url: "verifyCertification.mp", // 서버의 컨트롤러 매핑 주소
+		     url: "verifyCertification.mp",
 		     data: {
 		         "userCertificationCode": $("input:text[name='input_confirmCode']").val().trim(),
 		         "userid":userid
@@ -359,8 +357,6 @@ function goFind() {
              } 
              else if (json.isUserExist && json.sendMailSuccess) {
                  // 사용자가 존재하고 메일 발송에 성공한 경우
-                 console.log(json); 
-                 console.log(json.email); 
                  resultHtml = `
                 	 <div class="email-verification">
                 	  <p>

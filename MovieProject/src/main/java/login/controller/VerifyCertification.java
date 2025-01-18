@@ -25,19 +25,12 @@ public class VerifyCertification extends AbstractController {
 			
 			boolean is_True_false = false;
 			String loc = "";
-			/*
-			 * System.out.println("세션에 저장된 인증코드: [" + certification_code + "]");
-			 * System.out.println("사용자가 입력한 인증코드: [" + userCertificationCode + "]");
-			 */
-
+			
 			if(certification_code.equals(userCertificationCode)) {
 				is_True_false = true;
 				loc = request.getContextPath()+"/login/pwdUpdateEnd.mp?userid="+userid;
 			}
-			else {
-				loc = request.getContextPath()+"/login/pwdFind.mp";
-			}
-				
+			
 			//////////////////////////////////////////////////////////////////
 			
 			// JSON 응답 생성
