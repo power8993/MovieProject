@@ -37,16 +37,16 @@ public class IndexController extends AbstractController {
 
 			/////////////////////////////////////////////
 			// 무비차트 (예매율순)
-        	List<MovieVO_sangwoo> movies = idao.showMovieChart(); //첫 줄 카드
-        	List<MovieVO_sangwoo> movies2 = idao.showMovieChart2();//두 번째 줄 카드
+        	List<MovieVO_sangwoo> movies = idao.showMovieChart(); //첫 번째 슬라이드 카드
+        	List<MovieVO_sangwoo> movies2 = idao.showMovieChart2();//두 번째 슬라이드 카드
         	request.setAttribute("movies", movies);
         	request.setAttribute("movies2", movies2);
         	
         	
         	//////////////////////////////////////////////
         	//상영예정작(현재날짜에 가까운 영화개봉일순)
-        	List<MovieVO_sangwoo> laterMovies = idao.showLaterMovies();
-        	List<MovieVO_sangwoo> laterMovies2 = idao.showLaterMovies2();
+        	List<MovieVO_sangwoo> laterMovies = idao.showLaterMovies(); //첫 번째 슬라이드 카드
+        	List<MovieVO_sangwoo> laterMovies2 = idao.showLaterMovies2(); //두 번째 슬라이드 카드
         	request.setAttribute("laterMovies", laterMovies);
         	request.setAttribute("laterMovies2", laterMovies2);
         	

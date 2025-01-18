@@ -23,19 +23,15 @@ public class IdDuplicateCheck extends AbstractController {
 			
 			boolean isExists = mdao.idDuplicateCheck(userid);
 			
-			JSONObject jsonObj = new JSONObject(); // {}
-			jsonObj.put("isExists", isExists); // {"isExists":true} 또는 {"isExists":false} 으로 만들어 준다. 
+			JSONObject jsonObj = new JSONObject();
+			jsonObj.put("isExists", isExists); 
 
-			String json = jsonObj.toString(); // 문자열 형태인 "{"isExists":true}" 또는 "{"isExists":false}" 으로 만들어 준다.
-			// System.out.println(">>> 확인용 json => " + json);
-			// >>> 확인용 json => {"isExists":false}
-			// >>> 확인용 json => {"isExists":true}
+			String json = jsonObj.toString(); 
 			
 			request.setAttribute("json", json);
 			
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/jsonview.jsp");
-			// 웹 페이지에 꼭 보여줘야 함
 			
 		} // end of if("POST".equalsIgnoreCase(method)) {}-----------------------------------------------
 		
