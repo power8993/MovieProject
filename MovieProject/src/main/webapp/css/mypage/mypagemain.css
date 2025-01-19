@@ -39,10 +39,11 @@ body>div.my_container>div.myprofile>div.profile-container>div.profile-photo-cont
 	
 }
 
-div.profile-container>div.profile-photo-container>img {
+div.profile-container>div.profile-photo-container>div#lastprofile_Edit > img#profileimage {
 	width: 150px;
 	height: 150px;
 	margin-bottom: 10px;
+	border-radius: 50%;
 }
 
 div.profile-container>div.profile-photo-container>button.profile_Edit {
@@ -263,8 +264,6 @@ div.mypage_main_List_poster img {
 	width: 110px;
 	height: 151px;
 }
-
-
 
 div.reservation_actions>button {
 	border: none;

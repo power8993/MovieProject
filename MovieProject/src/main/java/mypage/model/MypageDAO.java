@@ -11,6 +11,9 @@ import reservation.domain.PaymentVO;
 import reservation.domain.PointVO;
 
 public interface MypageDAO {
+	
+	// 마이페이지 프로필 사진 조회
+	MemberVO MylastprofileEdit(Map<String, String> paraMap)throws SQLException;
 
 	// 마이페이지 프로필 사진 편집
 	int profileUpdate(String userid, String profile) throws SQLException;
@@ -105,5 +108,7 @@ public interface MypageDAO {
 
 	// 마이페이지 회원탈퇴
 	boolean deletePassword(String userid) throws SQLException;
+
+	
 
 }

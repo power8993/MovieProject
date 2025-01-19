@@ -200,8 +200,7 @@ public class MemberDAO_imple implements MemberDAO {
 
 	         if(rs.next()) {
 	            member = new MemberVO();
-
-		         System.out.println("rs.getString(\"profile\")"+rs.getString("profile"));
+	            
 	            member.setUserid(rs.getString("USER_ID"));
 	            member.setName(rs.getString("name"));
 	            member.setEmail( aes.decrypt(rs.getString("email")) );
