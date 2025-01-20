@@ -461,11 +461,9 @@ $(document).ready(function(){
 			type: "post",	
 			dataType: "json",		
 			success:function(json){
-				console.log(json.isExists);
 				
 				if(json.isExists) { //전화번호를 사용 중인 경우
 					b_phoneCheck_click = false; 
-					console.log("사용 중인 전화번호입니다.");
 					$("#authMsg").html("<span style='color:red; font-size:10pt;'>사용 중인 전화번호입니다.</span>").show();
 					$("#hp2").val("");
 					$("#hp3").val("");
@@ -475,7 +473,6 @@ $(document).ready(function(){
 				}
 				else if(json.phoneNumber == null || json.phoneNumber == undefined){// 전화번호가 중복되지 않은 경우
 					b_phoneCheck_click = true; 
-					console.log("사용 가능한 전화번호입니다.");
 					$("#authMsg").html("<span style='color:navy; font-size:10pt;'>사용 가능한 전화번호입니다. 인증을 진행해 주세요.</span>").show();
 					$("#authPassElmt").show();
 				}
@@ -494,8 +491,7 @@ $(document).ready(function(){
 
 // function declaration
 
-////////////////// 전화번호 중복 통과 후 생기는 인증하기 버튼 클릭 시 //////////////////
-
+////////////////// 전화번호 중복검사 통과 후 생기는 인증하기 버튼 클릭 시 //////////////////
 var b_isAuth_click = false;
 
 $(document).on('click', '#authPassBtn', function() {
