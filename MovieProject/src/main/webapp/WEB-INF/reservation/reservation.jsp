@@ -5,6 +5,8 @@
 
 <%
 	String ctxPath = request.getContextPath();
+
+	// 영화 조회 혹은 상영 시간표에서 예매를 눌렀을 때 넘어오는 값들
 	String seq_movie_no = request.getParameter("seq_movie_no");
 	String start_date = request.getParameter("start_date");
 	String start_time = request.getParameter("start_time");
@@ -22,11 +24,11 @@
 	Calendar currentDate = Calendar.getInstance();
 	currentDate.add(Calendar.DATE, -1);
 	
-	int year_current = 0;
+	int year_current = 0; // 현재 년도 초기값
 	
-	int month_current = 0;
+	int month_current = 0; // 현재 월 초기값
 	
-	String[] dayname = {"일", "월", "화", "수", "목", "금", "토"};
+	String[] dayname = {"일", "월", "화", "수", "목", "금", "토"}; // 요일명 배열
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
@@ -44,8 +46,8 @@ $(document).ready(function(){
 	if(<%= seq_movie_no%> != null && cnt == 0) {
 		cnt++; // 처음 페이지에 들어왔을 때만 실행되도록
 		$("td#seq_movie_no").each(function(index, elmt) {
-			if($(this).text() == <%= seq_movie_no%>) {
-				$(this).parent().addClass("selected");
+			if($(this).text() == <%= seq_movie_no%>) { // 선택한 영화 번호와 같은 값이 있을 때
+				$(this).parent().addClass("selected"); // 해당 영화에 선택되었다는 css 추가
 				$("div#movie-choice").text($(this).parent().find("td.movie-title").text());
 				
 				let poster_file = $(this).parent().find("td#poster_file").text();
@@ -137,6 +139,7 @@ $(document).ready(function(){
 								currentDate.add(Calendar.DATE, 1); %>
 								<% 
 									if(month_current != (currentDate.get(Calendar.MONTH) + 1)) {
+										// 월이 바뀔 때마다 현재년도와 현재 월 값을 바꾸고 나타내어준다.
 										month_current = (currentDate.get(Calendar.MONTH) + 1);
 										year_current = currentDate.get(Calendar.YEAR);
 										%>
