@@ -704,7 +704,9 @@ public class MovieDAO_imple implements MovieDAO {
 			
 			String search_orderby = paraMap.get("search_orderby");
 			
-			String sql = " select rno, seq_movie_no, register_date, category, poster_file, case when length(movie_title) > 14 then substr(movie_title,1,11) || ' ...' else movie_title end as movie_title , movie_grade, start_date, end_date "
+			String sql = " select rno, seq_movie_no, register_date, category"
+					   + "      , poster_file, case when length(movie_title) > 14 then substr(movie_title,1,11) || ' ...' else movie_title end as movie_title "
+					   + "      , movie_grade, start_date, end_date "
 					   + " from "
 					   + "  (select row_number() over (order by register_date "+search_orderby+" ) as rno "
 					   + "         , seq_movie_no "
