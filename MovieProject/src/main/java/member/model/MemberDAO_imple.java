@@ -491,7 +491,6 @@ public class MemberDAO_imple implements MemberDAO {
 		return result;
 	}
 
-	// 로그인 기록 테이블의 login_date컬럼 데이터 삭제
 	@Override
 	public int loginHistoryDelete(String idleMemberMobile) throws SQLException {
 		

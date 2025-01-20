@@ -56,7 +56,7 @@ public class ThreeMonthPwdChange extends AbstractController {
 			
 			int updatePwd = mdao.threeMonthPwdChange(loginuser.getUserid(),pwd);
 			
-	        jsonObj.put("updatePwd", updatePwd); //true면 현재 비밀번호와 사용자가 입력한 비밀번호가 일치함 
+	        jsonObj.put("updatePwd", updatePwd); 
 	      
 		}
 			

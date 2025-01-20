@@ -48,7 +48,7 @@ public class PhDuplicateCheck extends AbstractController {
 				
 			}
 			else { // 인증번호가 틀릴 시
-				System.out.println("인증번호 틀림 입력인증번호 : " + authPassInput);
+				//System.out.println("인증번호 틀림 입력인증번호 : " + authPassInput);
 				session.removeAttribute("randomNumber");
 				jsonObj.put("isAuthStatus", isAuthStatus); // 인증 상태 전달.
 			}
