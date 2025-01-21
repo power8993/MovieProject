@@ -42,20 +42,20 @@ $(document).ready(function(){
 	
 	let cnt = 0;
 	
-	// 영화에서 예매하기를 눌러서 상영 영화 번호를 넘겨줬을 때
+	// 다른 페이지에서 예매하기를 눌러서 상영 영화 번호를 넘겨줬을 때
 	if(<%= seq_movie_no%> != null && cnt == 0) {
 		cnt++; // 처음 페이지에 들어왔을 때만 실행되도록
 		$("td#seq_movie_no").each(function(index, elmt) {
 			if($(this).text() == <%= seq_movie_no%>) { // 선택한 영화 번호와 같은 값이 있을 때
 				$(this).parent().addClass("selected"); // 해당 영화에 선택되었다는 css 추가
-				$("div#movie-choice").text($(this).parent().find("td.movie-title").text());
+				$("div#movie-choice").text($(this).parent().find("td.movie-title").text()); // 해당 영화의 제목을 하단 정보란에 입력
 				
-				let poster_file = $(this).parent().find("td#poster_file").text();
+				let poster_file = $(this).parent().find("td#poster_file").text(); // 해당 영화의 포스터 정보
 				
-				$("div#selected_movie_grade").text( $(this).parent().find("td#movie_grade").text() );
+				$("div#selected_movie_grade").text( $(this).parent().find("td#movie_grade").text() ); // 해당 영화의 상영 등급을 하단 정보란에 입력
 				
 				let v_html = '<img src="/MovieProject/images/admin/poster_file/' + poster_file + '.jpg" style="width:auto; height:110px;">';
-				$("div#movie-choice-poster").html(v_html);
+				$("div#movie-choice-poster").html(v_html); // 해당 영화의 포스터 정보를 하단 정보란에 입력
 				$("div#movie-choice-poster").show();
 				
 				$("div#empty_div").css('width','130px');
@@ -63,11 +63,12 @@ $(document).ready(function(){
 			}
 		});
 		
+		// 다른 페이지에서 예매하기를 눌러서 상영 날짜와 상영 시간도 넘겨줬을 때
 		if(<%= start_date%> != null && '<%= start_time%>' != null) {
 			$("span.input_date").each(function(index, elmt) {
-				if($(this).text() == '<%= start_date%>') {
-					$(this).parent().addClass("selected");
-					$("div#date-choice").text($(this).parent().find("span.input_date").text());
+				if($(this).text() == '<%= start_date%>') { // 선택한 날짜와 같은 값이 있을 때
+					$(this).parent().addClass("selected"); // 해당 날짜에 선택되었다는 css 추가
+					$("div#date-choice").text($(this).parent().find("span.input_date").text()); // 해당 영화의 시작 날짜를 하단 정보란에 입력
 					$("div#screen-date-info").text('상영날짜 : <%= start_date%>');
 					
 					// 영화와 날짜를 선택했을 때 상영 시간이 보여주기

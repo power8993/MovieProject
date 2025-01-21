@@ -25,12 +25,13 @@ public class GetHavingPoint extends AbstractController {
 		if("POST".equalsIgnoreCase(method)) {
 			// POST 방식이면
 	       
-			String userid = request.getParameter("userid");
+			String userid = request.getParameter("userid");	// 사용자ID
 			
-			int havingPoint = 0;
+			int havingPoint = 0; // 보유중인 포인트
 			
 			try {
 				havingPoint = mdao.getHavingPoint(userid);
+				// 보유중인 포인트 가져오기
 			} catch(SQLException e) {
 				message = "데이터베이스 오류로 인해 포인트 가져오기 실패되었습니다";
 				loc = "javascript:history.back()";

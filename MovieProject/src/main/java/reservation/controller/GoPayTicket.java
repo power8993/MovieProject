@@ -18,32 +18,32 @@ public class GoPayTicket extends AbstractController {
 		if(super.checkLogin(request)) {
 	    
 			// 로그인을 했으면
-			String userid = request.getParameter("userid");
+			String userid = request.getParameter("userid"); // 사용자ID
 			HttpSession session = request.getSession();
 			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser"); 
 	        
 			if(loginuser.getUserid().equals(userid)) {
 				// 로그인한 사용자가 자신의 영화를 예매하는 경우 
 	            
-				String total_price = request.getParameter("total_price");
-				String ticketInfo = request.getParameter("ticketInfo");
+				String total_price = request.getParameter("total_price");	// 전체 결제 금액
+				String ticketInfo = request.getParameter("ticketInfo");		// 예약하는 영화 정보
 				int using_point = Integer.parseInt(request.getParameter("using_point"));
+				// 사용하는 포인트 값
 	            
 				int ticketPrice = Integer.parseInt(total_price);
-	            
+	            // 전체 결제 금액
+				
 				request.setAttribute("ticketInfo", ticketInfo);
 				request.setAttribute("ticketPrice", ticketPrice);
 				request.setAttribute("using_point", using_point);
 	            
-				// request.setAttribute("ticketPrice", 100);
-	            
-				request.setAttribute("email", loginuser.getEmail());
-	            request.setAttribute("name", loginuser.getName());
-	            request.setAttribute("mobile", loginuser.getMobile());
+				request.setAttribute("email", loginuser.getEmail());	// 이메일
+	            request.setAttribute("name", loginuser.getName());		// 이름
+	            request.setAttribute("mobile", loginuser.getMobile());	// 전화번호
 	            
 	            request.setAttribute("userid", userid);
 	            
-	            // super.setRedirect(false);
+	            super.setRedirect(false);
 	            super.setViewPage("/WEB-INF/reservation/paymentGateway.jsp");
 			}
 			else {

@@ -52,6 +52,7 @@ public class UpdateShowtime extends AbstractController {
 						break;
 					};
 					seat_arr[index] = "1";
+					// 해당 인덱스를 1으로 변경(예약된 상태로)
 				}
 				
 				if(isDuplicated) {

@@ -24,17 +24,19 @@ public class GetScreenTime extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		String input_date = request.getParameter("input_date");
+		String input_date = request.getParameter("input_date"); // 선택한 날짜(yyyy-mm-dd) 형태
 		if(input_date != null) {
 			input_date = String.join("", input_date.split("-"));
+			// yyyy-mm-dd 형태의 날짜 문자열을 를 yyyymmdd 로 바꾸기
 		}
-		String seq_movie_no = request.getParameter("seq_movie_no");
+		String seq_movie_no = request.getParameter("seq_movie_no"); // 선택한 영화번호
 		
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("input_date", input_date);
 		paraMap.put("seq_movie_no", seq_movie_no);
 		
 		List<ShowTimeVO_sunghoon> showTimeList = mdao.getScreenTime(paraMap);
+		// 선택한 영화와 날짜에 해당하는 상영 영화 리스트를 가져옴
 		
 		JSONArray jsonArr = new JSONArray(); // []
 		
@@ -45,14 +47,14 @@ public class GetScreenTime extends AbstractController {
 				
 				JSONObject jsonObj = new JSONObject(); // {}
 				
-				jsonObj.put("start_time", svo.getStart_time());
-				jsonObj.put("end_time", svo.getEnd_time());
-				jsonObj.put("seat_arr", svo.getSeat_arr());
-				jsonObj.put("seq_showtime_no", svo.getSeq_showtime_no());
-	            jsonObj.put("fk_seq_movie_no", svo.getFk_seq_movie_no());
-	            jsonObj.put("total_viewer", svo.getTotal_viewer());
-	            jsonObj.put("unused_seat", svo.getUnused_seat());
-	            jsonObj.put("fk_screen_no", svo.getFk_screen_no());
+				jsonObj.put("start_time", svo.getStart_time()); 			// 상영 영화 시작 시간
+				jsonObj.put("end_time", svo.getEnd_time());					// 상영 영화 종료 시간
+				jsonObj.put("seat_arr", svo.getSeat_arr());					// 해당 영화의 좌석 배열
+				jsonObj.put("seq_showtime_no", svo.getSeq_showtime_no());	// 상영 영화번호
+	            jsonObj.put("fk_seq_movie_no", svo.getFk_seq_movie_no());	// 영화 번호
+	            jsonObj.put("total_viewer", svo.getTotal_viewer());			// 관람객 수
+	            jsonObj.put("unused_seat", svo.getUnused_seat());			// 남은 좌석
+	            jsonObj.put("fk_screen_no", svo.getFk_screen_no());			// 상영관 번호
 				
 	            jsonArr.put(jsonObj);
 	            

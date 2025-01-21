@@ -67,6 +67,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 			String sql = " select case when length(movie_title) < 20 then movie_title else substr(movie_title, 0, 17) || '...' end as movie_title, seq_movie_no, movie_grade, poster_file "
 					   + " from tbl_movie "
 					   + " where sysdate >= start_date and sysdate <= end_date + 1 ";
+			// 현재 일자 기준으로 현재 일자가 개봉일과 상영 종료일 사이인 영화들의 리스트를 조회
 			
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
@@ -106,6 +107,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 					   + " from tbl_showtime "
 					   + " where FK_SEQ_MOVIE_NO = ? and to_char(start_time, 'yyyymmdd') = ? and start_time > sysdate "
 					   + " order by fk_screen_no asc ";
+			// 선택한 영화와 날짜에 해당하는 상영 영화들의 리스트를 조회
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -318,6 +320,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 					   + "    from tbl_point "
 					   + "    where fk_user_id = ? and point_type = 0 "
 					   + " ) B ";
+			// 적립된 포인트(상영 종료시간이 지난 영화들에 대한 포인트) - 사용한 포인트
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userid);
@@ -352,7 +355,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		try {
 			conn = ds.getConnection();
 			
-			if(using_point == 0) {
+			if(using_point == 0) { // 포인트를 사용하지 않는다면, 적립만 생성
 					
 				String sql = " insert into tbl_point(SEQ_POINT_NO, FK_USER_ID, FK_IMP_UID, POINT_TYPE, POINT) "
 						   + " values(SEQ_POINT_NO.nextval, ?, ?, 1, ?) ";
@@ -365,7 +368,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 				n = pstmt.executeUpdate();
 				
 			}
-			else {
+			else { // 포인트를 사용한다면, 적립과 사용 둘 다 생성 
 				
 				String sql = " insert into tbl_point(SEQ_POINT_NO, FK_USER_ID, FK_IMP_UID, POINT_TYPE, POINT) "
 						   + " values(SEQ_POINT_NO.nextval, ?, ?, 1, ?) ";
@@ -411,6 +414,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 					   + " from tbl_ticket "
 					   + " where fk_imp_uid = ? "
 					   + " order by substr(seat_no, 1, 1), to_number(substr(seat_no, 2)) ";
+			// 결제번호가 같은 티켓들의 정보들을 조회
 			
 			pstmt = conn.prepareStatement(str);
 			pstmt.setString(1, imp_uid);
@@ -494,7 +498,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 			
 			int cnt = 0;
 			
-			while(rs.next()) {
+			while(rs.next()) { // 좌석 번호들의 리스트를 ","를 구분자로 하는 하나의 String 으로 합치기
 				cnt++;
 				if(cnt == 1) {
 					seatList += rs.getString("seat_no");
@@ -519,7 +523,7 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 		int n1 = 0, n2 = 0, n3 = 0, n4 = 0;
 		
 		String seatList = paramap.get("seatList");
-		String[] seatArr = seatList.split(",");
+		String[] seatArr = seatList.split(","); // 받아온 좌석 번호 String 을 배열로 쪼개기
 		
 		try {
 			conn = ds.getConnection();
@@ -534,8 +538,9 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 			pstmt.setString(1, paramap.get("imp_uid"));
 			
 			n1 = pstmt.executeUpdate();
+			
 			// 티켓 내역 삭제
-			if(n1 == 1) {
+			if(n1 == 1) { // 포인트 내역 삭제가 성공한 경우
 				
 				sql = " delete from tbl_ticket "
 					+ " where fk_imp_uid = ? ";
@@ -544,13 +549,13 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 				pstmt.setString(1, paramap.get("imp_uid"));
 				
 				n2 = pstmt.executeUpdate();
-				if(n2 == seatArr.length) {
+				if(n2 == seatArr.length) { // 좌석 번호 갯수만큼 삭제가 성공 했다면
 					n2 = 1;
 				}
 			}
 			
 			// 결제 내역 상태 수정
-			if(n2 == 1) {
+			if(n2 == 1) { // 티켓 내역 삭제가 성공한 경우
 				
 				sql = " update tbl_payment set pay_status = '결제 취소', PAY_CANCEL_DATE = sysdate "
 					+ " where imp_uid = ? ";
@@ -562,13 +567,13 @@ public class MovieDAO_imple_sunghoon implements MovieDAO_sunghoon {
 			}
 			
 			// 상영 영화 좌석 배열 수정
-			if(n3 == 1) {
+			if(n3 == 1) { // 결제 내역 상태 수정이 성공한 경우
 				
 				sql = " update tbl_showtime set seat_arr = ?, UNUSED_SEAT = UNUSED_SEAT + to_number(?) "
 					+ " where seq_showtime_no = to_number(?) ";
 				
 				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, paramap.get("seatArr"));
+				pstmt.setString(1, paramap.get("seatArr")); // 수정되어진 좌석배열로 update
 				pstmt.setString(2, paramap.get("seatListLength"));
 				pstmt.setString(3, paramap.get("seq_showtime_no"));
 				// pstmt.setInt(3, Integer.parseInt(paramap.get("seq_showtime_no")));

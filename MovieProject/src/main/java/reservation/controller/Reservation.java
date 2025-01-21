@@ -28,16 +28,17 @@ public class Reservation extends AbstractController {
 		}
 		
 		List<MovieVO> movieList = mdao.reservationMovieList();
+		// 상영중인 영화 리스트
 		
 		request.setAttribute("movieList", movieList);
 		
-		String seq_movie_no = request.getParameter("seq_movie_no");
+		String seq_movie_no = request.getParameter("seq_movie_no"); // 다른 페이지에서 여약하기를 눌러서 파라미터가 넘어온 경우
 		request.setAttribute("seq_moive_no", seq_movie_no);
-		String start_date = request.getParameter("start_date");
+		String start_date = request.getParameter("start_date");		// 다른 페이지에서 여약하기를 눌러서 파라미터가 넘어온 경우
 		request.setAttribute("start_date", start_date);
-		String start_time = request.getParameter("start_time");
+		String start_time = request.getParameter("start_time");		// 다른 페이지에서 여약하기를 눌러서 파라미터가 넘어온 경우
 		request.setAttribute("start_time", start_time);
-		String fk_screen_no = request.getParameter("fk_screen_no");
+		String fk_screen_no = request.getParameter("fk_screen_no");	// 다른 페이지에서 여약하기를 눌러서 파라미터가 넘어온 경우
 		request.setAttribute("fk_screen_no", fk_screen_no);
 		
 		super.setRedirect(false);

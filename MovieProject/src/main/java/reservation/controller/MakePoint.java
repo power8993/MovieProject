@@ -27,10 +27,10 @@ public class MakePoint extends AbstractController {
 		if("POST".equalsIgnoreCase(method)) {
 			// POST 방식이면
 	       
-			String userid = request.getParameter("userid");
-			String using_point = request.getParameter("using_point");
-			String ticketPrice = request.getParameter("ticketPrice");
-			String imp_uid = request.getParameter("imp_uid");
+			String userid = request.getParameter("userid");				// 사용자ID
+			String using_point = request.getParameter("using_point");	// 사용하는 포인트가 없으면 0
+			String ticketPrice = request.getParameter("ticketPrice");	// 총 결제 금액
+			String imp_uid = request.getParameter("imp_uid");			// 결제번호
 			
 			Map<String, String> paraMap = new HashMap<>();
 			paraMap.put("userid", userid);

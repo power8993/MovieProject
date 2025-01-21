@@ -60,22 +60,23 @@ public class ReservationCancel extends AbstractController {
 				
 				HttpSession session = request.getSession();
 				MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
-				String userid = loginuser.getUserid(); // 사용자ID
-				String imp_uid = request.getParameter("imp_uid");
-				String seq_showtime_no = request.getParameter("seq_showtime_no");
+				String userid = loginuser.getUserid(); 								// 사용자ID
+				String imp_uid = request.getParameter("imp_uid"); 					// 결제번호
+				String seq_showtime_no = request.getParameter("seq_showtime_no"); 	// 상영영화번호
 				
 				Map<String, String> paramap = new HashMap<>();
-				String seatList = mdao.getSeatList(imp_uid);
-				String seatArr = mdao.getSeatArr(Integer.parseInt(seq_showtime_no));
-				// String seatArr = mdao.getSeatArr(60);
-				String[] selected_seat_arr = seatList.split(",");
-				String[] seat_arr = seatArr.split(",");
+				String seatList = mdao.getSeatList(imp_uid); 		// 예약한 좌석 리스트를 String 형태로 가져옴
+				String seatArr = mdao.getSeatArr(Integer.parseInt(seq_showtime_no)); 	// 상영영화번호의 좌석배열을 DB에서 가져옴
+				String[] selected_seat_arr = seatList.split(","); 	// 예약한 좌석 리스트를 List 로 변환
+				String[] seat_arr = seatArr.split(","); 			// 상영영화번호의 좌석배열를 List 로 변환
 				
-				int seatListLength = selected_seat_arr.length;
+				int seatListLength = selected_seat_arr.length; // 선택한 좌석의 개수
 				
 				for(int i = 0; i < seatListLength; i++) {
 					int index = (selected_seat_arr[i].charAt(0) - 'A') * 10 + Integer.parseInt(selected_seat_arr[i].substring(1)) - 1;
+					// 좌석번호 A1 -> index : 0, A2 -> index : 1 식으로 변환
 					seat_arr[index] = "0";
+					// 해당 인덱스를 0으로 변경(예약이 안된 상태로)
 				}
 				
 				seatArr = String.join(",", seat_arr);

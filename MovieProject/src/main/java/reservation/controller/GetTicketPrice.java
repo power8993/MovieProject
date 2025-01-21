@@ -19,12 +19,14 @@ public class GetTicketPrice extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		List<Integer> ticketPriceList = mdao.getTicketPrice();
+		// 연령대별 티켓 가격 가져오기
+		// 가격순으로 정렬해서 제일 비싼 순으로 성인, 청소년, 어린이
 		
 		JSONObject jsonObj = new JSONObject();
 			
-		jsonObj.put("adult_ticket_price", ticketPriceList.get(0));		// 가격순으로 정렬해서 제일 비싼 순으로 성인, 청소년, 어린이
-		jsonObj.put("adolescent_ticket_price", ticketPriceList.get(1));
-		jsonObj.put("youth_ticket_price", ticketPriceList.get(2));
+		jsonObj.put("adult_ticket_price", ticketPriceList.get(0));		// 성인 티켓 가격
+		jsonObj.put("adolescent_ticket_price", ticketPriceList.get(1));	// 청소년 티켓 가격
+		jsonObj.put("youth_ticket_price", ticketPriceList.get(2));		// 어린이 티켓 가격
 		
 		String json = jsonObj.toString(); // 문자열로 변환
 		

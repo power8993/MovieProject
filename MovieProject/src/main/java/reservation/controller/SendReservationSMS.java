@@ -22,9 +22,9 @@ public class SendReservationSMS extends AbstractController {
 		if("POST".equalsIgnoreCase(method)) {
 			// POST 방식이면
 			
-			String name = request.getParameter("name");
-			String ticketPrice = request.getParameter("ticketPrice");
-			String mobile = request.getParameter("mobile");
+			String name = request.getParameter("name");					// 이름
+			String ticketPrice = request.getParameter("ticketPrice");	// 결제 금액
+			String mobile = request.getParameter("mobile");				// 전화번호
 			
 			String content = "[HCV] 안녕하세요 " + name + " 님\n영화 예매가 완료되었습니다.\n결제금액:" + ticketPrice + " 원\n감사합니다."; 
 			

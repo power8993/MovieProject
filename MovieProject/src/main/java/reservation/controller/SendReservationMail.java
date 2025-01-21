@@ -36,12 +36,14 @@ public class SendReservationMail extends AbstractController {
 			int n = 0;
 			
 			GoogleMail mail = new GoogleMail();
-			String userid = request.getParameter("userid");
-			String imp_uid = request.getParameter("imp_uid");
+			String userid = request.getParameter("userid");		// 사용자ID
+			String imp_uid = request.getParameter("imp_uid");	// 결제 번호
 			
 			List<TicketVO> ticketlist = mdao.getTickets(userid, imp_uid);
+			// 티켓 목록을 DB에서 가져옴
 			
 			Map<String, String> map = mdao.getMovieTitle(imp_uid);
+			// 영화 제목을 DB에서 가져옴
 			
 			if(ticketlist.size() == 0) {
 				System.out.println("티켓이 없습니다.");
@@ -50,6 +52,7 @@ public class SendReservationMail extends AbstractController {
 				int ticketPrice = 0;
 				String seat_str = "";
 				for(int i = 0; i < ticketlist.size(); i++) {
+					// 티켓 목록의 좌석들을 하나의 String으로 합치기
 					if(i == 0) {
 						seat_str += ticketlist.get(i).getSeat_no();
 					}
@@ -57,6 +60,7 @@ public class SendReservationMail extends AbstractController {
 						seat_str += "," + ticketlist.get(i).getSeat_no();
 					}
 					ticketPrice += ticketlist.get(i).getTicket_price();
+					// 티켓 목록들의 총 가격
 				}
 				
 				StringBuilder sb = new StringBuilder();
@@ -91,6 +95,7 @@ public class SendReservationMail extends AbstractController {
 				String emailContents = sb.toString();
 				
 				mail.sendmail_OrderFinish(loginuser.getEmail(), loginuser.getName(), emailContents);
+				// 메일 전송
 				
 				n = 1;
 				

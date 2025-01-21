@@ -30,17 +30,17 @@ public class MakePayment extends AbstractController {
 		if("POST".equalsIgnoreCase(method)) {
 			// POST 방식이면
 			
-			String userid = request.getParameter("userid");
-			String ticketPrice = request.getParameter("ticketPrice");
-			String imp_uid = request.getParameter("imp_uid");
-			String seq_showtime_no = request.getParameter("seq_showtime_no");
+			String userid = request.getParameter("userid");						// 사용자ID
+			String ticketPrice = request.getParameter("ticketPrice");			// 총 결제 금액
+			String imp_uid = request.getParameter("imp_uid");					// 결제번호
+			String seq_showtime_no = request.getParameter("seq_showtime_no");	// 상영영화번호
 			
 			Map<String, String> paraMap = new HashMap<>();
 			paraMap.put("userid", userid);
 			paraMap.put("ticketPrice", ticketPrice);
 			paraMap.put("imp_uid", imp_uid);
 			paraMap.put("seq_showtime_no", seq_showtime_no);
-			paraMap.put("status", "결제 완료");
+			paraMap.put("status", "결제 완료");	// status 는 "결제 완료" 또는 "결제 취소"
 			
 			int n = 0;
 			try {

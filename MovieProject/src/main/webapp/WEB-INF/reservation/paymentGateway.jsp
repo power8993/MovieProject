@@ -26,7 +26,7 @@ $(document).ready(function() {
        pay_method : 'card',	// 결제 수단
        merchant_uid : 'merchant_' + new Date().getTime(), // 가맹점에서 생성/관리하는 고유 주문번호
        name : '${requestScope.ticketInfo}',   // 코인충전 또는 order 테이블에 들어갈 주문명 혹은 주문 번호. (선택항목)원활한 결제정보 확인을 위해 입력 권장(PG사 마다 차이가 있지만) 16자 이내로 작성하기를 권장
-       amount : 100,  // '${coinmoney}'  결제 금액 number 타입. 필수항목. 
+       amount : 100,  // '${ticketPrice}'  결제 금액 number 타입. 필수항목. 
        buyer_email : '${requestScope.email}',  // 구매자 email
        buyer_name : '${requestScope.name}',	   // 구매자 이름 
        buyer_tel : '${requestScope.mobile}',   // 구매자 전화번호 (필수항목)
@@ -60,8 +60,6 @@ $(document).ready(function() {
 			2. jQuery를 이용한 방법
 			$(opener.location).attr("href", "javascript:부모창스크립트 함수명();");
 		*/
-	 <%--	opener.location.href = "javascript:goCoinUpdate('<%= ctxPath%>', '${requestScope.userid}','${requestScope.coinmoney}');"; --%>
-	 <%--   $(opener.location).attr("href", "javascript:goCoinUpdate('<%= ctxPath%>', '${requestScope.userid}','${requestScope.coinmoney}');");  --%> 
 
         	/* 상영 영화 좌석배열 수정 및 남은 좌석 수정 */
 	 		window.opener.updateShowtime('<%= ctxPath%>');
@@ -82,12 +80,7 @@ $(document).ready(function() {
 			self.close();
 			
         } else {
-<%--         	/* 결제 완료 메일 보내기 */
-	 		window.opener.sendReservationMail('<%= ctxPath%>', '${requestScope.userid}', '${requestScope.name}', rsp.imp_uid);
-	 		/* 결제 완료 화면 띄우기 */
-	 		window.opener.reservationEnd('<%= ctxPath%>', '${requestScope.userid}', rsp.imp_uid, '${requestScope.name}'); --%>
         	
-        	//window.opener.stopCSSLoader();
             alert("결제에 실패하였습니다.");
             self.close();
             
