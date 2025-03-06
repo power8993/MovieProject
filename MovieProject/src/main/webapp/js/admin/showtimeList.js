@@ -103,12 +103,6 @@ $(document).ready(function() {
 		var showtime = $(this).find("td#show_time_text").text();
 		
 		var seq_showtime_no = $(this).find("span#seq_showtime_no").text(); // ajax 로 넘길 seq 번호
-		/*console.log(seq_showtime_no);
-		console.log(unused_seat);
-		console.log(seat_cnt);
-		console.log(movie_title);
-		console.log(showdate);
-		console.log(showtime);*/
 		
 		const user_confirm = confirm(`[영화] ${movie_title}\n[상영일자] ${showdate} ${showtime}\n\n위의 상영일정을 삭제하시겠습니까?`);
 		
