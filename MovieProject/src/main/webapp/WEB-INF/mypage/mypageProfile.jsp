@@ -6,9 +6,8 @@
 <%
 String ctxPath = request.getContextPath();
 %>
-
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/js/mypage/mypageProfile.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/mypage/mypageProfile.js"></script>
+	
 
 <%-- 마이페이지 나의 프로필장 --%>
 <div class="myprofile">
@@ -19,9 +18,10 @@ String ctxPath = request.getContextPath();
 		<%-- 프로필 사진과 버튼 컨테이너 --%>
 		<div class="profile-photo-container">
 
-			<img
-				src="${pageContext.request.contextPath}/Profile_image/${(sessionScope.loginuser).profile}" 
-				alt="${(sessionScope.loginuser).name}님"  />
+
+			<div id="lastprofile_Edit" data-context-path="${pageContext.request.contextPath}">
+				<img id="profileimage" alt="Profile image">
+			</div><%-- 프로필 사진 모달창 --%>
 
 
 			<button type="button" class="profile_Edit"

@@ -24,7 +24,7 @@ String ctxPath = request.getContextPath();
 <div class="my_container">
 
 	<jsp:include page="mypageProfile.jsp" />
-
+	
 	<%-- 마이페이지 사이드바 & 매안 창 --%>
 	<div class="my_main">
 

@@ -82,27 +82,55 @@ public class MypageDAO_imple implements MypageDAO {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
+	
+	//마이페이지 프로필 - 사진 조회
+	@Override
+	public MemberVO MylastprofileEdit(Map<String, String> paraMap) throws SQLException {
+		  MemberVO mvo = null;
+
+		    try {
+		        conn = ds.getConnection();
+
+		        String sql = " select profile from tbl_member WHERE USER_ID = ? ";
+
+		        pstmt = conn.prepareStatement(sql);
+		        pstmt.setString(1, paraMap.get("userid"));
+
+		        rs = pstmt.executeQuery();
+
+		        if (rs.next()) {
+		            mvo = new MemberVO();
+		            mvo.setProfile(rs.getString("profile"));
+		            
+		            
+		        }
+		    } finally {
+		        close();
+		    }
+
+		    return mvo;  // MemberVO 객체 하나를 반환
+	}
+
+	
+	
+	
 	//마이페이지 프로필 - 사진 편집
-		@Override
-		public int profileUpdate(String userid, String profile) throws SQLException {
-			int result = 0;
-		      
-		      try {
-		         conn = ds.getConnection();
-		         
-		         String sql = " UPDATE tbl_member SET profile = ? WHERE user_id = ? ";
-		         pstmt = conn.prepareStatement(sql);
-		         pstmt.setString(1, userid);
-		         pstmt.setString(2, profile);
-		         
-		         result = pstmt.executeUpdate();
-		         
-		      } finally {
-		         close();
-		      }
-		      
-		      return result;
-		}
+	@Override
+	public int profileUpdate(String userid, String profile) throws SQLException {
+	    int result = 0;
+	    try {
+	        conn = ds.getConnection();
+	        String sql = "UPDATE tbl_member SET profile = ? WHERE user_id = ?";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, profile);
+	        pstmt.setString(2, userid);
+	        result = pstmt.executeUpdate();
+	    } finally {
+	        close();
+	    }
+	    return result;
+	}
+
 
 
 
@@ -1162,6 +1190,7 @@ public class MypageDAO_imple implements MypageDAO {
 		return result;
 	}
 
+	
 	
 	
 	

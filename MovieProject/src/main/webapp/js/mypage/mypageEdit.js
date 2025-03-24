@@ -226,8 +226,8 @@ function mypasswdFind_update(userid, ctxPath) {
 	});
 
 	$("button.btn-success").click(function() {
-		const pwd = $("input:password[name='pwd']").val();
-		const pwd2 = $("input:password[id='pwd2']").val();
+		const pwd = $("input:password[name='pwd']").val().trim();;
+		const pwd2 = $("input:password[id='pwd2']").val().trim();;
 
 		if (pwd !== pwd2) {
 			alert("암호가 일치하지 않습니다.");
