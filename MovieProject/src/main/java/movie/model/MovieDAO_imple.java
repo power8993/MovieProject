@@ -326,8 +326,8 @@ public class MovieDAO_imple implements MovieDAO {
 					   + "                   , actor = ? "
 					   + "                   , movie_grade = ? "
 					   + "                   , running_time = ? "
-					   + "                   , start_date = ? "
-					   + "                   , end_date = ? "
+					   + "                   , start_date = to_date(?, 'yyyy-mm-dd') "
+					   + "                   , end_date = to_date(?, 'yyyy-mm-dd') "
 					   + "                   , poster_file = ? "
 					   + "                   , video_url = ? "
 					   + " where seq_movie_no = ? ";
