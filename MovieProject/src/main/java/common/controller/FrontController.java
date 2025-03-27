@@ -28,7 +28,7 @@ import jakarta.servlet.http.HttpServletResponse;
 	urlPatterns = {"*.mp"},
 	initParams = { 
 		//@WebInitParam(name = "propertyConfig", value = "C:\\git\\MovieProject\\MovieProject\\src\\main\\webapp\\WEB-INF\\Command.Properties", description = "*.mp 에 대한 클래스의 매핑파일") 
-		@WebInitParam(name = "propertyConfig", value = "/home/ubuntu/websitemymvc/WEB-INF/Command.properties", description = "*.mp 에 대한 클래스의 매핑파일") 
+		@WebInitParam(name = "propertyConfig", value = "/home/ubuntu/websiteMovieProject/WEB-INF/Command.properties", description = "*.mp 에 대한 클래스의 매핑파일") 
 	}
 )
 
