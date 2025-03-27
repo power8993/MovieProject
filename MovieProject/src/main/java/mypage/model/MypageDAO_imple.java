@@ -73,118 +73,96 @@ public class MypageDAO_imple implements MypageDAO {
 			e.printStackTrace();
 		}
 	} // end of private void close()------------------------------------
-	
-	
-	
-	
-	
-	
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	
-	//마이페이지 프로필 - 사진 조회
+
+	// 마이페이지 프로필 - 사진 조회
 	@Override
 	public MemberVO MylastprofileEdit(Map<String, String> paraMap) throws SQLException {
-		  MemberVO mvo = null;
+		MemberVO mvo = null;
 
-		    try {
-		        conn = ds.getConnection();
+		try {
+			conn = ds.getConnection();
 
-		        String sql = " select profile from tbl_member WHERE USER_ID = ? ";
+			String sql = " select profile from tbl_member WHERE USER_ID = ? ";
 
-		        pstmt = conn.prepareStatement(sql);
-		        pstmt.setString(1, paraMap.get("userid"));
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
 
-		        rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 
-		        if (rs.next()) {
-		            mvo = new MemberVO();
-		            mvo.setProfile(rs.getString("profile"));
-		            
-		            
-		        }
-		    } finally {
-		        close();
-		    }
+			if (rs.next()) {
+				mvo = new MemberVO();
+				mvo.setProfile(rs.getString("profile"));
 
-		    return mvo;  // MemberVO 객체 하나를 반환
+			}
+		} finally {
+			close();
+		}
+
+		return mvo; // MemberVO 객체 하나를 반환
 	}
 
-	
-	
-	
-	//마이페이지 프로필 - 사진 편집
+	// 마이페이지 프로필 - 사진 편집
 	@Override
 	public int profileUpdate(String userid, String profile) throws SQLException {
-	    int result = 0;
-	    try {
-	        conn = ds.getConnection();
-	        String sql = "UPDATE tbl_member SET profile = ? WHERE user_id = ?";
-	        pstmt = conn.prepareStatement(sql);
-	        pstmt.setString(1, profile);
-	        pstmt.setString(2, userid);
-	        result = pstmt.executeUpdate();
-	    } finally {
-	        close();
-	    }
-	    return result;
+		int result = 0;
+		try {
+			conn = ds.getConnection();
+			String sql = "UPDATE tbl_member SET profile = ? WHERE user_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, profile);
+			pstmt.setString(2, userid);
+			result = pstmt.executeUpdate();
+		} finally {
+			close();
+		}
+		return result;
 	}
-
-
-
 
 	// 마이페이지 프로필 - 포인트 적립/사용내역 목록
 	@Override
 	public List<Map<String, Object>> myreservationprofile(String userid) throws SQLException {
-		 List<Map<String, Object>> myreservationprofile = new ArrayList<>();
-		    
-		    try {
-		        conn = ds.getConnection();
-		        
-		        String sql = " SELECT fk_user_id as userid, " +
-		                     " sum(case when point_type = 1 then point else 0 end) as total_earned, " +
-		                     " sum(case when point_type = 0 then point else 0 end) as total_deducted, " +
-		                     " GREATEST(sum(case when point_type = 1 then point else 0 end) -  " +
-		                     "  sum(case when point_type = 0 then point else 0 end),0) as total_points " +
-		                     " FROM tbl_point " +
-		                     " WHERE FK_USER_ID = ? " +
-		                     " GROUP BY FK_USER_ID ";
-		        
-		        pstmt = conn.prepareStatement(sql);
-		        pstmt.setString(1, userid);
-		        
-		        rs = pstmt.executeQuery();
-		        
-		        if (!rs.next()) {
-		            // 데이터가 없을 때 기본값 추가
-		            Map<String, Object> paraMap = new HashMap<>();
-		            paraMap.put("userid", userid);
-		            paraMap.put("total_earned", 0);
-		            paraMap.put("total_deducted", 0);
-		            paraMap.put("total_points", 0);
-		            myreservationprofile.add(paraMap);
-		        } else {
-		            // 데이터가 있는 경우
-		            do {
-		                Map<String, Object> paraMap = new HashMap<>();
-		                paraMap.put("userid", rs.getString("userid"));
-		                paraMap.put("total_earned", rs.getInt("total_earned"));
-		                paraMap.put("total_deducted", rs.getInt("total_deducted"));
-		                paraMap.put("total_points", rs.getInt("total_points"));
-		                myreservationprofile.add(paraMap);
-		            } while (rs.next());
-		        }
-		        
-		    } finally {
-		        close();
-		    }
-		    
-		    return myreservationprofile;
+		List<Map<String, Object>> myreservationprofile = new ArrayList<>();
+		try {
+			conn = ds.getConnection();
+
+			String sql = " SELECT fk_user_id as userid, "
+					+ " sum(case when point_type = 1 then point else 0 end) as total_earned, "
+					+ " sum(case when point_type = 0 then point else 0 end) as total_deducted, "
+					+ " GREATEST(sum(case when point_type = 1 then point else 0 end) -  "
+					+ "  sum(case when point_type = 0 then point else 0 end),0) as total_points " + " FROM tbl_point "
+					+ " WHERE FK_USER_ID = ? " + " GROUP BY FK_USER_ID ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+
+			if (!rs.next()) {
+				// 데이터가 없을 때 기본값 추가
+				Map<String, Object> paraMap = new HashMap<>();
+				paraMap.put("userid", userid);
+				paraMap.put("total_earned", 0);
+				paraMap.put("total_deducted", 0);
+				paraMap.put("total_points", 0);
+				myreservationprofile.add(paraMap);
+			} else {
+				// 데이터가 있는 경우
+				do {
+					Map<String, Object> paraMap = new HashMap<>();
+					paraMap.put("userid", rs.getString("userid"));
+					paraMap.put("total_earned", rs.getInt("total_earned"));
+					paraMap.put("total_deducted", rs.getInt("total_deducted"));
+					paraMap.put("total_points", rs.getInt("total_points"));
+					myreservationprofile.add(paraMap);
+				} while (rs.next());
+			}
+		} finally {
+			close();
+		}
+		return myreservationprofile;
 	}
-	
-	
-	
+
 	// 마이페이지 프로필 - 나의 영화 랭킹 순위
 	@Override
 	public List<Map<String, String>> myranking(String userid) throws SQLException {
@@ -193,32 +171,23 @@ public class MypageDAO_imple implements MypageDAO {
 		try {
 			conn = ds.getConnection();
 
-			 String sql = " SELECT * "
-			 		+ " FROM ( "
-			 		+ "    SELECT  "
-			 		+ "        RANK() OVER (ORDER BY COUNT(FK_USER_ID) DESC) AS myranking, "
-			 		+ "        FK_USER_ID AS userid, "
-			 		+ "        PAY_STATUS, "
-			 		+ "        COUNT(FK_USER_ID) AS FK_USER_ID_COUNT "
-			 		+ "    FROM  "
-			 		+ "        tbl_payment "
-			 		+ "    WHERE "
-			 		+ "        PAY_STATUS = '결제 완료' "
-			 		+ "    GROUP BY  "
-			 		+ "        FK_USER_ID, PAY_STATUS "
-			 		+ " ) ranked_data "
-			 		+ " WHERE userid = ? ";
+			String sql = " SELECT * " + " FROM ( " + "    SELECT  "
+					+ "        RANK() OVER (ORDER BY COUNT(FK_USER_ID) DESC) AS myranking, "
+					+ "        FK_USER_ID AS userid, " + "        PAY_STATUS, "
+					+ "        COUNT(FK_USER_ID) AS FK_USER_ID_COUNT " + "    FROM  " + "        tbl_payment "
+					+ "    WHERE " + "        PAY_STATUS = '결제 완료' " + "    GROUP BY  "
+					+ "        FK_USER_ID, PAY_STATUS " + " ) ranked_data " + " WHERE userid = ? ";
 
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, userid);
-		
+
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
 				Map<String, String> map = new HashMap<>();
-			    map.put("userid", rs.getString("userid"));
-			    map.put("myranking", rs.getString("myranking"));
-			    myranking.add(map);
+				map.put("userid", rs.getString("userid"));
+				map.put("myranking", rs.getString("myranking"));
+				myranking.add(map);
 			}
 
 		} finally {
@@ -230,8 +199,6 @@ public class MypageDAO_imple implements MypageDAO {
 	}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-	
-	
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -312,7 +279,8 @@ public class MypageDAO_imple implements MypageDAO {
 					+ "    SELECT ROW_NUMBER() OVER (ORDER BY s.START_TIME DESC) AS RNO, "
 					+ "    p.FK_USER_ID as userid, " + "    p.IMP_UID,    " + "    s.FK_SCREEN_NO, "
 					+ "    LISTAGG(t.SEAT_NO, ',') WITHIN GROUP (ORDER BY t.SEAT_NO) AS SEAT_NO_LIST, "
-					+ "    COUNT(t.SEAT_NO) AS SEAT_COUNT, " + "    s.FK_SEQ_MOVIE_NO, " + "    m.POSTER_FILE,  m.movie_grade, "
+					+ "    COUNT(t.SEAT_NO) AS SEAT_COUNT, " + "    s.FK_SEQ_MOVIE_NO, "
+					+ "    m.POSTER_FILE,  m.movie_grade, "
 					+ "    case when length(movie_title) > 23 then substr(movie_title,1,20) || ' ...' else movie_title end as movie_title, "
 					+ "    to_char(s.START_TIME, 'yyyy-mm-dd hh24:mi') as START_TIME, "
 					+ "    to_char(s.END_TIME, 'hh24:mi') as END_TIME, " + "    p.PAY_STATUS " + " FROM  tbl_payment p "
@@ -343,7 +311,7 @@ public class MypageDAO_imple implements MypageDAO {
 				MovieVO mvo = new MovieVO();
 				mvo.setPoster_file(rs.getString("poster_file"));
 				mvo.setMovie_title(rs.getString("movie_title"));
-				mvo.setMovie_grade(rs.getString("movie_grade")); //상영등급
+				mvo.setMovie_grade(rs.getString("movie_grade")); // 상영등급
 				svo.setMvo(mvo);
 
 				TicketVO tvo = new TicketVO();
@@ -394,7 +362,7 @@ public class MypageDAO_imple implements MypageDAO {
 				MovieVO mvo = new MovieVO();
 				mvo.setPoster_file(rs.getString("poster_file"));
 				mvo.setMovie_title(rs.getString("movie_title"));
-				mvo.setMovie_grade(rs.getString("movie_grade")); //상영등급
+				mvo.setMovie_grade(rs.getString("movie_grade")); // 상영등급
 				mrvo.setMvo(mvo);
 
 				main_mypage_MovieReviewList.add(mrvo);
@@ -445,9 +413,7 @@ public class MypageDAO_imple implements MypageDAO {
 		return main_mypage_MovieLikeList;
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	
-	
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// 마이페이지 나의 예매내역 목록 전체 -- 20분 전 확인불가
@@ -460,10 +426,10 @@ public class MypageDAO_imple implements MypageDAO {
 
 			String sql = " SELECT " + "    p.FK_USER_ID as userid, " + "    p.IMP_UID, " + "    s.FK_SCREEN_NO, "
 					+ "    LISTAGG(t.SEAT_NO, ',') WITHIN GROUP (ORDER BY t.SEAT_NO) AS SEAT_NO_LIST, "
-					+ "    COUNT(t.SEAT_NO) AS SEAT_COUNT, " + "    s.FK_SEQ_MOVIE_NO, " + "    m.POSTER_FILE, s.seq_showtime_no, "
-					+ "    m.MOVIE_TITLE, m.movie_grade, " + "    p.PAY_SUCCESS_DATE, "
-					+ "    to_char(s.START_TIME, 'yyyy-mm-dd hh24:mi') as START_TIME, " + "    p.PAY_AMOUNT, "
-					+ "    p.PAY_STATUS " + " FROM tbl_payment p " + " JOIN tbl_ticket t "
+					+ "    COUNT(t.SEAT_NO) AS SEAT_COUNT, " + "    s.FK_SEQ_MOVIE_NO, "
+					+ "    m.POSTER_FILE, s.seq_showtime_no, " + "    m.MOVIE_TITLE, m.movie_grade, "
+					+ "    p.PAY_SUCCESS_DATE, " + "    to_char(s.START_TIME, 'yyyy-mm-dd hh24:mi') as START_TIME, "
+					+ "    p.PAY_AMOUNT, " + "    p.PAY_STATUS " + " FROM tbl_payment p " + " JOIN tbl_ticket t "
 					+ " ON p.IMP_UID = t.FK_IMP_UID " + " JOIN tbl_showtime s "
 					+ " ON s.SEQ_SHOWTIME_NO = p.FK_SEQ_SHOWTIME_NO " + " JOIN tbl_movie m "
 					+ " ON s.FK_SEQ_MOVIE_NO = m.SEQ_MOVIE_NO "
@@ -495,7 +461,7 @@ public class MypageDAO_imple implements MypageDAO {
 				MovieVO mvo = new MovieVO();
 				mvo.setPoster_file(rs.getString("poster_file"));
 				mvo.setMovie_title(rs.getString("movie_title"));
-				mvo.setMovie_grade(rs.getString("movie_grade")); //상영등급
+				mvo.setMovie_grade(rs.getString("movie_grade")); // 상영등급
 				svo.setMvo(mvo);
 
 				TicketVO tvo = new TicketVO();
@@ -525,7 +491,8 @@ public class MypageDAO_imple implements MypageDAO {
 			String sql = "SELECT " + " p.FK_USER_ID as userid, " + "  p.IMP_UID, " + " m.SEQ_MOVIE_NO, "
 					+ "   case when length(movie_title) > 23 then substr(movie_title,1,20) || ' ...' else movie_title end as movie_title,  "
 					+ "    to_char(s.START_TIME, 'yyyy-mm-dd hh24:mi') as START_TIME, "
-					+ "    to_char(p.PAY_CANCEL_DATE, 'yyyy-mm-dd') as PAY_CANCEL_DATE, " + " to_char(p.pay_success_date, 'yyyy-mm-dd') as pay_success_date,   p.PAY_AMOUNT, "
+					+ "    to_char(p.PAY_CANCEL_DATE, 'yyyy-mm-dd') as PAY_CANCEL_DATE, "
+					+ " to_char(p.pay_success_date, 'yyyy-mm-dd') as pay_success_date,   p.PAY_AMOUNT, "
 					+ "    p.PAY_STATUS " + " FROM tbl_payment p " + " JOIN tbl_showtime s "
 					+ " ON s.SEQ_SHOWTIME_NO = p.FK_SEQ_SHOWTIME_NO " + " JOIN tbl_movie m "
 					+ " ON s.FK_SEQ_MOVIE_NO = m.SEQ_MOVIE_NO " + " WHERE p.FK_USER_ID = ? AND p.PAY_STATUS = '결제 취소' "
@@ -574,9 +541,9 @@ public class MypageDAO_imple implements MypageDAO {
 			conn = ds.getConnection();
 
 			String sql = " SELECT  "
-					+ "    p.FK_USER_ID AS userid, p.IMP_UID, s.FK_SCREEN_NO,LISTAGG(t.SEAT_NO, ',') WITHIN GROUP (ORDER BY t.SEAT_NO) AS SEAT_NO_LIST,COUNT(t.SEAT_NO) AS SEAT_COUNT,s.FK_SEQ_MOVIE_NO, "
-					+ "   m.POSTER_FILE, m.MOVIE_TITLE, TO_CHAR(s.START_TIME, 'yyyy-mm-dd hh24:mi') AS START_TIME, TO_CHAR(s.END_TIME, 'hh24:mi') AS END_TIME, p.PAY_STATUS, "
-					+ "    RTRIM( "
+					+ "    p.FK_USER_ID AS userid, p.IMP_UID, s.FK_SCREEN_NO,LISTAGG(t.SEAT_NO, ',') WITHIN GROUP (ORDER BY t.SEAT_NO) AS SEAT_NO_LIST,COUNT(t.SEAT_NO) AS SEAT_COUNT, "
+					+ " s.FK_SEQ_MOVIE_NO,  m.POSTER_FILE, m.MOVIE_TITLE, TO_CHAR(s.START_TIME, 'yyyy-mm-dd hh24:mi') AS START_TIME, "
+					+ " TO_CHAR(s.END_TIME, 'hh24:mi') AS END_TIME, p.PAY_STATUS, " + "    RTRIM( "
 					+ "        CASE WHEN SUM(CASE WHEN t.TICKET_AGE_GROUP = '성인' THEN 1 ELSE 0 END) > 0 "
 					+ "             THEN '일반 ' || SUM(CASE WHEN t.TICKET_AGE_GROUP = '성인' THEN 1 ELSE 0 END) || ', ' ELSE '' END || "
 					+ "        CASE WHEN SUM(CASE WHEN t.TICKET_AGE_GROUP = '청소년' THEN 1 ELSE 0 END) > 0 \r\n"
@@ -631,195 +598,149 @@ public class MypageDAO_imple implements MypageDAO {
 		return myreservationList_impUid;
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	
-	
-	
-	
-	
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	//마이페이지 포인트 적립/사용내역 합계 목록
+	// 마이페이지 포인트 적립/사용내역 합계 목록
 	@Override
 	public List<Map<String, Object>> myreservationpoint(String userid) throws SQLException {
-	    List<Map<String, Object>> myreservationpoint = new ArrayList<>();
-	    
-	    try {
-	        conn = ds.getConnection();
-	        
-	        String sql = " SELECT fk_user_id as userid, "
-	                   + "       COALESCE(SUM(CASE WHEN point_type = 1 THEN point ELSE 0 END), 0) AS total_earned, "
-	                   + "       COALESCE(SUM(CASE WHEN point_type = 0 THEN point ELSE 0 END), 0) AS total_deducted, "
-	                   + "       COALESCE(GREATEST(SUM(CASE WHEN point_type = 1 THEN point ELSE 0 END) - "
-	                   + "       SUM(CASE WHEN point_type = 0 THEN point ELSE 0 END), 0), 0) AS total_points "
-	                   + " FROM tbl_point "
-	                   + " WHERE FK_USER_ID = ? "
-	                   + " GROUP BY FK_USER_ID ";
-	        
-	        pstmt = conn.prepareStatement(sql);
-	        pstmt.setString(1, userid);
-	        
-	        rs = pstmt.executeQuery();
-	        
-	        if (!rs.next()) {
-	            // 데이터가 없을 경우, 기본값 0을 설정
-	            Map<String, Object> paraMap = new HashMap<>();
-	            paraMap.put("userid", userid);
-	            paraMap.put("total_earned", 0);
-	            paraMap.put("total_deducted", 0);
-	            paraMap.put("total_points", 0);
-	            myreservationpoint.add(paraMap);
-	        } else {
-	            do {
-	                Map<String, Object> paraMap = new HashMap<>();
-	                paraMap.put("userid", rs.getString("userid"));
-	                paraMap.put("total_earned", rs.getInt("total_earned"));
-	                paraMap.put("total_deducted", rs.getInt("total_deducted"));
-	                paraMap.put("total_points", rs.getInt("total_points"));
-	                myreservationpoint.add(paraMap);
-	            } while (rs.next());
-	        }
-	        
-	    } finally {
-	        close();
-	    }
-	    
-	    return myreservationpoint;
+		List<Map<String, Object>> myreservationpoint = new ArrayList<>();
+		try {
+			conn = ds.getConnection();
+
+			String sql = " SELECT fk_user_id as userid, "
+					+ "       COALESCE(SUM(CASE WHEN point_type = 1 THEN point ELSE 0 END), 0) AS total_earned, "
+					+ "       COALESCE(SUM(CASE WHEN point_type = 0 THEN point ELSE 0 END), 0) AS total_deducted, "
+					+ "       COALESCE(GREATEST(SUM(CASE WHEN point_type = 1 THEN point ELSE 0 END) - "
+					+ "       SUM(CASE WHEN point_type = 0 THEN point ELSE 0 END), 0), 0) AS total_points "
+					+ " FROM tbl_point " + " WHERE FK_USER_ID = ? " + " GROUP BY FK_USER_ID ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+
+			if (!rs.next()) {
+				// 데이터가 없을 경우, 기본값 0을 설정
+				Map<String, Object> paraMap = new HashMap<>();
+				paraMap.put("userid", userid);
+				paraMap.put("total_earned", 0);
+				paraMap.put("total_deducted", 0);
+				paraMap.put("total_points", 0);
+				myreservationpoint.add(paraMap);
+			} else {
+				do {
+					Map<String, Object> paraMap = new HashMap<>();
+					paraMap.put("userid", rs.getString("userid"));
+					paraMap.put("total_earned", rs.getInt("total_earned"));
+					paraMap.put("total_deducted", rs.getInt("total_deducted"));
+					paraMap.put("total_points", rs.getInt("total_points"));
+					myreservationpoint.add(paraMap);
+				} while (rs.next());
+			}
+		} finally {
+			close();
+		}
+		return myreservationpoint;
 	}
 
-	
-	
-	//마이페이지 포인트 적립/사용내역 목록 리스트
-		@Override
-		public List<PointVO> myreservationpointList(String userid) throws SQLException {
-			List<PointVO> myreservationpointList = new ArrayList<>();
-			
-			try {
-				conn = ds.getConnection();
+	// 마이페이지 포인트 적립/사용내역 목록 리스트
+	@Override
+	public List<PointVO> myreservationpointList(String userid) throws SQLException {
+		List<PointVO> myreservationpointList = new ArrayList<>();
 
-				String sql = " SELECT "
-						+ "    SEQ_POINT_NO, "
-						+ "    FK_USER_ID as userid, "
-						+ "    FK_IMP_UID, "
-						+ "     POINT_TYPE, "
-						+ "    POINT, "
-						+ "     TO_CHAR(POINT_DATE,'yyyy-mm-dd') AS POINT_DATE "
-						+ " FROM tbl_point "
-						+ " WHERE FK_USER_ID = ?"
-						+ " order by POINT_DATE desc ";
-				
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, userid);
+		try {
+			conn = ds.getConnection();
 
-				rs = pstmt.executeQuery();
+			String sql = " SELECT " + "    SEQ_POINT_NO, " + "    FK_USER_ID as userid, " + "    FK_IMP_UID, "
+					+ "     POINT_TYPE, " + "    POINT, " + "     TO_CHAR(POINT_DATE,'yyyy-mm-dd') AS POINT_DATE "
+					+ " FROM tbl_point " + " WHERE FK_USER_ID = ?" + " order by POINT_DATE desc ";
 
-				while (rs.next()) {
-					PointVO povo = new PointVO();
-					povo.setFk_user_id(rs.getString("userid"));
-					povo.setSeq_point_no(rs.getInt("seq_point_no"));
-					povo.setPoint(rs.getInt("point"));
-					povo.setPoint_type(rs.getInt("point_type"));
-					povo.setPoint_date(rs.getString("point_date"));
-					
-					myreservationpointList.add(povo);
-				}
-			} finally {
-				close();
-			}	
-			return myreservationpointList;
-		}
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		
-		
-		
-		
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		// 마이페이지 내가 본 영화 목록 전체 -- 마감되고 10분 후
-		@Override
-		public List<PaymentVO> mymoviewatchedList(String userid) throws SQLException {
-			List<PaymentVO> mymoviewatchedList = new ArrayList<>();
+			rs = pstmt.executeQuery();
 
-			try {
-				conn = ds.getConnection();
+			while (rs.next()) {
+				PointVO povo = new PointVO();
+				povo.setFk_user_id(rs.getString("userid"));
+				povo.setSeq_point_no(rs.getInt("seq_point_no"));
+				povo.setPoint(rs.getInt("point"));
+				povo.setPoint_type(rs.getInt("point_type"));
+				povo.setPoint_date(rs.getString("point_date"));
 
-				String sql = " SELECT " +
-						"    p.FK_USER_ID as userid, " +
-						"    p.IMP_UID, " +
-						"    s.FK_SCREEN_NO, " +
-						"    LISTAGG(t.SEAT_NO, ',') WITHIN GROUP (ORDER BY t.SEAT_NO) AS SEAT_NO_LIST, " +
-						"    COUNT(t.SEAT_NO) AS SEAT_COUNT, " +
-						"    s.FK_SEQ_MOVIE_NO, " +
-						"    m.POSTER_FILE, " +
-						"    m.MOVIE_TITLE, " +
-						"    m.movie_grade, " +
-						"    TO_CHAR(s.START_TIME, 'yyyy-MM-dd HH24:mi') as START_TIME, " +
-						"    TO_CHAR(s.END_TIME, 'HH24:mi') as END_TIME, " +
-						"    p.PAY_STATUS " +
-						" FROM " +
-						"    tbl_payment p " +
-						" JOIN " +
-						"    tbl_ticket t ON p.IMP_UID = t.FK_IMP_UID " +
-						" JOIN " +
-						"    tbl_showtime s ON s.SEQ_SHOWTIME_NO = p.FK_SEQ_SHOWTIME_NO " +
-						" JOIN " +
-						"    tbl_movie m ON s.FK_SEQ_MOVIE_NO = m.SEQ_MOVIE_NO " +
-						" WHERE " +
-						"    p.FK_USER_ID = ?" +
-						"    AND p.PAY_STATUS = '결제 완료' " +
-						"    AND SYSDATE >= (s.END_TIME + INTERVAL '10' MINUTE) " +
-						" GROUP BY " +
-						"    p.FK_USER_ID, p.IMP_UID, s.FK_SCREEN_NO, s.FK_SEQ_MOVIE_NO, m.POSTER_FILE, m.MOVIE_TITLE, s.START_TIME, s.END_TIME, p.PAY_STATUS, m.movie_grade " +
-						" ORDER BY " +
-						"    START_TIME DESC ";
-
-
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, userid);
-
-				rs = pstmt.executeQuery();
-
-				while (rs.next()) {
-					PaymentVO pvo = new PaymentVO();
-					pvo.setFk_user_id(rs.getString("userid"));
-					pvo.setImp_uid(rs.getString("imp_uid"));
-					pvo.setPay_status(rs.getString("pay_status"));
-
-					ShowtimeVO svo = new ShowtimeVO();
-					svo.setFk_screen_no(rs.getInt("fk_screen_no"));
-					svo.setFk_seq_movie_no(rs.getInt("fk_seq_movie_no"));
-					svo.setStart_time(rs.getString("start_time"));
-					svo.setEnd_time(rs.getString("end_time"));
-
-					MovieVO mvo = new MovieVO();
-					mvo.setPoster_file(rs.getString("poster_file"));
-					mvo.setMovie_title(rs.getString("movie_title"));
-					mvo.setMovie_grade(rs.getString("movie_grade")); //상영등급
-					svo.setMvo(mvo);
-
-					TicketVO tvo = new TicketVO();
-					tvo.setSeat_no_list(rs.getString("seat_no_list"));
-					tvo.setSeat_count(rs.getInt("seat_count"));
-
-					pvo.setSvo(svo);
-					pvo.setTvo(tvo);
-
-					mymoviewatchedList.add(pvo);
-				}
-			} finally {
-				close();
+				myreservationpointList.add(povo);
 			}
-
-			return mymoviewatchedList;
+		} finally {
+			close();
 		}
-
+		return myreservationpointList;
+	}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		
-		
-		
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// 마이페이지 내가 본 영화 목록 전체 -- 마감되고 10분 후
+	@Override
+	public List<PaymentVO> mymoviewatchedList(String userid) throws SQLException {
+		List<PaymentVO> mymoviewatchedList = new ArrayList<>();
+
+		try {
+			conn = ds.getConnection();
+
+			String sql = " SELECT " + "    p.FK_USER_ID as userid, " + "    p.IMP_UID, " + "    s.FK_SCREEN_NO, "
+					+ "    LISTAGG(t.SEAT_NO, ',') WITHIN GROUP (ORDER BY t.SEAT_NO) AS SEAT_NO_LIST, "
+					+ "    COUNT(t.SEAT_NO) AS SEAT_COUNT, " + "    s.FK_SEQ_MOVIE_NO, " + "    m.POSTER_FILE, "
+					+ "    m.MOVIE_TITLE, " + "    m.movie_grade, "
+					+ "    TO_CHAR(s.START_TIME, 'yyyy-MM-dd HH24:mi') as START_TIME, "
+					+ "    TO_CHAR(s.END_TIME, 'HH24:mi') as END_TIME, " + "    p.PAY_STATUS " + " FROM "
+					+ "    tbl_payment p " + " JOIN " + "    tbl_ticket t ON p.IMP_UID = t.FK_IMP_UID " + " JOIN "
+					+ "    tbl_showtime s ON s.SEQ_SHOWTIME_NO = p.FK_SEQ_SHOWTIME_NO " + " JOIN "
+					+ "    tbl_movie m ON s.FK_SEQ_MOVIE_NO = m.SEQ_MOVIE_NO " + " WHERE " + "    p.FK_USER_ID = ?"
+					+ "    AND p.PAY_STATUS = '결제 완료' " + "    AND SYSDATE >= (s.END_TIME + INTERVAL '10' MINUTE) "
+					+ " GROUP BY "
+					+ "    p.FK_USER_ID, p.IMP_UID, s.FK_SCREEN_NO, s.FK_SEQ_MOVIE_NO, m.POSTER_FILE, m.MOVIE_TITLE, s.START_TIME,"
+					+ " s.END_TIME, p.PAY_STATUS, m.movie_grade " + " ORDER BY " + "    START_TIME DESC ";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				PaymentVO pvo = new PaymentVO();
+				pvo.setFk_user_id(rs.getString("userid"));
+				pvo.setImp_uid(rs.getString("imp_uid"));
+				pvo.setPay_status(rs.getString("pay_status"));
+
+				ShowtimeVO svo = new ShowtimeVO();
+				svo.setFk_screen_no(rs.getInt("fk_screen_no"));
+				svo.setFk_seq_movie_no(rs.getInt("fk_seq_movie_no"));
+				svo.setStart_time(rs.getString("start_time"));
+				svo.setEnd_time(rs.getString("end_time"));
+
+				MovieVO mvo = new MovieVO();
+				mvo.setPoster_file(rs.getString("poster_file"));
+				mvo.setMovie_title(rs.getString("movie_title"));
+				mvo.setMovie_grade(rs.getString("movie_grade")); // 상영등급
+				svo.setMvo(mvo);
+
+				TicketVO tvo = new TicketVO();
+				tvo.setSeat_no_list(rs.getString("seat_no_list"));
+				tvo.setSeat_count(rs.getInt("seat_count"));
+
+				pvo.setSvo(svo);
+				pvo.setTvo(tvo);
+
+				mymoviewatchedList.add(pvo);
+			}
+		} finally {
+			close();
+		}
+
+		return mymoviewatchedList;
+	}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// 마이페이지 내가 쓴 평점 목록 전체 합계
@@ -856,9 +777,10 @@ public class MypageDAO_imple implements MypageDAO {
 		try {
 			conn = ds.getConnection();
 
-			String sql = " select POSTER_FILE, MOVIE_TITLE, movie_grade, SEQ_REVIEW_NO,userid,FK_SEQ_MOVIE_NO,MOVIE_RATING,REVIEW_CONTENT,to_char(REVIEW_WRITE_DATE, 'yyyy/mm/dd') as REVIEW_WRITE_DATE "
-					+ " from " + " ( "
-					+ " select SEQ_REVIEW_NO,FK_SEQ_MOVIE_NO,FK_USER_ID as userid,MOVIE_RATING,REVIEW_CONTENT,REVIEW_WRITE_DATE, M.POSTER_FILE, M.MOVIE_TITLE, m.movie_grade "
+			String sql = " select POSTER_FILE, MOVIE_TITLE, movie_grade, SEQ_REVIEW_NO,userid, "
+					+ " FK_SEQ_MOVIE_NO,MOVIE_RATING,REVIEW_CONTENT,to_char(REVIEW_WRITE_DATE, 'yyyy/mm/dd') as REVIEW_WRITE_DATE "
+					+ " from " + " ( " + " select SEQ_REVIEW_NO,FK_SEQ_MOVIE_NO,FK_USER_ID as userid,MOVIE_RATING, "
+					+ " REVIEW_CONTENT,REVIEW_WRITE_DATE, M.POSTER_FILE, M.MOVIE_TITLE, m.movie_grade "
 					+ " from TBL_REVIEW R " + " join TBL_MOVIE M " + " ON R.FK_SEQ_MOVIE_NO = M.SEQ_MOVIE_NO "
 					+ " WHERE FK_USER_ID = ? " + " ) " + " order by SEQ_REVIEW_NO desc ";
 
@@ -879,7 +801,7 @@ public class MypageDAO_imple implements MypageDAO {
 				MovieVO mvo = new MovieVO();
 				mvo.setPoster_file(rs.getString("poster_file"));
 				mvo.setMovie_title(rs.getString("movie_title"));
-				mvo.setMovie_grade(rs.getString("movie_grade")); //상영등급
+				mvo.setMovie_grade(rs.getString("movie_grade")); // 상영등급
 				mrvo.setMvo(mvo);
 
 				mymoviereviewList.add(mrvo);
@@ -938,8 +860,6 @@ public class MypageDAO_imple implements MypageDAO {
 	}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1034,8 +954,6 @@ public class MypageDAO_imple implements MypageDAO {
 	}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1143,30 +1061,29 @@ public class MypageDAO_imple implements MypageDAO {
 	// 마이페이지 회원정보수정에서 비밀번호 변경 날짜 가져오기
 	@Override
 	public MemberVO Mylastpwdchangedate(Map<String, String> paraMap) throws SQLException {
-	    MemberVO mvo = null;
+		MemberVO mvo = null;
 
-	    try {
-	        conn = ds.getConnection();
+		try {
+			conn = ds.getConnection();
 
-	        String sql = " SELECT to_char(PWD_CHANGE_DATE, 'yyyy/mm/dd') as lastpwdchangedate " +
-	                     " FROM tbl_member WHERE USER_ID = ? ";
+			String sql = " SELECT to_char(PWD_CHANGE_DATE, 'yyyy/mm/dd') as lastpwdchangedate "
+					+ " FROM tbl_member WHERE USER_ID = ? ";
 
-	        pstmt = conn.prepareStatement(sql);
-	        pstmt.setString(1, paraMap.get("userid"));
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("userid"));
 
-	        rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 
-	        if (rs.next()) {
-	            mvo = new MemberVO();
-	            mvo.setLastpwdchangedate(rs.getString("lastpwdchangedate"));
-	        }
-	    } finally {
-	        close();
-	    }
+			if (rs.next()) {
+				mvo = new MemberVO();
+				mvo.setLastpwdchangedate(rs.getString("lastpwdchangedate"));
+			}
+		} finally {
+			close();
+		}
 
-	    return mvo;  // MemberVO 객체 하나를 반환
+		return mvo; // MemberVO 객체 하나를 반환
 	}
-
 
 	// 회원탈퇴
 	@Override
@@ -1190,9 +1107,4 @@ public class MypageDAO_imple implements MypageDAO {
 		return result;
 	}
 
-	
-	
-	
-	
-	
 }// end of public class MypageDAO_imple implements MypageDAO-----

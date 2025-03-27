@@ -94,7 +94,9 @@ String ctxPath = request.getContextPath();
 							
 							<!-- 영화제목, 관람인원, 관람일자, 관람좌석, 상영관, 매수 -->
 							<div class="moviewatched_details">
-								<h2 class="moviewatched_h2"><a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${watched.svo.fk_seq_movie_no}">${watched.svo.mvo.movie_title}</a> </h2>
+								<h2 class="moviewatched_h2">
+								<a href="/MovieProject/movie/movieDetail.mp?seq_movie_no=${watched.svo.fk_seq_movie_no}">
+								${watched.svo.mvo.movie_title}</a> </h2>
 								<ul>
 								<li>${watched.svo.start_time}~${watched.svo.end_time}</li>
 								<li>${watched.svo.fk_screen_no}관/ ${watched.tvo.seat_no_list}</li>

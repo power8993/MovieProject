@@ -90,30 +90,27 @@ function mymoviereview_update(seq_review_no) {
         }
     });
 
-    // 기존 평점을 반영하기 위해 별점 색상 초기화
     $("#movie_rating_input i").each(function() {
         const starRating = $(this).data("rating");
         if (starRating <= movie_rating) {
-            $(this).css("color", "#eb5e28"); // 기존 평점까지 노란색으로 표시
+            $(this).css("color", "#eb5e28"); 
         } else {
-            $(this).css("color", "#E0E0E0"); // 나머지는 회색으로 표시
+            $(this).css("color", "#E0E0E0"); 
         }
     });
 }
 
 
 function setRating(star) {
-    // 클릭된 별의 rating 값을 가져옵니다.
-    const rating = $(star).data("rating");  // data-rating 값 가져오기
-    $("#movie_rating").val(rating);  // hidden input에 평점 값을 설정합니다.
+    const rating = $(star).data("rating"); 
+    $("#movie_rating").val(rating);  
 
-    // 모든 별의 색을 초기화하고, 클릭된 별까지 색을 변경합니다.
     $("#movie_rating_input i").each(function() {
-        const starRating = $(this).data("rating");  // 각 별의 data-rating 값을 가져옵니다.
+        const starRating = $(this).data("rating");  
         if (starRating <= rating) {
-            $(this).css("color", "#eb5e28");  // 선택된 별은 노란색으로 표시
+            $(this).css("color", "#eb5e28"); 
         } else {
-            $(this).css("color", "#E0E0E0");  // 선택되지 않은 별은 회색으로 표시
+            $(this).css("color", "#E0E0E0");  
         }
     });
 }

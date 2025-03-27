@@ -33,7 +33,6 @@ public class MymoviereviewDelete extends AbstractController {
 	         
 	         String seq_review_no = request.getParameter("seq_review_no");
 	         
-	         // 장바구니 테이블에서 특정제품을 장바구니에서 비우기
 	         int n = mydao.mymoviereviewDelete(seq_review_no);
 	         
 	         JSONObject jsobj = new JSONObject();  // {}
