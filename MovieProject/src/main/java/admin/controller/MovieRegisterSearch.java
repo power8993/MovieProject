@@ -54,10 +54,6 @@ public class MovieRegisterSearch extends AbstractController {
 						movieArray.put(jsonObj);
 					}// end of for-------------------------------
 					
-					
-					// ArrayList와 같은 복잡한 객체를 JSON으로 변환 후 보내는 경우 아래와 같이 전송
-					//response.setContentType("application/json");
-			        //response.getWriter().write(movieArray.toString());
 			        
 					// AJAX 로 여러 개(영화검색정보, ctxPath)의 데이터를 전송
 					JSONObject jsonObj_ctxPath = new JSONObject();
